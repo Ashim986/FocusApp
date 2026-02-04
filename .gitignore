@@ -1,1 +1,14 @@
 .DS_Store
+DerivedData/
+.claude/
+*.xcuserdata/
+xcuserdata/
+*.xcuserdatad/
+*.xcuserstate
+*.xccheckout
+*.xcscmblueprint
+*.moved-aside
+*.swp
+*.tmp
+*.orig
+*.rej

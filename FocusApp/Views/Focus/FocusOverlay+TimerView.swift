@@ -1,0 +1,75 @@
+import SwiftUI
+
+extension FocusOverlay {
+    var timerView: some View {
+        VStack(spacing: 40) {
+            ZStack {
+                Circle()
+                    .stroke(Color.white.opacity(0.1), lineWidth: 12)
+                    .frame(width: 280, height: 280)
+
+                Circle()
+                    .trim(from: 0, to: presenter.progress)
+                    .stroke(
+                        LinearGradient(
+                            colors: [Color.appPurple, Color(hex: "#8b5cf6")],
+                            startPoint: .topLeading,
+                            endPoint: .bottomTrailing
+                        ),
+                        style: StrokeStyle(lineWidth: 12, lineCap: .round)
+                    )
+                    .frame(width: 280, height: 280)
+                    .rotationEffect(.degrees(-90))
+                    .animation(.linear(duration: 1), value: presenter.progress)
+
+                VStack(spacing: 8) {
+                    Text(presenter.timeString)
+                        .font(.system(size: 56, weight: .bold, design: .monospaced))
+                        .foregroundColor(.white)
+
+                    Text(presenter.isPaused ? "Paused" : "Remaining")
+                        .font(.system(size: 14))
+                        .foregroundColor(.white.opacity(0.6))
+                }
+            }
+
+            Text("Stay focused!")
+                .font(.system(size: 18, weight: .medium))
+                .foregroundColor(.white.opacity(0.8))
+
+            HStack(spacing: 20) {
+                Button(action: presenter.togglePause) {
+                    HStack(spacing: 8) {
+                        Image(systemName: presenter.isPaused ? "play.fill" : "pause.fill")
+                        Text(presenter.isPaused ? "Resume" : "Pause")
+                    }
+                    .font(.system(size: 14, weight: .semibold))
+                    .foregroundColor(.white)
+                    .padding(.horizontal, 24)
+                    .padding(.vertical, 12)
+                    .background(
+                        RoundedRectangle(cornerRadius: 8)
+                            .fill(Color.white.opacity(0.15))
+                    )
+                }
+                .buttonStyle(.plain)
+
+                Button(action: { closeSession() }) {
+                    HStack(spacing: 8) {
+                        Image(systemName: "xmark")
+                        Text("End Session")
+                    }
+                    .font(.system(size: 14, weight: .semibold))
+                    .foregroundColor(Color.appRed)
+                    .padding(.horizontal, 24)
+                    .padding(.vertical, 12)
+                    .background(
+                        RoundedRectangle(cornerRadius: 8)
+                            .strokeBorder(Color.appRed.opacity(0.5), lineWidth: 1)
+                    )
+                }
+                .buttonStyle(.plain)
+            }
+        }
+    }
+}

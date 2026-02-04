@@ -1,0 +1,1022 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		A10001001 /* FocusApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002001 /* FocusApp.swift */; };
+		A10001002 /* DSAPlan.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002002 /* DSAPlan.swift */; };
+		A10001003 /* AppData.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002003 /* AppData.swift */; };
+		A10001004 /* DataStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002004 /* DataStore.swift */; };
+		A10001005 /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002005 /* Colors.swift */; };
+		A10001006 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002006 /* ContentView.swift */; };
+		A10001007 /* PlanView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002007 /* PlanView.swift */; };
+		A10001008 /* TodayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002008 /* TodayView.swift */; };
+		A10001009 /* StatsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002009 /* StatsView.swift */; };
+		A1000100A /* FocusOverlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000200A /* FocusOverlay.swift */; };
+		A1000100B /* DayCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000200B /* DayCard.swift */; };
+		A1000100C /* ProblemRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000200C /* ProblemRow.swift */; };
+		A1000100D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A1000200D /* Assets.xcassets */; };
+		A1000100E /* NotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000200F /* NotificationManager.swift */; };
+		A1000100F /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002010 /* SettingsView.swift */; };
+		A10001010 /* SharedDataStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002011 /* SharedDataStore.swift */; };
+		A10001013 /* LeetCodeService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002014 /* LeetCodeService.swift */; };
+		A10001014 /* AppContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002015 /* AppContainer.swift */; };
+		A10001015 /* ToolbarWidgetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002016 /* ToolbarWidgetView.swift */; };
+		A10001016 /* TestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002017 /* TestCase.swift */; };
+		A10001017 /* CodeExecutionService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002018 /* CodeExecutionService.swift */; };
+		A10001018 /* CodingEnvironmentPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002019 /* CodingEnvironmentPresenter.swift */; };
+		A10001019 /* CodeEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000201A /* CodeEditorView.swift */; };
+		A1000101A /* OutputPanelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000201B /* OutputPanelView.swift */; };
+		A1000101B /* ProblemSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000201C /* ProblemSelectionView.swift */; };
+		A1000101C /* CodingEnvironmentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000201D /* CodingEnvironmentView.swift */; };
+		A1000101D /* ProcessRunner.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000201E /* ProcessRunner.swift */; };
+		A1000101E /* LanguageExecutor.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000201F /* LanguageExecutor.swift */; };
+		A1000101F /* SwiftExecutor.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002020 /* SwiftExecutor.swift */; };
+		A10001020 /* PythonExecutor.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002021 /* PythonExecutor.swift */; };
+		A10001021 /* ContentInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002022 /* ContentInteractor.swift */; };
+		A10001022 /* ContentPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002023 /* ContentPresenter.swift */; };
+		A10001023 /* PlanInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002024 /* PlanInteractor.swift */; };
+		A10001024 /* PlanPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002025 /* PlanPresenter.swift */; };
+		A10001025 /* TodayInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002026 /* TodayInteractor.swift */; };
+		A10001026 /* TodayPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002027 /* TodayPresenter.swift */; };
+		A10001027 /* StatsInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002028 /* StatsInteractor.swift */; };
+		A10001028 /* StatsPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002029 /* StatsPresenter.swift */; };
+		A10001029 /* SettingsInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002030 /* SettingsInteractor.swift */; };
+		A10001030 /* SettingsPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002031 /* SettingsPresenter.swift */; };
+		A10001031 /* ToolbarWidgetInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002032 /* ToolbarWidgetInteractor.swift */; };
+		A10001032 /* ToolbarWidgetPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002033 /* ToolbarWidgetPresenter.swift */; };
+		A10001033 /* FocusInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002034 /* FocusInteractor.swift */; };
+		A10001034 /* FocusPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002035 /* FocusPresenter.swift */; };
+		A10001035 /* CodingEnvironmentInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002036 /* CodingEnvironmentInteractor.swift */; };
+		A10001011 /* OutputPanelView+Sections.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002012 /* OutputPanelView+Sections.swift */; };
+		A10001012 /* ConsoleOutputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002013 /* ConsoleOutputView.swift */; };
+		A10001036 /* CodeEditorView+Coordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002037 /* CodeEditorView+Coordinator.swift */; };
+		A10001037 /* CodeEditorView+CoordinatorInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002038 /* CodeEditorView+CoordinatorInput.swift */; };
+		A10001038 /* CodeEditorView+CoordinatorHighlighting.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002039 /* CodeEditorView+CoordinatorHighlighting.swift */; };
+		A10001039 /* SettingsView+Bindings.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002040 /* SettingsView+Bindings.swift */; };
+		A10001040 /* SettingsView+Validation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002041 /* SettingsView+Validation.swift */; };
+		A10001041 /* SettingsView+Preview.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002042 /* SettingsView+Preview.swift */; };
+		A10001042 /* TodayView+Sections.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002043 /* TodayView+Sections.swift */; };
+		A10001043 /* TodayView+Preview.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002044 /* TodayView+Preview.swift */; };
+		A10001044 /* StatsView+Sections.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002045 /* StatsView+Sections.swift */; };
+		A10001045 /* StatsView+Preview.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002046 /* StatsView+Preview.swift */; };
+		A10001046 /* FocusOverlay+Sections.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002047 /* FocusOverlay+Sections.swift */; };
+		A10001047 /* ToolbarWidgetView+Header.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002048 /* ToolbarWidgetView+Header.swift */; };
+		A10001048 /* ToolbarWidgetView+Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002049 /* ToolbarWidgetView+Settings.swift */; };
+		A10001049 /* ToolbarWidgetView+Summary.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002050 /* ToolbarWidgetView+Summary.swift */; };
+		A10001050 /* ToolbarWidgetView+Problems.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002051 /* ToolbarWidgetView+Problems.swift */; };
+		A10001051 /* ToolbarWidgetView+Habits.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002052 /* ToolbarWidgetView+Habits.swift */; };
+		A10001052 /* ToolbarWidgetView+Tomorrow.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002053 /* ToolbarWidgetView+Tomorrow.swift */; };
+		A10001053 /* ToolbarWidgetView+Preview.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002054 /* ToolbarWidgetView+Preview.swift */; };
+		A10001054 /* WidgetCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002055 /* WidgetCard.swift */; };
+		A10001055 /* ProblemRowWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002056 /* ProblemRowWidget.swift */; };
+		A10001056 /* HabitToggle.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002057 /* HabitToggle.swift */; };
+		A10001057 /* CarryoverProblemRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002058 /* CarryoverProblemRow.swift */; };
+		A10001058 /* TomorrowProblemRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002059 /* TomorrowProblemRow.swift */; };
+		A10001059 /* CodingEnvironmentPresenter+Execution.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002060 /* CodingEnvironmentPresenter+Execution.swift */; };
+		A10001060 /* CodingEnvironmentPresenter+ProblemLoading.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002061 /* CodingEnvironmentPresenter+ProblemLoading.swift */; };
+		A10001061 /* CodingEnvironmentPresenter+Persistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002062 /* CodingEnvironmentPresenter+Persistence.swift */; };
+		A10001062 /* CodingEnvironmentPresenter+Snippets.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002063 /* CodingEnvironmentPresenter+Snippets.swift */; };
+		A10001063 /* CodingEnvironmentView+Header.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002064 /* CodingEnvironmentView+Header.swift */; };
+		A10001064 /* CodingEnvironmentView+Panels.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002065 /* CodingEnvironmentView+Panels.swift */; };
+		A10001065 /* ModernTestCaseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002066 /* ModernTestCaseView.swift */; };
+		A10001066 /* ModernOutputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002067 /* ModernOutputView.swift */; };
+		A10001067 /* ModernOutputView+Sections.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002068 /* ModernOutputView+Sections.swift */; };
+		A10001068 /* TestCaseEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002069 /* TestCaseEditorView.swift */; };
+		A10001069 /* NotificationSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002070 /* NotificationSettings.swift */; };
+		A10001070 /* NotificationSettingsStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002071 /* NotificationSettingsStore.swift */; };
+		A10001071 /* NotificationScheduler.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002072 /* NotificationScheduler.swift */; };
+		A10001072 /* LeetCodeNetworking.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002073 /* LeetCodeNetworking.swift */; };
+		A10001074 /* LeetCodeErrors.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002075 /* LeetCodeErrors.swift */; };
+		A10001075 /* LeetCodeModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002076 /* LeetCodeModels.swift */; };
+		A10001077 /* LeetCodeConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002078 /* LeetCodeConstants.swift */; };
+		B2C3D4E5F6A7B8C9D0E1F4F6 /* LeetCodeSyncScheduler.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2C3D4E5F6A7B8C9D0E1F4F5 /* LeetCodeSyncScheduler.swift */; };
+		A10001078 /* LeetCodeSlugExtractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002079 /* LeetCodeSlugExtractor.swift */; };
+		A10001079 /* CodeEditorView+CoordinatorIndentation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000207A /* CodeEditorView+CoordinatorIndentation.swift */; };
+		A1000107A /* CodeEditorView+CoordinatorBrackets.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000207B /* CodeEditorView+CoordinatorBrackets.swift */; };
+		A1000107B /* CodingEnvironmentView+ProblemPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000207C /* CodingEnvironmentView+ProblemPicker.swift */; };
+		CB0805C549E94B40B1CE6960 /* CodingEnvironmentProblemModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6EA4BEC926540C884CA828B /* CodingEnvironmentProblemModels.swift */; };
+		653A1BCD45DC478A8FA88001 /* CodingEnvironmentView+Sidebar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A4E0753FE4C4032A9C53AAA /* CodingEnvironmentView+Sidebar.swift */; };
+		B1D2C3D4E5F6A7B8C9D0E1F3 /* CodingEnvironmentView+DetailContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1D2C3D4E5F6A7B8C9D0E1F2 /* CodingEnvironmentView+DetailContent.swift */; };
+		A1000107C /* FocusOverlay+TimerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000207D /* FocusOverlay+TimerView.swift */; };
+		A1000107D /* FocusOverlay+CompletionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000207E /* FocusOverlay+CompletionView.swift */; };
+		A1000107E /* StatsView+FocusReminder.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000207F /* StatsView+FocusReminder.swift */; };
+		A1000107F /* TodayView+FocusCTA.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002080 /* TodayView+FocusCTA.swift */; };
+		A10001080 /* ContentView+Preview.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002081 /* ContentView+Preview.swift */; };
+		C9EA7A4E9DEF427EA4E50A21 /* Fixtures.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D6F90158D1A49A4B723EC53 /* Fixtures.swift */; };
+		1FDAC8DA41B44813A6128FF4 /* LeetCodeModelsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84B888743F7248DBA5F3A94F /* LeetCodeModelsTests.swift */; };
+		D2EC195B48254E0B914D8A01 /* LeetCodeRestClientTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C981502C4EC54673BA39B39A /* LeetCodeRestClientTests.swift */; };
+		416DC1D624AC4D8C83D0820A /* LeetCodeNetworkingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AF2BC50D7A04A59A72BD4CC /* LeetCodeNetworkingTests.swift */; };
+		5B9ADEFB983A4EF5AF6A67D2 /* ProcessRunnerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 085FEBCD150F43019CE9B529 /* ProcessRunnerTests.swift */; };
+		1C9332DFB01F4B57805EC9A6 /* ExecutorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2C29BF0F588499DBE85FD5D /* ExecutorTests.swift */; };
+		C2978C5869F84459BDC98091 /* SharedDataStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A111678A69A8452C97563307 /* SharedDataStoreTests.swift */; };
+		E325663DD9574C9390341D12 /* AppDataTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D26C0ABCC3347D490B3E48B /* AppDataTests.swift */; };
+		81CB68C852BA4D08900D8C64 /* PlanCalendarTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F4280AC0DB14B018B8F3B43 /* PlanCalendarTests.swift */; };
+		F16E69D9C175439EA2255A91 /* AppStateStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A1DED48D1ED467BB0BF7B84 /* AppStateStoreTests.swift */; };
+		F9A2DABABABF4C3ABE903F0B /* LeetCodeSlugExtractorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCC76528BB9347DA886CDFBD /* LeetCodeSlugExtractorTests.swift */; };
+		0A1BA9D5346842E6BF0C6DBB /* ProgrammingLanguageTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72999C0BC3F3402687B3BB9E /* ProgrammingLanguageTests.swift */; };
+		76E45EE927B7400B8F88BED1 /* LeetCodeSyncInteractorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6568D60DBB854206882E1ECE /* LeetCodeSyncInteractorTests.swift */; };
+		55C3B4ADCD3C450593E4212C /* NotificationManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65251E426E5243F79306F201 /* NotificationManagerTests.swift */; };
+		865EEC6EABBD4E7AB00F78AA /* CodeExecutionServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09B826590C1C4423B22A0B64 /* CodeExecutionServiceTests.swift */; };
+		074E2BCBD6F74E9B99BF53E4 /* CodingEnvironmentPresenterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29FB46B09F3E414695FCE546 /* CodingEnvironmentPresenterTests.swift */; };
+		C7D8E9F0A1B2C3D4E5F60709 /* LeetCodeSyncSchedulerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7D8E9F0A1B2C3D4E5F60708 /* LeetCodeSyncSchedulerTests.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		A10002001 /* FocusApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FocusApp.swift; sourceTree = "<group>"; };
+		A10002002 /* DSAPlan.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DSAPlan.swift; sourceTree = "<group>"; };
+		A10002003 /* AppData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppData.swift; sourceTree = "<group>"; };
+		A10002004 /* DataStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataStore.swift; sourceTree = "<group>"; };
+		A10002005 /* Colors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Colors.swift; sourceTree = "<group>"; };
+		A10002006 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		A10002007 /* PlanView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlanView.swift; sourceTree = "<group>"; };
+		A10002008 /* TodayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayView.swift; sourceTree = "<group>"; };
+		A10002009 /* StatsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsView.swift; sourceTree = "<group>"; };
+		A1000200A /* FocusOverlay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FocusOverlay.swift; sourceTree = "<group>"; };
+		A1000200B /* DayCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DayCard.swift; sourceTree = "<group>"; };
+		A1000200C /* ProblemRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProblemRow.swift; sourceTree = "<group>"; };
+		A1000200D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		A1000200E /* FocusApp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = FocusApp.entitlements; sourceTree = "<group>"; };
+		A1000200F /* NotificationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationManager.swift; sourceTree = "<group>"; };
+		A10002010 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		A10002011 /* SharedDataStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedDataStore.swift; sourceTree = "<group>"; };
+		A10002014 /* LeetCodeService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeetCodeService.swift; sourceTree = "<group>"; };
+		A10002015 /* AppContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppContainer.swift; sourceTree = "<group>"; };
+		A10002016 /* ToolbarWidgetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToolbarWidgetView.swift; sourceTree = "<group>"; };
+		A10002017 /* TestCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestCase.swift; sourceTree = "<group>"; };
+		A10002018 /* CodeExecutionService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodeExecutionService.swift; sourceTree = "<group>"; };
+		A10002019 /* CodingEnvironmentPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodingEnvironmentPresenter.swift; sourceTree = "<group>"; };
+		A1000201A /* CodeEditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodeEditorView.swift; sourceTree = "<group>"; };
+		A1000201B /* OutputPanelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OutputPanelView.swift; sourceTree = "<group>"; };
+		A1000201C /* ProblemSelectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProblemSelectionView.swift; sourceTree = "<group>"; };
+		A1000201D /* CodingEnvironmentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodingEnvironmentView.swift; sourceTree = "<group>"; };
+		A1000201E /* ProcessRunner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProcessRunner.swift; sourceTree = "<group>"; };
+		A1000201F /* LanguageExecutor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LanguageExecutor.swift; sourceTree = "<group>"; };
+		A10002020 /* SwiftExecutor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftExecutor.swift; sourceTree = "<group>"; };
+		A10002021 /* PythonExecutor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PythonExecutor.swift; sourceTree = "<group>"; };
+		A10003001 /* FocusApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FocusApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		A10002022 /* ContentInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentInteractor.swift; sourceTree = "<group>"; };
+		A10002023 /* ContentPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentPresenter.swift; sourceTree = "<group>"; };
+		A10002024 /* PlanInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlanInteractor.swift; sourceTree = "<group>"; };
+		A10002025 /* PlanPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlanPresenter.swift; sourceTree = "<group>"; };
+		A10002026 /* TodayInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayInteractor.swift; sourceTree = "<group>"; };
+		A10002027 /* TodayPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayPresenter.swift; sourceTree = "<group>"; };
+		A10002028 /* StatsInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsInteractor.swift; sourceTree = "<group>"; };
+		A10002029 /* StatsPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsPresenter.swift; sourceTree = "<group>"; };
+		A10002030 /* SettingsInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsInteractor.swift; sourceTree = "<group>"; };
+		A10002031 /* SettingsPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsPresenter.swift; sourceTree = "<group>"; };
+		A10002032 /* ToolbarWidgetInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToolbarWidgetInteractor.swift; sourceTree = "<group>"; };
+		A10002033 /* ToolbarWidgetPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToolbarWidgetPresenter.swift; sourceTree = "<group>"; };
+		A10002034 /* FocusInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FocusInteractor.swift; sourceTree = "<group>"; };
+		A10002035 /* FocusPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FocusPresenter.swift; sourceTree = "<group>"; };
+		A10002036 /* CodingEnvironmentInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodingEnvironmentInteractor.swift; sourceTree = "<group>"; };
+		A10002012 /* OutputPanelView+Sections.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "OutputPanelView+Sections.swift"; sourceTree = "<group>"; };
+		A10002013 /* ConsoleOutputView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConsoleOutputView.swift; sourceTree = "<group>"; };
+		A10002037 /* CodeEditorView+Coordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CodeEditorView+Coordinator.swift"; sourceTree = "<group>"; };
+		A10002038 /* CodeEditorView+CoordinatorInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CodeEditorView+CoordinatorInput.swift"; sourceTree = "<group>"; };
+		A10002039 /* CodeEditorView+CoordinatorHighlighting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CodeEditorView+CoordinatorHighlighting.swift"; sourceTree = "<group>"; };
+		A10002040 /* SettingsView+Bindings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SettingsView+Bindings.swift"; sourceTree = "<group>"; };
+		A10002041 /* SettingsView+Validation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SettingsView+Validation.swift"; sourceTree = "<group>"; };
+		A10002042 /* SettingsView+Preview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SettingsView+Preview.swift"; sourceTree = "<group>"; };
+		A10002043 /* TodayView+Sections.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TodayView+Sections.swift"; sourceTree = "<group>"; };
+		A10002044 /* TodayView+Preview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TodayView+Preview.swift"; sourceTree = "<group>"; };
+		A10002045 /* StatsView+Sections.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "StatsView+Sections.swift"; sourceTree = "<group>"; };
+		A10002046 /* StatsView+Preview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "StatsView+Preview.swift"; sourceTree = "<group>"; };
+		A10002047 /* FocusOverlay+Sections.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FocusOverlay+Sections.swift"; sourceTree = "<group>"; };
+		A10002048 /* ToolbarWidgetView+Header.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ToolbarWidgetView+Header.swift"; sourceTree = "<group>"; };
+		A10002049 /* ToolbarWidgetView+Settings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ToolbarWidgetView+Settings.swift"; sourceTree = "<group>"; };
+		A10002050 /* ToolbarWidgetView+Summary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ToolbarWidgetView+Summary.swift"; sourceTree = "<group>"; };
+		A10002051 /* ToolbarWidgetView+Problems.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ToolbarWidgetView+Problems.swift"; sourceTree = "<group>"; };
+		A10002052 /* ToolbarWidgetView+Habits.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ToolbarWidgetView+Habits.swift"; sourceTree = "<group>"; };
+		A10002053 /* ToolbarWidgetView+Tomorrow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ToolbarWidgetView+Tomorrow.swift"; sourceTree = "<group>"; };
+		A10002054 /* ToolbarWidgetView+Preview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ToolbarWidgetView+Preview.swift"; sourceTree = "<group>"; };
+		A10002055 /* WidgetCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetCard.swift; sourceTree = "<group>"; };
+		A10002056 /* ProblemRowWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProblemRowWidget.swift; sourceTree = "<group>"; };
+		A10002057 /* HabitToggle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HabitToggle.swift; sourceTree = "<group>"; };
+		A10002058 /* CarryoverProblemRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CarryoverProblemRow.swift; sourceTree = "<group>"; };
+		A10002059 /* TomorrowProblemRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TomorrowProblemRow.swift; sourceTree = "<group>"; };
+		A10002060 /* CodingEnvironmentPresenter+Execution.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CodingEnvironmentPresenter+Execution.swift"; sourceTree = "<group>"; };
+		A10002061 /* CodingEnvironmentPresenter+ProblemLoading.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CodingEnvironmentPresenter+ProblemLoading.swift"; sourceTree = "<group>"; };
+		A10002062 /* CodingEnvironmentPresenter+Persistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CodingEnvironmentPresenter+Persistence.swift"; sourceTree = "<group>"; };
+		A10002063 /* CodingEnvironmentPresenter+Snippets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CodingEnvironmentPresenter+Snippets.swift"; sourceTree = "<group>"; };
+		A10002064 /* CodingEnvironmentView+Header.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CodingEnvironmentView+Header.swift"; sourceTree = "<group>"; };
+		A10002065 /* CodingEnvironmentView+Panels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CodingEnvironmentView+Panels.swift"; sourceTree = "<group>"; };
+		A10002066 /* ModernTestCaseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModernTestCaseView.swift; sourceTree = "<group>"; };
+		A10002067 /* ModernOutputView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModernOutputView.swift; sourceTree = "<group>"; };
+		A10002068 /* ModernOutputView+Sections.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ModernOutputView+Sections.swift"; sourceTree = "<group>"; };
+		A10002069 /* TestCaseEditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestCaseEditorView.swift; sourceTree = "<group>"; };
+		A10002070 /* NotificationSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationSettings.swift; sourceTree = "<group>"; };
+		A10002071 /* NotificationSettingsStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationSettingsStore.swift; sourceTree = "<group>"; };
+		A10002072 /* NotificationScheduler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationScheduler.swift; sourceTree = "<group>"; };
+		A10002073 /* LeetCodeNetworking.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeetCodeNetworking.swift; sourceTree = "<group>"; };
+		A10002075 /* LeetCodeErrors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeetCodeErrors.swift; sourceTree = "<group>"; };
+		A10002076 /* LeetCodeModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeetCodeModels.swift; sourceTree = "<group>"; };
+		A10002078 /* LeetCodeConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeetCodeConstants.swift; sourceTree = "<group>"; };
+		B2C3D4E5F6A7B8C9D0E1F4F5 /* LeetCodeSyncScheduler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeetCodeSyncScheduler.swift; sourceTree = "<group>"; };
+		A10002079 /* LeetCodeSlugExtractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeetCodeSlugExtractor.swift; sourceTree = "<group>"; };
+		A1000207A /* CodeEditorView+CoordinatorIndentation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CodeEditorView+CoordinatorIndentation.swift"; sourceTree = "<group>"; };
+		A1000207B /* CodeEditorView+CoordinatorBrackets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CodeEditorView+CoordinatorBrackets.swift"; sourceTree = "<group>"; };
+		A1000207C /* CodingEnvironmentView+ProblemPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CodingEnvironmentView+ProblemPicker.swift"; sourceTree = "<group>"; };
+		D6EA4BEC926540C884CA828B /* CodingEnvironmentProblemModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodingEnvironmentProblemModels.swift; sourceTree = "<group>"; };
+		8A4E0753FE4C4032A9C53AAA /* CodingEnvironmentView+Sidebar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CodingEnvironmentView+Sidebar.swift"; sourceTree = "<group>"; };
+		B1D2C3D4E5F6A7B8C9D0E1F2 /* CodingEnvironmentView+DetailContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CodingEnvironmentView+DetailContent.swift"; sourceTree = "<group>"; };
+		A1000207D /* FocusOverlay+TimerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FocusOverlay+TimerView.swift"; sourceTree = "<group>"; };
+		A1000207E /* FocusOverlay+CompletionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FocusOverlay+CompletionView.swift"; sourceTree = "<group>"; };
+		A1000207F /* StatsView+FocusReminder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "StatsView+FocusReminder.swift"; sourceTree = "<group>"; };
+		A10002080 /* TodayView+FocusCTA.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TodayView+FocusCTA.swift"; sourceTree = "<group>"; };
+		A10002081 /* ContentView+Preview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ContentView+Preview.swift"; sourceTree = "<group>"; };
+		3D6F90158D1A49A4B723EC53 /* Fixtures.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Fixtures.swift; sourceTree = "<group>"; };
+		9D26C0ABCC3347D490B3E48B /* AppDataTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDataTests.swift; sourceTree = "<group>"; };
+		9F4280AC0DB14B018B8F3B43 /* PlanCalendarTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlanCalendarTests.swift; sourceTree = "<group>"; };
+		6A1DED48D1ED467BB0BF7B84 /* AppStateStoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppStateStoreTests.swift; sourceTree = "<group>"; };
+		BCC76528BB9347DA886CDFBD /* LeetCodeSlugExtractorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeetCodeSlugExtractorTests.swift; sourceTree = "<group>"; };
+		72999C0BC3F3402687B3BB9E /* ProgrammingLanguageTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgrammingLanguageTests.swift; sourceTree = "<group>"; };
+		6568D60DBB854206882E1ECE /* LeetCodeSyncInteractorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeetCodeSyncInteractorTests.swift; sourceTree = "<group>"; };
+		65251E426E5243F79306F201 /* NotificationManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationManagerTests.swift; sourceTree = "<group>"; };
+		09B826590C1C4423B22A0B64 /* CodeExecutionServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodeExecutionServiceTests.swift; sourceTree = "<group>"; };
+		29FB46B09F3E414695FCE546 /* CodingEnvironmentPresenterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodingEnvironmentPresenterTests.swift; sourceTree = "<group>"; };
+		C7D8E9F0A1B2C3D4E5F60708 /* LeetCodeSyncSchedulerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeetCodeSyncSchedulerTests.swift; sourceTree = "<group>"; };
+		84B888743F7248DBA5F3A94F /* LeetCodeModelsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeetCodeModelsTests.swift; sourceTree = "<group>"; };
+		C981502C4EC54673BA39B39A /* LeetCodeRestClientTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeetCodeRestClientTests.swift; sourceTree = "<group>"; };
+		9AF2BC50D7A04A59A72BD4CC /* LeetCodeNetworkingTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeetCodeNetworkingTests.swift; sourceTree = "<group>"; };
+		085FEBCD150F43019CE9B529 /* ProcessRunnerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProcessRunnerTests.swift; sourceTree = "<group>"; };
+		A2C29BF0F588499DBE85FD5D /* ExecutorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExecutorTests.swift; sourceTree = "<group>"; };
+		A111678A69A8452C97563307 /* SharedDataStoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedDataStoreTests.swift; sourceTree = "<group>"; };
+		58471227E33B481BB4F4357B /* FocusAppTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FocusAppTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		A10004001 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		01245FCF31E449B4A39FE54E /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		A10005001 = {
+			isa = PBXGroup;
+			children = (
+				A10005002 /* FocusApp */,
+				E3BDFC6AC2C94292AEFE137B /* FocusAppTests */,
+				A10005003 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		A10005002 /* FocusApp */ = {
+			isa = PBXGroup;
+			children = (
+				A10002001 /* FocusApp.swift */,
+				A10002015 /* AppContainer.swift */,
+				A1000200E /* FocusApp.entitlements */,
+				A1000200D /* Assets.xcassets */,
+				A10005004 /* Models */,
+				A10005005 /* Views */,
+				A10005006 /* Helpers */,
+				A10005007 /* Shared */,
+			);
+			path = FocusApp;
+			sourceTree = "<group>";
+		};
+		A10005003 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				A10003001 /* FocusApp.app */,
+				58471227E33B481BB4F4357B /* FocusAppTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		A10005004 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				A10002002 /* DSAPlan.swift */,
+				A10002003 /* AppData.swift */,
+				A10002004 /* DataStore.swift */,
+				A1000200F /* NotificationManager.swift */,
+				A10002070 /* NotificationSettings.swift */,
+				A10002071 /* NotificationSettingsStore.swift */,
+				A10002072 /* NotificationScheduler.swift */,
+				A10002014 /* LeetCodeService.swift */,
+				A10002073 /* LeetCodeNetworking.swift */,
+				A10002075 /* LeetCodeErrors.swift */,
+				A10002076 /* LeetCodeModels.swift */,
+				A10002078 /* LeetCodeConstants.swift */,
+				B2C3D4E5F6A7B8C9D0E1F4F5 /* LeetCodeSyncScheduler.swift */,
+				A10002079 /* LeetCodeSlugExtractor.swift */,
+				A10002017 /* TestCase.swift */,
+				A10002018 /* CodeExecutionService.swift */,
+				A1000201E /* ProcessRunner.swift */,
+				A1000201F /* LanguageExecutor.swift */,
+				A10002020 /* SwiftExecutor.swift */,
+				A10002021 /* PythonExecutor.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		A10005005 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				A10005008 /* Content */,
+				A10005009 /* Plan */,
+				A1000500A /* Today */,
+				A1000500B /* Stats */,
+				A1000500C /* Focus */,
+				A1000500D /* Settings */,
+				A1000500E /* ToolbarWidget */,
+				A1000500F /* CodingEnvironment */,
+				A1000201A /* CodeEditorView.swift */,
+				A10002037 /* CodeEditorView+Coordinator.swift */,
+				A10002038 /* CodeEditorView+CoordinatorInput.swift */,
+				A10002039 /* CodeEditorView+CoordinatorHighlighting.swift */,
+				A1000207A /* CodeEditorView+CoordinatorIndentation.swift */,
+				A1000207B /* CodeEditorView+CoordinatorBrackets.swift */,
+				A1000201B /* OutputPanelView.swift */,
+				A10002012 /* OutputPanelView+Sections.swift */,
+				A10002013 /* ConsoleOutputView.swift */,
+				A1000201C /* ProblemSelectionView.swift */,
+				A1000200B /* DayCard.swift */,
+				A1000200C /* ProblemRow.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		A10005006 /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				A10002005 /* Colors.swift */,
+			);
+			path = Helpers;
+			sourceTree = "<group>";
+		};
+		A10005007 /* Shared */ = {
+			isa = PBXGroup;
+			children = (
+				A10002011 /* SharedDataStore.swift */,
+			);
+			path = Shared;
+			sourceTree = "<group>";
+		};
+		A10005008 /* Content */ = {
+			isa = PBXGroup;
+			children = (
+				A10002006 /* ContentView.swift */,
+				A10002022 /* ContentInteractor.swift */,
+				A10002023 /* ContentPresenter.swift */,
+				A10002081 /* ContentView+Preview.swift */,
+			);
+			path = Content;
+			sourceTree = "<group>";
+		};
+		A10005009 /* Plan */ = {
+			isa = PBXGroup;
+			children = (
+				A10002007 /* PlanView.swift */,
+				A10002024 /* PlanInteractor.swift */,
+				A10002025 /* PlanPresenter.swift */,
+			);
+			path = Plan;
+			sourceTree = "<group>";
+		};
+		A1000500A /* Today */ = {
+			isa = PBXGroup;
+			children = (
+				A10002008 /* TodayView.swift */,
+				A10002026 /* TodayInteractor.swift */,
+				A10002027 /* TodayPresenter.swift */,
+				A10002043 /* TodayView+Sections.swift */,
+				A10002044 /* TodayView+Preview.swift */,
+				A10002080 /* TodayView+FocusCTA.swift */,
+			);
+			path = Today;
+			sourceTree = "<group>";
+		};
+		A1000500B /* Stats */ = {
+			isa = PBXGroup;
+			children = (
+				A10002009 /* StatsView.swift */,
+				A10002028 /* StatsInteractor.swift */,
+				A10002029 /* StatsPresenter.swift */,
+				A10002045 /* StatsView+Sections.swift */,
+				A10002046 /* StatsView+Preview.swift */,
+				A1000207F /* StatsView+FocusReminder.swift */,
+			);
+			path = Stats;
+			sourceTree = "<group>";
+		};
+		A1000500C /* Focus */ = {
+			isa = PBXGroup;
+			children = (
+				A1000200A /* FocusOverlay.swift */,
+				A10002034 /* FocusInteractor.swift */,
+				A10002035 /* FocusPresenter.swift */,
+				A10002047 /* FocusOverlay+Sections.swift */,
+				A1000207D /* FocusOverlay+TimerView.swift */,
+				A1000207E /* FocusOverlay+CompletionView.swift */,
+			);
+			path = Focus;
+			sourceTree = "<group>";
+		};
+		A1000500D /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+				A10002010 /* SettingsView.swift */,
+				A10002030 /* SettingsInteractor.swift */,
+				A10002031 /* SettingsPresenter.swift */,
+				A10002040 /* SettingsView+Bindings.swift */,
+				A10002041 /* SettingsView+Validation.swift */,
+				A10002042 /* SettingsView+Preview.swift */,
+			);
+			path = Settings;
+			sourceTree = "<group>";
+		};
+		A1000500E /* ToolbarWidget */ = {
+			isa = PBXGroup;
+			children = (
+				A10002016 /* ToolbarWidgetView.swift */,
+				A10002032 /* ToolbarWidgetInteractor.swift */,
+				A10002033 /* ToolbarWidgetPresenter.swift */,
+				A10002048 /* ToolbarWidgetView+Header.swift */,
+				A10002049 /* ToolbarWidgetView+Settings.swift */,
+				A10002050 /* ToolbarWidgetView+Summary.swift */,
+				A10002051 /* ToolbarWidgetView+Problems.swift */,
+				A10002052 /* ToolbarWidgetView+Habits.swift */,
+				A10002053 /* ToolbarWidgetView+Tomorrow.swift */,
+				A10002054 /* ToolbarWidgetView+Preview.swift */,
+				A10002055 /* WidgetCard.swift */,
+				A10002056 /* ProblemRowWidget.swift */,
+				A10002057 /* HabitToggle.swift */,
+				A10002058 /* CarryoverProblemRow.swift */,
+				A10002059 /* TomorrowProblemRow.swift */,
+			);
+			path = ToolbarWidget;
+			sourceTree = "<group>";
+		};
+		A1000500F /* CodingEnvironment */ = {
+			isa = PBXGroup;
+			children = (
+				A1000201D /* CodingEnvironmentView.swift */,
+				A10002019 /* CodingEnvironmentPresenter.swift */,
+				A10002036 /* CodingEnvironmentInteractor.swift */,
+				A10002060 /* CodingEnvironmentPresenter+Execution.swift */,
+				A10002061 /* CodingEnvironmentPresenter+ProblemLoading.swift */,
+				A10002062 /* CodingEnvironmentPresenter+Persistence.swift */,
+				A10002063 /* CodingEnvironmentPresenter+Snippets.swift */,
+				A10002064 /* CodingEnvironmentView+Header.swift */,
+				A10002065 /* CodingEnvironmentView+Panels.swift */,
+				A1000207C /* CodingEnvironmentView+ProblemPicker.swift */,
+				D6EA4BEC926540C884CA828B /* CodingEnvironmentProblemModels.swift */,
+				8A4E0753FE4C4032A9C53AAA /* CodingEnvironmentView+Sidebar.swift */,
+				B1D2C3D4E5F6A7B8C9D0E1F2 /* CodingEnvironmentView+DetailContent.swift */,
+				A10002066 /* ModernTestCaseView.swift */,
+				A10002067 /* ModernOutputView.swift */,
+				A10002068 /* ModernOutputView+Sections.swift */,
+				A10002069 /* TestCaseEditorView.swift */,
+			);
+			path = CodingEnvironment;
+			sourceTree = "<group>";
+		};
+		E3BDFC6AC2C94292AEFE137B /* FocusAppTests */ = {
+			isa = PBXGroup;
+			children = (
+				3D6F90158D1A49A4B723EC53 /* Fixtures.swift */,
+				9D26C0ABCC3347D490B3E48B /* AppDataTests.swift */,
+				9F4280AC0DB14B018B8F3B43 /* PlanCalendarTests.swift */,
+				6A1DED48D1ED467BB0BF7B84 /* AppStateStoreTests.swift */,
+				BCC76528BB9347DA886CDFBD /* LeetCodeSlugExtractorTests.swift */,
+				72999C0BC3F3402687B3BB9E /* ProgrammingLanguageTests.swift */,
+				6568D60DBB854206882E1ECE /* LeetCodeSyncInteractorTests.swift */,
+				65251E426E5243F79306F201 /* NotificationManagerTests.swift */,
+				09B826590C1C4423B22A0B64 /* CodeExecutionServiceTests.swift */,
+				29FB46B09F3E414695FCE546 /* CodingEnvironmentPresenterTests.swift */,
+				C7D8E9F0A1B2C3D4E5F60708 /* LeetCodeSyncSchedulerTests.swift */,
+				84B888743F7248DBA5F3A94F /* LeetCodeModelsTests.swift */,
+				C981502C4EC54673BA39B39A /* LeetCodeRestClientTests.swift */,
+				9AF2BC50D7A04A59A72BD4CC /* LeetCodeNetworkingTests.swift */,
+				085FEBCD150F43019CE9B529 /* ProcessRunnerTests.swift */,
+				A2C29BF0F588499DBE85FD5D /* ExecutorTests.swift */,
+				A111678A69A8452C97563307 /* SharedDataStoreTests.swift */,
+			);
+			path = FocusAppTests;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		A10006001 /* FocusApp */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A10008001 /* Build configuration list for PBXNativeTarget "FocusApp" */;
+			buildPhases = (
+				A10004002 /* Sources */,
+				A10004001 /* Frameworks */,
+				A10004003 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = FocusApp;
+			productName = FocusApp;
+			productReference = A10003001 /* FocusApp.app */;
+			productType = "com.apple.product-type.application";
+		};
+		4C67B5983E414605B8C2BADA /* FocusAppTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 3BDC9BCA158F45F3A391466C /* Build configuration list for PBXNativeTarget "FocusAppTests" */;
+			buildPhases = (
+				F250B49CEB074B259AD2B1C8 /* Sources */,
+				01245FCF31E449B4A39FE54E /* Frameworks */,
+				5F4820C5DE7141A0814F4EF6 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				78ADC0828EBD4ABBA19F2BAC /* PBXTargetDependency */,
+			);
+			name = FocusAppTests;
+			productName = FocusAppTests;
+			productReference = 58471227E33B481BB4F4357B /* FocusAppTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		A10007001 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1500;
+				LastUpgradeCheck = 1500;
+				TargetAttributes = {
+					A10006001 = {
+						CreatedOnToolsVersion = 15.0;
+					};
+					4C67B5983E414605B8C2BADA = {
+						CreatedOnToolsVersion = 15.0;
+					};
+				};
+			};
+			buildConfigurationList = A10008002 /* Build configuration list for PBXProject "FocusApp" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = A10005001;
+			productRefGroup = A10005003 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				A10006001 /* FocusApp */,
+				4C67B5983E414605B8C2BADA /* FocusAppTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		A10004003 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A1000100D /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		5F4820C5DE7141A0814F4EF6 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		A10004002 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A10001001 /* FocusApp.swift in Sources */,
+				A10001014 /* AppContainer.swift in Sources */,
+				A10001002 /* DSAPlan.swift in Sources */,
+				A10001003 /* AppData.swift in Sources */,
+				A10001004 /* DataStore.swift in Sources */,
+				A10001005 /* Colors.swift in Sources */,
+				A10001006 /* ContentView.swift in Sources */,
+				A10001007 /* PlanView.swift in Sources */,
+				A10001008 /* TodayView.swift in Sources */,
+				A10001009 /* StatsView.swift in Sources */,
+				A1000100A /* FocusOverlay.swift in Sources */,
+				A1000100B /* DayCard.swift in Sources */,
+				A1000100C /* ProblemRow.swift in Sources */,
+				A1000100E /* NotificationManager.swift in Sources */,
+				A1000100F /* SettingsView.swift in Sources */,
+				A10001010 /* SharedDataStore.swift in Sources */,
+				A10001013 /* LeetCodeService.swift in Sources */,
+				A10001015 /* ToolbarWidgetView.swift in Sources */,
+				A10001016 /* TestCase.swift in Sources */,
+				A10001017 /* CodeExecutionService.swift in Sources */,
+				A10001018 /* CodingEnvironmentPresenter.swift in Sources */,
+				A10001019 /* CodeEditorView.swift in Sources */,
+				A1000101A /* OutputPanelView.swift in Sources */,
+				A1000101B /* ProblemSelectionView.swift in Sources */,
+				A1000101C /* CodingEnvironmentView.swift in Sources */,
+				A1000101D /* ProcessRunner.swift in Sources */,
+				A1000101E /* LanguageExecutor.swift in Sources */,
+				A1000101F /* SwiftExecutor.swift in Sources */,
+				A10001020 /* PythonExecutor.swift in Sources */,
+				A10001021 /* ContentInteractor.swift in Sources */,
+				A10001022 /* ContentPresenter.swift in Sources */,
+				A10001023 /* PlanInteractor.swift in Sources */,
+				A10001024 /* PlanPresenter.swift in Sources */,
+				A10001025 /* TodayInteractor.swift in Sources */,
+				A10001026 /* TodayPresenter.swift in Sources */,
+				A10001027 /* StatsInteractor.swift in Sources */,
+				A10001028 /* StatsPresenter.swift in Sources */,
+				A10001029 /* SettingsInteractor.swift in Sources */,
+				A10001030 /* SettingsPresenter.swift in Sources */,
+				A10001031 /* ToolbarWidgetInteractor.swift in Sources */,
+				A10001032 /* ToolbarWidgetPresenter.swift in Sources */,
+				A10001033 /* FocusInteractor.swift in Sources */,
+				A10001034 /* FocusPresenter.swift in Sources */,
+				A10001035 /* CodingEnvironmentInteractor.swift in Sources */,
+				A10001011 /* OutputPanelView+Sections.swift in Sources */,
+				A10001012 /* ConsoleOutputView.swift in Sources */,
+				A10001036 /* CodeEditorView+Coordinator.swift in Sources */,
+				A10001037 /* CodeEditorView+CoordinatorInput.swift in Sources */,
+				A10001038 /* CodeEditorView+CoordinatorHighlighting.swift in Sources */,
+				A10001039 /* SettingsView+Bindings.swift in Sources */,
+				A10001040 /* SettingsView+Validation.swift in Sources */,
+				A10001041 /* SettingsView+Preview.swift in Sources */,
+				A10001042 /* TodayView+Sections.swift in Sources */,
+				A10001043 /* TodayView+Preview.swift in Sources */,
+				A10001044 /* StatsView+Sections.swift in Sources */,
+				A10001045 /* StatsView+Preview.swift in Sources */,
+				A10001046 /* FocusOverlay+Sections.swift in Sources */,
+				A10001047 /* ToolbarWidgetView+Header.swift in Sources */,
+				A10001048 /* ToolbarWidgetView+Settings.swift in Sources */,
+				A10001049 /* ToolbarWidgetView+Summary.swift in Sources */,
+				A10001050 /* ToolbarWidgetView+Problems.swift in Sources */,
+				A10001051 /* ToolbarWidgetView+Habits.swift in Sources */,
+				A10001052 /* ToolbarWidgetView+Tomorrow.swift in Sources */,
+				A10001053 /* ToolbarWidgetView+Preview.swift in Sources */,
+				A10001054 /* WidgetCard.swift in Sources */,
+				A10001055 /* ProblemRowWidget.swift in Sources */,
+				A10001056 /* HabitToggle.swift in Sources */,
+				A10001057 /* CarryoverProblemRow.swift in Sources */,
+				A10001058 /* TomorrowProblemRow.swift in Sources */,
+				A10001059 /* CodingEnvironmentPresenter+Execution.swift in Sources */,
+				A10001060 /* CodingEnvironmentPresenter+ProblemLoading.swift in Sources */,
+				A10001061 /* CodingEnvironmentPresenter+Persistence.swift in Sources */,
+				A10001062 /* CodingEnvironmentPresenter+Snippets.swift in Sources */,
+				A10001063 /* CodingEnvironmentView+Header.swift in Sources */,
+				A10001064 /* CodingEnvironmentView+Panels.swift in Sources */,
+				A10001065 /* ModernTestCaseView.swift in Sources */,
+				A10001066 /* ModernOutputView.swift in Sources */,
+				A10001067 /* ModernOutputView+Sections.swift in Sources */,
+				A10001068 /* TestCaseEditorView.swift in Sources */,
+				A10001069 /* NotificationSettings.swift in Sources */,
+				A10001070 /* NotificationSettingsStore.swift in Sources */,
+				A10001071 /* NotificationScheduler.swift in Sources */,
+				A10001072 /* LeetCodeNetworking.swift in Sources */,
+				A10001074 /* LeetCodeErrors.swift in Sources */,
+				A10001075 /* LeetCodeModels.swift in Sources */,
+				B2C3D4E5F6A7B8C9D0E1F4F6 /* LeetCodeSyncScheduler.swift in Sources */,
+				A10001077 /* LeetCodeConstants.swift in Sources */,
+				A10001078 /* LeetCodeSlugExtractor.swift in Sources */,
+				A10001079 /* CodeEditorView+CoordinatorIndentation.swift in Sources */,
+				A1000107A /* CodeEditorView+CoordinatorBrackets.swift in Sources */,
+				A1000107B /* CodingEnvironmentView+ProblemPicker.swift in Sources */,
+				CB0805C549E94B40B1CE6960 /* CodingEnvironmentProblemModels.swift in Sources */,
+				653A1BCD45DC478A8FA88001 /* CodingEnvironmentView+Sidebar.swift in Sources */,
+				B1D2C3D4E5F6A7B8C9D0E1F3 /* CodingEnvironmentView+DetailContent.swift in Sources */,
+				A1000107C /* FocusOverlay+TimerView.swift in Sources */,
+				A1000107D /* FocusOverlay+CompletionView.swift in Sources */,
+				A1000107E /* StatsView+FocusReminder.swift in Sources */,
+				A1000107F /* TodayView+FocusCTA.swift in Sources */,
+				A10001080 /* ContentView+Preview.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F250B49CEB074B259AD2B1C8 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C9EA7A4E9DEF427EA4E50A21 /* Fixtures.swift in Sources */,
+				1FDAC8DA41B44813A6128FF4 /* LeetCodeModelsTests.swift in Sources */,
+				D2EC195B48254E0B914D8A01 /* LeetCodeRestClientTests.swift in Sources */,
+				416DC1D624AC4D8C83D0820A /* LeetCodeNetworkingTests.swift in Sources */,
+				5B9ADEFB983A4EF5AF6A67D2 /* ProcessRunnerTests.swift in Sources */,
+				1C9332DFB01F4B57805EC9A6 /* ExecutorTests.swift in Sources */,
+				C2978C5869F84459BDC98091 /* SharedDataStoreTests.swift in Sources */,
+				E325663DD9574C9390341D12 /* AppDataTests.swift in Sources */,
+				81CB68C852BA4D08900D8C64 /* PlanCalendarTests.swift in Sources */,
+				F16E69D9C175439EA2255A91 /* AppStateStoreTests.swift in Sources */,
+				F9A2DABABABF4C3ABE903F0B /* LeetCodeSlugExtractorTests.swift in Sources */,
+				0A1BA9D5346842E6BF0C6DBB /* ProgrammingLanguageTests.swift in Sources */,
+				76E45EE927B7400B8F88BED1 /* LeetCodeSyncInteractorTests.swift in Sources */,
+				55C3B4ADCD3C450593E4212C /* NotificationManagerTests.swift in Sources */,
+				865EEC6EABBD4E7AB00F78AA /* CodeExecutionServiceTests.swift in Sources */,
+				074E2BCBD6F74E9B99BF53E4 /* CodingEnvironmentPresenterTests.swift in Sources */,
+				C7D8E9F0A1B2C3D4E5F60709 /* LeetCodeSyncSchedulerTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		78ADC0828EBD4ABBA19F2BAC /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = A10006001 /* FocusApp */;
+			targetProxy = BC76266BB8004E60817433C2 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXContainerItemProxy section */
+		BC76266BB8004E60817433C2 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A10007001 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = A10006001 /* FocusApp */;
+			remoteInfo = FocusApp;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin XCBuildConfiguration section */
+		A10009001 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MACOSX_DEPLOYMENT_TARGET = 13.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		A10009002 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MACOSX_DEPLOYMENT_TARGET = 13.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = macosx;
+				SWIFT_COMPILATION_MODE = wholemodule;
+			};
+			name = Release;
+		};
+		A10009003 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = FocusApp/FocusApp.entitlements;
+				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_STYLE = Manual;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "";
+				DEVELOPMENT_TEAM = "";
+				ENABLE_DEBUG_DYLIB = NO;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.productivity";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.dsafocus.FocusApp;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		A10009004 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = FocusApp/FocusApp.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "";
+				DEVELOPMENT_TEAM = V29G6KEVJT;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.productivity";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.dsafocus.FocusApp;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+		B96A036423E747AB95A690E0 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_STYLE = Manual;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
+				ENABLE_TESTABILITY = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = FocusAppTests;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 13.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.dsafocus.FocusAppTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_VERSION = 5.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/FocusApp.app/Contents/MacOS/FocusApp";
+			};
+			name = Debug;
+		};
+		BF95B07906CE46F7AA435328 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_STYLE = Manual;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = FocusAppTests;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 13.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.dsafocus.FocusAppTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/FocusApp.app/Contents/MacOS/FocusApp";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		A10008001 /* Build configuration list for PBXNativeTarget "FocusApp" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A10009003 /* Debug */,
+				A10009004 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		A10008002 /* Build configuration list for PBXProject "FocusApp" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A10009001 /* Debug */,
+				A10009002 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		3BDC9BCA158F45F3A391466C /* Build configuration list for PBXNativeTarget "FocusAppTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B96A036423E747AB95A690E0 /* Debug */,
+				BF95B07906CE46F7AA435328 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = A10007001 /* Project object */;
+}

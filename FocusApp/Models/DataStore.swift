@@ -1,0 +1,122 @@
+import Foundation
+
+protocol DateProviding {
+    func now() -> Date
+}
+
+struct SystemDateProvider: DateProviding {
+    func now() -> Date { Date() }
+}
+
+@MainActor
+final class AppStateStore: ObservableObject {
+    @Published private(set) var data: AppData
+
+    private let storage: AppStorage
+    private let calendar: PlanCalendar
+    private let dateProvider: DateProviding
+
+    init(
+        storage: AppStorage,
+        calendar: PlanCalendar = PlanCalendar(),
+        dateProvider: DateProviding = SystemDateProvider()
+    ) {
+        self.storage = storage
+        self.calendar = calendar
+        self.dateProvider = dateProvider
+        self.data = storage.load()
+    }
+
+    func reload() {
+        data = storage.load()
+    }
+
+    func save() {
+        storage.save(data)
+    }
+
+    func toggleProblem(day: Int, problemIndex: Int) {
+        let key = "\(day)-\(problemIndex)"
+        let wasCompleted = data.progress[key] ?? false
+        data.progress[key] = !wasCompleted
+        save()
+    }
+
+    func toggleHabit(_ habit: String) {
+        let today = AppData.todayString()
+        if data.habits[today] == nil {
+            data.habits[today] = [:]
+        }
+        let wasCompleted = data.habits[today]?[habit] ?? false
+        data.habits[today]?[habit] = !wasCompleted
+        save()
+    }
+
+    func isProblemCompleted(day: Int, problemIndex: Int) -> Bool {
+        data.isProblemCompleted(day: day, problemIndex: problemIndex)
+    }
+
+    func isHabitDone(_ habit: String) -> Bool {
+        data.getHabitStatus(habit: habit)
+    }
+
+    func updateLeetCodeUsername(_ username: String) {
+        data.leetCodeUsername = username.trimmingCharacters(in: .whitespacesAndNewlines)
+        save()
+    }
+
+    func solutionCode(for key: String) -> String? {
+        data.savedSolutions[key]
+    }
+
+    func saveSolution(code: String, for key: String) {
+        let trimmed = code.trimmingCharacters(in: .whitespacesAndNewlines)
+        if trimmed.isEmpty {
+            data.savedSolutions.removeValue(forKey: key)
+        } else {
+            data.savedSolutions[key] = code
+        }
+        save()
+    }
+
+    func advanceToNextDay() {
+        let currentDay = currentDayNumber()
+        guard currentDay < 13 else { return }
+        data.dayOffset += 1
+        save()
+    }
+
+    func currentDayNumber() -> Int {
+        calendar.currentDayNumber(today: dateProvider.now(), offset: data.dayOffset)
+    }
+
+    func todaysTopic() -> String {
+        let dayNum = currentDayNumber()
+        return dsaPlan.first(where: { $0.id == dayNum })?.topic ?? "Linked List"
+    }
+
+    @discardableResult
+    func applySolvedSlugs(_ solvedSlugs: Set<String>) -> (syncedCount: Int, totalMatched: Int) {
+        var syncedCount = 0
+        var totalMatched = 0
+
+        for day in dsaPlan {
+            for (index, problem) in day.problems.enumerated() {
+                if let slug = LeetCodeSlugExtractor.extractSlug(from: problem.url),
+                   solvedSlugs.contains(slug) {
+                    totalMatched += 1
+                    if !isProblemCompleted(day: day.id, problemIndex: index) {
+                        data.progress["\(day.id)-\(index)"] = true
+                        syncedCount += 1
+                    }
+                }
+            }
+        }
+
+        if syncedCount > 0 {
+            save()
+        }
+
+        return (syncedCount, totalMatched)
+    }
+}

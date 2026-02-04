@@ -110,4 +110,92 @@ final class AppStateStoreTests: XCTestCase {
 
         XCTAssertEqual(store.data.leetCodeUsername, "reloadUser")
     }
+
+    func testSavePersistsToStorage() {
+        final class SpyStorage: AppStorage {
+            var saved: AppData?
+            func load() -> AppData { AppData() }
+            func save(_ data: AppData) { saved = data }
+        }
+        let storage = SpyStorage()
+        let store = AppStateStore(storage: storage)
+
+        store.toggleProblem(day: 1, problemIndex: 0)
+
+        XCTAssertNotNil(storage.saved)
+        XCTAssertTrue(storage.saved?.progress["1-0"] == true)
+    }
+
+    func testCurrentDayNumberClampsTo13() {
+        let start = makeDate(year: 2026, month: 1, day: 1)
+        let farFuture = makeDate(year: 2026, month: 12, day: 31)
+        let storage = InMemoryAppStorage()
+        let store = AppStateStore(
+            storage: storage,
+            calendar: PlanCalendar(startDate: start),
+            dateProvider: FixedDateProvider(date: farFuture)
+        )
+
+        XCTAssertEqual(store.currentDayNumber(), 13)
+    }
+
+    func testCurrentDayNumberClampsTo1() {
+        let start = makeDate(year: 2026, month: 2, day: 10)
+        let past = makeDate(year: 2026, month: 1, day: 1)
+        let storage = InMemoryAppStorage()
+        let store = AppStateStore(
+            storage: storage,
+            calendar: PlanCalendar(startDate: start),
+            dateProvider: FixedDateProvider(date: past)
+        )
+
+        XCTAssertEqual(store.currentDayNumber(), 1)
+    }
+
+    func testTodaysTopicForDay13() {
+        let start = makeDate(year: 2026, month: 2, day: 3)
+        var data = AppData()
+        data.dayOffset = 12
+        let storage = InMemoryAppStorage(initial: data)
+        let store = AppStateStore(
+            storage: storage,
+            calendar: PlanCalendar(startDate: start),
+            dateProvider: FixedDateProvider(date: start)
+        )
+
+        XCTAssertEqual(store.currentDayNumber(), 13)
+        XCTAssertEqual(store.todaysTopic(), "1-D DP (cont.) + 2-D DP Intro")
+    }
+
+    func testApplySolvedSlugsWithNoMatches() {
+        let start = makeDate(year: 2026, month: 2, day: 3)
+        let storage = InMemoryAppStorage()
+        let store = AppStateStore(
+            storage: storage,
+            calendar: PlanCalendar(startDate: start),
+            dateProvider: FixedDateProvider(date: start)
+        )
+
+        let result = store.applySolvedSlugs(["non-existent-slug", "another-fake-slug"])
+
+        XCTAssertEqual(result.syncedCount, 0)
+        XCTAssertEqual(result.totalMatched, 0)
+    }
+
+    func testApplySolvedSlugsWithAllAlreadySolved() {
+        let start = makeDate(year: 2026, month: 2, day: 3)
+        var data = AppData()
+        data.progress["1-0"] = true
+        let storage = InMemoryAppStorage(initial: data)
+        let store = AppStateStore(
+            storage: storage,
+            calendar: PlanCalendar(startDate: start),
+            dateProvider: FixedDateProvider(date: start)
+        )
+
+        let result = store.applySolvedSlugs(["reverse-linked-list"])
+
+        XCTAssertEqual(result.syncedCount, 0)
+        XCTAssertEqual(result.totalMatched, 1)
+    }
 }

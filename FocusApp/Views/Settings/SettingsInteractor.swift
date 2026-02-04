@@ -2,12 +2,12 @@ import Foundation
 
 @MainActor
 final class SettingsInteractor {
-    private let notificationManager: NotificationManager
+    private let notificationManager: NotificationManaging
     private let appStore: AppStateStore
     private let leetCodeSync: LeetCodeSyncInteractor
 
     init(
-        notificationManager: NotificationManager,
+        notificationManager: NotificationManaging,
         appStore: AppStateStore,
         leetCodeSync: LeetCodeSyncInteractor
     ) {

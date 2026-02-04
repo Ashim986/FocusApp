@@ -107,6 +107,47 @@ final class SharedDataStoreTests: XCTestCase {
         XCTAssertEqual(center.addedRequests.count, 1)
         XCTAssertEqual(center.removedIdentifiers.first, ["id"])
     }
+
+    func testAppConstantsTotalHabits() {
+        XCTAssertEqual(AppConstants.totalHabits, 3)
+    }
+
+    func testAppConstantsHabitsList() {
+        XCTAssertEqual(AppConstants.habitsList.count, 3)
+        XCTAssertTrue(AppConstants.habitsList.contains("dsa"))
+        XCTAssertTrue(AppConstants.habitsList.contains("exercise"))
+        XCTAssertTrue(AppConstants.habitsList.contains("other"))
+    }
+
+    func testPlanCalendarBaseDayNumberClampsTo1() {
+        let calendar = PlanCalendar(startDate: makeDate(year: 2026, month: 2, day: 10))
+        let pastDate = makeDate(year: 2026, month: 1, day: 1)
+
+        XCTAssertEqual(calendar.baseDayNumber(today: pastDate), 1)
+    }
+
+    func testPlanCalendarBaseDayNumberClampsTo13() {
+        let calendar = PlanCalendar(startDate: makeDate(year: 2026, month: 2, day: 1))
+        let futureDate = makeDate(year: 2026, month: 12, day: 31)
+
+        XCTAssertEqual(calendar.baseDayNumber(today: futureDate), 13)
+    }
+
+    func testPlanCalendarCurrentDayNumberWithOffset() {
+        let calendar = PlanCalendar(startDate: makeDate(year: 2026, month: 2, day: 3))
+        let today = makeDate(year: 2026, month: 2, day: 3)
+
+        XCTAssertEqual(calendar.currentDayNumber(today: today, offset: 0), 1)
+        XCTAssertEqual(calendar.currentDayNumber(today: today, offset: 5), 6)
+        XCTAssertEqual(calendar.currentDayNumber(today: today, offset: 100), 13)
+    }
+
+    func testFileAppStorageDefaultFileURL() {
+        let url = FileAppStorage.defaultFileURL
+
+        XCTAssertTrue(url.path.contains(".dsa-focus-data.json"))
+        XCTAssertTrue(url.isFileURL)
+    }
 }
 
 private final class StubNotificationCenter: UserNotificationCentering {

@@ -128,3 +128,77 @@ func makeDate(year: Int, month: Int, day: Int) -> Date {
     components.day = day
     return Calendar(identifier: .gregorian).date(from: components) ?? Date()
 }
+
+// MARK: - Fake Notification Manager
+
+final class FakeNotificationManager: NotificationManaging {
+    var storedSettings = NotificationSettings(studyReminderEnabled: false, studyReminderTime: Date(), habitReminderEnabled: false, habitReminderTime: Date())
+    var authorizationStatus: Bool = false
+    var requestAuthorizationCalled = false
+    var checkAuthorizationCalled = false
+    var updateAllRemindersCalled = false
+    var lastReminderSettings: NotificationSettings?
+    var lastReminderAuthorized: Bool?
+    var topicCompleteCelebrationCalled = false
+    var lastCelebrationTopic: String?
+    var allHabitsCelebrationCalled = false
+
+    func loadSettings() -> NotificationSettings {
+        storedSettings
+    }
+
+    func saveSettings(_ settings: NotificationSettings) {
+        storedSettings = settings
+    }
+
+    func requestAuthorization() async -> Bool {
+        requestAuthorizationCalled = true
+        return authorizationStatus
+    }
+
+    func checkAuthorizationStatus() async -> Bool {
+        checkAuthorizationCalled = true
+        return authorizationStatus
+    }
+
+    func updateAllReminders(settings: NotificationSettings, authorized: Bool) async {
+        updateAllRemindersCalled = true
+        lastReminderSettings = settings
+        lastReminderAuthorized = authorized
+    }
+
+    func sendTopicCompleteCelebration(topic: String, authorized: Bool) async {
+        topicCompleteCelebrationCalled = true
+        lastCelebrationTopic = topic
+    }
+
+    func sendAllHabitsCelebration(authorized: Bool) async {
+        allHabitsCelebrationCalled = true
+    }
+}
+
+// MARK: - Fake LeetCode Sync Interactor
+
+final class FakeLeetCodeSyncInteractor {
+    var validateUsernameResult: Bool = true
+    var validateUsernameCalled = false
+    var lastValidatedUsername: String?
+    var syncResult = LeetCodeSyncResult(syncedCount: 0, totalMatched: 0)
+    var syncCalled = false
+    var lastSyncUsername: String?
+    var lastSyncLimit: Int?
+
+    func validateUsername(_ username: String) async -> Bool {
+        validateUsernameCalled = true
+        lastValidatedUsername = username
+        return validateUsernameResult
+    }
+
+    func syncSolvedProblems(username: String, limit: Int) async -> LeetCodeSyncResult {
+        syncCalled = true
+        lastSyncUsername = username
+        lastSyncLimit = limit
+        return syncResult
+    }
+}
+

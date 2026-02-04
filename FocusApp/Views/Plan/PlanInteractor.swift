@@ -4,9 +4,9 @@ import Foundation
 @MainActor
 final class PlanInteractor {
     private let appStore: AppStateStore
-    private let notificationManager: NotificationManager
+    private let notificationManager: NotificationManaging
 
-    init(appStore: AppStateStore, notificationManager: NotificationManager) {
+    init(appStore: AppStateStore, notificationManager: NotificationManaging) {
         self.appStore = appStore
         self.notificationManager = notificationManager
     }

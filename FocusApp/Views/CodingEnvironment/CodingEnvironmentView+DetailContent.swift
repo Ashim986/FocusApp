@@ -13,19 +13,20 @@ extension CodingEnvironmentView {
             VStack(spacing: 10) {
                 ProgressView()
                 Text("Loading problem details...")
-                    .font(.system(size: 11))
+                    .font(.system(size: 13))
                     .foregroundColor(Color.appGray500)
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
         } else if let content = presenter.problemContent {
             VStack(alignment: .leading, spacing: 12) {
                 Text(content.title)
-                    .font(.system(size: 14, weight: .semibold))
+                    .font(.system(size: 16, weight: .semibold))
                     .foregroundColor(.white)
 
                 Text(attributedDescription(from: content.content))
-                    .font(.system(size: 12))
+                    .font(.system(size: 14))
                     .foregroundColor(Color.appGray200)
+                    .lineSpacing(4)
                     .textSelection(.enabled)
             }
             .frame(maxWidth: .infinity, alignment: .leading)
@@ -35,7 +36,7 @@ extension CodingEnvironmentView {
                     .font(.system(size: 22))
                     .foregroundColor(Color.appGray600)
                 Text("Problem description will appear here.")
-                    .font(.system(size: 11))
+                    .font(.system(size: 13))
                     .foregroundColor(Color.appGray500)
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)

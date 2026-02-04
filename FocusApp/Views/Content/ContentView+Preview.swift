@@ -1,15 +1,15 @@
+import SwiftData
 import SwiftUI
 
 #if DEBUG
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        let storage = FileAppStorage()
-        let appStore = AppStateStore(storage: storage)
-        let client = LeetCodeRestClient(
-            baseURL: LeetCodeConstants.restBaseURL,
-            requestBuilder: DefaultRequestBuilder(),
-            executor: URLSessionRequestExecutor()
+        let container = try! ModelContainer(
+            for: AppDataRecord.self,
+            configurations: ModelConfiguration(isStoredInMemoryOnly: true)
         )
+        let appStore = AppStateStore(storage: SwiftDataAppStorage(container: container))
+        let client = PreviewLeetCodeClient()
         let syncInteractor = LeetCodeSyncInteractor(appStore: appStore, client: client)
         let codeExecutionService = CodeExecutionService()
         let codingPresenter = CodingEnvironmentPresenter(
@@ -28,7 +28,8 @@ struct ContentView_Previews: PreviewProvider {
                         notificationManager: NotificationManager(
                             scheduler: SystemNotificationScheduler(),
                             store: UserDefaultsNotificationSettingsStore()
-                        )
+                        ),
+                        leetCodeSync: syncInteractor
                     )
                 )
                 return PlanView(presenter: planPresenter)
@@ -40,7 +41,8 @@ struct ContentView_Previews: PreviewProvider {
                         notificationManager: NotificationManager(
                             scheduler: SystemNotificationScheduler(),
                             store: UserDefaultsNotificationSettingsStore()
-                        )
+                        ),
+                        leetCodeSync: syncInteractor
                     )
                 )
                 return TodayView(
@@ -65,5 +67,11 @@ struct ContentView_Previews: PreviewProvider {
         return ContentView(presenter: presenter, router: router)
             .frame(width: 800, height: 600)
     }
+}
+
+private struct PreviewLeetCodeClient: LeetCodeClientProtocol {
+    func validateUsername(_ username: String) async throws -> Bool { true }
+    func fetchSolvedSlugs(username: String, limit: Int) async throws -> Set<String> { [] }
+    func fetchProblemContent(slug: String) async throws -> QuestionContent? { nil }
 }
 #endif

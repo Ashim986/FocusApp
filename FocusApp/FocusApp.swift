@@ -19,6 +19,7 @@ struct FocusApp: App {
                 .frame(minWidth: 800, minHeight: 600)
                 .task {
                     _ = await container.notificationManager.requestAuthorization()
+                    await container.leetCodeScheduler.syncNow(trigger: .hourly)
                 }
         }
         .windowStyle(.hiddenTitleBar)

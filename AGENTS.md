@@ -157,8 +157,8 @@ FocusApp/
 - Plan data: `FocusApp/Models/DSAPlan.swift`
 
 ## Data Storage
-- `~/.dsa-focus-data.json`
-- Stores progress, habits, day offset, and username.
+- SwiftData persistent store (default location under Application Support).
+- Stores progress, habits, day offset, username, and saved solutions.
 
 ## How to Run
 ```bash

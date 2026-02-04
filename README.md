@@ -13,7 +13,7 @@ FocusApp is a native macOS study companion for Data Structures & Algorithms prep
 - Tomorrow preview and auto-carryover for unsolved problems
 
 ## Requirements
-- macOS 13.0+
+- macOS 14.0+
 - Xcode 15.0+
 - Swift 5.0+
 - Internet connection (for LeetCode sync)
@@ -36,10 +36,7 @@ FocusApp is a native macOS study companion for Data Structures & Algorithms prep
 - Saved code is stored per problem and language.
 
 ## Data Storage
-Progress is stored locally at:
-```
-~/.dsa-focus-data.json
-```
+Progress is stored locally in a SwiftData persistent store (default location under Application Support).
 
 ## Project Structure
 ```

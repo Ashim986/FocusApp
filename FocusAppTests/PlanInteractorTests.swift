@@ -11,7 +11,11 @@ final class PlanInteractorTests: XCTestCase {
             dateProvider: FixedDateProvider(date: start)
         )
         let notificationManager = FakeNotificationManager()
-        let interactor = PlanInteractor(appStore: store, notificationManager: notificationManager)
+        let interactor = PlanInteractor(
+            appStore: store,
+            notificationManager: notificationManager,
+            leetCodeSync: makeLeetCodeSync(store: store)
+        )
 
         XCTAssertFalse(store.isProblemCompleted(day: 1, problemIndex: 0))
 
@@ -30,7 +34,11 @@ final class PlanInteractorTests: XCTestCase {
         )
         let notificationManager = FakeNotificationManager()
         notificationManager.authorizationStatus = true
-        let interactor = PlanInteractor(appStore: store, notificationManager: notificationManager)
+        let interactor = PlanInteractor(
+            appStore: store,
+            notificationManager: notificationManager,
+            leetCodeSync: makeLeetCodeSync(store: store)
+        )
 
         // Complete all but one problem in day 1
         for i in 0..<4 {
@@ -56,7 +64,11 @@ final class PlanInteractorTests: XCTestCase {
         )
         let notificationManager = FakeNotificationManager()
         notificationManager.authorizationStatus = true
-        let interactor = PlanInteractor(appStore: store, notificationManager: notificationManager)
+        let interactor = PlanInteractor(
+            appStore: store,
+            notificationManager: notificationManager,
+            leetCodeSync: makeLeetCodeSync(store: store)
+        )
 
         // Complete only one problem
         interactor.toggleProblem(day: 1, problemIndex: 0)
@@ -75,7 +87,11 @@ final class PlanInteractorTests: XCTestCase {
             dateProvider: FixedDateProvider(date: start)
         )
         let notificationManager = FakeNotificationManager()
-        let interactor = PlanInteractor(appStore: store, notificationManager: notificationManager)
+        let interactor = PlanInteractor(
+            appStore: store,
+            notificationManager: notificationManager,
+            leetCodeSync: makeLeetCodeSync(store: store)
+        )
 
         var receivedData: AppData?
         let cancellable = interactor.dataPublisher
@@ -88,4 +104,8 @@ final class PlanInteractorTests: XCTestCase {
         XCTAssertNotNil(receivedData)
         cancellable.cancel()
     }
+}
+
+private func makeLeetCodeSync(store: AppStateStore) -> LeetCodeSyncInteractor {
+    LeetCodeSyncInteractor(appStore: store, client: FakeLeetCodeClient())
 }

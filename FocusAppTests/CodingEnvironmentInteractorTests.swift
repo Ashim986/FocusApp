@@ -131,7 +131,7 @@ final class CodingEnvironmentInteractorTests: XCTestCase {
         )
         let client = FakeLeetCodeClient()
         let executor = FakeCodeExecutor()
-        executor.result = ExecutionResult(output: "Hello", error: "", exitCode: 0, timedOut: false)
+        executor.result = ExecutionResult(output: "Hello", error: "", exitCode: 0, timedOut: false, wasCancelled: false)
         let interactor = CodingEnvironmentInteractor(
             appStore: store,
             leetCodeClient: client,

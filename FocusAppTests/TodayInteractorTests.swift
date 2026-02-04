@@ -11,7 +11,11 @@ final class TodayInteractorTests: XCTestCase {
             dateProvider: FixedDateProvider(date: start)
         )
         let notificationManager = FakeNotificationManager()
-        let interactor = TodayInteractor(appStore: store, notificationManager: notificationManager)
+        let interactor = TodayInteractor(
+            appStore: store,
+            notificationManager: notificationManager,
+            leetCodeSync: makeLeetCodeSync(store: store)
+        )
 
         XCTAssertFalse(store.isProblemCompleted(day: 1, problemIndex: 0))
 
@@ -29,7 +33,11 @@ final class TodayInteractorTests: XCTestCase {
             dateProvider: FixedDateProvider(date: start)
         )
         let notificationManager = FakeNotificationManager()
-        let interactor = TodayInteractor(appStore: store, notificationManager: notificationManager)
+        let interactor = TodayInteractor(
+            appStore: store,
+            notificationManager: notificationManager,
+            leetCodeSync: makeLeetCodeSync(store: store)
+        )
 
         XCTAssertFalse(store.data.getHabitStatus(habit: "dsa"))
 
@@ -47,7 +55,11 @@ final class TodayInteractorTests: XCTestCase {
             dateProvider: FixedDateProvider(date: start)
         )
         let notificationManager = FakeNotificationManager()
-        let interactor = TodayInteractor(appStore: store, notificationManager: notificationManager)
+        let interactor = TodayInteractor(
+            appStore: store,
+            notificationManager: notificationManager,
+            leetCodeSync: makeLeetCodeSync(store: store)
+        )
 
         let initialDay = store.currentDayNumber()
 
@@ -65,7 +77,11 @@ final class TodayInteractorTests: XCTestCase {
             dateProvider: FixedDateProvider(date: start)
         )
         let notificationManager = FakeNotificationManager()
-        let interactor = TodayInteractor(appStore: store, notificationManager: notificationManager)
+        let interactor = TodayInteractor(
+            appStore: store,
+            notificationManager: notificationManager,
+            leetCodeSync: makeLeetCodeSync(store: store)
+        )
 
         XCTAssertEqual(interactor.currentDayNumber(), 1)
 
@@ -84,7 +100,11 @@ final class TodayInteractorTests: XCTestCase {
         )
         let notificationManager = FakeNotificationManager()
         notificationManager.authorizationStatus = true
-        let interactor = TodayInteractor(appStore: store, notificationManager: notificationManager)
+        let interactor = TodayInteractor(
+            appStore: store,
+            notificationManager: notificationManager,
+            leetCodeSync: makeLeetCodeSync(store: store)
+        )
 
         // Complete all but one habit
         store.toggleHabit("dsa")
@@ -108,7 +128,11 @@ final class TodayInteractorTests: XCTestCase {
         )
         let notificationManager = FakeNotificationManager()
         notificationManager.authorizationStatus = true
-        let interactor = TodayInteractor(appStore: store, notificationManager: notificationManager)
+        let interactor = TodayInteractor(
+            appStore: store,
+            notificationManager: notificationManager,
+            leetCodeSync: makeLeetCodeSync(store: store)
+        )
 
         // Complete all but one problem in day 1
         for i in 0..<4 {
@@ -123,4 +147,8 @@ final class TodayInteractorTests: XCTestCase {
         XCTAssertTrue(notificationManager.topicCompleteCelebrationCalled)
         XCTAssertEqual(notificationManager.lastCelebrationTopic, "Linked List")
     }
+}
+
+private func makeLeetCodeSync(store: AppStateStore) -> LeetCodeSyncInteractor {
+    LeetCodeSyncInteractor(appStore: store, client: FakeLeetCodeClient())
 }

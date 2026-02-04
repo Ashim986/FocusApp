@@ -11,7 +11,11 @@ final class TodayPresenterTests: XCTestCase {
             dateProvider: FixedDateProvider(date: start)
         )
         let notificationManager = FakeNotificationManager()
-        let interactor = TodayInteractor(appStore: store, notificationManager: notificationManager)
+        let interactor = TodayInteractor(
+            appStore: store,
+            notificationManager: notificationManager,
+            leetCodeSync: makeLeetCodeSync(store: store)
+        )
         let presenter = TodayPresenter(interactor: interactor)
 
         try? await Task.sleep(nanoseconds: 100_000_000)
@@ -31,7 +35,11 @@ final class TodayPresenterTests: XCTestCase {
             dateProvider: FixedDateProvider(date: start)
         )
         let notificationManager = FakeNotificationManager()
-        let interactor = TodayInteractor(appStore: store, notificationManager: notificationManager)
+        let interactor = TodayInteractor(
+            appStore: store,
+            notificationManager: notificationManager,
+            leetCodeSync: makeLeetCodeSync(store: store)
+        )
         let presenter = TodayPresenter(interactor: interactor)
 
         presenter.toggleHabit("dsa")
@@ -50,7 +58,11 @@ final class TodayPresenterTests: XCTestCase {
             dateProvider: FixedDateProvider(date: start)
         )
         let notificationManager = FakeNotificationManager()
-        let interactor = TodayInteractor(appStore: store, notificationManager: notificationManager)
+        let interactor = TodayInteractor(
+            appStore: store,
+            notificationManager: notificationManager,
+            leetCodeSync: makeLeetCodeSync(store: store)
+        )
         let presenter = TodayPresenter(interactor: interactor)
 
         presenter.toggleProblem(day: 1, problemIndex: 0)
@@ -69,7 +81,11 @@ final class TodayPresenterTests: XCTestCase {
             dateProvider: FixedDateProvider(date: start)
         )
         let notificationManager = FakeNotificationManager()
-        let interactor = TodayInteractor(appStore: store, notificationManager: notificationManager)
+        let interactor = TodayInteractor(
+            appStore: store,
+            notificationManager: notificationManager,
+            leetCodeSync: makeLeetCodeSync(store: store)
+        )
         let presenter = TodayPresenter(interactor: interactor)
 
         let initialDay = store.currentDayNumber()
@@ -90,7 +106,11 @@ final class TodayPresenterTests: XCTestCase {
             dateProvider: FixedDateProvider(date: start)
         )
         let notificationManager = FakeNotificationManager()
-        let interactor = TodayInteractor(appStore: store, notificationManager: notificationManager)
+        let interactor = TodayInteractor(
+            appStore: store,
+            notificationManager: notificationManager,
+            leetCodeSync: makeLeetCodeSync(store: store)
+        )
         let presenter = TodayPresenter(interactor: interactor)
 
         try? await Task.sleep(nanoseconds: 100_000_000)
@@ -110,7 +130,11 @@ final class TodayPresenterTests: XCTestCase {
             dateProvider: FixedDateProvider(date: start)
         )
         let notificationManager = FakeNotificationManager()
-        let interactor = TodayInteractor(appStore: store, notificationManager: notificationManager)
+        let interactor = TodayInteractor(
+            appStore: store,
+            notificationManager: notificationManager,
+            leetCodeSync: makeLeetCodeSync(store: store)
+        )
         let presenter = TodayPresenter(interactor: interactor)
 
         try? await Task.sleep(nanoseconds: 100_000_000)
@@ -136,7 +160,11 @@ final class TodayPresenterTests: XCTestCase {
             dateProvider: FixedDateProvider(date: day2)
         )
         let notificationManager = FakeNotificationManager()
-        let interactor = TodayInteractor(appStore: store, notificationManager: notificationManager)
+        let interactor = TodayInteractor(
+            appStore: store,
+            notificationManager: notificationManager,
+            leetCodeSync: makeLeetCodeSync(store: store)
+        )
         let presenter = TodayPresenter(interactor: interactor)
 
         // Leave day 1 problems incomplete (carryover)
@@ -167,7 +195,11 @@ final class TodayPresenterTests: XCTestCase {
         }
 
         let notificationManager = FakeNotificationManager()
-        let interactor = TodayInteractor(appStore: store, notificationManager: notificationManager)
+        let interactor = TodayInteractor(
+            appStore: store,
+            notificationManager: notificationManager,
+            leetCodeSync: makeLeetCodeSync(store: store)
+        )
         let presenter = TodayPresenter(interactor: interactor)
 
         try? await Task.sleep(nanoseconds: 100_000_000)
@@ -177,4 +209,8 @@ final class TodayPresenterTests: XCTestCase {
         XCTAssertEqual(presenter.visibleDays[0].id, 2)
         XCTAssertTrue(presenter.visibleDays[0].isToday)
     }
+}
+
+private func makeLeetCodeSync(store: AppStateStore) -> LeetCodeSyncInteractor {
+    LeetCodeSyncInteractor(appStore: store, client: FakeLeetCodeClient())
 }

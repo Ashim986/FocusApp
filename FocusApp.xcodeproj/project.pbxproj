@@ -23,6 +23,7 @@
 		A1000100E /* NotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000200F /* NotificationManager.swift */; };
 		A1000100F /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002010 /* SettingsView.swift */; };
 		A10001010 /* SharedDataStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002011 /* SharedDataStore.swift */; };
+		A10001090 /* SwiftDataStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002090 /* SwiftDataStorage.swift */; };
 		A10001013 /* LeetCodeService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002014 /* LeetCodeService.swift */; };
 		A10001014 /* AppContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002015 /* AppContainer.swift */; };
 		A10001015 /* ToolbarWidgetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002016 /* ToolbarWidgetView.swift */; };
@@ -163,6 +164,7 @@
 		A1000200F /* NotificationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationManager.swift; sourceTree = "<group>"; };
 		A10002010 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		A10002011 /* SharedDataStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedDataStore.swift; sourceTree = "<group>"; };
+		A10002090 /* SwiftDataStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftDataStorage.swift; sourceTree = "<group>"; };
 		A10002014 /* LeetCodeService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeetCodeService.swift; sourceTree = "<group>"; };
 		A10002015 /* AppContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppContainer.swift; sourceTree = "<group>"; };
 		A10002016 /* ToolbarWidgetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToolbarWidgetView.swift; sourceTree = "<group>"; };
@@ -404,6 +406,7 @@
 			isa = PBXGroup;
 			children = (
 				A10002011 /* SharedDataStore.swift */,
+				A10002090 /* SwiftDataStorage.swift */,
 			);
 			path = Shared;
 			sourceTree = "<group>";
@@ -684,6 +687,7 @@
 				A1000100E /* NotificationManager.swift in Sources */,
 				A1000100F /* SettingsView.swift in Sources */,
 				A10001010 /* SharedDataStore.swift in Sources */,
+				A10001090 /* SwiftDataStorage.swift in Sources */,
 				A10001013 /* LeetCodeService.swift in Sources */,
 				A10001015 /* ToolbarWidgetView.swift in Sources */,
 				A10001016 /* TestCase.swift in Sources */,
@@ -887,7 +891,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
-				MACOSX_DEPLOYMENT_TARGET = 13.0;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -944,7 +948,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
-				MACOSX_DEPLOYMENT_TARGET = 13.0;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = macosx;
@@ -1028,7 +1032,7 @@
 					"@executable_path/../Frameworks",
 					"@loader_path/../Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 13.0;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.dsafocus.FocusAppTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
@@ -1054,7 +1058,7 @@
 					"@executable_path/../Frameworks",
 					"@loader_path/../Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 13.0;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.dsafocus.FocusAppTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;

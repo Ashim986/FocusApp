@@ -134,7 +134,8 @@ FocusApp/
 │   ├── Helpers/
 │   │   └── Colors.swift             # Color definitions
 │   └── Shared/
-│       └── SharedDataStore.swift    # FileAppStorage, PlanCalendar, AppConstants
+│       ├── SharedDataStore.swift    # PlanCalendar, AppConstants, legacy FileAppStorage
+│       └── SwiftDataStorage.swift   # SwiftData persistence (AppDataRecord, SwiftDataAppStorage)
 ├── Scripts/
 │   └── swiftlint.sh                 # SwiftLint build phase script
 ├── DerivedData/                     # Build artifacts (gitignored)
@@ -226,8 +227,8 @@ The app uses a **Clean Architecture / VIPER-inspired** pattern with clear separa
 │                    AppStateStore                             │
 │   Central @Published data store with persistence            │
 ├─────────────────────────────────────────────────────────────┤
-│                    FileAppStorage                            │
-│   Protocol-based file I/O (~/.dsa-focus-data.json)          │
+│                    SwiftData Store                           │
+│   Persistent local storage (Application Support)             │
 └─────────────────────────────────────────────────────────────┘
 ```
 
@@ -237,7 +238,7 @@ The app uses a **Clean Architecture / VIPER-inspired** pattern with clear separa
 |-----------|------|---------|
 | `AppContainer` | `AppContainer.swift` | Dependency injection, creates all presenters/interactors |
 | `AppStateStore` | `Models/DataStore.swift` | Central reactive data store with `@Published var data` |
-| `FileAppStorage` | `Shared/SharedDataStore.swift` | Protocol-based JSON persistence |
+| `SwiftDataAppStorage` | `Shared/SwiftDataStorage.swift` | SwiftData-backed persistence |
 | `LeetCodeRestClient` | `Models/LeetCodeService.swift` | REST client for LeetCode data |
 | `LeetCodeSyncInteractor` | `Models/LeetCodeService.swift` | Sync logic between LeetCode and app |
 | `LeetCodeSyncScheduler` | `Models/LeetCodeSyncScheduler.swift` | Hourly + daily LeetCode sync scheduling |
@@ -416,22 +417,9 @@ self.leetCodeUsername = "your-leetcode-username"
 
 ## Data Storage
 
-Progress is stored at:
-```
-~/.dsa-focus-data.json
-```
+Progress is stored in a SwiftData persistent store (default location under Application Support).
 
-### Data Structure
-```json
-{
-  "progress": {"1-0": true, "1-1": true},
-  "habits": {"2026-02-03": {"dsa": true}},
-  "dayOffset": 0,
-  "leetCodeUsername": "ashim986",
-  "savedSolutions": {"reverse-linked-list|swift": "class Solution { ... }"}
-}
-```
-
+### Stored Fields
 | Field | Purpose |
 |-------|---------|
 | `progress` | Tracks which problems are solved (day-index: true/false) |
@@ -643,7 +631,7 @@ The code editor highlights:
 3. No code signing required for personal use
 
 ### Requirements
-- macOS 13.0+
+- macOS 14.0+
 - Xcode 15.0+
 - Swift 5.0
 - Internet connection (for LeetCode sync)

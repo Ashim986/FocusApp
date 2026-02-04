@@ -14,6 +14,7 @@ struct TodayView: View {
         ScrollView {
             VStack(spacing: 20) {
                 focusCTACard
+                syncCard
 
                 habitsCard
 

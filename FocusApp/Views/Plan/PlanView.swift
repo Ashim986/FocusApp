@@ -1,3 +1,4 @@
+import SwiftData
 import SwiftUI
 
 struct PlanView: View {
@@ -7,6 +8,7 @@ struct PlanView: View {
         ScrollView {
             VStack(spacing: 16) {
                 preCompletedBanner
+                syncCard
 
                 ForEach(presenter.days) { day in
                     DayCard(
@@ -70,6 +72,49 @@ struct PlanView: View {
         .overlay(
             RoundedRectangle(cornerRadius: 12)
                 .strokeBorder(Color.appGreen.opacity(0.3), lineWidth: 1)
+        )
+    }
+
+    private var syncCard: some View {
+        HStack(spacing: 16) {
+            VStack(alignment: .leading, spacing: 4) {
+                Text("LeetCode Sync")
+                    .font(.system(size: 16, weight: .semibold))
+                    .foregroundColor(Color.appGray800)
+
+                Text(presenter.lastSyncResult.isEmpty ? "Pull the latest solved problems." : presenter.lastSyncResult)
+                    .font(.system(size: 12))
+                    .foregroundColor(Color.appGray500)
+            }
+
+            Spacer()
+
+            if presenter.isSyncing {
+                ProgressView()
+                    .scaleEffect(0.9)
+            } else {
+                Button(action: { presenter.syncNow() }) {
+                    HStack(spacing: 6) {
+                        Image(systemName: "arrow.triangle.2.circlepath")
+                        Text("Sync Now")
+                    }
+                    .font(.system(size: 12, weight: .semibold))
+                    .foregroundColor(.white)
+                    .padding(.horizontal, 12)
+                    .padding(.vertical, 8)
+                    .background(
+                        RoundedRectangle(cornerRadius: 8)
+                            .fill(Color.appPurple)
+                    )
+                }
+                .buttonStyle(.plain)
+            }
+        }
+        .padding(16)
+        .background(
+            RoundedRectangle(cornerRadius: 12)
+                .fill(Color.white)
+                .shadow(color: Color.black.opacity(0.05), radius: 4, x: 0, y: 2)
         )
     }
 
@@ -147,18 +192,31 @@ struct FlowLayout: Layout {
 #if DEBUG
 struct PlanView_Previews: PreviewProvider {
     static var previews: some View {
-        let appStore = AppStateStore(storage: FileAppStorage())
+        let container = try! ModelContainer(
+            for: AppDataRecord.self,
+            configurations: ModelConfiguration(isStoredInMemoryOnly: true)
+        )
+        let appStore = AppStateStore(storage: SwiftDataAppStorage(container: container))
+        let client = PreviewLeetCodeClient()
+        let leetCodeSync = LeetCodeSyncInteractor(appStore: appStore, client: client)
         let presenter = PlanPresenter(
             interactor: PlanInteractor(
                 appStore: appStore,
                 notificationManager: NotificationManager(
                     scheduler: SystemNotificationScheduler(),
                     store: UserDefaultsNotificationSettingsStore()
-                )
+                ),
+                leetCodeSync: leetCodeSync
             )
         )
         return PlanView(presenter: presenter)
             .frame(width: 600, height: 800)
     }
+}
+
+private struct PreviewLeetCodeClient: LeetCodeClientProtocol {
+    func validateUsername(_ username: String) async throws -> Bool { true }
+    func fetchSolvedSlugs(username: String, limit: Int) async throws -> Set<String> { [] }
+    func fetchProblemContent(slug: String) async throws -> QuestionContent? { nil }
 }
 #endif

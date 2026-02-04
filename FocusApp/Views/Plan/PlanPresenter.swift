@@ -23,6 +23,8 @@ struct PlanDayViewModel: Identifiable {
 @MainActor
 final class PlanPresenter: ObservableObject {
     @Published private(set) var days: [PlanDayViewModel] = []
+    @Published var isSyncing: Bool = false
+    @Published var lastSyncResult: String = ""
 
     private let interactor: PlanInteractor
     private var cancellables = Set<AnyCancellable>()
@@ -36,6 +38,30 @@ final class PlanPresenter: ObservableObject {
         interactor.toggleProblem(day: day, problemIndex: problemIndex)
     }
 
+    func syncNow() {
+        guard !isSyncing else { return }
+        isSyncing = true
+        lastSyncResult = "Syncing..."
+        Task {
+            let result = await interactor.syncSolvedProblems()
+            await MainActor.run {
+                if let result {
+                    if result.syncedCount > 0 {
+                        lastSyncResult = "Synced \(result.syncedCount) new problems"
+                    } else if result.totalMatched > 0 {
+                        lastSyncResult = "\(result.totalMatched) problems up to date"
+                    } else {
+                        lastSyncResult = "Sync complete"
+                    }
+                } else {
+                    lastSyncResult = "Set username in Settings"
+                }
+                isSyncing = false
+                scheduleSyncMessageClear()
+            }
+        }
+    }
+
     private func bind() {
         interactor.dataPublisher
             .receive(on: DispatchQueue.main)
@@ -43,6 +69,13 @@ final class PlanPresenter: ObservableObject {
                 self?.days = Self.buildDayViewModels(from: data)
             }
             .store(in: &cancellables)
+    }
+
+    private func scheduleSyncMessageClear() {
+        Task {
+            try? await Task.sleep(nanoseconds: 3_000_000_000)
+            lastSyncResult = ""
+        }
     }
 
     private static func buildDayViewModels(from data: AppData) -> [PlanDayViewModel] {

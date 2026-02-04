@@ -11,7 +11,11 @@ final class PlanPresenterTests: XCTestCase {
             dateProvider: FixedDateProvider(date: start)
         )
         let notificationManager = FakeNotificationManager()
-        let interactor = PlanInteractor(appStore: store, notificationManager: notificationManager)
+        let interactor = PlanInteractor(
+            appStore: store,
+            notificationManager: notificationManager,
+            leetCodeSync: makeLeetCodeSync(store: store)
+        )
         let presenter = PlanPresenter(interactor: interactor)
 
         // Allow binding to propagate
@@ -31,7 +35,11 @@ final class PlanPresenterTests: XCTestCase {
             dateProvider: FixedDateProvider(date: start)
         )
         let notificationManager = FakeNotificationManager()
-        let interactor = PlanInteractor(appStore: store, notificationManager: notificationManager)
+        let interactor = PlanInteractor(
+            appStore: store,
+            notificationManager: notificationManager,
+            leetCodeSync: makeLeetCodeSync(store: store)
+        )
         let presenter = PlanPresenter(interactor: interactor)
 
         presenter.toggleProblem(day: 1, problemIndex: 0)
@@ -50,7 +58,11 @@ final class PlanPresenterTests: XCTestCase {
             dateProvider: FixedDateProvider(date: start)
         )
         let notificationManager = FakeNotificationManager()
-        let interactor = PlanInteractor(appStore: store, notificationManager: notificationManager)
+        let interactor = PlanInteractor(
+            appStore: store,
+            notificationManager: notificationManager,
+            leetCodeSync: makeLeetCodeSync(store: store)
+        )
         let presenter = PlanPresenter(interactor: interactor)
 
         try? await Task.sleep(nanoseconds: 100_000_000)
@@ -75,7 +87,11 @@ final class PlanPresenterTests: XCTestCase {
             dateProvider: FixedDateProvider(date: start)
         )
         let notificationManager = FakeNotificationManager()
-        let interactor = PlanInteractor(appStore: store, notificationManager: notificationManager)
+        let interactor = PlanInteractor(
+            appStore: store,
+            notificationManager: notificationManager,
+            leetCodeSync: makeLeetCodeSync(store: store)
+        )
         let presenter = PlanPresenter(interactor: interactor)
 
         // Complete 3 problems in day 1
@@ -98,7 +114,11 @@ final class PlanPresenterTests: XCTestCase {
             dateProvider: FixedDateProvider(date: start)
         )
         let notificationManager = FakeNotificationManager()
-        let interactor = PlanInteractor(appStore: store, notificationManager: notificationManager)
+        let interactor = PlanInteractor(
+            appStore: store,
+            notificationManager: notificationManager,
+            leetCodeSync: makeLeetCodeSync(store: store)
+        )
         let presenter = PlanPresenter(interactor: interactor)
 
         try? await Task.sleep(nanoseconds: 100_000_000)
@@ -113,4 +133,8 @@ final class PlanPresenterTests: XCTestCase {
 
         XCTAssertTrue(presenter.days[0].problems[0].isCompleted)
     }
+}
+
+private func makeLeetCodeSync(store: AppStateStore) -> LeetCodeSyncInteractor {
+    LeetCodeSyncInteractor(appStore: store, client: FakeLeetCodeClient())
 }

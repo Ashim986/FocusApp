@@ -12,7 +12,11 @@ final class ContentRouterTests: XCTestCase {
             dateProvider: FixedDateProvider(date: start)
         )
         let notificationManager = FakeNotificationManager()
-        let interactor = PlanInteractor(appStore: store, notificationManager: notificationManager)
+        let interactor = PlanInteractor(
+            appStore: store,
+            notificationManager: notificationManager,
+            leetCodeSync: makeLeetCodeSync(store: store)
+        )
         let presenter = PlanPresenter(interactor: interactor)
 
         let router = ContentRouter(
@@ -37,7 +41,11 @@ final class ContentRouterTests: XCTestCase {
             dateProvider: FixedDateProvider(date: start)
         )
         let notificationManager = FakeNotificationManager()
-        let interactor = TodayInteractor(appStore: store, notificationManager: notificationManager)
+        let interactor = TodayInteractor(
+            appStore: store,
+            notificationManager: notificationManager,
+            leetCodeSync: makeLeetCodeSync(store: store)
+        )
         let presenter = TodayPresenter(interactor: interactor)
 
         let router = ContentRouter(
@@ -126,7 +134,9 @@ final class ContentRouterTests: XCTestCase {
             makeToday: { _, _ in fatalError("not under test") },
             makeStats: { fatalError("not under test") },
             makeFocus: { _ in fatalError("not under test") },
-            makeCoding: { isPresented in CodingEnvironmentView(presenter: presenter, isPresented: isPresented) }
+            makeCoding: { isPresented in
+                CodingEnvironmentView(presenter: presenter, onBack: { isPresented.wrappedValue = false })
+            }
         )
 
         var isPresented = false
@@ -136,4 +146,8 @@ final class ContentRouterTests: XCTestCase {
 
         XCTAssertNotNil(view)
     }
+}
+
+private func makeLeetCodeSync(store: AppStateStore) -> LeetCodeSyncInteractor {
+    LeetCodeSyncInteractor(appStore: store, client: FakeLeetCodeClient())
 }

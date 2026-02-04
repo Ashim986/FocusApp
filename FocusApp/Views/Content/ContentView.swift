@@ -46,18 +46,22 @@ struct ContentView: View {
                     }
                 }
                 .blur(radius: showFocusMode ? 10 : 0)
+                .allowsHitTesting(!showCodeEnvironment)
 
                 if showFocusMode {
                     router.makeFocus($showFocusMode)
                         .transition(.opacity)
                 }
+
+                if showCodeEnvironment {
+                    router.makeCoding($showCodeEnvironment)
+                        .transition(.move(edge: .trailing))
+                        .zIndex(1)
+                }
             }
             .animation(.easeInOut(duration: 0.3), value: showFocusMode)
+            .animation(.easeInOut(duration: 0.3), value: showCodeEnvironment)
             .onAppear { presenter.onAppear() }
-            .navigationDestination(isPresented: $showCodeEnvironment) {
-                router.makeCoding($showCodeEnvironment)
-                    .navigationBarBackButtonHidden(true)
-            }
         }
     }
 

@@ -5,10 +5,16 @@ import Foundation
 final class PlanInteractor {
     private let appStore: AppStateStore
     private let notificationManager: NotificationManaging
+    private let leetCodeSync: LeetCodeSyncInteractor
 
-    init(appStore: AppStateStore, notificationManager: NotificationManaging) {
+    init(
+        appStore: AppStateStore,
+        notificationManager: NotificationManaging,
+        leetCodeSync: LeetCodeSyncInteractor
+    ) {
         self.appStore = appStore
         self.notificationManager = notificationManager
+        self.leetCodeSync = leetCodeSync
     }
 
     var dataPublisher: Published<AppData>.Publisher {
@@ -18,6 +24,15 @@ final class PlanInteractor {
     func toggleProblem(day: Int, problemIndex: Int) {
         appStore.toggleProblem(day: day, problemIndex: problemIndex)
         Task { await checkTopicCompletion(day: day) }
+    }
+
+    func syncSolvedProblems() async -> LeetCodeSyncResult? {
+        let username = appStore.data.leetCodeUsername.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !username.isEmpty else { return nil }
+        return await leetCodeSync.syncSolvedProblems(
+            username: username,
+            limit: LeetCodeConstants.recentSubmissionsLimit
+        )
     }
 
     private func checkTopicCompletion(day: Int) async {

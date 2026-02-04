@@ -15,6 +15,17 @@ extension CodingEnvironmentView {
                 .buttonStyle(.plain)
                 .help("Exit coding mode")
 
+                Button(action: { showProblemSidebar.toggle() }) {
+                    Image(systemName: "sidebar.leading")
+                        .font(.system(size: 12, weight: .medium))
+                        .foregroundColor(Color.appGray400)
+                        .frame(width: 28, height: 28)
+                        .background(Color.appGray800)
+                        .clipShape(RoundedRectangle(cornerRadius: 6))
+                }
+                .buttonStyle(.plain)
+                .help(showProblemSidebar ? "Hide problems" : "Show problems")
+
                 problemSelector
             }
             .padding(.leading, 12)

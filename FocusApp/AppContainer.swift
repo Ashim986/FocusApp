@@ -1,8 +1,10 @@
 import Foundation
 import SwiftUI
+import SwiftData
 
 @MainActor
 final class AppContainer {
+    let modelContainer: ModelContainer
     let appStore: AppStateStore
     let notificationManager: NotificationManager
     let leetCodeSync: LeetCodeSyncInteractor
@@ -50,7 +52,15 @@ final class AppContainer {
     }()
 
     init() {
-        let storage = FileAppStorage()
+        let container: ModelContainer
+        do {
+            container = try ModelContainer(for: AppDataRecord.self)
+        } catch {
+            fatalError("Failed to create SwiftData container: \(error)")
+        }
+        self.modelContainer = container
+
+        let storage = SwiftDataAppStorage(container: container)
         let appStore = AppStateStore(storage: storage)
         self.appStore = appStore
 
@@ -81,10 +91,18 @@ final class AppContainer {
             interactor: ContentInteractor(appStore: appStore)
         )
         self.planPresenter = PlanPresenter(
-            interactor: PlanInteractor(appStore: appStore, notificationManager: notificationManager)
+            interactor: PlanInteractor(
+                appStore: appStore,
+                notificationManager: notificationManager,
+                leetCodeSync: leetCodeSync
+            )
         )
         self.todayPresenter = TodayPresenter(
-            interactor: TodayInteractor(appStore: appStore, notificationManager: notificationManager)
+            interactor: TodayInteractor(
+                appStore: appStore,
+                notificationManager: notificationManager,
+                leetCodeSync: leetCodeSync
+            )
         )
         self.statsPresenter = StatsPresenter(
             interactor: StatsInteractor(appStore: appStore)

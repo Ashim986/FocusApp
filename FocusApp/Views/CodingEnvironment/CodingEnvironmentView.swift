@@ -4,6 +4,7 @@ struct CodingEnvironmentView: View {
     @ObservedObject var presenter: CodingEnvironmentPresenter
     let onBack: () -> Void
     @State var showProblemPicker = false
+    @State var showProblemSidebar = true
     @State var detailTab: ProblemDetailTab = .description
     @State var isBottomPanelCollapsed = false
 
@@ -13,12 +14,26 @@ struct CodingEnvironmentView: View {
             headerBar
 
             // Main Content
-            HSplitView {
-                leftPanel
-                    .frame(minWidth: 280, idealWidth: 360, maxWidth: 420)
+            GeometryReader { proxy in
+                let leftWidth = proxy.size.width * 0.4
+                let rightWidth = max(proxy.size.width - leftWidth, 0)
 
-                rightPanel
-                    .frame(minWidth: 720, idealWidth: 900, maxWidth: .infinity)
+                HSplitView {
+                    leftPanel
+                        .frame(width: leftWidth)
+
+                    rightPanel
+                        .frame(width: rightWidth)
+                }
+                .overlay(alignment: .leading) {
+                    if showProblemSidebar {
+                        problemSidebar
+                            .frame(width: 280)
+                            .transition(.move(edge: .leading))
+                            .zIndex(1)
+                    }
+                }
+                .animation(.easeInOut(duration: 0.2), value: showProblemSidebar)
             }
         }
         .background(Color.appGray900)

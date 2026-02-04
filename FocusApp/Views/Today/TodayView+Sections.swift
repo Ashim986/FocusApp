@@ -1,6 +1,49 @@
 import SwiftUI
 
 extension TodayView {
+    var syncCard: some View {
+        HStack(spacing: 16) {
+            VStack(alignment: .leading, spacing: 4) {
+                Text("LeetCode Sync")
+                    .font(.system(size: 16, weight: .semibold))
+                    .foregroundColor(Color.appGray800)
+
+                Text(presenter.lastSyncResult.isEmpty ? "Keep your progress up to date." : presenter.lastSyncResult)
+                    .font(.system(size: 12))
+                    .foregroundColor(Color.appGray500)
+            }
+
+            Spacer()
+
+            if presenter.isSyncing {
+                ProgressView()
+                    .scaleEffect(0.9)
+            } else {
+                Button(action: { presenter.syncNow() }) {
+                    HStack(spacing: 6) {
+                        Image(systemName: "arrow.triangle.2.circlepath")
+                        Text("Sync Now")
+                    }
+                    .font(.system(size: 12, weight: .semibold))
+                    .foregroundColor(.white)
+                    .padding(.horizontal, 12)
+                    .padding(.vertical, 8)
+                    .background(
+                        RoundedRectangle(cornerRadius: 8)
+                            .fill(Color.appPurple)
+                    )
+                }
+                .buttonStyle(.plain)
+            }
+        }
+        .padding(16)
+        .background(
+            RoundedRectangle(cornerRadius: 12)
+                .fill(Color.white)
+                .shadow(color: Color.black.opacity(0.05), radius: 4, x: 0, y: 2)
+        )
+    }
+
     var habitsCard: some View {
         VStack(alignment: .leading, spacing: 16) {
             HStack {

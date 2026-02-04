@@ -137,18 +137,24 @@ final class TodayPresenter: ObservableObject {
         return days
     }
 
+    private struct HabitDefinition {
+        let id: String
+        let title: String
+        let icon: String
+    }
+
     private static func buildHabits(from data: AppData) -> [HabitViewModel] {
-        let definitions: [(String, String, String)] = [
-            ("dsa", "DSA Study", "book.fill"),
-            ("exercise", "Exercise", "figure.run"),
-            ("other", "Other Study", "graduationcap.fill")
+        let definitions: [HabitDefinition] = [
+            HabitDefinition(id: "dsa", title: "DSA Study", icon: "book.fill"),
+            HabitDefinition(id: "exercise", title: "Exercise", icon: "figure.run"),
+            HabitDefinition(id: "other", title: "Other Study", icon: "graduationcap.fill")
         ]
-        return definitions.map { id, title, icon in
+        return definitions.map { definition in
             HabitViewModel(
-                id: id,
-                title: title,
-                icon: icon,
-                isCompleted: data.getHabitStatus(habit: id)
+                id: definition.id,
+                title: definition.title,
+                icon: definition.icon,
+                isCompleted: data.getHabitStatus(habit: definition.id)
             )
         }
     }

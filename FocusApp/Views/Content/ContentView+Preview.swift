@@ -4,65 +4,72 @@ import SwiftUI
 #if DEBUG
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        guard let container = try? ModelContainer(
-            for: AppDataRecord.self,
-            configurations: ModelConfiguration(isStoredInMemoryOnly: true)
-        ) else {
-            return Text("Preview unavailable")
-        }
-        let appStore = AppStateStore(storage: SwiftDataAppStorage(container: container))
-        let client = PreviewLeetCodeClient()
-        let syncInteractor = LeetCodeSyncInteractor(appStore: appStore, client: client)
-        let codeExecutionService = CodeExecutionService()
-        let codingPresenter = CodingEnvironmentPresenter(
-            interactor: CodingEnvironmentInteractor(
-                appStore: appStore,
-                leetCodeClient: client,
-                executionService: codeExecutionService
-            )
-        )
-        let presenter = ContentPresenter(interactor: ContentInteractor(appStore: appStore))
-        let router = ContentRouter(
-            makePlan: {
-                let planPresenter = PlanPresenter(
-                    interactor: PlanInteractor(
+        Group {
+            if let container = try? ModelContainer(
+                for: AppDataRecord.self,
+                configurations: ModelConfiguration(isStoredInMemoryOnly: true)
+            ) {
+                let appStore = AppStateStore(storage: SwiftDataAppStorage(container: container))
+                let client = PreviewLeetCodeClient()
+                let syncInteractor = LeetCodeSyncInteractor(appStore: appStore, client: client)
+                let codeExecutionService = CodeExecutionService()
+                let codingPresenter = CodingEnvironmentPresenter(
+                    interactor: CodingEnvironmentInteractor(
                         appStore: appStore,
-                        notificationManager: NotificationManager(
-                            scheduler: SystemNotificationScheduler(),
-                            store: UserDefaultsNotificationSettingsStore()
-                        ),
-                        leetCodeSync: syncInteractor
+                        leetCodeClient: client,
+                        executionService: codeExecutionService,
+                        solutionStore: InMemorySolutionStore()
                     )
                 )
-                return PlanView(presenter: planPresenter)
-            },
-            makeToday: { codeBinding in
-                let todayPresenter = TodayPresenter(
-                    interactor: TodayInteractor(
-                        appStore: appStore,
-                        notificationManager: NotificationManager(
-                            scheduler: SystemNotificationScheduler(),
-                            store: UserDefaultsNotificationSettingsStore()
-                        ),
-                        leetCodeSync: syncInteractor
-                    )
+                let presenter = ContentPresenter(interactor: ContentInteractor(appStore: appStore))
+                let router = ContentRouter(
+                    makePlan: {
+                        let planPresenter = PlanPresenter(
+                            interactor: PlanInteractor(
+                                appStore: appStore,
+                                notificationManager: NotificationManager(
+                                    scheduler: SystemNotificationScheduler(),
+                                    store: UserDefaultsNotificationSettingsStore()
+                                ),
+                                leetCodeSync: syncInteractor
+                            )
+                        )
+                        return PlanView(presenter: planPresenter)
+                    },
+                    makeToday: { codeBinding in
+                        let todayPresenter = TodayPresenter(
+                            interactor: TodayInteractor(
+                                appStore: appStore,
+                                notificationManager: NotificationManager(
+                                    scheduler: SystemNotificationScheduler(),
+                                    store: UserDefaultsNotificationSettingsStore()
+                                ),
+                                leetCodeSync: syncInteractor
+                            )
+                        )
+                        return TodayView(
+                            presenter: todayPresenter,
+                            showCodeEnvironment: codeBinding
+                        )
+                    },
+                    makeStats: {
+                        let statsPresenter = StatsPresenter(interactor: StatsInteractor(appStore: appStore))
+                        return StatsView(presenter: statsPresenter)
+                    },
+                    makeCoding: { binding in
+                        CodingEnvironmentView(
+                            presenter: codingPresenter,
+                            onBack: { binding.wrappedValue = false }
+                        )
+                    }
                 )
-                return TodayView(
-                    presenter: todayPresenter,
-                    showCodeEnvironment: codeBinding
-                )
-            },
-            makeStats: {
-                let statsPresenter = StatsPresenter(interactor: StatsInteractor(appStore: appStore))
-                return StatsView(presenter: statsPresenter)
-            },
-            makeCoding: { binding in
-                CodingEnvironmentView(presenter: codingPresenter, onBack: { binding.wrappedValue = false })
-            }
-        )
 
-        return ContentView(presenter: presenter, router: router)
-            .frame(width: 800, height: 600)
+                ContentView(presenter: presenter, router: router)
+                    .frame(width: 800, height: 600)
+            } else {
+                Text("Preview unavailable")
+            }
+        }
     }
 }
 

@@ -21,7 +21,9 @@ extension TodayView {
                 ProgressView()
                     .scaleEffect(0.9)
             } else {
-                Button(action: { presenter.syncNow() }) {
+                Button(action: {
+                    presenter.syncNow()
+                }, label: {
                     HStack(spacing: 6) {
                         Image(systemName: "arrow.triangle.2.circlepath")
                         Text(L10n.Today.syncNow)
@@ -34,7 +36,7 @@ extension TodayView {
                         RoundedRectangle(cornerRadius: 8)
                             .fill(Color.appPurple)
                     )
-                }
+                })
                 .buttonStyle(.plain)
             }
         }
@@ -55,9 +57,12 @@ extension TodayView {
 
                 Spacer()
 
-                Text(L10n.Today.habitsCompletedFormat(
-                                       presenter.habitsCompletedCount,
-                                       presenter.habits.count))
+                Text(
+                    L10n.Today.habitsCompletedFormat(
+                        presenter.habitsCompletedCount,
+                        presenter.habits.count
+                    )
+                )
                     .font(.system(size: 13))
                     .foregroundColor(Color.appGray500)
             }
@@ -79,7 +84,7 @@ extension TodayView {
     func habitRow(_ habit: HabitViewModel) -> some View {
         Button(action: {
             presenter.toggleHabit(habit.id)
-        }) {
+        }, label: {
             HStack(spacing: 12) {
                 ZStack {
                     Circle()
@@ -119,7 +124,7 @@ extension TodayView {
                 RoundedRectangle(cornerRadius: 8)
                     .fill(habit.isCompleted ? Color.appGreenLight.opacity(0.5) : Color.appGray50)
             )
-        }
+        })
         .buttonStyle(.plain)
     }
 

@@ -16,13 +16,13 @@ struct TomorrowProblemRow: View {
                 if let url = URL(string: problem.url) {
                     NSWorkspace.shared.open(url)
                 }
-            }) {
+            }, label: {
                 Text(problem.name)
                     .font(.system(size: 10))
                     .foregroundColor(.white.opacity(0.6))
                     .lineLimit(1)
                     .underline(isHovering)
-            }
+            })
             .buttonStyle(.plain)
             .onHover { hovering in
                 isHovering = hovering

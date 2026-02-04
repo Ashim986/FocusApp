@@ -212,6 +212,7 @@ indirect enum LeetCodeValueType: Equatable {
     case treeNode
     case unknown(String)
 
+    // swiftlint:disable cyclomatic_complexity
     init(raw: String) {
         let trimmed = raw.trimmingCharacters(in: .whitespacesAndNewlines)
         let lower = trimmed.lowercased()
@@ -251,6 +252,7 @@ indirect enum LeetCodeValueType: Equatable {
             self = .unknown(trimmed)
         }
     }
+    // swiftlint:enable cyclomatic_complexity
 
     var needsListNode: Bool {
         switch self {

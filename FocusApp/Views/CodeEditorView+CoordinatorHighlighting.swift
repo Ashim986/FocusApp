@@ -62,13 +62,21 @@ extension CodeEditorView.Coordinator {
             guard let lineRange = lineRanges[diagnostic.line] else { continue }
             textStorage.addAttribute(.backgroundColor, value: lineBackground, range: lineRange)
             if let underlineRange = underlineRange(for: diagnostic, in: text, lineRange: lineRange) {
-                textStorage.addAttribute(.underlineStyle, value: NSUnderlineStyle.single.rawValue, range: underlineRange)
+                textStorage.addAttribute(
+                    .underlineStyle,
+                    value: NSUnderlineStyle.single.rawValue,
+                    range: underlineRange
+                )
                 textStorage.addAttribute(.underlineColor, value: underlineColor, range: underlineRange)
             }
         }
     }
 
-    private func underlineRange(for diagnostic: CodeEditorDiagnostic, in text: NSString, lineRange: NSRange) -> NSRange? {
+    private func underlineRange(
+        for diagnostic: CodeEditorDiagnostic,
+        in text: NSString,
+        lineRange: NSRange
+    ) -> NSRange? {
         guard lineRange.length > 0 else { return nil }
         guard let column = diagnostic.column, column > 0 else {
             return lineRange
@@ -84,7 +92,11 @@ extension CodeEditorView.Coordinator {
         let remaining = lineString.substring(from: safeOffset)
 
         if let match = try? NSRegularExpression(pattern: "^[A-Za-z0-9_]+", options: []),
-           let first = match.firstMatch(in: remaining, options: [], range: NSRange(location: 0, length: (remaining as NSString).length)) {
+           let first = match.firstMatch(
+            in: remaining,
+            options: [],
+            range: NSRange(location: 0, length: (remaining as NSString).length)
+           ) {
             let length = min(first.range.length, maxLength)
             return NSRange(location: start, length: max(1, length))
         }
@@ -109,14 +121,19 @@ extension CodeEditorView.Coordinator {
             "String", "Int", "Double", "Float", "Bool", "Array", "Dictionary",
             "Set", "Optional", "Any", "AnyObject", "Void", "Never", "Error",
             "Result", "UUID", "Data", "Date", "URL", "Character", "Substring",
-            "Int8", "Int16", "Int32", "Int64", "UInt", "UInt8", "UInt16", "UInt32", "UInt64",
+            "Int8", "Int16", "Int32", "Int64", "UInt", "UInt8", "UInt16", "UInt32",
+            "UInt64",
             "CGFloat", "CGPoint", "CGSize", "CGRect", "NSRange"
         ]
 
         highlightKeywords(keywords, in: textStorage, text: text, color: colors.keyword)
         highlightKeywords(types, in: textStorage, text: text, color: colors.type)
         highlightFunctions(in: textStorage, text: text)
-        highlightStrings(pattern: "\"[^\"\\\\]*(?:\\\\.[^\"\\\\]*)*\"", in: textStorage, text: text)
+        highlightStrings(
+            pattern: "\"[^\"\\\\]*(?:\\\\.[^\"\\\\]*)*\"",
+            in: textStorage,
+            text: text
+        )
         highlightMultilineStrings(in: textStorage, text: text)
         highlightNumbers(in: textStorage, text: text)
         highlightComments(patterns: ["//.*$", "/\\*[\\s\\S]*?\\*/"], in: textStorage, text: text)
@@ -141,7 +158,11 @@ extension CodeEditorView.Coordinator {
         highlightKeywords(keywords, in: textStorage, text: text, color: colors.keyword)
         highlightKeywords(types, in: textStorage, text: text, color: colors.type)
         highlightPythonFunctions(in: textStorage, text: text)
-        highlightStrings(pattern: "\"[^\"\\\\]*(?:\\\\.[^\"\\\\]*)*\"|'[^'\\\\]*(?:\\\\.[^'\\\\]*)*'", in: textStorage, text: text)
+        highlightStrings(
+            pattern: "\"[^\"\\\\]*(?:\\\\.[^\"\\\\]*)*\"|'[^'\\\\]*(?:\\\\.[^'\\\\]*)*'",
+            in: textStorage,
+            text: text
+        )
         highlightPythonMultilineStrings(in: textStorage, text: text)
         highlightNumbers(in: textStorage, text: text)
         highlightComments(patterns: ["#.*$"], in: textStorage, text: text)
@@ -155,10 +176,17 @@ extension CodeEditorView.Coordinator {
         }
     }
 
-    private func highlightPattern(_ pattern: String, in textStorage: NSTextStorage, text: String, color: NSColor, options: NSRegularExpression.Options = []) {
+    private func highlightPattern(
+        _ pattern: String,
+        in textStorage: NSTextStorage,
+        text: String,
+        color: NSColor,
+        options: NSRegularExpression.Options = []
+    ) {
         guard let regex = try? NSRegularExpression(pattern: pattern, options: options) else { return }
 
-        let matches = regex.matches(in: text, options: [], range: NSRange(location: 0, length: (text as NSString).length))
+        let range = NSRange(location: 0, length: (text as NSString).length)
+        let matches = regex.matches(in: text, options: [], range: range)
         for match in matches {
             textStorage.addAttribute(.foregroundColor, value: color, range: match.range)
         }
@@ -170,11 +198,10 @@ extension CodeEditorView.Coordinator {
 
         let callPattern = "\\b([a-zA-Z_][a-zA-Z0-9_]*)(?=\\s*\\()"
         if let regex = try? NSRegularExpression(pattern: callPattern, options: []) {
-            let matches = regex.matches(in: text, options: [], range: NSRange(location: 0, length: (text as NSString).length))
-            for match in matches {
-                if match.numberOfRanges > 1 {
-                    textStorage.addAttribute(.foregroundColor, value: colors.function, range: match.range(at: 1))
-                }
+            let range = NSRange(location: 0, length: (text as NSString).length)
+            let matches = regex.matches(in: text, options: [], range: range)
+            for match in matches where match.numberOfRanges > 1 {
+                textStorage.addAttribute(.foregroundColor, value: colors.function, range: match.range(at: 1))
             }
         }
     }
@@ -185,11 +212,10 @@ extension CodeEditorView.Coordinator {
 
         let callPattern = "\\b([a-zA-Z_][a-zA-Z0-9_]*)(?=\\s*\\()"
         if let regex = try? NSRegularExpression(pattern: callPattern, options: []) {
-            let matches = regex.matches(in: text, options: [], range: NSRange(location: 0, length: (text as NSString).length))
-            for match in matches {
-                if match.numberOfRanges > 1 {
-                    textStorage.addAttribute(.foregroundColor, value: colors.function, range: match.range(at: 1))
-                }
+            let range = NSRange(location: 0, length: (text as NSString).length)
+            let matches = regex.matches(in: text, options: [], range: range)
+            for match in matches where match.numberOfRanges > 1 {
+                textStorage.addAttribute(.foregroundColor, value: colors.function, range: match.range(at: 1))
             }
         }
     }
@@ -200,13 +226,25 @@ extension CodeEditorView.Coordinator {
 
     private func highlightMultilineStrings(in textStorage: NSTextStorage, text: String) {
         let pattern = "\"\"\"|[\\s\\S]*?\"\"\""
-        highlightPattern(pattern, in: textStorage, text: text, color: colors.string, options: [.dotMatchesLineSeparators])
+        highlightPattern(
+            pattern,
+            in: textStorage,
+            text: text,
+            color: colors.string,
+            options: [.dotMatchesLineSeparators]
+        )
     }
 
     private func highlightPythonMultilineStrings(in textStorage: NSTextStorage, text: String) {
         let patterns = ["\"\"\"[\\s\\S]*?\"\"\"", "'''[\\s\\S]*?'''"]
         for pattern in patterns {
-            highlightPattern(pattern, in: textStorage, text: text, color: colors.string, options: [.dotMatchesLineSeparators])
+            highlightPattern(
+                pattern,
+                in: textStorage,
+                text: text,
+                color: colors.string,
+                options: [.dotMatchesLineSeparators]
+            )
         }
     }
 

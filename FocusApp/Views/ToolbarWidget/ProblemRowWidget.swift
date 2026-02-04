@@ -18,14 +18,14 @@ struct ProblemRowWidget: View {
                 if let url = URL(string: problem.url) {
                     NSWorkspace.shared.open(url)
                 }
-            }) {
+            }, label: {
                 Text(problem.name)
                     .font(.system(size: 11))
                     .foregroundColor(isCompleted ? .gray : .white.opacity(0.9))
                     .strikethrough(isCompleted, color: .gray)
                     .lineLimit(1)
                     .underline(isHovering)
-            }
+            })
             .buttonStyle(.plain)
             .onHover { hovering in
                 isHovering = hovering
@@ -52,11 +52,11 @@ struct ProblemRowWidget: View {
                 if let url = URL(string: problem.url) {
                     NSWorkspace.shared.open(url)
                 }
-            }) {
+            }, label: {
                 Image(systemName: "arrow.up.right.square")
                     .font(.system(size: 10))
                     .foregroundColor(.blue.opacity(0.7))
-            }
+            })
             .buttonStyle(.plain)
             .onHover { hovering in
                 if hovering {

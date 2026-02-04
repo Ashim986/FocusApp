@@ -1,0 +1,44 @@
+{
+  "/Users/ashimdahal/Documents/FocusApp/FocusApp/Views/Settings/SettingsView+Preview.swift" : {
+    "const-values" : "/Users/ashimdahal/Documents/FocusApp/.xcode_derived_data/Build/Intermediates.noindex/FocusApp.build/Debug/FocusApp.build/Objects-normal/arm64/SettingsView+Preview.swiftconstvalues",
+    "dependencies" : "/Users/ashimdahal/Documents/FocusApp/.xcode_derived_data/Build/Intermediates.noindex/FocusApp.build/Debug/FocusApp.build/Objects-normal/arm64/SettingsView+Preview.d",
+    "diagnostics" : "/Users/ashimdahal/Documents/FocusApp/.xcode_derived_data/Build/Intermediates.noindex/FocusApp.build/Debug/FocusApp.build/Objects-normal/arm64/SettingsView+Preview.dia",
+    "object" : "/Users/ashimdahal/Documents/FocusApp/.xcode_derived_data/Build/Intermediates.noindex/FocusApp.build/Debug/FocusApp.build/Objects-normal/arm64/SettingsView+Preview.o",
+    "swift-dependencies" : "/Users/ashimdahal/Documents/FocusApp/.xcode_derived_data/Build/Intermediates.noindex/FocusApp.build/Debug/FocusApp.build/Objects-normal/arm64/SettingsView+Preview.swiftdeps"
+  },
+  "/Users/ashimdahal/Documents/FocusApp/FocusApp/Views/Settings/SettingsView+Validation.swift" : {
+    "const-values" : "/Users/ashimdahal/Documents/FocusApp/.xcode_derived_data/Build/Intermediates.noindex/FocusApp.build/Debug/FocusApp.build/Objects-normal/arm64/SettingsView+Validation.swiftconstvalues",
+    "dependencies" : "/Users/ashimdahal/Documents/FocusApp/.xcode_derived_data/Build/Intermediates.noindex/FocusApp.build/Debug/FocusApp.build/Objects-normal/arm64/SettingsView+Validation.d",
+    "diagnostics" : "/Users/ashimdahal/Documents/FocusApp/.xcode_derived_data/Build/Intermediates.noindex/FocusApp.build/Debug/FocusApp.build/Objects-normal/arm64/SettingsView+Validation.dia",
+    "object" : "/Users/ashimdahal/Documents/FocusApp/.xcode_derived_data/Build/Intermediates.noindex/FocusApp.build/Debug/FocusApp.build/Objects-normal/arm64/SettingsView+Validation.o",
+    "swift-dependencies" : "/Users/ashimdahal/Documents/FocusApp/.xcode_derived_data/Build/Intermediates.noindex/FocusApp.build/Debug/FocusApp.build/Objects-normal/arm64/SettingsView+Validation.swiftdeps"
+  },
+  "/Users/ashimdahal/Documents/FocusApp/FocusApp/Views/Stats/StatsView+Preview.swift" : {
+    "const-values" : "/Users/ashimdahal/Documents/FocusApp/.xcode_derived_data/Build/Intermediates.noindex/FocusApp.build/Debug/FocusApp.build/Objects-normal/arm64/StatsView+Preview.swiftconstvalues",
+    "dependencies" : "/Users/ashimdahal/Documents/FocusApp/.xcode_derived_data/Build/Intermediates.noindex/FocusApp.build/Debug/FocusApp.build/Objects-normal/arm64/StatsView+Preview.d",
+    "diagnostics" : "/Users/ashimdahal/Documents/FocusApp/.xcode_derived_data/Build/Intermediates.noindex/FocusApp.build/Debug/FocusApp.build/Objects-normal/arm64/StatsView+Preview.dia",
+    "object" : "/Users/ashimdahal/Documents/FocusApp/.xcode_derived_data/Build/Intermediates.noindex/FocusApp.build/Debug/FocusApp.build/Objects-normal/arm64/StatsView+Preview.o",
+    "swift-dependencies" : "/Users/ashimdahal/Documents/FocusApp/.xcode_derived_data/Build/Intermediates.noindex/FocusApp.build/Debug/FocusApp.build/Objects-normal/arm64/StatsView+Preview.swiftdeps"
+  },
+  "/Users/ashimdahal/Documents/FocusApp/FocusApp/Views/Stats/StatsView+Sections.swift" : {
+    "const-values" : "/Users/ashimdahal/Documents/FocusApp/.xcode_derived_data/Build/Intermediates.noindex/FocusApp.build/Debug/FocusApp.build/Objects-normal/arm64/StatsView+Sections.swiftconstvalues",
+    "dependencies" : "/Users/ashimdahal/Documents/FocusApp/.xcode_derived_data/Build/Intermediates.noindex/FocusApp.build/Debug/FocusApp.build/Objects-normal/arm64/StatsView+Sections.d",
+    "diagnostics" : "/Users/ashimdahal/Documents/FocusApp/.xcode_derived_data/Build/Intermediates.noindex/FocusApp.build/Debug/FocusApp.build/Objects-normal/arm64/StatsView+Sections.dia",
+    "object" : "/Users/ashimdahal/Documents/FocusApp/.xcode_derived_data/Build/Intermediates.noindex/FocusApp.build/Debug/FocusApp.build/Objects-normal/arm64/StatsView+Sections.o",
+    "swift-dependencies" : "/Users/ashimdahal/Documents/FocusApp/.xcode_derived_data/Build/Intermediates.noindex/FocusApp.build/Debug/FocusApp.build/Objects-normal/arm64/StatsView+Sections.swiftdeps"
+  },
+  "/Users/ashimdahal/Documents/FocusApp/FocusApp/Views/Today/TodayView+Preview.swift" : {
+    "const-values" : "/Users/ashimdahal/Documents/FocusApp/.xcode_derived_data/Build/Intermediates.noindex/FocusApp.build/Debug/FocusApp.build/Objects-normal/arm64/TodayView+Preview.swiftconstvalues",
+    "dependencies" : "/Users/ashimdahal/Documents/FocusApp/.xcode_derived_data/Build/Intermediates.noindex/FocusApp.build/Debug/FocusApp.build/Objects-normal/arm64/TodayView+Preview.d",
+    "diagnostics" : "/Users/ashimdahal/Documents/FocusApp/.xcode_derived_data/Build/Intermediates.noindex/FocusApp.build/Debug/FocusApp.build/Objects-normal/arm64/TodayView+Preview.dia",
+    "object" : "/Users/ashimdahal/Documents/FocusApp/.xcode_derived_data/Build/Intermediates.noindex/FocusApp.build/Debug/FocusApp.build/Objects-normal/arm64/TodayView+Preview.o",
+    "swift-dependencies" : "/Users/ashimdahal/Documents/FocusApp/.xcode_derived_data/Build/Intermediates.noindex/FocusApp.build/Debug/FocusApp.build/Objects-normal/arm64/TodayView+Preview.swiftdeps"
+  },
+  "/Users/ashimdahal/Documents/FocusApp/FocusApp/Views/Today/TodayView+Sections.swift" : {
+    "const-values" : "/Users/ashimdahal/Documents/FocusApp/.xcode_derived_data/Build/Intermediates.noindex/FocusApp.build/Debug/FocusApp.build/Objects-normal/arm64/TodayView+Sections.swiftconstvalues",
+    "dependencies" : "/Users/ashimdahal/Documents/FocusApp/.xcode_derived_data/Build/Intermediates.noindex/FocusApp.build/Debug/FocusApp.build/Objects-normal/arm64/TodayView+Sections.d",
+    "diagnostics" : "/Users/ashimdahal/Documents/FocusApp/.xcode_derived_data/Build/Intermediates.noindex/FocusApp.build/Debug/FocusApp.build/Objects-normal/arm64/TodayView+Sections.dia",
+    "object" : "/Users/ashimdahal/Documents/FocusApp/.xcode_derived_data/Build/Intermediates.noindex/FocusApp.build/Debug/FocusApp.build/Objects-normal/arm64/TodayView+Sections.o",
+    "swift-dependencies" : "/Users/ashimdahal/Documents/FocusApp/.xcode_derived_data/Build/Intermediates.noindex/FocusApp.build/Debug/FocusApp.build/Objects-normal/arm64/TodayView+Sections.swiftdeps"
+  }
+}

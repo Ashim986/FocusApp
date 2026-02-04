@@ -6,6 +6,7 @@ excluded:
   - Pods
   - .build
   - DerivedData
+  - .xcode_derived_data
   - fastlane
   - Generated
   - "**/*.generated.swift"

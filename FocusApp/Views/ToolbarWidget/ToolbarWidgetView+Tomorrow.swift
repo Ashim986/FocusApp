@@ -7,7 +7,7 @@ extension ToolbarWidgetView {
                 withAnimation(.easeInOut(duration: 0.2)) {
                     showTomorrow.toggle()
                 }
-            }) {
+            }, label: {
                 HStack {
                     Image(systemName: showTomorrow ? "chevron.down" : "chevron.right")
                         .font(.system(size: 9))
@@ -27,12 +27,12 @@ extension ToolbarWidgetView {
                     Spacer()
 
                     if presenter.hasTomorrow {
-                        Text(L10n.Widget.tomorrowDayFormat( presenter.tomorrowDayNumber))
+                        Text(L10n.Widget.tomorrowDayFormat(presenter.tomorrowDayNumber))
                             .font(.system(size: 10))
                             .foregroundColor(.gray)
                     }
                 }
-            }
+            })
             .buttonStyle(.plain)
             .padding(.vertical, 4)
 

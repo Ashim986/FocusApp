@@ -69,18 +69,22 @@ extension FocusOverlay {
             }
             .buttonStyle(.plain)
 
-            Button(action: { closeSession() }) {
+            Button(action: {
+                closeSession()
+            }, label: {
                 Text(L10n.Focus.durationCancel)
                     .font(.system(size: 14))
                     .foregroundColor(.white.opacity(0.5))
-            }
+            })
             .buttonStyle(.plain)
         }
     }
 
     func durationButton(minutes: Int) -> some View {
-        Button(action: { presenter.duration = minutes }) {
-            Text(L10n.Focus.durationButtonFormat( minutes))
+        Button(action: {
+            presenter.duration = minutes
+        }, label: {
+            Text(L10n.Focus.durationButtonFormat(minutes))
                 .font(.system(size: 14, weight: presenter.duration == minutes ? .semibold : .regular))
                 .foregroundColor(presenter.duration == minutes ? Color.appPurple : .white)
                 .padding(.horizontal, 16)
@@ -89,7 +93,7 @@ extension FocusOverlay {
                     RoundedRectangle(cornerRadius: 8)
                         .fill(presenter.duration == minutes ? Color.white : Color.white.opacity(0.1))
                 )
-        }
+        })
         .buttonStyle(.plain)
     }
 }

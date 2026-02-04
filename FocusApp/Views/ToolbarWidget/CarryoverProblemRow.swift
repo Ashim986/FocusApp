@@ -9,11 +9,11 @@ struct CarryoverProblemRow: View {
 
     var body: some View {
         HStack(spacing: 8) {
-            Button(action: onToggle) {
+            Button(action: onToggle, label: {
                 Image(systemName: "circle")
                     .font(.system(size: 12))
                     .foregroundColor(.orange.opacity(0.6))
-            }
+            })
             .buttonStyle(.plain)
             .onHover { hovering in
                 if hovering {
@@ -27,13 +27,13 @@ struct CarryoverProblemRow: View {
                 if let url = URL(string: problem.url) {
                     NSWorkspace.shared.open(url)
                 }
-            }) {
+            }, label: {
                 Text(problem.name)
                     .font(.system(size: 10))
                     .foregroundColor(.orange.opacity(0.9))
                     .lineLimit(1)
                     .underline(isHovering)
-            }
+            })
             .buttonStyle(.plain)
             .onHover { hovering in
                 isHovering = hovering

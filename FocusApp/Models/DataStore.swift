@@ -98,7 +98,9 @@ final class AppStateStore: ObservableObject {
             languageSlug: language.langSlug,
             code: code,
             createdAt: Date(),
-            algorithmTag: algorithmTag?.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty == true ? nil : algorithmTag
+            algorithmTag: algorithmTag?.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty == true
+                ? nil
+                : algorithmTag
         )
         entries.insert(submission, at: 0)
         data.submissions[key] = entries

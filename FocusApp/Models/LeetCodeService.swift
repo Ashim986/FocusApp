@@ -198,10 +198,8 @@ final class LeetCodeRestClient: LeetCodeClientProtocol {
             if submissions.isEmpty { break }
 
             let beforeCount = slugs.count
-            for submission in submissions {
-                if seen.insert(submission.titleSlug).inserted {
-                    slugs.insert(submission.titleSlug)
-                }
+            for submission in submissions where seen.insert(submission.titleSlug).inserted {
+                slugs.insert(submission.titleSlug)
             }
             if slugs.count == beforeCount { break }
             if submissions.count < pageSize { break }
@@ -296,11 +294,19 @@ final class LeetCodeRestClient: LeetCodeClientProtocol {
         )
     }
 
-    private func mergeProblemContent(primary: QuestionContent, fallback: QuestionContent, slug: String) -> QuestionContent {
+    private func mergeProblemContent(
+        primary: QuestionContent,
+        fallback: QuestionContent,
+        slug: String
+    ) -> QuestionContent {
         let title = primary.title.isEmpty ? fallback.title : primary.title
         let content = primary.content.isEmpty ? fallback.content : primary.content
-        let exampleTestcases = primary.exampleTestcases.isEmpty ? fallback.exampleTestcases : primary.exampleTestcases
-        let sampleTestCase = primary.sampleTestCase.isEmpty ? fallback.sampleTestCase : primary.sampleTestCase
+        let exampleTestcases = primary.exampleTestcases.isEmpty
+            ? fallback.exampleTestcases
+            : primary.exampleTestcases
+        let sampleTestCase = primary.sampleTestCase.isEmpty
+            ? fallback.sampleTestCase
+            : primary.sampleTestCase
         let difficulty = primary.difficulty == "Unknown" ? fallback.difficulty : primary.difficulty
         let snippets = primary.codeSnippets.isEmpty ? fallback.codeSnippets : primary.codeSnippets
         let metaData = primary.metaData ?? fallback.metaData

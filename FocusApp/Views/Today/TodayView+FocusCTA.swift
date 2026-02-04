@@ -18,7 +18,7 @@ extension TodayView {
 
                 Button(action: {
                     showCodeEnvironment = true
-                }) {
+                }, label: {
                     HStack(spacing: 6) {
                         Image(systemName: "chevron.left.slash.chevron.right")
                         Text(L10n.Today.ctaButton)
@@ -31,7 +31,7 @@ extension TodayView {
                         RoundedRectangle(cornerRadius: 8)
                             .fill(Color.white)
                     )
-                }
+                })
                 .buttonStyle(.plain)
             }
 

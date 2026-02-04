@@ -40,7 +40,7 @@ extension FocusOverlay {
                 .foregroundColor(.white.opacity(0.8))
 
             HStack(spacing: 20) {
-                Button(action: presenter.togglePause) {
+                Button(action: presenter.togglePause, label: {
                     HStack(spacing: 8) {
                         Image(systemName: presenter.isPaused ? "play.fill" : "pause.fill")
                         Text(presenter.isPaused
@@ -55,10 +55,12 @@ extension FocusOverlay {
                         RoundedRectangle(cornerRadius: 8)
                             .fill(Color.white.opacity(0.15))
                     )
-                }
+                })
                 .buttonStyle(.plain)
 
-                Button(action: { closeSession() }) {
+                Button(action: {
+                    closeSession()
+                }, label: {
                     HStack(spacing: 8) {
                         Image(systemName: "xmark")
                         Text(L10n.Focus.timerEndSession)
@@ -71,7 +73,7 @@ extension FocusOverlay {
                         RoundedRectangle(cornerRadius: 8)
                             .strokeBorder(Color.appRed.opacity(0.5), lineWidth: 1)
                     )
-                }
+                })
                 .buttonStyle(.plain)
             }
         }

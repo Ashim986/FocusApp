@@ -4,25 +4,27 @@ extension CodingEnvironmentView {
     var headerBar: some View {
         HStack(spacing: 0) {
             HStack(spacing: 12) {
-                Button(action: onBack) {
+                Button(action: onBack, label: {
                     Image(systemName: "xmark")
                         .font(.system(size: 12, weight: .medium))
                         .foregroundColor(Color.appGray400)
                         .frame(width: 28, height: 28)
                         .background(Color.appGray800)
                         .clipShape(RoundedRectangle(cornerRadius: 6))
-                }
+                })
                 .buttonStyle(.plain)
                 .help(L10n.Coding.exitHelp)
 
-                Button(action: { showProblemSidebar.toggle() }) {
+                Button(action: {
+                    showProblemSidebar.toggle()
+                }, label: {
                     Image(systemName: "sidebar.leading")
                         .font(.system(size: 12, weight: .medium))
                         .foregroundColor(Color.appGray400)
                         .frame(width: 28, height: 28)
                         .background(Color.appGray800)
                         .clipShape(RoundedRectangle(cornerRadius: 6))
-                }
+                })
                 .buttonStyle(.plain)
                 .help(showProblemSidebar
                       ? L10n.Coding.hideProblems
@@ -56,7 +58,7 @@ extension CodingEnvironmentView {
                 }
 
                 if presenter.isRunning {
-                    Button(action: presenter.stopExecution) {
+                    Button(action: presenter.stopExecution, label: {
                         HStack(spacing: 5) {
                             Image(systemName: "stop.fill")
                                 .font(.system(size: 9))
@@ -68,11 +70,11 @@ extension CodingEnvironmentView {
                         .padding(.vertical, 7)
                         .background(Color.appRed)
                         .clipShape(RoundedRectangle(cornerRadius: 6))
-                    }
+                    })
                     .buttonStyle(.plain)
                     .keyboardShortcut(".", modifiers: .command)
                 } else {
-                    Button(action: presenter.runCode) {
+                    Button(action: presenter.runCode, label: {
                         HStack(spacing: 5) {
                             Image(systemName: "play.fill")
                                 .font(.system(size: 9))
@@ -84,11 +86,11 @@ extension CodingEnvironmentView {
                         .padding(.vertical, 7)
                         .background(Color.appGray700)
                         .clipShape(RoundedRectangle(cornerRadius: 6))
-                    }
+                    })
                     .buttonStyle(.plain)
                     .keyboardShortcut("r", modifiers: .command)
 
-                    Button(action: presenter.runTests) {
+                    Button(action: presenter.runTests, label: {
                         HStack(spacing: 5) {
                             Image(systemName: "checkmark.circle.fill")
                                 .font(.system(size: 10))
@@ -100,7 +102,7 @@ extension CodingEnvironmentView {
                         .padding(.vertical, 7)
                         .background(Color.appGreen)
                         .clipShape(RoundedRectangle(cornerRadius: 6))
-                    }
+                    })
                     .buttonStyle(.plain)
                     .disabled(presenter.testCases.isEmpty)
                     .opacity(presenter.testCases.isEmpty ? 0.5 : 1)
@@ -149,11 +151,11 @@ extension CodingEnvironmentView {
             Button(action: {
                 focusPresenter.duration = 30
                 focusPresenter.startTimer()
-            }) {
+            }, label: {
                 Image(systemName: "arrow.clockwise")
                     .font(.system(size: 10, weight: .semibold))
                     .foregroundColor(Color.appGray400)
-            }
+            })
             .buttonStyle(.plain)
             .help(L10n.Coding.timerRestartHelp)
         }

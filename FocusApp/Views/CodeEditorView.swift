@@ -11,11 +11,21 @@ struct CodeEditorView: NSViewRepresentable {
     @Binding var code: String
     let language: ProgrammingLanguage
     let diagnostics: [CodeEditorDiagnostic]
+    let isEditable: Bool
+    let showsLineNumbers: Bool
 
-    init(code: Binding<String>, language: ProgrammingLanguage, diagnostics: [CodeEditorDiagnostic] = []) {
+    init(
+        code: Binding<String>,
+        language: ProgrammingLanguage,
+        diagnostics: [CodeEditorDiagnostic] = [],
+        isEditable: Bool = true,
+        showsLineNumbers: Bool = true
+    ) {
         self._code = code
         self.language = language
         self.diagnostics = diagnostics
+        self.isEditable = isEditable
+        self.showsLineNumbers = showsLineNumbers
     }
 
     func makeNSView(context: Context) -> NSScrollView {
@@ -25,10 +35,10 @@ struct CodeEditorView: NSViewRepresentable {
             return scrollView
         }
 
-        textView.isEditable = true
+        textView.isEditable = isEditable
         textView.isSelectable = true
         textView.isRichText = true
-        textView.allowsUndo = true
+        textView.allowsUndo = isEditable
 
         let font = NSFont.monospacedSystemFont(ofSize: 13, weight: .regular)
         textView.font = font
@@ -55,11 +65,17 @@ struct CodeEditorView: NSViewRepresentable {
         context.coordinator.language = language
         context.coordinator.diagnostics = diagnostics
 
-        let ruler = CodeEditorLineNumberRulerView(textView: textView)
-        ruler.diagnostics = diagnostics
-        scrollView.hasVerticalRuler = true
-        scrollView.rulersVisible = true
-        scrollView.verticalRulerView = ruler
+        if showsLineNumbers {
+            let ruler = CodeEditorLineNumberRulerView(textView: textView)
+            ruler.diagnostics = diagnostics
+            scrollView.hasVerticalRuler = true
+            scrollView.rulersVisible = true
+            scrollView.verticalRulerView = ruler
+        } else {
+            scrollView.hasVerticalRuler = false
+            scrollView.rulersVisible = false
+            scrollView.verticalRulerView = nil
+        }
 
         textView.string = code
         context.coordinator.applySyntaxHighlighting()
@@ -69,6 +85,8 @@ struct CodeEditorView: NSViewRepresentable {
 
     func updateNSView(_ nsView: NSScrollView, context: Context) {
         guard let textView = nsView.documentView as? NSTextView else { return }
+        textView.isEditable = isEditable
+        textView.allowsUndo = isEditable
 
         if context.coordinator.language != language {
             context.coordinator.language = language
@@ -79,10 +97,16 @@ struct CodeEditorView: NSViewRepresentable {
 
         context.coordinator.diagnostics = diagnostics
         context.coordinator.applyErrorHighlights()
-        if let ruler = nsView.verticalRulerView as? CodeEditorLineNumberRulerView {
-            ruler.diagnostics = diagnostics
+        if showsLineNumbers {
+            if let ruler = nsView.verticalRulerView as? CodeEditorLineNumberRulerView {
+                ruler.diagnostics = diagnostics
+            } else {
+                nsView.verticalRulerView?.needsDisplay = true
+            }
         } else {
-            nsView.verticalRulerView?.needsDisplay = true
+            nsView.hasVerticalRuler = false
+            nsView.rulersVisible = false
+            nsView.verticalRulerView = nil
         }
 
         if textView.string != code && !context.coordinator.isEditing {

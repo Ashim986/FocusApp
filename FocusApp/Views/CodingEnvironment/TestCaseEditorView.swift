@@ -39,23 +39,25 @@ struct TestCaseEditorView: View {
     private func testCaseEditRow(index: Int, testCase: TestCase) -> some View {
         VStack(alignment: .leading, spacing: 6) {
             HStack {
-            Text(L10n.Coding.TestEditor.testFormat( index + 1))
+                Text(L10n.Coding.TestEditor.testFormat(index + 1))
                     .font(.system(size: 11, weight: .medium))
                     .foregroundColor(Color.appGray400)
 
                 Spacer()
 
-                Button(action: { presenter.removeTestCase(at: index) }) {
+                Button(action: {
+                    presenter.removeTestCase(at: index)
+                }, label: {
                     Image(systemName: "trash")
                         .font(.system(size: 10))
                         .foregroundColor(Color.appGray500)
-                }
+                })
                 .buttonStyle(.plain)
             }
 
             HStack(spacing: 8) {
                 VStack(alignment: .leading, spacing: 2) {
-                Text(L10n.Coding.TestEditor.inputLabel)
+                    Text(L10n.Coding.TestEditor.inputLabel)
                         .font(.system(size: 10))
                         .foregroundColor(Color.appGray500)
 

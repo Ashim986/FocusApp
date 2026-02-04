@@ -53,7 +53,9 @@ extension ToolbarWidgetView {
                         presenter.resetValidationState()
                     }
 
-                Button(action: { presenter.validateAndSaveUsername() }) {
+                Button(action: {
+                    presenter.validateAndSaveUsername()
+                }, label: {
                     HStack(spacing: 4) {
                         if presenter.isValidatingUsername {
                             ProgressView()
@@ -75,7 +77,7 @@ extension ToolbarWidgetView {
                         RoundedRectangle(cornerRadius: 6)
                             .fill(presenter.isValidatingUsername ? Color.gray : Color.blue)
                     )
-                }
+                })
                 .buttonStyle(.plain)
                 .disabled(presenter.isValidatingUsername)
             }

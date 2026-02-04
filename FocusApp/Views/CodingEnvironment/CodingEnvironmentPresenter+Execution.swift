@@ -71,6 +71,7 @@ extension CodingEnvironmentPresenter {
         }
     }
 
+    // swiftlint:disable cyclomatic_complexity function_body_length
     private func executeTests(saveSubmission: Bool) {
         guard !isRunning else { return }
         isRunning = true
@@ -91,9 +92,9 @@ extension CodingEnvironmentPresenter {
             let executionCode = self.wrappedCodeForExecution()
             var allPassed = true
 
-            for i in updatedTestCases.indices {
+            for index in updatedTestCases.indices {
                 if Task.isCancelled { break }
-                let testCase = updatedTestCases[i]
+                let testCase = updatedTestCases[index]
                 let result = await interactor.executeCode(
                     code: executionCode,
                     language: language,
@@ -103,32 +104,36 @@ extension CodingEnvironmentPresenter {
                 if Task.isCancelled { break }
                 await MainActor.run {
                     if result.wasCancelled {
-                        updatedTestCases[i].actualOutput = "Stopped"
-                        updatedTestCases[i].passed = false
+                        updatedTestCases[index].actualOutput = "Stopped"
+                        updatedTestCases[index].passed = false
                     } else if result.timedOut {
-                        updatedTestCases[i].actualOutput = "Timed out"
-                        updatedTestCases[i].passed = false
+                        updatedTestCases[index].actualOutput = "Timed out"
+                        updatedTestCases[index].passed = false
                     } else if !result.error.isEmpty {
-                        updatedTestCases[i].actualOutput = "Error: \(result.error)"
-                        updatedTestCases[i].passed = false
+                        updatedTestCases[index].actualOutput = "Error: \(result.error)"
+                        updatedTestCases[index].passed = false
                     } else {
-                        let normalizedExpected = testCase.expectedOutput.trimmingCharacters(in: .whitespacesAndNewlines)
-                        let normalizedActual = self.normalizeOutputForComparison(result.output, expected: normalizedExpected)
-                        updatedTestCases[i].actualOutput = normalizedActual
-                        updatedTestCases[i].passed = normalizedActual == normalizedExpected
+                        let normalizedExpected = testCase.expectedOutput
+                            .trimmingCharacters(in: .whitespacesAndNewlines)
+                        let normalizedActual = self.normalizeOutputForComparison(
+                            result.output,
+                            expected: normalizedExpected
+                        )
+                        updatedTestCases[index].actualOutput = normalizedActual
+                        updatedTestCases[index].passed = normalizedActual == normalizedExpected
                     }
-                    if updatedTestCases[i].passed != true {
+                    if updatedTestCases[index].passed != true {
                         allPassed = false
                     }
                     self.testCases = updatedTestCases
                 }
 
                 if !result.output.isEmpty {
-                    consoleLogs.append("Test \(i + 1):\n\(result.output)")
+                    consoleLogs.append("Test \(index + 1):\n\(result.output)")
                 }
 
                 if !result.error.isEmpty {
-                    errorLogs.append("Test \(i + 1):\n\(result.error)")
+                    errorLogs.append("Test \(index + 1):\n\(result.error)")
                 }
             }
 
@@ -140,11 +145,15 @@ extension CodingEnvironmentPresenter {
             }
             await MainActor.run {
                 if !consoleLogs.isEmpty {
-                    self.compilationOutput = consoleLogs.joined(separator: "\n\n").trimmingCharacters(in: .whitespacesAndNewlines)
+                    self.compilationOutput = consoleLogs
+                        .joined(separator: "\n\n")
+                        .trimmingCharacters(in: .whitespacesAndNewlines)
                 }
 
                 if !errorLogs.isEmpty {
-                    self.errorOutput = errorLogs.joined(separator: "\n\n").trimmingCharacters(in: .whitespacesAndNewlines)
+                    self.errorOutput = errorLogs
+                        .joined(separator: "\n\n")
+                        .trimmingCharacters(in: .whitespacesAndNewlines)
                 }
                 let combinedError = errorLogs.joined(separator: "\n")
                 self.errorDiagnostics = self.extractDiagnostics(
@@ -156,6 +165,7 @@ extension CodingEnvironmentPresenter {
             }
         }
     }
+    // swiftlint:enable cyclomatic_complexity function_body_length
 
     private func recordSubmission() {
         guard let problem = selectedProblem else { return }
@@ -165,7 +175,7 @@ extension CodingEnvironmentPresenter {
 
     private func prepareSubmissionPrompt() {
         guard let problem = selectedProblem else { return }
-        pendingSubmission = (problem: problem, code: code, language: language)
+        pendingSubmission = PendingSubmission(problem: problem, code: code, language: language)
         submissionTagInput = ""
         showSubmissionTagPrompt = true
     }
@@ -186,7 +196,10 @@ extension CodingEnvironmentPresenter {
         code: String
     ) -> [CodeEditorDiagnostic] {
         guard !errorOutput.isEmpty else { return [] }
-        let codeLineCount = max(code.split(separator: "\n", omittingEmptySubsequences: false).count, 1)
+        let codeLineCount = max(
+            code.split(separator: "\n", omittingEmptySubsequences: false).count,
+            1
+        )
         var collector = DiagnosticCollector(codeLineCount: codeLineCount)
 
         switch language {
@@ -232,7 +245,8 @@ extension CodingEnvironmentPresenter {
         for index in lines.indices {
             let line = String(lines[index])
             let lineRange = NSRange(location: 0, length: (line as NSString).length)
-            guard let match = fileRegex.firstMatch(in: line, range: lineRange), match.numberOfRanges >= 3 else { continue }
+            guard let match = fileRegex.firstMatch(in: line, range: lineRange),
+                  match.numberOfRanges >= 3 else { continue }
             let lineString = (line as NSString).substring(with: match.range(at: 2))
             guard let lineNumber = Int(lineString) else { continue }
 

@@ -30,7 +30,9 @@ final class CodeEditorLineNumberRulerView: NSRulerView {
     }
 
     override func drawHashMarksAndLabels(in rect: NSRect) {
-        guard let textView, let layoutManager = textView.layoutManager, let textContainer = textView.textContainer else {
+        guard let textView,
+              let layoutManager = textView.layoutManager,
+              let textContainer = textView.textContainer else {
             return
         }
 
@@ -40,7 +42,7 @@ final class CodeEditorLineNumberRulerView: NSRulerView {
         let charRange = layoutManager.characterRange(forGlyphRange: glyphRange, actualGlyphRange: nil)
 
         let fullRange = NSRange(location: 0, length: text.length)
-        let relativePoint = self.convert(NSZeroPoint, from: textView)
+        let relativePoint = convert(NSPoint.zero, from: textView)
         let diagnosticsByLine = Dictionary(grouping: diagnostics, by: { $0.line })
 
         var lineNumber = 1
@@ -51,8 +53,14 @@ final class CodeEditorLineNumberRulerView: NSRulerView {
         while index < text.length {
             let lineRange = text.lineRange(for: NSRange(location: index, length: 0))
             if NSIntersectionRange(lineRange, charRange).length > 0 {
-                let glyphRangeForLine = layoutManager.glyphRange(forCharacterRange: lineRange, actualCharacterRange: nil)
-                let lineRect = layoutManager.boundingRect(forGlyphRange: glyphRangeForLine, in: textContainer)
+                let glyphRangeForLine = layoutManager.glyphRange(
+                    forCharacterRange: lineRange,
+                    actualCharacterRange: nil
+                )
+                let lineRect = layoutManager.boundingRect(
+                    forGlyphRange: glyphRangeForLine,
+                    in: textContainer
+                )
                 let yPosition = lineRect.minY + textView.textContainerInset.height + relativePoint.y
 
                 let lineNumberString = "\(lineNumber)" as NSString
@@ -103,11 +111,19 @@ final class CodeEditorLineNumberRulerView: NSRulerView {
             ]
             let size = lineNumberString.size(withAttributes: attributes)
             let xPosition = ruleThickness - size.width - gutterPadding
-            lineNumberString.draw(at: NSPoint(x: xPosition, y: relativePoint.y + textView.textContainerInset.height), withAttributes: attributes)
+            lineNumberString.draw(
+                at: NSPoint(x: xPosition, y: relativePoint.y + textView.textContainerInset.height),
+                withAttributes: attributes
+            )
         }
     }
 
-    @objc func view(_ view: NSView, stringForToolTip tag: NSView.ToolTipTag, point: NSPoint, userData data: UnsafeMutableRawPointer?) -> String {
+    @objc func view(
+        _ view: NSView,
+        stringForToolTip tag: NSView.ToolTipTag,
+        point: NSPoint,
+        userData data: UnsafeMutableRawPointer?
+    ) -> String {
         toolTipMessages[tag] ?? ""
     }
 }

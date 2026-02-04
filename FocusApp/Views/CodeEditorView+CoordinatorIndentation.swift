@@ -4,41 +4,14 @@ extension CodeEditorView.Coordinator {
     func handleNewLine(textView: NSTextView, range: NSRange, text: String) {
         let nsText = text as NSString
         let lineStart = nsText.lineRange(for: NSRange(location: range.location, length: 0)).location
-        let lineUpToCursor = nsText.substring(with: NSRange(location: lineStart, length: range.location - lineStart))
+        let lineRange = NSRange(location: lineStart, length: range.location - lineStart)
+        let lineUpToCursor = nsText.substring(with: lineRange)
 
-        var indentation = ""
-        for char in lineUpToCursor {
-            if char == " " {
-                indentation += " "
-            } else if char == "\t" {
-                indentation += indentUnit
-            } else {
-                break
-            }
-        }
+        let indentation = leadingIndentation(in: lineUpToCursor)
 
         let trimmedLine = lineUpToCursor.trimmingCharacters(in: .whitespaces)
-        var shouldIncreaseIndent = false
-        var shouldAddClosingBrace = false
-
-        if trimmedLine.hasSuffix("{") || trimmedLine.hasSuffix("(") || trimmedLine.hasSuffix("[") {
-            shouldIncreaseIndent = true
-        }
-
-        if trimmedLine.hasSuffix("{") {
-            let openCount = trimmedLine.filter { $0 == "{" }.count
-            let closeCount = trimmedLine.filter { $0 == "}" }.count
-            if openCount > closeCount {
-                if range.location < nsText.length {
-                    let nextChar = nsText.substring(with: NSRange(location: range.location, length: 1))
-                    if nextChar == "}" {
-                        shouldAddClosingBrace = true
-                    }
-                }
-            }
-        } else if language == .python && (trimmedLine.hasSuffix(":") || trimmedLine.hasSuffix("(") || trimmedLine.hasSuffix("[")) {
-            shouldIncreaseIndent = true
-        }
+        let shouldIncreaseIndent = shouldIncreaseIndent(for: trimmedLine)
+        let shouldAddClosingBrace = shouldAddClosingBrace(for: trimmedLine, in: nsText, at: range.location)
 
         var newText = "\n" + indentation
         if shouldIncreaseIndent {
@@ -53,6 +26,43 @@ extension CodeEditorView.Coordinator {
         } else {
             insertText(newText, in: textView, at: range)
         }
+    }
+
+    private func leadingIndentation(in line: String) -> String {
+        var indentation = ""
+        for char in line {
+            if char == " " {
+                indentation += " "
+            } else if char == "\t" {
+                indentation += indentUnit
+            } else {
+                break
+            }
+        }
+        return indentation
+    }
+
+    private func shouldIncreaseIndent(for trimmedLine: String) -> Bool {
+        if trimmedLine.hasSuffix("{") || trimmedLine.hasSuffix("(") || trimmedLine.hasSuffix("[") {
+            return true
+        }
+
+        if language == .python &&
+            (trimmedLine.hasSuffix(":") || trimmedLine.hasSuffix("(") || trimmedLine.hasSuffix("[")) {
+            return true
+        }
+
+        return false
+    }
+
+    private func shouldAddClosingBrace(for trimmedLine: String, in text: NSString, at location: Int) -> Bool {
+        guard trimmedLine.hasSuffix("{") else { return false }
+        let openCount = trimmedLine.filter { $0 == "{" }.count
+        let closeCount = trimmedLine.filter { $0 == "}" }.count
+        guard openCount > closeCount else { return false }
+        guard location < text.length else { return false }
+        let nextChar = text.substring(with: NSRange(location: location, length: 1))
+        return nextChar == "}"
     }
 
     func indentSelection(in textView: NSTextView) {

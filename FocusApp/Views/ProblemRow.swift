@@ -8,7 +8,7 @@ struct ProblemRow: View {
     var body: some View {
         HStack(spacing: 12) {
             // Checkbox
-            Button(action: onToggle) {
+            Button(action: onToggle, label: {
                 ZStack {
                     RoundedRectangle(cornerRadius: 4)
                         .strokeBorder(isCompleted ? Color.appGreen : Color.appGray300, lineWidth: 2)
@@ -24,7 +24,7 @@ struct ProblemRow: View {
                             .foregroundColor(.white)
                     }
                 }
-            }
+            })
             .buttonStyle(.plain)
 
             // Problem name (clickable)
@@ -32,12 +32,12 @@ struct ProblemRow: View {
                 if let url = URL(string: problem.url) {
                     NSWorkspace.shared.open(url)
                 }
-            }) {
+            }, label: {
                 Text(problem.name)
                     .font(.system(size: 14))
                     .foregroundColor(isCompleted ? Color.appGray400 : Color.appGray700)
                     .strikethrough(isCompleted, color: Color.appGray400)
-            }
+            })
             .buttonStyle(.plain)
             .onHover { hovering in
                 if hovering {

@@ -29,7 +29,9 @@ struct ModernOutputView: View {
         VStack(spacing: 0) {
             HStack(spacing: 0) {
                 ForEach(OutputTab.allCases, id: \.self) { tab in
-                    Button(action: { selectedTab = tab }) {
+                    Button(action: {
+                        selectedTab = tab
+                    }, label: {
                         HStack(spacing: 4) {
                             if tab == .result && hasTestResults {
                                 Circle()
@@ -43,7 +45,7 @@ struct ModernOutputView: View {
                         }
                         .padding(.horizontal, 12)
                         .padding(.vertical, 8)
-                    }
+                    })
                     .buttonStyle(.plain)
                 }
 

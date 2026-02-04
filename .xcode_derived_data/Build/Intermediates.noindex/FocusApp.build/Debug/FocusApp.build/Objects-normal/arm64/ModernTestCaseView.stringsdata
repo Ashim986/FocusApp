@@ -1,0 +1,32 @@
+{
+  "source": "/Users/ashimdahal/Documents/FocusApp/FocusApp/Views/CodingEnvironment/ModernTestCaseView.swift",
+  "tables": {
+    "Localizable": [
+      {
+        "comment": "",
+        "key": "Delete",
+        "location": {
+          "startingColumn": 23,
+          "startingLine": 102
+        }
+      },
+      {
+        "comment": "",
+        "key": "Enter input...",
+        "location": {
+          "startingColumn": 31,
+          "startingLine": 117
+        }
+      },
+      {
+        "comment": "",
+        "key": "Enter expected output...",
+        "location": {
+          "startingColumn": 31,
+          "startingLine": 134
+        }
+      }
+    ]
+  },
+  "version": 1
+}

@@ -1,0 +1,24 @@
+{
+  "source": "/Users/ashimdahal/Documents/FocusApp/FocusApp/Views/CodingEnvironment/CodingEnvironmentView+Sidebar.swift",
+  "tables": {
+    "Localizable": [
+      {
+        "comment": "",
+        "key": "%lld/%lld",
+        "location": {
+          "startingColumn": 22,
+          "startingLine": 229
+        }
+      },
+      {
+        "comment": "",
+        "key": "%lld",
+        "location": {
+          "startingColumn": 30,
+          "startingLine": 259
+        }
+      }
+    ]
+  },
+  "version": 1
+}

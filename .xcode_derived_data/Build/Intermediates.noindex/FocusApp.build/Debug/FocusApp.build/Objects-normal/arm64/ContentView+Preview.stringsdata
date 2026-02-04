@@ -1,0 +1,16 @@
+{
+  "source": "/Users/ashimdahal/Documents/FocusApp/FocusApp/Views/Content/ContentView+Preview.swift",
+  "tables": {
+    "Localizable": [
+      {
+        "comment": "",
+        "key": "Preview unavailable",
+        "location": {
+          "startingColumn": 22,
+          "startingLine": 70
+        }
+      }
+    ]
+  },
+  "version": 1
+}

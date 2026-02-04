@@ -76,7 +76,7 @@ final class ToolbarWidgetPresenter: ObservableObject {
 
     var allTodaysSolved: Bool {
         guard !todaysProblems.isEmpty else { return false }
-        return todaysProblems.enumerated().allSatisfy { index, _ in
+        return todaysProblems.indices.allSatisfy { index in
             data.isProblemCompleted(day: currentDayNumber, problemIndex: index)
         }
     }

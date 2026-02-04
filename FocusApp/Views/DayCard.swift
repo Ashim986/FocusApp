@@ -11,7 +11,7 @@ struct DayCard: View {
                 withAnimation(.spring(response: 0.3, dampingFraction: 0.8)) {
                     isExpanded.toggle()
                 }
-            }) {
+            }, label: {
                 HStack(spacing: 16) {
                     ZStack {
                         Circle()
@@ -55,7 +55,7 @@ struct DayCard: View {
                 }
                 .padding(16)
                 .contentShape(Rectangle())
-            }
+            })
             .buttonStyle(.plain)
 
             if isExpanded {

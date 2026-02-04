@@ -34,7 +34,9 @@ extension FocusOverlay {
                 }
             }
 
-            Button(action: { closeSession() }) {
+            Button(action: {
+                closeSession()
+            }, label: {
                 HStack(spacing: 8) {
                     Image(systemName: "checkmark")
                     Text(L10n.Focus.completeDone)
@@ -47,7 +49,7 @@ extension FocusOverlay {
                     RoundedRectangle(cornerRadius: 12)
                         .fill(Color.appGreen)
                 )
-            }
+            })
             .buttonStyle(.plain)
         }
     }

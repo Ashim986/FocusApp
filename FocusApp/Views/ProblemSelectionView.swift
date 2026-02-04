@@ -82,7 +82,7 @@ struct ProblemSelectionView: View {
     private func problemCard(_ item: CodingProblemItem) -> some View {
         Button(action: {
             presenter.selectProblem(item)
-        }) {
+        }, label: {
             HStack(spacing: 12) {
                 // Completion indicator
                 ZStack {
@@ -129,7 +129,7 @@ struct ProblemSelectionView: View {
                 RoundedRectangle(cornerRadius: 12)
                     .stroke(Color.appGray700, lineWidth: 1)
             )
-        }
+        })
         .buttonStyle(.plain)
     }
 

@@ -2,7 +2,9 @@ import SwiftUI
 
 extension CodingEnvironmentView {
     var problemSelector: some View {
-        Button(action: { showProblemPicker.toggle() }) {
+        Button(action: {
+            showProblemPicker.toggle()
+        }, label: {
             HStack(spacing: 8) {
                 if let problem = presenter.selectedProblem {
                     VStack(alignment: .leading, spacing: 2) {
@@ -12,20 +14,23 @@ extension CodingEnvironmentView {
                                 .foregroundColor(.white)
                                 .lineLimit(1)
 
-                        Text(problem.difficulty.rawValue)
+                            Text(problem.difficulty.rawValue)
                                 .font(.system(size: 9, weight: .bold))
                                 .foregroundColor(problem.difficulty == .easy ? Color.appGreen : Color.appAmber)
                                 .padding(.horizontal, 6)
                                 .padding(.vertical, 2)
                                 .background(
                                     (problem.difficulty == .easy ? Color.appGreen : Color.appAmber).opacity(0.15)
-                            )
+                                )
                                 .clipShape(RoundedRectangle(cornerRadius: 4))
                         }
 
-                        Text(L10n.Coding.problemPickerDayTopic(
-                                               selectedDayLabel,
-                                               presenter.selectedDayTopic))
+                        Text(
+                            L10n.Coding.problemPickerDayTopic(
+                                selectedDayLabel,
+                                presenter.selectedDayTopic
+                            )
+                        )
                             .font(.system(size: 10))
                             .foregroundColor(Color.appGray500)
                     }
@@ -53,7 +58,7 @@ extension CodingEnvironmentView {
                 RoundedRectangle(cornerRadius: 8)
                     .stroke(Color.appGray700, lineWidth: 1)
             )
-        }
+        })
         .buttonStyle(.plain)
         .popover(isPresented: $showProblemPicker, arrowEdge: .bottom) {
             problemPickerPopover
@@ -133,7 +138,7 @@ extension CodingEnvironmentView {
         return Button(action: {
             presenter.selectProblem(item)
             showProblemPicker = false
-        }) {
+        }, label: {
             HStack(spacing: 10) {
                 ZStack {
                     Circle()
@@ -176,7 +181,7 @@ extension CodingEnvironmentView {
                 RoundedRectangle(cornerRadius: 6)
                     .fill(isSelected ? Color.appPurple.opacity(0.15) : Color.clear)
             )
-        }
+        })
         .buttonStyle(.plain)
     }
 }

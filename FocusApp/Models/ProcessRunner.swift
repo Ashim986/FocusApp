@@ -137,6 +137,7 @@ final class ProcessRunner: ProcessRunning {
         }
     }
 
+    // swiftlint:disable cyclomatic_complexity function_body_length
     private func runInternal(
         executable: String,
         arguments: [String],
@@ -284,6 +285,7 @@ final class ProcessRunner: ProcessRunning {
             }
         }
     }
+    // swiftlint:enable cyclomatic_complexity function_body_length
 
     private func truncateIfNeeded(_ text: String) -> String {
         if text.count > maxOutputLength {

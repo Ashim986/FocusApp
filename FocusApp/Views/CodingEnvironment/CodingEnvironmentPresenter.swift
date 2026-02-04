@@ -34,7 +34,13 @@ final class CodingEnvironmentPresenter: ObservableObject {
     var codeSaveTask: Task<Void, Never>?
     var isApplyingExternalCode: Bool = false
     var runTask: Task<Void, Never>?
-    var pendingSubmission: (problem: Problem, code: String, language: ProgrammingLanguage)?
+    struct PendingSubmission {
+        let problem: Problem
+        let code: String
+        let language: ProgrammingLanguage
+    }
+
+    var pendingSubmission: PendingSubmission?
 
     var currentDayNumber: Int {
         interactor.currentDayNumber()

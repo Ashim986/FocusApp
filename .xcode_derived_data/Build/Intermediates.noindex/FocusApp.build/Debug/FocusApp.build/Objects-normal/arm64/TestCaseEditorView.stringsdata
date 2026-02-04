@@ -1,0 +1,24 @@
+{
+  "source": "/Users/ashimdahal/Documents/FocusApp/FocusApp/Views/CodingEnvironment/TestCaseEditorView.swift",
+  "tables": {
+    "Localizable": [
+      {
+        "comment": "",
+        "key": "",
+        "location": {
+          "startingColumn": 31,
+          "startingLine": 64
+        }
+      },
+      {
+        "comment": "",
+        "key": "",
+        "location": {
+          "startingColumn": 31,
+          "startingLine": 81
+        }
+      }
+    ]
+  },
+  "version": 1
+}

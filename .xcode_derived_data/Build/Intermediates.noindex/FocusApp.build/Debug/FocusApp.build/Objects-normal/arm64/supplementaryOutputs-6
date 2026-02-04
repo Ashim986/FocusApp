@@ -1,0 +1,44 @@
+{
+  "/Users/ashimdahal/Documents/FocusApp/FocusApp/Models/LanguageExecutor.swift" : {
+    "const-values" : "/Users/ashimdahal/Documents/FocusApp/.xcode_derived_data/Build/Intermediates.noindex/FocusApp.build/Debug/FocusApp.build/Objects-normal/arm64/LanguageExecutor.swiftconstvalues",
+    "dependencies" : "/Users/ashimdahal/Documents/FocusApp/.xcode_derived_data/Build/Intermediates.noindex/FocusApp.build/Debug/FocusApp.build/Objects-normal/arm64/LanguageExecutor.d",
+    "diagnostics" : "/Users/ashimdahal/Documents/FocusApp/.xcode_derived_data/Build/Intermediates.noindex/FocusApp.build/Debug/FocusApp.build/Objects-normal/arm64/LanguageExecutor.dia",
+    "object" : "/Users/ashimdahal/Documents/FocusApp/.xcode_derived_data/Build/Intermediates.noindex/FocusApp.build/Debug/FocusApp.build/Objects-normal/arm64/LanguageExecutor.o",
+    "swift-dependencies" : "/Users/ashimdahal/Documents/FocusApp/.xcode_derived_data/Build/Intermediates.noindex/FocusApp.build/Debug/FocusApp.build/Objects-normal/arm64/LanguageExecutor.swiftdeps"
+  },
+  "/Users/ashimdahal/Documents/FocusApp/FocusApp/Models/ProcessRunner.swift" : {
+    "const-values" : "/Users/ashimdahal/Documents/FocusApp/.xcode_derived_data/Build/Intermediates.noindex/FocusApp.build/Debug/FocusApp.build/Objects-normal/arm64/ProcessRunner.swiftconstvalues",
+    "dependencies" : "/Users/ashimdahal/Documents/FocusApp/.xcode_derived_data/Build/Intermediates.noindex/FocusApp.build/Debug/FocusApp.build/Objects-normal/arm64/ProcessRunner.d",
+    "diagnostics" : "/Users/ashimdahal/Documents/FocusApp/.xcode_derived_data/Build/Intermediates.noindex/FocusApp.build/Debug/FocusApp.build/Objects-normal/arm64/ProcessRunner.dia",
+    "object" : "/Users/ashimdahal/Documents/FocusApp/.xcode_derived_data/Build/Intermediates.noindex/FocusApp.build/Debug/FocusApp.build/Objects-normal/arm64/ProcessRunner.o",
+    "swift-dependencies" : "/Users/ashimdahal/Documents/FocusApp/.xcode_derived_data/Build/Intermediates.noindex/FocusApp.build/Debug/FocusApp.build/Objects-normal/arm64/ProcessRunner.swiftdeps"
+  },
+  "/Users/ashimdahal/Documents/FocusApp/FocusApp/Models/PythonExecutor.swift" : {
+    "const-values" : "/Users/ashimdahal/Documents/FocusApp/.xcode_derived_data/Build/Intermediates.noindex/FocusApp.build/Debug/FocusApp.build/Objects-normal/arm64/PythonExecutor.swiftconstvalues",
+    "dependencies" : "/Users/ashimdahal/Documents/FocusApp/.xcode_derived_data/Build/Intermediates.noindex/FocusApp.build/Debug/FocusApp.build/Objects-normal/arm64/PythonExecutor.d",
+    "diagnostics" : "/Users/ashimdahal/Documents/FocusApp/.xcode_derived_data/Build/Intermediates.noindex/FocusApp.build/Debug/FocusApp.build/Objects-normal/arm64/PythonExecutor.dia",
+    "object" : "/Users/ashimdahal/Documents/FocusApp/.xcode_derived_data/Build/Intermediates.noindex/FocusApp.build/Debug/FocusApp.build/Objects-normal/arm64/PythonExecutor.o",
+    "swift-dependencies" : "/Users/ashimdahal/Documents/FocusApp/.xcode_derived_data/Build/Intermediates.noindex/FocusApp.build/Debug/FocusApp.build/Objects-normal/arm64/PythonExecutor.swiftdeps"
+  },
+  "/Users/ashimdahal/Documents/FocusApp/FocusApp/Models/SwiftExecutor.swift" : {
+    "const-values" : "/Users/ashimdahal/Documents/FocusApp/.xcode_derived_data/Build/Intermediates.noindex/FocusApp.build/Debug/FocusApp.build/Objects-normal/arm64/SwiftExecutor.swiftconstvalues",
+    "dependencies" : "/Users/ashimdahal/Documents/FocusApp/.xcode_derived_data/Build/Intermediates.noindex/FocusApp.build/Debug/FocusApp.build/Objects-normal/arm64/SwiftExecutor.d",
+    "diagnostics" : "/Users/ashimdahal/Documents/FocusApp/.xcode_derived_data/Build/Intermediates.noindex/FocusApp.build/Debug/FocusApp.build/Objects-normal/arm64/SwiftExecutor.dia",
+    "object" : "/Users/ashimdahal/Documents/FocusApp/.xcode_derived_data/Build/Intermediates.noindex/FocusApp.build/Debug/FocusApp.build/Objects-normal/arm64/SwiftExecutor.o",
+    "swift-dependencies" : "/Users/ashimdahal/Documents/FocusApp/.xcode_derived_data/Build/Intermediates.noindex/FocusApp.build/Debug/FocusApp.build/Objects-normal/arm64/SwiftExecutor.swiftdeps"
+  },
+  "/Users/ashimdahal/Documents/FocusApp/FocusApp/Views/CodingEnvironment/CodingEnvironmentInteractor.swift" : {
+    "const-values" : "/Users/ashimdahal/Documents/FocusApp/.xcode_derived_data/Build/Intermediates.noindex/FocusApp.build/Debug/FocusApp.build/Objects-normal/arm64/CodingEnvironmentInteractor.swiftconstvalues",
+    "dependencies" : "/Users/ashimdahal/Documents/FocusApp/.xcode_derived_data/Build/Intermediates.noindex/FocusApp.build/Debug/FocusApp.build/Objects-normal/arm64/CodingEnvironmentInteractor.d",
+    "diagnostics" : "/Users/ashimdahal/Documents/FocusApp/.xcode_derived_data/Build/Intermediates.noindex/FocusApp.build/Debug/FocusApp.build/Objects-normal/arm64/CodingEnvironmentInteractor.dia",
+    "object" : "/Users/ashimdahal/Documents/FocusApp/.xcode_derived_data/Build/Intermediates.noindex/FocusApp.build/Debug/FocusApp.build/Objects-normal/arm64/CodingEnvironmentInteractor.o",
+    "swift-dependencies" : "/Users/ashimdahal/Documents/FocusApp/.xcode_derived_data/Build/Intermediates.noindex/FocusApp.build/Debug/FocusApp.build/Objects-normal/arm64/CodingEnvironmentInteractor.swiftdeps"
+  },
+  "/Users/ashimdahal/Documents/FocusApp/FocusApp/Views/CodingEnvironment/CodingEnvironmentView.swift" : {
+    "const-values" : "/Users/ashimdahal/Documents/FocusApp/.xcode_derived_data/Build/Intermediates.noindex/FocusApp.build/Debug/FocusApp.build/Objects-normal/arm64/CodingEnvironmentView.swiftconstvalues",
+    "dependencies" : "/Users/ashimdahal/Documents/FocusApp/.xcode_derived_data/Build/Intermediates.noindex/FocusApp.build/Debug/FocusApp.build/Objects-normal/arm64/CodingEnvironmentView.d",
+    "diagnostics" : "/Users/ashimdahal/Documents/FocusApp/.xcode_derived_data/Build/Intermediates.noindex/FocusApp.build/Debug/FocusApp.build/Objects-normal/arm64/CodingEnvironmentView.dia",
+    "object" : "/Users/ashimdahal/Documents/FocusApp/.xcode_derived_data/Build/Intermediates.noindex/FocusApp.build/Debug/FocusApp.build/Objects-normal/arm64/CodingEnvironmentView.o",
+    "swift-dependencies" : "/Users/ashimdahal/Documents/FocusApp/.xcode_derived_data/Build/Intermediates.noindex/FocusApp.build/Debug/FocusApp.build/Objects-normal/arm64/CodingEnvironmentView.swiftdeps"
+  }
+}

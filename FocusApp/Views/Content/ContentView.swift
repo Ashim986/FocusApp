@@ -126,13 +126,18 @@ struct ContentView: View {
     }
 
     private func tabButton(_ tab: Tab) -> some View {
-        Button(action: { presenter.selectedTab = tab }) {
+        Button(action: {
+            presenter.selectedTab = tab
+        }, label: {
             HStack(spacing: 6) {
                 Image(systemName: tab.icon)
                     .font(.system(size: 12))
 
                 Text(tab.title)
-                    .font(.system(size: 13, weight: presenter.selectedTab == tab ? .semibold : .medium))
+                    .font(.system(
+                        size: 13,
+                        weight: presenter.selectedTab == tab ? .semibold : .medium
+                    ))
             }
             .foregroundColor(presenter.selectedTab == tab ? Color.appPurple : Color.appGray500)
             .padding(.horizontal, 16)
@@ -140,9 +145,14 @@ struct ContentView: View {
             .background(
                 RoundedRectangle(cornerRadius: 8)
                     .fill(presenter.selectedTab == tab ? Color.white : Color.clear)
-                    .shadow(color: presenter.selectedTab == tab ? Color.black.opacity(0.05) : Color.clear, radius: 2, x: 0, y: 1)
+                    .shadow(
+                        color: presenter.selectedTab == tab ? Color.black.opacity(0.05) : Color.clear,
+                        radius: 2,
+                        x: 0,
+                        y: 1
+                    )
             )
-        }
+        })
         .buttonStyle(.plain)
     }
 }

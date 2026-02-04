@@ -10,8 +10,8 @@ extension ToolbarWidgetView {
 
                 Spacer()
 
-                let solved = presenter.todaysProblems.enumerated().filter {
-                    presenter.data.isProblemCompleted(day: presenter.currentDayNumber, problemIndex: $0.offset)
+                let solved = presenter.todaysProblems.enumerated().filter { item in
+                    presenter.data.isProblemCompleted(day: presenter.currentDayNumber, problemIndex: item.offset)
                 }.count
                 Text("\(solved)/\(presenter.todaysProblems.count)")
                     .font(.system(size: 9, weight: .semibold))
@@ -20,7 +20,11 @@ extension ToolbarWidgetView {
                     .padding(.vertical, 3)
                     .background(
                         Capsule()
-                            .fill(solved == presenter.todaysProblems.count ? Color.green.opacity(0.2) : Color.white.opacity(0.08))
+                            .fill(
+                                solved == presenter.todaysProblems.count
+                                    ? Color.green.opacity(0.2)
+                                    : Color.white.opacity(0.08)
+                            )
                     )
             }
             .padding(.horizontal, 2)
@@ -32,7 +36,10 @@ extension ToolbarWidgetView {
                     ForEach(Array(presenter.todaysProblems.enumerated()), id: \.element.id) { index, problem in
                         ProblemRowWidget(
                             problem: problem,
-                            isCompleted: presenter.data.isProblemCompleted(day: presenter.currentDayNumber, problemIndex: index),
+                            isCompleted: presenter.data.isProblemCompleted(
+                                day: presenter.currentDayNumber,
+                                problemIndex: index
+                            ),
                             onRefresh: {
                                 presenter.syncNow()
                             }
@@ -55,9 +62,9 @@ extension ToolbarWidgetView {
             Spacer()
             Button(action: {
                 presenter.advanceToNextDay()
-            }) {
+            }, label: {
                 HStack(spacing: 4) {
-                    Text(L10n.Widget.problemsStartDayFormat( presenter.tomorrowDayNumber))
+                    Text(L10n.Widget.problemsStartDayFormat(presenter.tomorrowDayNumber))
                         .font(.system(size: 10, weight: .semibold))
                     Image(systemName: "arrow.right.circle.fill")
                         .font(.system(size: 12))
@@ -67,13 +74,15 @@ extension ToolbarWidgetView {
                 .padding(.vertical, 5)
                 .background(
                     RoundedRectangle(cornerRadius: 6)
-                        .fill(LinearGradient(
-                            colors: [Color.purple, Color.blue],
-                            startPoint: .leading,
-                            endPoint: .trailing
-                        ))
+                        .fill(
+                            LinearGradient(
+                                colors: [Color.purple, Color.blue],
+                                startPoint: .leading,
+                                endPoint: .trailing
+                            )
+                        )
                 )
-            }
+            })
             .buttonStyle(.plain)
         }
         .padding(.horizontal, 8)

@@ -107,14 +107,14 @@ struct SettingsView: View {
 
                         Button(action: {
                             presenter.validateAndSaveUsername()
-                        }) {
+                        }, label: {
                             if presenter.isValidatingUsername {
                                 ProgressView()
                                     .progressViewStyle(.circular)
                             } else {
                                 Text(L10n.Settings.validateSync)
                             }
-                        }
+                        })
                         .buttonStyle(.borderedProminent)
                         .disabled(presenter.isValidatingUsername)
                     }

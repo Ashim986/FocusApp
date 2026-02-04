@@ -129,7 +129,9 @@ extension CodingEnvironmentView {
     }
 
     private func detailTabButton(_ tab: ProblemDetailTab) -> some View {
-        Button(action: { detailTab = tab }) {
+        Button(action: {
+            detailTab = tab
+        }, label: {
             HStack(spacing: 6) {
                 Image(systemName: tab.icon)
                     .font(.system(size: 10, weight: .semibold))
@@ -144,7 +146,7 @@ extension CodingEnvironmentView {
                     .frame(height: 2),
                 alignment: .bottom
             )
-        }
+        })
         .buttonStyle(.plain)
     }
 
@@ -217,8 +219,8 @@ extension CodingEnvironmentView {
         VStack(alignment: .leading, spacing: 8) {
             HStack {
                 Text(section.isToday
-                     ? L10n.Coding.sectionToday( section.dayId)
-                     : L10n.Coding.sectionBacklog( section.dayId))
+                     ? L10n.Coding.sectionToday(section.dayId)
+                     : L10n.Coding.sectionBacklog(section.dayId))
                     .font(.system(size: 11, weight: .semibold))
                     .foregroundColor(Color.appGray300)
 
@@ -242,7 +244,7 @@ extension CodingEnvironmentView {
 
         return Button(action: {
             presenter.selectProblem(item)
-        }) {
+        }, label: {
             HStack(spacing: 10) {
                 ZStack {
                     Circle()
@@ -279,7 +281,7 @@ extension CodingEnvironmentView {
                 RoundedRectangle(cornerRadius: 6)
                     .fill(isSelected ? Color.appPurple.opacity(0.2) : Color.clear)
             )
-        }
+        })
         .buttonStyle(.plain)
     }
 }

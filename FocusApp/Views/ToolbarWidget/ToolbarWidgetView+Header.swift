@@ -44,18 +44,25 @@ extension ToolbarWidgetView {
             Spacer()
 
             HStack(spacing: 8) {
-                Button(action: { presenter.syncNow() }) {
+                Button(action: {
+                    presenter.syncNow()
+                }, label: {
                     Image(systemName: "arrow.triangle.2.circlepath")
                         .font(.system(size: 12))
                         .foregroundColor(presenter.isSyncing ? .green : .white.opacity(0.6))
                         .rotationEffect(.degrees(presenter.isSyncing ? 360 : 0))
-                        .animation(presenter.isSyncing ? .linear(duration: 1).repeatForever(autoreverses: false) : .default, value: presenter.isSyncing)
+                        .animation(
+                            presenter.isSyncing
+                                ? .linear(duration: 1).repeatForever(autoreverses: false)
+                                : .default,
+                            value: presenter.isSyncing
+                        )
                         .frame(width: 24, height: 24)
                         .background(
                             Circle()
                                 .fill(Color.white.opacity(0.06))
                         )
-                }
+                })
                 .buttonStyle(.plain)
                 .disabled(presenter.isSyncing)
                 .help(L10n.Widget.headerSyncHelp)
@@ -67,7 +74,7 @@ extension ToolbarWidgetView {
                             presenter.beginEditingUsername()
                         }
                     }
-                }) {
+                }, label: {
                     Image(systemName: showSettings ? "gearshape.fill" : "gearshape")
                         .font(.system(size: 12))
                         .foregroundColor(showSettings ? .blue : .white.opacity(0.6))
@@ -76,7 +83,7 @@ extension ToolbarWidgetView {
                             Circle()
                                 .fill(Color.white.opacity(0.06))
                         )
-                }
+                })
                 .buttonStyle(.plain)
                 .help(L10n.Widget.headerSettingsHelp)
             }

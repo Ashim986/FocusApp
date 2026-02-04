@@ -8,13 +8,25 @@ extension ToolbarWidgetView {
                 .foregroundColor(.white.opacity(0.8))
 
             HStack(spacing: 8) {
-                HabitToggle(label: L10n.Habit.Label.dsa, icon: "book.fill", done: presenter.data.getHabitStatus(habit: "dsa")) {
+                HabitToggle(
+                    label: L10n.Habit.Label.dsa,
+                    icon: "book.fill",
+                    done: presenter.data.getHabitStatus(habit: "dsa")
+                ) {
                     presenter.toggleHabit("dsa")
                 }
-                HabitToggle(label: L10n.Habit.Label.exercise, icon: "figure.run", done: presenter.data.getHabitStatus(habit: "exercise")) {
+                HabitToggle(
+                    label: L10n.Habit.Label.exercise,
+                    icon: "figure.run",
+                    done: presenter.data.getHabitStatus(habit: "exercise")
+                ) {
                     presenter.toggleHabit("exercise")
                 }
-                HabitToggle(label: L10n.Habit.Label.other, icon: "lightbulb.fill", done: presenter.data.getHabitStatus(habit: "other")) {
+                HabitToggle(
+                    label: L10n.Habit.Label.other,
+                    icon: "lightbulb.fill",
+                    done: presenter.data.getHabitStatus(habit: "other")
+                ) {
                     presenter.toggleHabit("other")
                 }
             }

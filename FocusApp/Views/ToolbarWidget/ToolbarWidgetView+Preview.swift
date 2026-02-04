@@ -4,19 +4,22 @@ import SwiftUI
 #if DEBUG
 struct ToolbarWidgetView_Previews: PreviewProvider {
     static var previews: some View {
-        guard let container = try? ModelContainer(
-            for: AppDataRecord.self,
-            configurations: ModelConfiguration(isStoredInMemoryOnly: true)
-        ) else {
-            return Text("Preview unavailable")
+        Group {
+            if let container = try? ModelContainer(
+                for: AppDataRecord.self,
+                configurations: ModelConfiguration(isStoredInMemoryOnly: true)
+            ) {
+                let appStore = AppStateStore(storage: SwiftDataAppStorage(container: container))
+                let client = PreviewLeetCodeClient()
+                let leetCodeSync = LeetCodeSyncInteractor(appStore: appStore, client: client)
+                let presenter = ToolbarWidgetPresenter(
+                    interactor: ToolbarWidgetInteractor(appStore: appStore, leetCodeSync: leetCodeSync)
+                )
+                ToolbarWidgetView(presenter: presenter)
+            } else {
+                Text("Preview unavailable")
+            }
         }
-        let appStore = AppStateStore(storage: SwiftDataAppStorage(container: container))
-        let client = PreviewLeetCodeClient()
-        let leetCodeSync = LeetCodeSyncInteractor(appStore: appStore, client: client)
-        let presenter = ToolbarWidgetPresenter(
-            interactor: ToolbarWidgetInteractor(appStore: appStore, leetCodeSync: leetCodeSync)
-        )
-        return ToolbarWidgetView(presenter: presenter)
     }
 }
 

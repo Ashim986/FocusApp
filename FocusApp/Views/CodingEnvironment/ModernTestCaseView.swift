@@ -73,7 +73,9 @@ struct ModernTestCaseView: View {
     private func testCaseTab(index: Int, testCase: TestCase) -> some View {
         let isSelected = selectedTestIndex == index
 
-        return Button(action: { selectedTestIndex = index }) {
+        return Button(action: {
+            selectedTestIndex = index
+        }, label: {
             HStack(spacing: 4) {
                 if let passed = testCase.passed {
                     Circle()
@@ -81,7 +83,7 @@ struct ModernTestCaseView: View {
                         .frame(width: 6, height: 6)
                 }
 
-            Text(L10n.Coding.Testcase.caseFormat( index + 1))
+                Text(L10n.Coding.Testcase.caseFormat(index + 1))
                     .font(.system(size: 10, weight: isSelected ? .semibold : .regular))
                     .foregroundColor(isSelected ? .white : Color.appGray500)
             }
@@ -91,12 +93,14 @@ struct ModernTestCaseView: View {
                 RoundedRectangle(cornerRadius: 4)
                     .fill(isSelected ? Color.appGray700 : Color.clear)
             )
-        }
+        })
         .buttonStyle(.plain)
         .contextMenu {
-            Button(role: .destructive, action: { presenter.removeTestCase(at: index) }) {
+            Button(role: .destructive, action: {
+                presenter.removeTestCase(at: index)
+            }, label: {
                 Label("Delete", systemImage: "trash")
-            }
+            })
         }
     }
 
@@ -106,7 +110,7 @@ struct ModernTestCaseView: View {
         return ScrollView {
             VStack(alignment: .leading, spacing: 12) {
                 VStack(alignment: .leading, spacing: 4) {
-                Text(L10n.Coding.Testcase.inputLabel)
+                    Text(L10n.Coding.Testcase.inputLabel)
                         .font(.system(size: 10, weight: .medium))
                         .foregroundColor(Color.appGray500)
 

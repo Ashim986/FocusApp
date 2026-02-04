@@ -1,0 +1,16 @@
+{
+  "source": "/Users/ashimdahal/Documents/FocusApp/FocusApp/Views/Stats/StatsView+Sections.swift",
+  "tables": {
+    "Localizable": [
+      {
+        "comment": "",
+        "key": "%lld/%lld",
+        "location": {
+          "startingColumn": 22,
+          "startingLine": 162
+        }
+      }
+    ]
+  },
+  "version": 1
+}

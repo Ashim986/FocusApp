@@ -43,10 +43,8 @@ struct AppData: Codable {
     // Count completed problems for a day
     func completedProblemsCount(day: Int, totalProblems: Int) -> Int {
         var count = 0
-        for i in 0..<totalProblems {
-            if isProblemCompleted(day: day, problemIndex: i) {
-                count += 1
-            }
+        for index in 0..<totalProblems where isProblemCompleted(day: day, problemIndex: index) {
+            count += 1
         }
         return count
     }
@@ -59,10 +57,9 @@ struct AppData: Codable {
     // Count completed topics (days where all 5 problems are done)
     func completedTopicsCount() -> Int {
         var count = 0
-        for day in dsaPlan {
-            if completedProblemsCount(day: day.id, totalProblems: day.problems.count) == day.problems.count {
-                count += 1
-            }
+        for day in dsaPlan
+        where completedProblemsCount(day: day.id, totalProblems: day.problems.count) == day.problems.count {
+            count += 1
         }
         return count
     }

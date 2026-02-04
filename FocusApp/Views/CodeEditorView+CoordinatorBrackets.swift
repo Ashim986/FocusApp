@@ -62,63 +62,63 @@ extension CodeEditorView.Coordinator {
             return Character(scalar)
         }
 
-        var i = 0
-        while i < location {
-            guard let ch = scalarCharacter(at: i) else {
-                i += 1
+        var index = 0
+        while index < location {
+            guard let ch = scalarCharacter(at: index) else {
+                index += 1
                 continue
             }
-            let next: Character? = i + 1 < location ? scalarCharacter(at: i + 1) : nil
+            let next: Character? = index + 1 < location ? scalarCharacter(at: index + 1) : nil
 
             if inLineComment {
                 if ch == "\n" { inLineComment = false }
-                i += 1
+                index += 1
                 continue
             }
 
             if inBlockComment {
                 if ch == "*" && next == "/" {
                     inBlockComment = false
-                    i += 2
+                    index += 2
                     continue
                 }
-                i += 1
+                index += 1
                 continue
             }
 
             if let stringDelimiter = inString {
                 if ch == "\\" {
-                    i += 2
+                    index += 2
                     continue
                 }
                 if ch == stringDelimiter {
                     inString = nil
                 }
-                i += 1
+                index += 1
                 continue
             }
 
             if ch == "/" && next == "/" {
                 inLineComment = true
-                i += 2
+                index += 2
                 continue
             }
 
             if ch == "/" && next == "*" {
                 inBlockComment = true
-                i += 2
+                index += 2
                 continue
             }
 
             if ch == "\"" || ch == "'" {
                 inString = ch
-                i += 1
+                index += 1
                 continue
             }
 
             if openingBrackets.contains(ch) {
                 stack.append(ch)
-                positions.append(i)
+                positions.append(index)
             } else if closingBrackets.contains(ch) {
                 if let last = stack.last, matchingClosingBracket(for: last) == ch {
                     _ = stack.popLast()
@@ -126,7 +126,7 @@ extension CodeEditorView.Coordinator {
                 }
             }
 
-            i += 1
+            index += 1
         }
 
         guard let matchIndex = stack.lastIndex(of: opening) else { return nil }

@@ -95,7 +95,9 @@ struct PlanView: View {
                 ProgressView()
                     .scaleEffect(0.9)
             } else {
-                Button(action: { presenter.syncNow() }) {
+                Button(action: {
+                    presenter.syncNow()
+                }, label: {
                     HStack(spacing: 6) {
                         Image(systemName: "arrow.triangle.2.circlepath")
                         Text(L10n.Plan.syncNow)
@@ -108,7 +110,7 @@ struct PlanView: View {
                         RoundedRectangle(cornerRadius: 8)
                             .fill(Color.appPurple)
                     )
-                }
+                })
                 .buttonStyle(.plain)
             }
         }
@@ -194,27 +196,30 @@ struct FlowLayout: Layout {
 #if DEBUG
 struct PlanView_Previews: PreviewProvider {
     static var previews: some View {
-        guard let container = try? ModelContainer(
-            for: AppDataRecord.self,
-            configurations: ModelConfiguration(isStoredInMemoryOnly: true)
-        ) else {
-            return Text("Preview unavailable")
+        Group {
+            if let container = try? ModelContainer(
+                for: AppDataRecord.self,
+                configurations: ModelConfiguration(isStoredInMemoryOnly: true)
+            ) {
+                let appStore = AppStateStore(storage: SwiftDataAppStorage(container: container))
+                let client = PreviewLeetCodeClient()
+                let leetCodeSync = LeetCodeSyncInteractor(appStore: appStore, client: client)
+                let presenter = PlanPresenter(
+                    interactor: PlanInteractor(
+                        appStore: appStore,
+                        notificationManager: NotificationManager(
+                            scheduler: SystemNotificationScheduler(),
+                            store: UserDefaultsNotificationSettingsStore()
+                        ),
+                        leetCodeSync: leetCodeSync
+                    )
+                )
+                PlanView(presenter: presenter)
+                    .frame(width: 600, height: 800)
+            } else {
+                Text("Preview unavailable")
+            }
         }
-        let appStore = AppStateStore(storage: SwiftDataAppStorage(container: container))
-        let client = PreviewLeetCodeClient()
-        let leetCodeSync = LeetCodeSyncInteractor(appStore: appStore, client: client)
-        let presenter = PlanPresenter(
-            interactor: PlanInteractor(
-                appStore: appStore,
-                notificationManager: NotificationManager(
-                    scheduler: SystemNotificationScheduler(),
-                    store: UserDefaultsNotificationSettingsStore()
-                ),
-                leetCodeSync: leetCodeSync
-            )
-        )
-        return PlanView(presenter: presenter)
-            .frame(width: 600, height: 800)
     }
 }
 

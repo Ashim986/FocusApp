@@ -4,26 +4,29 @@ import SwiftUI
 #if DEBUG
 struct SettingsView_Previews: PreviewProvider {
     static var previews: some View {
-        guard let container = try? ModelContainer(
-            for: AppDataRecord.self,
-            configurations: ModelConfiguration(isStoredInMemoryOnly: true)
-        ) else {
-            return Text("Preview unavailable")
+        Group {
+            if let container = try? ModelContainer(
+                for: AppDataRecord.self,
+                configurations: ModelConfiguration(isStoredInMemoryOnly: true)
+            ) {
+                let appStore = AppStateStore(storage: SwiftDataAppStorage(container: container))
+                let client = PreviewLeetCodeClient()
+                let leetCodeSync = LeetCodeSyncInteractor(appStore: appStore, client: client)
+                let presenter = SettingsPresenter(
+                    interactor: SettingsInteractor(
+                        notificationManager: NotificationManager(
+                            scheduler: SystemNotificationScheduler(),
+                            store: UserDefaultsNotificationSettingsStore()
+                        ),
+                        appStore: appStore,
+                        leetCodeSync: leetCodeSync
+                    )
+                )
+                SettingsView(presenter: presenter)
+            } else {
+                Text("Preview unavailable")
+            }
         }
-        let appStore = AppStateStore(storage: SwiftDataAppStorage(container: container))
-        let client = PreviewLeetCodeClient()
-        let leetCodeSync = LeetCodeSyncInteractor(appStore: appStore, client: client)
-        let presenter = SettingsPresenter(
-            interactor: SettingsInteractor(
-                notificationManager: NotificationManager(
-                    scheduler: SystemNotificationScheduler(),
-                    store: UserDefaultsNotificationSettingsStore()
-                ),
-                appStore: appStore,
-                leetCodeSync: leetCodeSync
-            )
-        )
-        return SettingsView(presenter: presenter)
     }
 }
 

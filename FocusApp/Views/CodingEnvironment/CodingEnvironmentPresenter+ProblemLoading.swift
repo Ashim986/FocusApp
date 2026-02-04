@@ -44,15 +44,15 @@ extension CodingEnvironmentPresenter {
         var cases: [TestCase] = []
         if let meta, !meta.isClassDesign, !meta.primaryParams.isEmpty {
             let groupedInputs = groupInputs(inputs, size: meta.primaryParams.count)
-            for i in 0..<min(groupedInputs.count, max(outputs.count, 1)) {
-                let input = groupedInputs.indices.contains(i) ? groupedInputs[i] : ""
-                let output = outputs.indices.contains(i) ? outputs[i] : "Expected output"
+            for index in 0..<min(groupedInputs.count, max(outputs.count, 1)) {
+                let input = groupedInputs.indices.contains(index) ? groupedInputs[index] : ""
+                let output = outputs.indices.contains(index) ? outputs[index] : "Expected output"
                 cases.append(TestCase(input: input, expectedOutput: output))
             }
         } else {
-            for i in 0..<min(inputs.count, max(outputs.count, 1)) {
-                let input = inputs.indices.contains(i) ? inputs[i] : ""
-                let output = outputs.indices.contains(i) ? outputs[i] : "Expected output"
+            for index in 0..<min(inputs.count, max(outputs.count, 1)) {
+                let input = inputs.indices.contains(index) ? inputs[index] : ""
+                let output = outputs.indices.contains(index) ? outputs[index] : "Expected output"
                 cases.append(TestCase(input: input, expectedOutput: output))
             }
         }

@@ -10,7 +10,7 @@ extension CodingEnvironmentView {
 
                 languageMenu
 
-                Text(L10n.Coding.solutionFilename( presenter.language.fileExtension))
+                Text(L10n.Coding.solutionFilename(presenter.language.fileExtension))
                     .font(.system(size: 11, weight: .medium, design: .monospaced))
                     .foregroundColor(Color.appGray400)
 
@@ -26,18 +26,24 @@ extension CodingEnvironmentView {
                 alignment: .bottom
             )
 
-            CodeEditorView(code: $presenter.code, language: presenter.language, diagnostics: presenter.errorDiagnostics)
+            CodeEditorView(
+                code: $presenter.code,
+                language: presenter.language,
+                diagnostics: presenter.errorDiagnostics
+            )
         }
     }
 
     private var languageMenu: some View {
-        Menu {
+        Menu(content: {
             ForEach(ProgrammingLanguage.allCases, id: \.rawValue) { lang in
-                Button(action: { presenter.changeLanguage(lang) }) {
+                Button(action: {
+                    presenter.changeLanguage(lang)
+                }, label: {
                     Text(lang.rawValue)
-                }
+                })
             }
-        } label: {
+        }, label: {
             HStack(spacing: 4) {
                 Image(systemName: presenter.language == .swift ? "swift" : "chevron.left.forwardslash.chevron.right")
                     .font(.system(size: 10))
@@ -55,7 +61,7 @@ extension CodingEnvironmentView {
             .padding(.vertical, 6)
             .background(Color.appGray800)
             .clipShape(RoundedRectangle(cornerRadius: 6))
-        }
+        })
         .menuStyle(.borderlessButton)
     }
 
@@ -65,7 +71,10 @@ extension CodingEnvironmentView {
                 .frame(minHeight: 320)
 
             bottomPanel
-                .frame(minHeight: isBottomPanelCollapsed ? 36 : 220, idealHeight: isBottomPanelCollapsed ? 36 : 280)
+                .frame(
+                    minHeight: isBottomPanelCollapsed ? 36 : 220,
+                    idealHeight: isBottomPanelCollapsed ? 36 : 280
+                )
         }
         .animation(.easeInOut(duration: 0.2), value: isBottomPanelCollapsed)
     }
@@ -79,7 +88,9 @@ extension CodingEnvironmentView {
 
                 Spacer()
 
-                Button(action: { isBottomPanelCollapsed.toggle() }) {
+                Button(action: {
+                    isBottomPanelCollapsed.toggle()
+                }, label: {
                     HStack(spacing: 4) {
                         Text(isBottomPanelCollapsed
                              ? L10n.Coding.consoleExpand
@@ -90,7 +101,7 @@ extension CodingEnvironmentView {
                             .font(.system(size: 10, weight: .medium))
                             .foregroundColor(Color.appGray400)
                     }
-                }
+                })
                 .buttonStyle(.plain)
             }
             .padding(.horizontal, 12)

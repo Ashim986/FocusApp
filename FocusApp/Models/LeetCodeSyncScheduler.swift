@@ -77,7 +77,10 @@ final class LeetCodeSyncScheduler {
 
     private func scheduleHourlySync() {
         hourlyTimer?.invalidate()
-        hourlyTimer = Timer.scheduledTimer(withTimeInterval: LeetCodeConstants.syncInterval, repeats: true) { [weak self] _ in
+        hourlyTimer = Timer.scheduledTimer(
+            withTimeInterval: LeetCodeConstants.syncInterval,
+            repeats: true
+        ) { [weak self] _ in
             Task { [weak self] in
                 await self?.syncNow(trigger: .hourly)
             }

@@ -1,5 +1,7 @@
+import AppKit
 import SwiftUI
 
+// swiftlint:disable type_body_length
 struct SolutionTabView: View {
     let solution: ProblemSolution?
     @State private var selectedApproachIndex: Int = 0
@@ -406,3 +408,4 @@ struct SolutionTabView: View {
         .clipShape(RoundedRectangle(cornerRadius: 6))
     }
 }
+// swiftlint:enable type_body_length

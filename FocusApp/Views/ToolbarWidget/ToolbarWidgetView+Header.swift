@@ -20,7 +20,7 @@ extension ToolbarWidgetView {
             .frame(width: 26, height: 26)
 
             VStack(alignment: .leading, spacing: 2) {
-                Text("FocusApp")
+                Text(L10n.Widget.headerTitle)
                     .font(.system(size: 14, weight: .semibold))
                     .foregroundColor(.white)
 
@@ -35,7 +35,7 @@ extension ToolbarWidgetView {
                                 .fill(Color.green.opacity(0.15))
                         )
                 } else {
-                    Text("Ready")
+                    Text(L10n.Widget.headerReady)
                         .font(.system(size: 9))
                         .foregroundColor(.white.opacity(0.5))
                 }
@@ -58,7 +58,7 @@ extension ToolbarWidgetView {
                 }
                 .buttonStyle(.plain)
                 .disabled(presenter.isSyncing)
-                .help("Sync with LeetCode")
+                .help(L10n.Widget.headerSyncHelp)
 
                 Button(action: {
                     withAnimation(.easeInOut(duration: 0.2)) {
@@ -78,7 +78,7 @@ extension ToolbarWidgetView {
                         )
                 }
                 .buttonStyle(.plain)
-                .help("Settings")
+                .help(L10n.Widget.headerSettingsHelp)
             }
         }
     }

@@ -315,7 +315,7 @@ struct LeetCodeTemplateBuilder {
     }
 
     private static func pythonTypingImports(typesUsed: [LeetCodeValueType]) -> String {
-        var needsList = typesUsed.contains { type in
+        let needsList = typesUsed.contains { type in
             if case .list = type { return true }
             return false
         }
@@ -936,7 +936,7 @@ struct LeetCodeExecutionWrapper {
     private static func containsTypeDefinition(in code: String, typeName: String) -> Bool {
         let stripped = stripCommentsAndStrings(from: code)
         let escaped = NSRegularExpression.escapedPattern(for: typeName)
-        let pattern = "\\b(class|struct)\\s+\\(escaped)\\b"
+        let pattern = "\\b(class|struct)\\s+\(escaped)\\b"
         return stripped.range(of: pattern, options: .regularExpression) != nil
     }
 

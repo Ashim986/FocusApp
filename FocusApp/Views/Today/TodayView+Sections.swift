@@ -4,11 +4,13 @@ extension TodayView {
     var syncCard: some View {
         HStack(spacing: 16) {
             VStack(alignment: .leading, spacing: 4) {
-                Text("LeetCode Sync")
+                Text(L10n.Today.syncTitle)
                     .font(.system(size: 16, weight: .semibold))
                     .foregroundColor(Color.appGray800)
 
-                Text(presenter.lastSyncResult.isEmpty ? "Keep your progress up to date." : presenter.lastSyncResult)
+                Text(presenter.lastSyncResult.isEmpty
+                     ? L10n.Today.syncDefaultStatus
+                     : presenter.lastSyncResult)
                     .font(.system(size: 12))
                     .foregroundColor(Color.appGray500)
             }
@@ -22,7 +24,7 @@ extension TodayView {
                 Button(action: { presenter.syncNow() }) {
                     HStack(spacing: 6) {
                         Image(systemName: "arrow.triangle.2.circlepath")
-                        Text("Sync Now")
+                        Text(L10n.Today.syncNow)
                     }
                     .font(.system(size: 12, weight: .semibold))
                     .foregroundColor(.white)
@@ -47,13 +49,15 @@ extension TodayView {
     var habitsCard: some View {
         VStack(alignment: .leading, spacing: 16) {
             HStack {
-                Text("Daily Habits")
+                Text(L10n.Today.habitsTitle)
                     .font(.system(size: 16, weight: .semibold))
                     .foregroundColor(Color.appGray800)
 
                 Spacer()
 
-                Text("\(presenter.habitsCompletedCount)/\(presenter.habits.count) completed")
+                Text(L10n.Today.habitsCompletedFormat(
+                                       presenter.habitsCompletedCount,
+                                       presenter.habits.count))
                     .font(.system(size: 13))
                     .foregroundColor(Color.appGray500)
             }
@@ -136,18 +140,20 @@ extension TodayView {
                             .fill(Color.appGray200)
                             .frame(width: 32, height: 32)
 
-                        Text("D\(day.id)")
+                        Text(L10n.Today.dayBadge( day.id))
                             .font(.system(size: 12, weight: .bold))
                             .foregroundColor(Color.appGray600)
                     }
                 }
 
                 VStack(alignment: .leading, spacing: 2) {
-                    Text(day.isToday ? "Today's Focus: \(day.topic)" : "Backlog: \(day.topic)")
+                    Text(day.isToday
+                         ? L10n.Today.dayTitleToday( day.topic)
+                         : L10n.Today.dayTitleBacklog( day.topic))
                         .font(.system(size: 16, weight: .semibold))
                         .foregroundColor(Color.appGray800)
 
-                    Text("\(day.completedCount)/\(day.totalCount) problems completed")
+                    Text(L10n.Today.dayCompletedFormat( day.completedCount, day.totalCount))
                         .font(.system(size: 13))
                         .foregroundColor(Color.appGray500)
                 }

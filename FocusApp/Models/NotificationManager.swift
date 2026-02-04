@@ -68,8 +68,9 @@ final class NotificationManager: NotificationManaging {
         cancelStudyReminder()
 
         let content = UNMutableNotificationContent()
-        content.title = "Time to Study DSA!"
-        content.body = "Keep your streak going - tackle today's problems!"
+        let notice = AppNotices.studyReminder
+        content.title = notice.title
+        content.body = notice.body
         content.sound = .default
 
         let components = Calendar.current.dateComponents([.hour, .minute], from: time)
@@ -96,8 +97,9 @@ final class NotificationManager: NotificationManaging {
         cancelHabitReminder()
 
         let content = UNMutableNotificationContent()
-        content.title = "Don't Forget Your Habits!"
-        content.body = "Have you completed your daily habits today?"
+        let notice = AppNotices.habitReminder
+        content.title = notice.title
+        content.body = notice.body
         content.sound = .default
 
         let components = Calendar.current.dateComponents([.hour, .minute], from: time)
@@ -124,8 +126,9 @@ final class NotificationManager: NotificationManaging {
         guard authorized else { return }
 
         let content = UNMutableNotificationContent()
-        content.title = "Congratulations!"
-        content.body = "You've mastered \(topic)! Keep up the great work!"
+        let notice = AppNotices.topicComplete(topic)
+        content.title = notice.title
+        content.body = notice.body
         content.sound = .default
 
         let request = UNNotificationRequest(
@@ -145,8 +148,9 @@ final class NotificationManager: NotificationManaging {
         guard authorized else { return }
 
         let content = UNMutableNotificationContent()
-        content.title = "All Habits Complete!"
-        content.body = "You've completed all your habits for today. Great discipline!"
+        let notice = AppNotices.habitsComplete
+        content.title = notice.title
+        content.body = notice.body
         content.sound = .default
 
         let request = UNNotificationRequest(

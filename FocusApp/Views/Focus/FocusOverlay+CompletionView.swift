@@ -14,11 +14,11 @@ extension FocusOverlay {
             }
 
             VStack(spacing: 8) {
-                Text("Session Complete!")
+                Text(L10n.Focus.completeTitle)
                     .font(.system(size: 32, weight: .bold))
                     .foregroundColor(.white)
 
-                Text("Great job staying focused!")
+                Text(L10n.Focus.completeSubtitle)
                     .font(.system(size: 16))
                     .foregroundColor(.white.opacity(0.7))
             }
@@ -28,7 +28,7 @@ extension FocusOverlay {
                     Text("\(presenter.minutesFocused)")
                         .font(.system(size: 36, weight: .bold))
                         .foregroundColor(Color.appPurple)
-                    Text("minutes focused")
+                    Text(L10n.Focus.completeMinutesLabel)
                         .font(.system(size: 13))
                         .foregroundColor(.white.opacity(0.6))
                 }
@@ -37,7 +37,7 @@ extension FocusOverlay {
             Button(action: { closeSession() }) {
                 HStack(spacing: 8) {
                     Image(systemName: "checkmark")
-                    Text("Done")
+                    Text(L10n.Focus.completeDone)
                 }
                 .font(.system(size: 16, weight: .semibold))
                 .foregroundColor(.white)

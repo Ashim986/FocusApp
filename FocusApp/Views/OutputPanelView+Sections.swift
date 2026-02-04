@@ -4,7 +4,7 @@ extension OutputPanelView {
     @ViewBuilder
     var testResultsSection: some View {
         VStack(alignment: .leading, spacing: 8) {
-            Text("Test Results")
+            Text(L10n.Output.testResults)
                 .font(.system(size: 11, weight: .semibold))
                 .foregroundColor(Color.appGray400)
 
@@ -27,12 +27,12 @@ extension OutputPanelView {
                         .foregroundColor(Color.appGray500)
                 }
 
-                Text("Test \(index + 1)")
+                Text(L10n.Output.testCaseLabel( index + 1))
                     .font(.system(size: 12, weight: .medium))
                     .foregroundColor(.white)
 
                 if let passed = testCase.passed {
-                    Text(passed ? "Passed" : "Failed")
+                    Text(passed ? L10n.Output.passed : L10n.Output.failed)
                         .font(.system(size: 11))
                         .foregroundColor(passed ? Color.appGreen : Color.appRed)
                 }
@@ -41,7 +41,7 @@ extension OutputPanelView {
             if testCase.passed == false, let actual = testCase.actualOutput {
                 VStack(alignment: .leading, spacing: 4) {
                     HStack(spacing: 4) {
-                        Text("Expected:")
+                        Text(L10n.Output.expected)
                             .font(.system(size: 10, weight: .medium))
                             .foregroundColor(Color.appGray500)
                         Text(testCase.expectedOutput)
@@ -49,7 +49,7 @@ extension OutputPanelView {
                             .foregroundColor(Color.appGray300)
                     }
                     HStack(spacing: 4) {
-                        Text("Actual:")
+                        Text(L10n.Output.actual)
                             .font(.system(size: 10, weight: .medium))
                             .foregroundColor(Color.appGray500)
                         Text(actual)
@@ -75,14 +75,14 @@ extension OutputPanelView {
                     .font(.system(size: 10))
                     .foregroundColor(Color.appGreen)
 
-                Text("Console Output")
+                Text(L10n.Output.consoleOutput)
                     .font(.system(size: 11, weight: .semibold))
                     .foregroundColor(Color.appGray400)
 
                 Spacer()
 
                 let lineCount = output.components(separatedBy: "\n").filter { !$0.isEmpty }.count
-                Text("\(lineCount) line\(lineCount == 1 ? "" : "s")")
+                Text(L10n.Output.lineCount(lineCount))
                     .font(.system(size: 9))
                     .foregroundColor(Color.appGray500)
                     .padding(.horizontal, 6)
@@ -103,7 +103,7 @@ extension OutputPanelView {
                     .font(.system(size: 10))
                     .foregroundColor(Color.appRed)
 
-                Text("Error Output")
+                Text(L10n.Output.errorOutput)
                     .font(.system(size: 11, weight: .semibold))
                     .foregroundColor(Color.appRed)
             }
@@ -132,7 +132,7 @@ extension OutputPanelView {
                 .font(.system(size: 24))
                 .foregroundColor(Color.appGray600)
 
-            Text("Run your code to see output")
+            Text(L10n.Output.emptyState)
                 .font(.system(size: 12))
                 .foregroundColor(Color.appGray500)
         }

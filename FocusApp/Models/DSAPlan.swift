@@ -36,22 +36,46 @@ struct Problem: Identifiable, Codable {
     }
 }
 
-struct Day: Identifiable {
+struct Day: Identifiable, Codable {
     let id: Int
     let date: String
     let topic: String
     let problems: [Problem]
 }
 
-// Pre-completed topics (already done before the 13-day plan)
-let preCompletedTopics = [
-    "Arrays & Hashing",
-    "Two Pointers",
-    "Sliding Window"
-]
+struct PlanData: Codable {
+    let preCompletedTopics: [String]
+    let days: [Day]
+}
 
-// 13-day DSA plan data
-let dsaPlan: [Day] = [
+enum PlanDataLoader {
+    static func load() -> PlanData {
+        let locale = Locale.current.language.languageCode?.identifier
+        let localizedURL = Bundle.main.url(
+            forResource: "Plan",
+            withExtension: "json",
+            subdirectory: nil,
+            localization: locale
+        )
+
+        if let url = localizedURL ?? Bundle.main.url(forResource: "Plan", withExtension: "json"),
+           let data = try? Data(contentsOf: url),
+           let plan = try? JSONDecoder().decode(PlanData.self, from: data) {
+            return plan
+        }
+
+        return fallbackPlanData
+    }
+}
+
+// Fallback plan data if bundled JSON is missing or invalid.
+private let fallbackPlanData = PlanData(
+    preCompletedTopics: [
+        "Arrays & Hashing",
+        "Two Pointers",
+        "Sliding Window"
+    ],
+    days: [
     Day(id: 1, date: "Feb 3", topic: "Linked List", problems: [
         Problem(name: "Reverse Linked List", difficulty: .easy, url: "https://leetcode.com/problems/reverse-linked-list/"),
         Problem(name: "Merge Two Sorted Lists", difficulty: .easy, url: "https://leetcode.com/problems/merge-two-sorted-lists/"),
@@ -143,4 +167,9 @@ let dsaPlan: [Day] = [
         Problem(name: "Word Break", difficulty: .medium, url: "https://leetcode.com/problems/word-break/"),
         Problem(name: "Longest Increasing Subsequence", difficulty: .medium, url: "https://leetcode.com/problems/longest-increasing-subsequence/")
     ])
-]
+    ]
+)
+
+let planData = PlanDataLoader.load()
+let preCompletedTopics = planData.preCompletedTopics
+let dsaPlan = planData.days

@@ -31,7 +31,7 @@ struct ProblemSelectionView: View {
                 Button(action: onBack) {
                     HStack(spacing: 4) {
                         Image(systemName: "chevron.left")
-                        Text("Back to Timer")
+                        Text(L10n.ProblemSelection.backToTimer)
                     }
                     .font(.system(size: 13))
                     .foregroundColor(Color.appGray400)
@@ -42,11 +42,11 @@ struct ProblemSelectionView: View {
             }
 
             VStack(spacing: 4) {
-                Text("Problems to Solve")
+                Text(L10n.ProblemSelection.title)
                     .font(.system(size: 20, weight: .bold))
                     .foregroundColor(.white)
 
-                Text("Select a problem to start coding")
+                Text(L10n.ProblemSelection.subtitle)
                     .font(.system(size: 14))
                     .foregroundColor(Color.appGray400)
             }
@@ -58,7 +58,9 @@ struct ProblemSelectionView: View {
     private func sectionBlock(_ section: CodingProblemSection) -> some View {
         VStack(alignment: .leading, spacing: 10) {
             HStack {
-                Text(section.isToday ? "Today · Day \(section.dayId)" : "Backlog · Day \(section.dayId)")
+                Text(section.isToday
+                     ? L10n.ProblemSelection.sectionToday( section.dayId)
+                     : L10n.ProblemSelection.sectionBacklog( section.dayId))
                     .font(.system(size: 12, weight: .semibold))
                     .foregroundColor(Color.appGray400)
 
@@ -105,7 +107,7 @@ struct ProblemSelectionView: View {
                         difficultyBadge(item.problem.difficulty)
 
                         if item.isCompleted {
-                            Text("Solved")
+                            Text(L10n.ProblemSelection.solved)
                                 .font(.system(size: 10))
                                 .foregroundColor(Color.appGreen)
                         }

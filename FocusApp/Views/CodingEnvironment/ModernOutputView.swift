@@ -8,16 +8,27 @@ struct ModernOutputView: View {
 
     @State private var selectedTab: OutputTab = .result
 
-    enum OutputTab: String, CaseIterable {
-        case result = "Result"
-        case output = "Output"
-        case debug = "Debug"
+    enum OutputTab: CaseIterable {
+        case result
+        case output
+        case debug
+
+        var title: String {
+            switch self {
+            case .result:
+                return L10n.Coding.Output.tabResult
+            case .output:
+                return L10n.Coding.Output.tabOutput
+            case .debug:
+                return L10n.Coding.Output.tabDebug
+            }
+        }
     }
 
     var body: some View {
         VStack(spacing: 0) {
             HStack(spacing: 0) {
-                ForEach(OutputTab.allCases, id: \.rawValue) { tab in
+                ForEach(OutputTab.allCases, id: \.self) { tab in
                     Button(action: { selectedTab = tab }) {
                         HStack(spacing: 4) {
                             if tab == .result && hasTestResults {
@@ -26,7 +37,7 @@ struct ModernOutputView: View {
                                     .frame(width: 6, height: 6)
                             }
 
-                            Text(tab.rawValue)
+                            Text(tab.title)
                                 .font(.system(size: 11, weight: selectedTab == tab ? .semibold : .regular))
                                 .foregroundColor(selectedTab == tab ? .white : Color.appGray500)
                         }
@@ -43,7 +54,7 @@ struct ModernOutputView: View {
                         ProgressView()
                             .scaleEffect(0.5)
                             .frame(width: 12, height: 12)
-                        Text("Running...")
+                        Text(L10n.Coding.Output.running)
                             .font(.system(size: 10))
                             .foregroundColor(Color.appGray500)
                     }

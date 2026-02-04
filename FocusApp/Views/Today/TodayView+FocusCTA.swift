@@ -5,11 +5,11 @@ extension TodayView {
         VStack(spacing: 16) {
             HStack(spacing: 12) {
                 VStack(alignment: .leading, spacing: 4) {
-                    Text("Ready to Code?")
+                    Text(L10n.Today.ctaTitle)
                         .font(.system(size: 20, weight: .bold))
                         .foregroundColor(.white)
 
-                    Text("Jump into the editor and start your next problem.")
+                    Text(L10n.Today.ctaSubtitle)
                         .font(.system(size: 14))
                         .foregroundColor(.white.opacity(0.8))
                 }
@@ -21,7 +21,7 @@ extension TodayView {
                 }) {
                     HStack(spacing: 6) {
                         Image(systemName: "chevron.left.slash.chevron.right")
-                        Text("Start Coding")
+                        Text(L10n.Today.ctaButton)
                     }
                     .font(.system(size: 13, weight: .semibold))
                     .foregroundColor(Color.appPurple)
@@ -35,7 +35,7 @@ extension TodayView {
                 .buttonStyle(.plain)
             }
 
-            Text("A 30-minute focus timer starts automatically for each problem.")
+            Text(L10n.Today.ctaFooter)
                 .font(.system(size: 12, weight: .medium))
                 .foregroundColor(.white.opacity(0.7))
         }

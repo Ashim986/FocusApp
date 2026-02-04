@@ -7,6 +7,17 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		074E2BCBD6F74E9B99BF53E4 /* CodingEnvironmentPresenterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29FB46B09F3E414695FCE546 /* CodingEnvironmentPresenterTests.swift */; };
+		0A1BA9D5346842E6BF0C6DBB /* ProgrammingLanguageTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72999C0BC3F3402687B3BB9E /* ProgrammingLanguageTests.swift */; };
+		1C9332DFB01F4B57805EC9A6 /* ExecutorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2C29BF0F588499DBE85FD5D /* ExecutorTests.swift */; };
+		1FDAC8DA41B44813A6128FF4 /* LeetCodeModelsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84B888743F7248DBA5F3A94F /* LeetCodeModelsTests.swift */; };
+		416DC1D624AC4D8C83D0820A /* LeetCodeNetworkingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AF2BC50D7A04A59A72BD4CC /* LeetCodeNetworkingTests.swift */; };
+		55C3B4ADCD3C450593E4212C /* NotificationManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65251E426E5243F79306F201 /* NotificationManagerTests.swift */; };
+		5B9ADEFB983A4EF5AF6A67D2 /* ProcessRunnerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 085FEBCD150F43019CE9B529 /* ProcessRunnerTests.swift */; };
+		653A1BCD45DC478A8FA88001 /* CodingEnvironmentView+Sidebar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A4E0753FE4C4032A9C53AAA /* CodingEnvironmentView+Sidebar.swift */; };
+		76E45EE927B7400B8F88BED1 /* LeetCodeSyncInteractorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6568D60DBB854206882E1ECE /* LeetCodeSyncInteractorTests.swift */; };
+		81CB68C852BA4D08900D8C64 /* PlanCalendarTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F4280AC0DB14B018B8F3B43 /* PlanCalendarTests.swift */; };
+		865EEC6EABBD4E7AB00F78AA /* CodeExecutionServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09B826590C1C4423B22A0B64 /* CodeExecutionServiceTests.swift */; };
 		A10001001 /* FocusApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002001 /* FocusApp.swift */; };
 		A10001002 /* DSAPlan.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002002 /* DSAPlan.swift */; };
 		A10001003 /* AppData.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002003 /* AppData.swift */; };
@@ -20,10 +31,13 @@
 		A1000100B /* DayCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000200B /* DayCard.swift */; };
 		A1000100C /* ProblemRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000200C /* ProblemRow.swift */; };
 		A1000100D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A1000200D /* Assets.xcassets */; };
+		A10001094 /* Plan.json in Resources */ = {isa = PBXBuildFile; fileRef = A10002094 /* Plan.json */; };
+		A10001096 /* Localizable.stringsdict in Resources */ = {isa = PBXBuildFile; fileRef = A10002096 /* Localizable.stringsdict */; };
 		A1000100E /* NotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000200F /* NotificationManager.swift */; };
 		A1000100F /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002010 /* SettingsView.swift */; };
 		A10001010 /* SharedDataStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002011 /* SharedDataStore.swift */; };
-		A10001090 /* SwiftDataStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002090 /* SwiftDataStorage.swift */; };
+		A10001011 /* OutputPanelView+Sections.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002012 /* OutputPanelView+Sections.swift */; };
+		A10001012 /* ConsoleOutputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002013 /* ConsoleOutputView.swift */; };
 		A10001013 /* LeetCodeService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002014 /* LeetCodeService.swift */; };
 		A10001014 /* AppContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002015 /* AppContainer.swift */; };
 		A10001015 /* ToolbarWidgetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002016 /* ToolbarWidgetView.swift */; };
@@ -31,7 +45,6 @@
 		A10001017 /* CodeExecutionService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002018 /* CodeExecutionService.swift */; };
 		A10001018 /* CodingEnvironmentPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002019 /* CodingEnvironmentPresenter.swift */; };
 		A10001019 /* CodeEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000201A /* CodeEditorView.swift */; };
-		A10001091 /* CodeEditorLineNumberRulerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002091 /* CodeEditorLineNumberRulerView.swift */; };
 		A1000101A /* OutputPanelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000201B /* OutputPanelView.swift */; };
 		A1000101B /* ProblemSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000201C /* ProblemSelectionView.swift */; };
 		A1000101C /* CodingEnvironmentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000201D /* CodingEnvironmentView.swift */; };
@@ -54,8 +67,6 @@
 		A10001033 /* FocusInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002034 /* FocusInteractor.swift */; };
 		A10001034 /* FocusPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002035 /* FocusPresenter.swift */; };
 		A10001035 /* CodingEnvironmentInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002036 /* CodingEnvironmentInteractor.swift */; };
-		A10001011 /* OutputPanelView+Sections.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002012 /* OutputPanelView+Sections.swift */; };
-		A10001012 /* ConsoleOutputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002013 /* ConsoleOutputView.swift */; };
 		A10001036 /* CodeEditorView+Coordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002037 /* CodeEditorView+Coordinator.swift */; };
 		A10001037 /* CodeEditorView+CoordinatorInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002038 /* CodeEditorView+CoordinatorInput.swift */; };
 		A10001038 /* CodeEditorView+CoordinatorHighlighting.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002039 /* CodeEditorView+CoordinatorHighlighting.swift */; };
@@ -96,47 +107,36 @@
 		A10001074 /* LeetCodeErrors.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002075 /* LeetCodeErrors.swift */; };
 		A10001075 /* LeetCodeModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002076 /* LeetCodeModels.swift */; };
 		A10001077 /* LeetCodeConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002078 /* LeetCodeConstants.swift */; };
-		B2C3D4E5F6A7B8C9D0E1F4F6 /* LeetCodeSyncScheduler.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2C3D4E5F6A7B8C9D0E1F4F5 /* LeetCodeSyncScheduler.swift */; };
 		A10001078 /* LeetCodeSlugExtractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002079 /* LeetCodeSlugExtractor.swift */; };
 		A10001079 /* CodeEditorView+CoordinatorIndentation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000207A /* CodeEditorView+CoordinatorIndentation.swift */; };
 		A1000107A /* CodeEditorView+CoordinatorBrackets.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000207B /* CodeEditorView+CoordinatorBrackets.swift */; };
 		A1000107B /* CodingEnvironmentView+ProblemPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000207C /* CodingEnvironmentView+ProblemPicker.swift */; };
-		CB0805C549E94B40B1CE6960 /* CodingEnvironmentProblemModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6EA4BEC926540C884CA828B /* CodingEnvironmentProblemModels.swift */; };
-		653A1BCD45DC478A8FA88001 /* CodingEnvironmentView+Sidebar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A4E0753FE4C4032A9C53AAA /* CodingEnvironmentView+Sidebar.swift */; };
-		B1D2C3D4E5F6A7B8C9D0E1F3 /* CodingEnvironmentView+DetailContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1D2C3D4E5F6A7B8C9D0E1F2 /* CodingEnvironmentView+DetailContent.swift */; };
 		A1000107C /* FocusOverlay+TimerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000207D /* FocusOverlay+TimerView.swift */; };
 		A1000107D /* FocusOverlay+CompletionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000207E /* FocusOverlay+CompletionView.swift */; };
 		A1000107E /* StatsView+FocusReminder.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000207F /* StatsView+FocusReminder.swift */; };
 		A1000107F /* TodayView+FocusCTA.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002080 /* TodayView+FocusCTA.swift */; };
 		A10001080 /* ContentView+Preview.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002081 /* ContentView+Preview.swift */; };
-		C9EA7A4E9DEF427EA4E50A21 /* Fixtures.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D6F90158D1A49A4B723EC53 /* Fixtures.swift */; };
-		1FDAC8DA41B44813A6128FF4 /* LeetCodeModelsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84B888743F7248DBA5F3A94F /* LeetCodeModelsTests.swift */; };
-		D2EC195B48254E0B914D8A01 /* LeetCodeRestClientTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C981502C4EC54673BA39B39A /* LeetCodeRestClientTests.swift */; };
-		416DC1D624AC4D8C83D0820A /* LeetCodeNetworkingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AF2BC50D7A04A59A72BD4CC /* LeetCodeNetworkingTests.swift */; };
-		5B9ADEFB983A4EF5AF6A67D2 /* ProcessRunnerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 085FEBCD150F43019CE9B529 /* ProcessRunnerTests.swift */; };
-		1C9332DFB01F4B57805EC9A6 /* ExecutorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2C29BF0F588499DBE85FD5D /* ExecutorTests.swift */; };
+		A10001090 /* SwiftDataStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002090 /* SwiftDataStorage.swift */; };
+		A10001091 /* CodeEditorLineNumberRulerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002091 /* CodeEditorLineNumberRulerView.swift */; };
+		A10001092 /* AppStrings.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002092 /* AppStrings.swift */; };
+		A10001095 /* L10n.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002095 /* L10n.swift */; };
+		A10001097 /* L10n+Plural.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002097 /* L10n+Plural.swift */; };
+		A10001098 /* AppMessages.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002098 /* AppMessages.swift */; };
+		A10001093 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = A10002093 /* Localizable.xcstrings */; };
+		B1D2C3D4E5F6A7B8C9D0E1F3 /* CodingEnvironmentView+DetailContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1D2C3D4E5F6A7B8C9D0E1F2 /* CodingEnvironmentView+DetailContent.swift */; };
+		B2C3D4E5F6A7B8C9D0E1F4F6 /* LeetCodeSyncScheduler.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2C3D4E5F6A7B8C9D0E1F4F5 /* LeetCodeSyncScheduler.swift */; };
 		C2978C5869F84459BDC98091 /* SharedDataStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A111678A69A8452C97563307 /* SharedDataStoreTests.swift */; };
-		E325663DD9574C9390341D12 /* AppDataTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D26C0ABCC3347D490B3E48B /* AppDataTests.swift */; };
-		81CB68C852BA4D08900D8C64 /* PlanCalendarTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F4280AC0DB14B018B8F3B43 /* PlanCalendarTests.swift */; };
-		F16E69D9C175439EA2255A91 /* AppStateStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A1DED48D1ED467BB0BF7B84 /* AppStateStoreTests.swift */; };
-		F9A2DABABABF4C3ABE903F0B /* LeetCodeSlugExtractorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCC76528BB9347DA886CDFBD /* LeetCodeSlugExtractorTests.swift */; };
-		0A1BA9D5346842E6BF0C6DBB /* ProgrammingLanguageTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72999C0BC3F3402687B3BB9E /* ProgrammingLanguageTests.swift */; };
-		76E45EE927B7400B8F88BED1 /* LeetCodeSyncInteractorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6568D60DBB854206882E1ECE /* LeetCodeSyncInteractorTests.swift */; };
-		55C3B4ADCD3C450593E4212C /* NotificationManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65251E426E5243F79306F201 /* NotificationManagerTests.swift */; };
-		865EEC6EABBD4E7AB00F78AA /* CodeExecutionServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09B826590C1C4423B22A0B64 /* CodeExecutionServiceTests.swift */; };
-		074E2BCBD6F74E9B99BF53E4 /* CodingEnvironmentPresenterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29FB46B09F3E414695FCE546 /* CodingEnvironmentPresenterTests.swift */; };
 		C7D8E9F0A1B2C3D4E5F60709 /* LeetCodeSyncSchedulerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7D8E9F0A1B2C3D4E5F60708 /* LeetCodeSyncSchedulerTests.swift */; };
+		C9EA7A4E9DEF427EA4E50A21 /* Fixtures.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D6F90158D1A49A4B723EC53 /* Fixtures.swift */; };
+		CB0805C549E94B40B1CE6960 /* CodingEnvironmentProblemModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6EA4BEC926540C884CA828B /* CodingEnvironmentProblemModels.swift */; };
+		D2EC195B48254E0B914D8A01 /* LeetCodeRestClientTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C981502C4EC54673BA39B39A /* LeetCodeRestClientTests.swift */; };
 		DSAT001001 /* DSAPlanTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DSAT002001 /* DSAPlanTests.swift */; };
 		DSAT001002 /* LeetCodeErrorsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DSAT002002 /* LeetCodeErrorsTests.swift */; };
 		DSAT001003 /* ExecutionConfigTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DSAT002003 /* ExecutionConfigTests.swift */; };
 		DSAT001004 /* LeetCodeConstantsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DSAT002004 /* LeetCodeConstantsTests.swift */; };
-		PT001001 /* FocusPresenterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = PT002001 /* FocusPresenterTests.swift */; };
-		PT001002 /* ContentPresenterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = PT002002 /* ContentPresenterTests.swift */; };
-		PT001003 /* PlanPresenterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = PT002003 /* PlanPresenterTests.swift */; };
-		PT001004 /* TodayPresenterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = PT002004 /* TodayPresenterTests.swift */; };
-		PT001005 /* StatsPresenterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = PT002005 /* StatsPresenterTests.swift */; };
-		PT001006 /* SettingsPresenterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = PT002006 /* SettingsPresenterTests.swift */; };
-		PT001007 /* ToolbarWidgetPresenterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = PT002007 /* ToolbarWidgetPresenterTests.swift */; };
+		E325663DD9574C9390341D12 /* AppDataTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D26C0ABCC3347D490B3E48B /* AppDataTests.swift */; };
+		F16E69D9C175439EA2255A91 /* AppStateStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A1DED48D1ED467BB0BF7B84 /* AppStateStoreTests.swift */; };
+		F9A2DABABABF4C3ABE903F0B /* LeetCodeSlugExtractorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCC76528BB9347DA886CDFBD /* LeetCodeSlugExtractorTests.swift */; };
 		IT001001 /* ContentInteractorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = IT002001 /* ContentInteractorTests.swift */; };
 		IT001002 /* PlanInteractorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = IT002002 /* PlanInteractorTests.swift */; };
 		IT001003 /* TodayInteractorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = IT002003 /* TodayInteractorTests.swift */; };
@@ -144,10 +144,41 @@
 		IT001005 /* SettingsInteractorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = IT002005 /* SettingsInteractorTests.swift */; };
 		IT001006 /* ToolbarWidgetInteractorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = IT002006 /* ToolbarWidgetInteractorTests.swift */; };
 		IT001007 /* CodingEnvironmentInteractorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = IT002007 /* CodingEnvironmentInteractorTests.swift */; };
+		PT001001 /* FocusPresenterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = PT002001 /* FocusPresenterTests.swift */; };
+		PT001002 /* ContentPresenterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = PT002002 /* ContentPresenterTests.swift */; };
+		PT001003 /* PlanPresenterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = PT002003 /* PlanPresenterTests.swift */; };
+		PT001004 /* TodayPresenterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = PT002004 /* TodayPresenterTests.swift */; };
+		PT001005 /* StatsPresenterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = PT002005 /* StatsPresenterTests.swift */; };
+		PT001006 /* SettingsPresenterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = PT002006 /* SettingsPresenterTests.swift */; };
+		PT001007 /* ToolbarWidgetPresenterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = PT002007 /* ToolbarWidgetPresenterTests.swift */; };
 		RT001001 /* ContentRouterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = RT002001 /* ContentRouterTests.swift */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		BC76266BB8004E60817433C2 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A10007001 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = A10006001;
+			remoteInfo = FocusApp;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
+		085FEBCD150F43019CE9B529 /* ProcessRunnerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProcessRunnerTests.swift; sourceTree = "<group>"; };
+		09B826590C1C4423B22A0B64 /* CodeExecutionServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodeExecutionServiceTests.swift; sourceTree = "<group>"; };
+		29FB46B09F3E414695FCE546 /* CodingEnvironmentPresenterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodingEnvironmentPresenterTests.swift; sourceTree = "<group>"; };
+		3D6F90158D1A49A4B723EC53 /* Fixtures.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Fixtures.swift; sourceTree = "<group>"; };
+		58471227E33B481BB4F4357B /* FocusAppTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FocusAppTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		65251E426E5243F79306F201 /* NotificationManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationManagerTests.swift; sourceTree = "<group>"; };
+		6568D60DBB854206882E1ECE /* LeetCodeSyncInteractorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeetCodeSyncInteractorTests.swift; sourceTree = "<group>"; };
+		6A1DED48D1ED467BB0BF7B84 /* AppStateStoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppStateStoreTests.swift; sourceTree = "<group>"; };
+		72999C0BC3F3402687B3BB9E /* ProgrammingLanguageTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgrammingLanguageTests.swift; sourceTree = "<group>"; };
+		84B888743F7248DBA5F3A94F /* LeetCodeModelsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeetCodeModelsTests.swift; sourceTree = "<group>"; };
+		8A4E0753FE4C4032A9C53AAA /* CodingEnvironmentView+Sidebar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CodingEnvironmentView+Sidebar.swift"; sourceTree = "<group>"; };
+		9AF2BC50D7A04A59A72BD4CC /* LeetCodeNetworkingTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeetCodeNetworkingTests.swift; sourceTree = "<group>"; };
+		9D26C0ABCC3347D490B3E48B /* AppDataTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDataTests.swift; sourceTree = "<group>"; };
+		9F4280AC0DB14B018B8F3B43 /* PlanCalendarTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlanCalendarTests.swift; sourceTree = "<group>"; };
 		A10002001 /* FocusApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FocusApp.swift; sourceTree = "<group>"; };
 		A10002002 /* DSAPlan.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DSAPlan.swift; sourceTree = "<group>"; };
 		A10002003 /* AppData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppData.swift; sourceTree = "<group>"; };
@@ -165,7 +196,8 @@
 		A1000200F /* NotificationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationManager.swift; sourceTree = "<group>"; };
 		A10002010 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		A10002011 /* SharedDataStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedDataStore.swift; sourceTree = "<group>"; };
-		A10002090 /* SwiftDataStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftDataStorage.swift; sourceTree = "<group>"; };
+		A10002012 /* OutputPanelView+Sections.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "OutputPanelView+Sections.swift"; sourceTree = "<group>"; };
+		A10002013 /* ConsoleOutputView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConsoleOutputView.swift; sourceTree = "<group>"; };
 		A10002014 /* LeetCodeService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeetCodeService.swift; sourceTree = "<group>"; };
 		A10002015 /* AppContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppContainer.swift; sourceTree = "<group>"; };
 		A10002016 /* ToolbarWidgetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToolbarWidgetView.swift; sourceTree = "<group>"; };
@@ -173,7 +205,6 @@
 		A10002018 /* CodeExecutionService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodeExecutionService.swift; sourceTree = "<group>"; };
 		A10002019 /* CodingEnvironmentPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodingEnvironmentPresenter.swift; sourceTree = "<group>"; };
 		A1000201A /* CodeEditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodeEditorView.swift; sourceTree = "<group>"; };
-		A10002091 /* CodeEditorLineNumberRulerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodeEditorLineNumberRulerView.swift; sourceTree = "<group>"; };
 		A1000201B /* OutputPanelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OutputPanelView.swift; sourceTree = "<group>"; };
 		A1000201C /* ProblemSelectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProblemSelectionView.swift; sourceTree = "<group>"; };
 		A1000201D /* CodingEnvironmentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodingEnvironmentView.swift; sourceTree = "<group>"; };
@@ -181,7 +212,6 @@
 		A1000201F /* LanguageExecutor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LanguageExecutor.swift; sourceTree = "<group>"; };
 		A10002020 /* SwiftExecutor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftExecutor.swift; sourceTree = "<group>"; };
 		A10002021 /* PythonExecutor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PythonExecutor.swift; sourceTree = "<group>"; };
-		A10003001 /* FocusApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FocusApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A10002022 /* ContentInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentInteractor.swift; sourceTree = "<group>"; };
 		A10002023 /* ContentPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentPresenter.swift; sourceTree = "<group>"; };
 		A10002024 /* PlanInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlanInteractor.swift; sourceTree = "<group>"; };
@@ -197,8 +227,6 @@
 		A10002034 /* FocusInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FocusInteractor.swift; sourceTree = "<group>"; };
 		A10002035 /* FocusPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FocusPresenter.swift; sourceTree = "<group>"; };
 		A10002036 /* CodingEnvironmentInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodingEnvironmentInteractor.swift; sourceTree = "<group>"; };
-		A10002012 /* OutputPanelView+Sections.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "OutputPanelView+Sections.swift"; sourceTree = "<group>"; };
-		A10002013 /* ConsoleOutputView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConsoleOutputView.swift; sourceTree = "<group>"; };
 		A10002037 /* CodeEditorView+Coordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CodeEditorView+Coordinator.swift"; sourceTree = "<group>"; };
 		A10002038 /* CodeEditorView+CoordinatorInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CodeEditorView+CoordinatorInput.swift"; sourceTree = "<group>"; };
 		A10002039 /* CodeEditorView+CoordinatorHighlighting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CodeEditorView+CoordinatorHighlighting.swift"; sourceTree = "<group>"; };
@@ -239,42 +267,37 @@
 		A10002075 /* LeetCodeErrors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeetCodeErrors.swift; sourceTree = "<group>"; };
 		A10002076 /* LeetCodeModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeetCodeModels.swift; sourceTree = "<group>"; };
 		A10002078 /* LeetCodeConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeetCodeConstants.swift; sourceTree = "<group>"; };
-		B2C3D4E5F6A7B8C9D0E1F4F5 /* LeetCodeSyncScheduler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeetCodeSyncScheduler.swift; sourceTree = "<group>"; };
 		A10002079 /* LeetCodeSlugExtractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeetCodeSlugExtractor.swift; sourceTree = "<group>"; };
 		A1000207A /* CodeEditorView+CoordinatorIndentation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CodeEditorView+CoordinatorIndentation.swift"; sourceTree = "<group>"; };
 		A1000207B /* CodeEditorView+CoordinatorBrackets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CodeEditorView+CoordinatorBrackets.swift"; sourceTree = "<group>"; };
 		A1000207C /* CodingEnvironmentView+ProblemPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CodingEnvironmentView+ProblemPicker.swift"; sourceTree = "<group>"; };
-		D6EA4BEC926540C884CA828B /* CodingEnvironmentProblemModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodingEnvironmentProblemModels.swift; sourceTree = "<group>"; };
-		8A4E0753FE4C4032A9C53AAA /* CodingEnvironmentView+Sidebar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CodingEnvironmentView+Sidebar.swift"; sourceTree = "<group>"; };
-		B1D2C3D4E5F6A7B8C9D0E1F2 /* CodingEnvironmentView+DetailContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CodingEnvironmentView+DetailContent.swift"; sourceTree = "<group>"; };
 		A1000207D /* FocusOverlay+TimerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FocusOverlay+TimerView.swift"; sourceTree = "<group>"; };
 		A1000207E /* FocusOverlay+CompletionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FocusOverlay+CompletionView.swift"; sourceTree = "<group>"; };
 		A1000207F /* StatsView+FocusReminder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "StatsView+FocusReminder.swift"; sourceTree = "<group>"; };
 		A10002080 /* TodayView+FocusCTA.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TodayView+FocusCTA.swift"; sourceTree = "<group>"; };
 		A10002081 /* ContentView+Preview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ContentView+Preview.swift"; sourceTree = "<group>"; };
-		3D6F90158D1A49A4B723EC53 /* Fixtures.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Fixtures.swift; sourceTree = "<group>"; };
-		9D26C0ABCC3347D490B3E48B /* AppDataTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDataTests.swift; sourceTree = "<group>"; };
-		9F4280AC0DB14B018B8F3B43 /* PlanCalendarTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlanCalendarTests.swift; sourceTree = "<group>"; };
-		6A1DED48D1ED467BB0BF7B84 /* AppStateStoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppStateStoreTests.swift; sourceTree = "<group>"; };
+		A10002090 /* SwiftDataStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftDataStorage.swift; sourceTree = "<group>"; };
+		A10002091 /* CodeEditorLineNumberRulerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodeEditorLineNumberRulerView.swift; sourceTree = "<group>"; };
+		A10002092 /* AppStrings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppStrings.swift; sourceTree = "<group>"; };
+		A10002095 /* L10n.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = L10n.swift; sourceTree = "<group>"; };
+		A10002097 /* L10n+Plural.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "L10n+Plural.swift"; sourceTree = "<group>"; };
+		A10002098 /* AppMessages.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppMessages.swift; sourceTree = "<group>"; };
+		A10002093 /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
+		A10002094 /* Plan.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = Plan.json; sourceTree = "<group>"; };
+		A10002096 /* Localizable.stringsdict */ = {isa = PBXFileReference; lastKnownFileType = text.plist.stringsdict; path = Localizable.stringsdict; sourceTree = "<group>"; };
+		A10003001 /* FocusApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FocusApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		A111678A69A8452C97563307 /* SharedDataStoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedDataStoreTests.swift; sourceTree = "<group>"; };
+		A2C29BF0F588499DBE85FD5D /* ExecutorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExecutorTests.swift; sourceTree = "<group>"; };
+		B1D2C3D4E5F6A7B8C9D0E1F2 /* CodingEnvironmentView+DetailContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CodingEnvironmentView+DetailContent.swift"; sourceTree = "<group>"; };
+		B2C3D4E5F6A7B8C9D0E1F4F5 /* LeetCodeSyncScheduler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeetCodeSyncScheduler.swift; sourceTree = "<group>"; };
 		BCC76528BB9347DA886CDFBD /* LeetCodeSlugExtractorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeetCodeSlugExtractorTests.swift; sourceTree = "<group>"; };
-		72999C0BC3F3402687B3BB9E /* ProgrammingLanguageTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgrammingLanguageTests.swift; sourceTree = "<group>"; };
-		6568D60DBB854206882E1ECE /* LeetCodeSyncInteractorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeetCodeSyncInteractorTests.swift; sourceTree = "<group>"; };
-		65251E426E5243F79306F201 /* NotificationManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationManagerTests.swift; sourceTree = "<group>"; };
-		09B826590C1C4423B22A0B64 /* CodeExecutionServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodeExecutionServiceTests.swift; sourceTree = "<group>"; };
-		29FB46B09F3E414695FCE546 /* CodingEnvironmentPresenterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodingEnvironmentPresenterTests.swift; sourceTree = "<group>"; };
 		C7D8E9F0A1B2C3D4E5F60708 /* LeetCodeSyncSchedulerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeetCodeSyncSchedulerTests.swift; sourceTree = "<group>"; };
-		84B888743F7248DBA5F3A94F /* LeetCodeModelsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeetCodeModelsTests.swift; sourceTree = "<group>"; };
+		C981502C4EC54673BA39B39A /* LeetCodeRestClientTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeetCodeRestClientTests.swift; sourceTree = "<group>"; };
+		D6EA4BEC926540C884CA828B /* CodingEnvironmentProblemModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodingEnvironmentProblemModels.swift; sourceTree = "<group>"; };
 		DSAT002001 /* DSAPlanTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DSAPlanTests.swift; sourceTree = "<group>"; };
 		DSAT002002 /* LeetCodeErrorsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeetCodeErrorsTests.swift; sourceTree = "<group>"; };
 		DSAT002003 /* ExecutionConfigTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExecutionConfigTests.swift; sourceTree = "<group>"; };
 		DSAT002004 /* LeetCodeConstantsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeetCodeConstantsTests.swift; sourceTree = "<group>"; };
-		PT002001 /* FocusPresenterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FocusPresenterTests.swift; sourceTree = "<group>"; };
-		PT002002 /* ContentPresenterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentPresenterTests.swift; sourceTree = "<group>"; };
-		PT002003 /* PlanPresenterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlanPresenterTests.swift; sourceTree = "<group>"; };
-		PT002004 /* TodayPresenterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayPresenterTests.swift; sourceTree = "<group>"; };
-		PT002005 /* StatsPresenterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsPresenterTests.swift; sourceTree = "<group>"; };
-		PT002006 /* SettingsPresenterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsPresenterTests.swift; sourceTree = "<group>"; };
-		PT002007 /* ToolbarWidgetPresenterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToolbarWidgetPresenterTests.swift; sourceTree = "<group>"; };
 		IT002001 /* ContentInteractorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentInteractorTests.swift; sourceTree = "<group>"; };
 		IT002002 /* PlanInteractorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlanInteractorTests.swift; sourceTree = "<group>"; };
 		IT002003 /* TodayInteractorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayInteractorTests.swift; sourceTree = "<group>"; };
@@ -282,24 +305,25 @@
 		IT002005 /* SettingsInteractorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsInteractorTests.swift; sourceTree = "<group>"; };
 		IT002006 /* ToolbarWidgetInteractorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToolbarWidgetInteractorTests.swift; sourceTree = "<group>"; };
 		IT002007 /* CodingEnvironmentInteractorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodingEnvironmentInteractorTests.swift; sourceTree = "<group>"; };
+		PT002001 /* FocusPresenterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FocusPresenterTests.swift; sourceTree = "<group>"; };
+		PT002002 /* ContentPresenterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentPresenterTests.swift; sourceTree = "<group>"; };
+		PT002003 /* PlanPresenterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlanPresenterTests.swift; sourceTree = "<group>"; };
+		PT002004 /* TodayPresenterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayPresenterTests.swift; sourceTree = "<group>"; };
+		PT002005 /* StatsPresenterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsPresenterTests.swift; sourceTree = "<group>"; };
+		PT002006 /* SettingsPresenterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsPresenterTests.swift; sourceTree = "<group>"; };
+		PT002007 /* ToolbarWidgetPresenterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToolbarWidgetPresenterTests.swift; sourceTree = "<group>"; };
 		RT002001 /* ContentRouterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentRouterTests.swift; sourceTree = "<group>"; };
-		C981502C4EC54673BA39B39A /* LeetCodeRestClientTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeetCodeRestClientTests.swift; sourceTree = "<group>"; };
-		9AF2BC50D7A04A59A72BD4CC /* LeetCodeNetworkingTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeetCodeNetworkingTests.swift; sourceTree = "<group>"; };
-		085FEBCD150F43019CE9B529 /* ProcessRunnerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProcessRunnerTests.swift; sourceTree = "<group>"; };
-		A2C29BF0F588499DBE85FD5D /* ExecutorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExecutorTests.swift; sourceTree = "<group>"; };
-		A111678A69A8452C97563307 /* SharedDataStoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedDataStoreTests.swift; sourceTree = "<group>"; };
-		58471227E33B481BB4F4357B /* FocusAppTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FocusAppTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		A10004001 /* Frameworks */ = {
+		01245FCF31E449B4A39FE54E /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		01245FCF31E449B4A39FE54E /* Frameworks */ = {
+		A10004001 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -325,6 +349,7 @@
 				A10002015 /* AppContainer.swift */,
 				A1000200E /* FocusApp.entitlements */,
 				A1000200D /* Assets.xcassets */,
+				A10005010 /* Resources */,
 				A10005004 /* Models */,
 				A10005005 /* Views */,
 				A10005006 /* Helpers */,
@@ -401,6 +426,10 @@
 			isa = PBXGroup;
 			children = (
 				A10002005 /* Colors.swift */,
+				A10002092 /* AppStrings.swift */,
+				A10002095 /* L10n.swift */,
+				A10002097 /* L10n+Plural.swift */,
+				A10002098 /* AppMessages.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -533,6 +562,16 @@
 			path = CodingEnvironment;
 			sourceTree = "<group>";
 		};
+		A10005010 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				A10002093 /* Localizable.xcstrings */,
+				A10002094 /* Plan.json */,
+				A10002096 /* Localizable.stringsdict */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
 		E3BDFC6AC2C94292AEFE137B /* FocusAppTests */ = {
 			isa = PBXGroup;
 			children = (
@@ -579,23 +618,6 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		A10006001 /* FocusApp */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = A10008001 /* Build configuration list for PBXNativeTarget "FocusApp" */;
-			buildPhases = (
-				A10004002 /* Sources */,
-				A10004001 /* Frameworks */,
-				A10004003 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-			);
-			name = FocusApp;
-			productName = FocusApp;
-			productReference = A10003001 /* FocusApp.app */;
-			productType = "com.apple.product-type.application";
-		};
 		4C67B5983E414605B8C2BADA /* FocusAppTests */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 3BDC9BCA158F45F3A391466C /* Build configuration list for PBXNativeTarget "FocusAppTests" */;
@@ -614,6 +636,24 @@
 			productReference = 58471227E33B481BB4F4357B /* FocusAppTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
+		A10006001 /* FocusApp */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A10008001 /* Build configuration list for PBXNativeTarget "FocusApp" */;
+			buildPhases = (
+				CA217BC70C3CA43E5942B4E2 /* Run SwiftLint */,
+				A10004002 /* Sources */,
+				A10004001 /* Frameworks */,
+				A10004003 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = FocusApp;
+			productName = FocusApp;
+			productReference = A10003001 /* FocusApp.app */;
+			productType = "com.apple.product-type.application";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -624,10 +664,10 @@
 				LastSwiftUpdateCheck = 1500;
 				LastUpgradeCheck = 1500;
 				TargetAttributes = {
-					A10006001 = {
+					4C67B5983E414605B8C2BADA = {
 						CreatedOnToolsVersion = 15.0;
 					};
-					4C67B5983E414605B8C2BADA = {
+					A10006001 = {
 						CreatedOnToolsVersion = 15.0;
 					};
 				};
@@ -652,14 +692,6 @@
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
-		A10004003 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				A1000100D /* Assets.xcassets in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		5F4820C5DE7141A0814F4EF6 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -667,7 +699,40 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		A10004003 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A1000100D /* Assets.xcassets in Resources */,
+				A10001093 /* Localizable.xcstrings in Resources */,
+				A10001094 /* Plan.json in Resources */,
+				A10001096 /* Localizable.stringsdict in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		CA217BC70C3CA43E5942B4E2 /* Run SwiftLint */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Run SwiftLint";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/bash;
+			shellScript = "\"${SRCROOT}/Scripts/swiftlint.sh\"";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		A10004002 /* Sources */ = {
@@ -680,6 +745,10 @@
 				A10001003 /* AppData.swift in Sources */,
 				A10001004 /* DataStore.swift in Sources */,
 				A10001005 /* Colors.swift in Sources */,
+				A10001092 /* AppStrings.swift in Sources */,
+				A10001095 /* L10n.swift in Sources */,
+				A10001097 /* L10n+Plural.swift in Sources */,
+				A10001098 /* AppMessages.swift in Sources */,
 				A10001006 /* ContentView.swift in Sources */,
 				A10001007 /* PlanView.swift in Sources */,
 				A10001008 /* TodayView.swift in Sources */,
@@ -830,16 +899,6 @@
 			targetProxy = BC76266BB8004E60817433C2 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
-
-/* Begin PBXContainerItemProxy section */
-		BC76266BB8004E60817433C2 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = A10007001 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = A10006001 /* FocusApp */;
-			remoteInfo = FocusApp;
-		};
-/* End PBXContainerItemProxy section */
 
 /* Begin XCBuildConfiguration section */
 		A10009001 /* Debug */ = {
@@ -1073,6 +1132,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		3BDC9BCA158F45F3A391466C /* Build configuration list for PBXNativeTarget "FocusAppTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B96A036423E747AB95A690E0 /* Debug */,
+				BF95B07906CE46F7AA435328 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		A10008001 /* Build configuration list for PBXNativeTarget "FocusApp" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -1087,15 +1155,6 @@
 			buildConfigurations = (
 				A10009001 /* Debug */,
 				A10009002 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		3BDC9BCA158F45F3A391466C /* Build configuration list for PBXNativeTarget "FocusAppTests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				B96A036423E747AB95A690E0 /* Debug */,
-				BF95B07906CE46F7AA435328 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

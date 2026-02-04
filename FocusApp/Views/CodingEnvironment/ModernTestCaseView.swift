@@ -7,7 +7,7 @@ struct ModernTestCaseView: View {
     var body: some View {
         VStack(spacing: 0) {
             HStack(spacing: 0) {
-                Text("Testcase")
+            Text(L10n.Coding.Testcase.title)
                     .font(.system(size: 11, weight: .semibold))
                     .foregroundColor(.white)
                     .padding(.horizontal, 12)
@@ -36,11 +36,11 @@ struct ModernTestCaseView: View {
                     Image(systemName: "doc.text")
                         .font(.system(size: 20))
                         .foregroundColor(Color.appGray600)
-                    Text("No test cases")
+                Text(L10n.Coding.Testcase.empty)
                         .font(.system(size: 11))
                         .foregroundColor(Color.appGray500)
                     Button(action: presenter.addManualTestCase) {
-                        Text("Add Test Case")
+                    Text(L10n.Coding.Testcase.add)
                             .font(.system(size: 11, weight: .medium))
                             .foregroundColor(Color.appPurple)
                     }
@@ -81,7 +81,7 @@ struct ModernTestCaseView: View {
                         .frame(width: 6, height: 6)
                 }
 
-                Text("Case \(index + 1)")
+            Text(L10n.Coding.Testcase.caseFormat( index + 1))
                     .font(.system(size: 10, weight: isSelected ? .semibold : .regular))
                     .foregroundColor(isSelected ? .white : Color.appGray500)
             }
@@ -106,7 +106,7 @@ struct ModernTestCaseView: View {
         return ScrollView {
             VStack(alignment: .leading, spacing: 12) {
                 VStack(alignment: .leading, spacing: 4) {
-                    Text("Input")
+                Text(L10n.Coding.Testcase.inputLabel)
                         .font(.system(size: 10, weight: .medium))
                         .foregroundColor(Color.appGray500)
 
@@ -123,7 +123,7 @@ struct ModernTestCaseView: View {
                 }
 
                 VStack(alignment: .leading, spacing: 4) {
-                    Text("Expected Output")
+                Text(L10n.Coding.Testcase.expectedLabel)
                         .font(.system(size: 10, weight: .medium))
                         .foregroundColor(Color.appGray500)
 

@@ -8,11 +8,11 @@ extension FocusOverlay {
                     .font(.system(size: 48))
                     .foregroundColor(Color.appPurple)
 
-                Text("Focus Mode")
+                Text(L10n.Focus.durationTitle)
                     .font(.system(size: 32, weight: .bold))
                     .foregroundColor(.white)
 
-                Text("How long do you want to focus?")
+                Text(L10n.Focus.durationPrompt)
                     .font(.system(size: 16))
                     .foregroundColor(.white.opacity(0.7))
             }
@@ -32,7 +32,7 @@ extension FocusOverlay {
             }
 
             HStack(spacing: 12) {
-                Text("Custom:")
+                Text(L10n.Focus.durationCustomLabel)
                     .font(.system(size: 14))
                     .foregroundColor(.white.opacity(0.7))
 
@@ -48,7 +48,7 @@ extension FocusOverlay {
                             .fill(Color.white.opacity(0.1))
                     )
 
-                Text("minutes")
+                Text(L10n.Focus.durationMinutesLabel)
                     .font(.system(size: 14))
                     .foregroundColor(.white.opacity(0.7))
             }
@@ -56,7 +56,7 @@ extension FocusOverlay {
             Button(action: presenter.startTimer) {
                 HStack(spacing: 8) {
                     Image(systemName: "play.fill")
-                    Text("Start Focus Session")
+                    Text(L10n.Focus.durationStartButton)
                 }
                 .font(.system(size: 16, weight: .semibold))
                 .foregroundColor(.white)
@@ -70,7 +70,7 @@ extension FocusOverlay {
             .buttonStyle(.plain)
 
             Button(action: { closeSession() }) {
-                Text("Cancel")
+                Text(L10n.Focus.durationCancel)
                     .font(.system(size: 14))
                     .foregroundColor(.white.opacity(0.5))
             }
@@ -80,7 +80,7 @@ extension FocusOverlay {
 
     func durationButton(minutes: Int) -> some View {
         Button(action: { presenter.duration = minutes }) {
-            Text("\(minutes) min")
+            Text(L10n.Focus.durationButtonFormat( minutes))
                 .font(.system(size: 14, weight: presenter.duration == minutes ? .semibold : .regular))
                 .foregroundColor(presenter.duration == minutes ? Color.appPurple : .white)
                 .padding(.horizontal, 16)

@@ -16,11 +16,11 @@ extension SettingsView {
     var validationStatusView: some View {
         switch presenter.usernameValidationState {
         case .valid:
-            Label("Valid", systemImage: "checkmark.circle.fill")
+            Label(L10n.Settings.validationValid, systemImage: "checkmark.circle.fill")
                 .foregroundColor(.green)
                 .font(.caption)
         case .invalid:
-            Label("Not Found", systemImage: "xmark.circle.fill")
+            Label(L10n.Settings.validationNotFound, systemImage: "xmark.circle.fill")
                 .foregroundColor(.red)
                 .font(.caption)
         case .none:

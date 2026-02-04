@@ -42,6 +42,7 @@ extension CodeEditorView.Coordinator {
         return true
     }
 
+    // swiftlint:disable cyclomatic_complexity
     private func indentationForMatchingBracket(_ closing: Character, in text: String, upTo location: Int) -> String? {
         let nsText = text as NSString
         guard location <= nsText.length else { return nil }
@@ -54,10 +55,20 @@ extension CodeEditorView.Coordinator {
         var inLineComment = false
         var inBlockComment = false
 
+        func scalarCharacter(at index: Int) -> Character? {
+            guard index < nsText.length else { return nil }
+            let codeUnit = nsText.character(at: index)
+            guard let scalar = UnicodeScalar(codeUnit) else { return nil }
+            return Character(scalar)
+        }
+
         var i = 0
         while i < location {
-            let ch = Character(UnicodeScalar(nsText.character(at: i))!)
-            let next: Character? = i + 1 < location ? Character(UnicodeScalar(nsText.character(at: i + 1))!) : nil
+            guard let ch = scalarCharacter(at: i) else {
+                i += 1
+                continue
+            }
+            let next: Character? = i + 1 < location ? scalarCharacter(at: i + 1) : nil
 
             if inLineComment {
                 if ch == "\n" { inLineComment = false }
@@ -125,6 +136,7 @@ extension CodeEditorView.Coordinator {
         let whitespacePrefix = String(linePrefix.prefix { $0 == " " || $0 == "\t" })
         return whitespacePrefix.replacingOccurrences(of: "\t", with: indentUnit)
     }
+    // swiftlint:enable cyclomatic_complexity
 
     private func matchingOpeningBracket(for closing: Character) -> Character {
         switch closing {

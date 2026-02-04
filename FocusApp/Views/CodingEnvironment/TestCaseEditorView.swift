@@ -6,7 +6,7 @@ struct TestCaseEditorView: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
             HStack {
-                Text("Test Cases")
+            Text(L10n.Coding.TestEditor.title)
                     .font(.system(size: 12, weight: .semibold))
                     .foregroundColor(.white)
 
@@ -15,7 +15,7 @@ struct TestCaseEditorView: View {
                 Button(action: presenter.addManualTestCase) {
                     HStack(spacing: 4) {
                         Image(systemName: "plus")
-                        Text("Add")
+                        Text(L10n.Coding.TestEditor.add)
                     }
                     .font(.system(size: 11))
                     .foregroundColor(Color.appPurple)
@@ -24,7 +24,7 @@ struct TestCaseEditorView: View {
             }
 
             if presenter.testCases.isEmpty {
-                Text("No test cases loaded. Add test cases manually or select a problem to auto-load examples.")
+            Text(L10n.Coding.TestEditor.empty)
                     .font(.system(size: 11))
                     .foregroundColor(Color.appGray500)
                     .padding(.vertical, 8)
@@ -39,7 +39,7 @@ struct TestCaseEditorView: View {
     private func testCaseEditRow(index: Int, testCase: TestCase) -> some View {
         VStack(alignment: .leading, spacing: 6) {
             HStack {
-                Text("Test \(index + 1)")
+            Text(L10n.Coding.TestEditor.testFormat( index + 1))
                     .font(.system(size: 11, weight: .medium))
                     .foregroundColor(Color.appGray400)
 
@@ -55,7 +55,7 @@ struct TestCaseEditorView: View {
 
             HStack(spacing: 8) {
                 VStack(alignment: .leading, spacing: 2) {
-                    Text("Input")
+                Text(L10n.Coding.TestEditor.inputLabel)
                         .font(.system(size: 10))
                         .foregroundColor(Color.appGray500)
 
@@ -72,7 +72,7 @@ struct TestCaseEditorView: View {
                 }
 
                 VStack(alignment: .leading, spacing: 2) {
-                    Text("Expected")
+                Text(L10n.Coding.TestEditor.expectedLabel)
                         .font(.system(size: 10))
                         .foregroundColor(Color.appGray500)
 

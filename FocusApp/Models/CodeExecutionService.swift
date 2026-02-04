@@ -28,7 +28,7 @@ final class CodeExecutionService: CodeExecuting {
 
     func execute(code: String, language: ProgrammingLanguage, input: String) async -> ExecutionResult {
         guard let executor = executors[language] else {
-            return .failure("Unsupported language: \(language.rawValue)")
+            return .failure(AppUserMessage.unsupportedLanguage(language.rawValue).text)
         }
         return await executor.execute(code: code, input: input)
     }

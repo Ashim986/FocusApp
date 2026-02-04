@@ -12,15 +12,40 @@ FocusApp/
 ├── FocusAppTests/                   # Unit tests (non-view logic)
 │   ├── Fixtures.swift
 │   ├── AppDataTests.swift
-│   ├── PlanCalendarTests.swift
 │   ├── AppStateStoreTests.swift
-│   ├── LeetCodeSlugExtractorTests.swift
-│   ├── ProgrammingLanguageTests.swift
-│   ├── LeetCodeSyncInteractorTests.swift
-│   ├── NotificationManagerTests.swift
 │   ├── CodeExecutionServiceTests.swift
+│   ├── CodingEnvironmentInteractorTests.swift
 │   ├── CodingEnvironmentPresenterTests.swift
-│   └── LeetCodeSyncSchedulerTests.swift
+│   ├── ContentInteractorTests.swift
+│   ├── ContentPresenterTests.swift
+│   ├── ContentRouterTests.swift
+│   ├── DSAPlanTests.swift
+│   ├── ExecutionConfigTests.swift
+│   ├── ExecutorTests.swift
+│   ├── FocusPresenterTests.swift
+│   ├── LeetCodeConstantsTests.swift
+│   ├── LeetCodeErrorsTests.swift
+│   ├── LeetCodeModelsTests.swift
+│   ├── LeetCodeNetworkingTests.swift
+│   ├── LeetCodeRestClientTests.swift
+│   ├── LeetCodeSlugExtractorTests.swift
+│   ├── LeetCodeSyncInteractorTests.swift
+│   ├── LeetCodeSyncSchedulerTests.swift
+│   ├── NotificationManagerTests.swift
+│   ├── PlanCalendarTests.swift
+│   ├── PlanInteractorTests.swift
+│   ├── PlanPresenterTests.swift
+│   ├── ProcessRunnerTests.swift
+│   ├── ProgrammingLanguageTests.swift
+│   ├── SettingsInteractorTests.swift
+│   ├── SettingsPresenterTests.swift
+│   ├── SharedDataStoreTests.swift
+│   ├── StatsInteractorTests.swift
+│   ├── StatsPresenterTests.swift
+│   ├── TodayInteractorTests.swift
+│   ├── TodayPresenterTests.swift
+│   ├── ToolbarWidgetInteractorTests.swift
+│   └── ToolbarWidgetPresenterTests.swift
 ├── FocusApp/                        # Main app source
 │   ├── FocusApp.swift               # App entry point, MenuBarExtra, FloatingWidgetController
 │   ├── AppContainer.swift           # Dependency injection container
@@ -125,6 +150,7 @@ FocusApp/
 │   │   ├── CodeEditorView+CoordinatorHighlighting.swift
 │   │   ├── CodeEditorView+CoordinatorIndentation.swift
 │   │   ├── CodeEditorView+CoordinatorBrackets.swift
+│   │   ├── CodeEditorLineNumberRulerView.swift  # Line numbers with diagnostics
 │   │   ├── OutputPanelView.swift    # Console output with line numbers
 │   │   ├── OutputPanelView+Sections.swift
 │   │   ├── ConsoleOutputView.swift
@@ -132,7 +158,10 @@ FocusApp/
 │   │   ├── DayCard.swift            # Day card component
 │   │   └── ProblemRow.swift         # Problem row component
 │   ├── Helpers/
-│   │   └── Colors.swift             # Color definitions
+│   │   ├── Colors.swift             # Color definitions
+│   │   └── AppStrings.swift         # Localized string helpers
+│   ├── Resources/
+│   │   └── Localizable.xcstrings    # Localization strings catalog
 │   └── Shared/
 │       ├── SharedDataStore.swift    # PlanCalendar, AppConstants, legacy FileAppStorage
 │       └── SwiftDataStorage.swift   # SwiftData persistence (AppDataRecord, SwiftDataAppStorage)
@@ -158,6 +187,17 @@ open FocusApp.xcodeproj
 
 # Press Cmd+R to run
 ```
+
+## Running Tests
+
+```bash
+# Run all tests via xcodebuild
+xcodebuild test -project FocusApp.xcodeproj -scheme FocusApp -destination 'platform=macOS'
+
+# Or use Cmd+U in Xcode
+```
+
+Tests cover all Presenters, Interactors, and core business logic. See `FocusAppTests/` for the full test suite.
 
 ## Code Quality & Linting
 
@@ -250,6 +290,8 @@ The app uses a **Clean Architecture / VIPER-inspired** pattern with clear separa
 | `SwiftExecutor` | `Models/SwiftExecutor.swift` | Swift compilation and execution |
 | `PythonExecutor` | `Models/PythonExecutor.swift` | Python interpreter execution |
 | `NotificationScheduler` | `Models/NotificationScheduler.swift` | Scheduling + permissions for reminders |
+| `AppStrings` | `Helpers/AppStrings.swift` | Localized string helpers |
+| `CodeEditorLineNumberRulerView` | `Views/CodeEditorLineNumberRulerView.swift` | Line numbers with diagnostic markers |
 
 ### Presenter/Interactor Pattern
 
@@ -305,6 +347,7 @@ struct ToolbarWidgetView: View {
 - **Code Editor**: Built-in code editor with syntax highlighting for Swift and Python
 - **Editor UX**: Auto bracket completion, indentation/outdent, and closing-bracket alignment
 - **Code Execution**: Run Swift and Python code directly in the app with console output
+- **Localization**: Multi-language support via `Localizable.xcstrings` and `AppStrings` helper
 
 ## Floating Widget
 
@@ -565,6 +608,15 @@ let config = ExecutionConfig(timeout: 30, tempDirectory: customDir)
 let service = CodeExecutionService(config: config)
 ```
 
+### Use localized strings
+```swift
+// Simple string
+let title = AppStrings.localized("coding.sidebar_title")
+
+// With format arguments
+let pending = AppStrings.format("coding.sidebar_pending_left", count)
+```
+
 ### Add a new language executor
 ```swift
 // 1. Create new executor conforming to LanguageExecutor
@@ -610,6 +662,38 @@ The code editor highlights:
 4. Service routes to appropriate executor (Swift or Python)
 5. Executor uses `ProcessRunner` to run the code
 6. Result displayed in output panel with syntax coloring
+
+## Localization
+
+The app supports multiple languages via the standard Apple localization system.
+
+### Architecture
+
+| Component | Purpose |
+|-----------|---------|
+| `Localizable.xcstrings` | String catalog containing all localizable strings |
+| `AppStrings` | Helper enum for accessing localized strings |
+
+### Usage
+
+```swift
+// Simple localized string
+AppStrings.localized("coding.sidebar_title")
+
+// Formatted string with arguments
+AppStrings.format("coding.sidebar_pending_left", pendingCount)
+```
+
+### Adding New Strings
+
+1. Add the key to `FocusApp/Resources/Localizable.xcstrings`
+2. Use `AppStrings.localized()` or `AppStrings.format()` in code
+3. Xcode will auto-detect new strings for translation
+
+### String Key Conventions
+
+- Use dot notation: `section.identifier`
+- Examples: `coding.sidebar_title`, `coding.status_solved`, `coding.section_today`
 
 ## Known Limitations
 

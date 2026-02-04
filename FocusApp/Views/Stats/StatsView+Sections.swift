@@ -7,7 +7,7 @@ extension StatsView {
             GridItem(.flexible(), spacing: 12)
         ], spacing: 12) {
             statCard(
-                title: "Problems Solved",
+                title: L10n.Stats.cardProblemsSolved,
                 value: "\(presenter.viewModel.solvedProblems)/\(presenter.viewModel.totalProblems)",
                 icon: "checkmark.circle.fill",
                 color: Color.appGreen,
@@ -15,7 +15,7 @@ extension StatsView {
             )
 
             statCard(
-                title: "Topics Done",
+                title: L10n.Stats.cardTopicsDone,
                 value: "\(presenter.viewModel.completedTopics)/\(presenter.viewModel.totalTopics)",
                 icon: "book.closed.fill",
                 color: Color.appPurple,
@@ -23,7 +23,7 @@ extension StatsView {
             )
 
             statCard(
-                title: "Habits Today",
+                title: L10n.Stats.cardHabitsToday,
                 value: "\(presenter.viewModel.habitsToday)/\(AppConstants.totalHabits)",
                 icon: "star.fill",
                 color: Color.appAmber,
@@ -31,7 +31,7 @@ extension StatsView {
             )
 
             statCard(
-                title: "Days Left",
+                title: L10n.Stats.cardDaysLeft,
                 value: "\(presenter.viewModel.daysLeft)",
                 icon: "calendar",
                 color: Color.appRed,
@@ -94,13 +94,13 @@ extension StatsView {
                     .font(.system(size: 16))
                     .foregroundColor(Color.appAmber)
 
-                Text("Pre-Completed Topics")
+                Text(L10n.Stats.precompletedTitle)
                     .font(.system(size: 16, weight: .semibold))
                     .foregroundColor(Color.appGray800)
 
                 Spacer()
 
-                Text("+\(preCompletedTopics.count) bonus")
+                Text(L10n.Stats.precompletedBonusFormat( preCompletedTopics.count))
                     .font(.system(size: 13, weight: .medium))
                     .foregroundColor(Color.appGreen)
             }
@@ -134,7 +134,7 @@ extension StatsView {
 
     var topicBreakdownSection: some View {
         VStack(alignment: .leading, spacing: 16) {
-            Text("Topic Breakdown")
+            Text(L10n.Stats.topicBreakdownTitle)
                 .font(.system(size: 16, weight: .semibold))
                 .foregroundColor(Color.appGray800)
 

@@ -67,7 +67,8 @@ final class LeetCodeRestClientTests: XCTestCase {
         let builder = CapturingRequestBuilder()
         let executor = StubRequestExecutor()
         let json = """
-        {"title":"","content":"<p>Body</p>","exampleTestcases":"1","sampleTestCase":"1","difficulty":"Medium","codeSnippets":[{"langSlug":"python3","code":"print(1)"}]}
+        {"title":"","content":"<p>Body</p>","exampleTestcases":"1","sampleTestCase":"1","difficulty":"Medium",
+        "codeSnippets":[{"langSlug":"python3","code":"print(1)"}]}
         """
         executor.data = Data(json.utf8)
         let client = LeetCodeRestClient(baseURL: URL(string: "https://example.com")!, requestBuilder: builder, executor: executor)

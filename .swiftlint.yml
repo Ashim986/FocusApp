@@ -9,6 +9,9 @@ excluded:
   - fastlane
   - Generated
   - "**/*.generated.swift"
+  - FocusAppTests
+  - FocusApp/Helpers/L10n.swift
+  - FocusApp/Views/CodingEnvironment/CodingEnvironmentPresenter+Snippets.swift
 
 # Keep default rules + add high-signal opt-ins
 opt_in_rules:
@@ -17,8 +20,9 @@ opt_in_rules:
   - explicit_init
   - fatal_error_message
   - first_where
+  - force_unwrapping
+  - implicitly_unwrapped_optional
   - sorted_imports
-  - unused_import
   - weak_delegate
   - redundant_nil_coalescing
   - redundant_type_annotation

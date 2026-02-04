@@ -34,7 +34,7 @@ final class PythonExecutor: LanguageExecutor {
         do {
             try code.write(to: sourceFile, atomically: true, encoding: .utf8)
         } catch {
-            return .failure("Failed to write source file: \(error.localizedDescription)")
+            return .failure(AppUserMessage.failedToWriteSource(error.localizedDescription).text)
         }
 
         // Run

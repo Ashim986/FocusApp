@@ -5,15 +5,18 @@ final class CodingEnvironmentInteractor {
     private let appStore: AppStateStore
     private let leetCodeClient: LeetCodeClientProtocol
     private let executionService: CodeExecuting
+    private let solutionStore: SolutionProviding
 
     init(
         appStore: AppStateStore,
         leetCodeClient: LeetCodeClientProtocol,
-        executionService: CodeExecuting
+        executionService: CodeExecuting,
+        solutionStore: SolutionProviding
     ) {
         self.appStore = appStore
         self.leetCodeClient = leetCodeClient
         self.executionService = executionService
+        self.solutionStore = solutionStore
     }
 
     func todaysProblems() -> [Problem] {
@@ -63,5 +66,14 @@ final class CodingEnvironmentInteractor {
 
     func cancelExecution() {
         executionService.cancelExecution()
+    }
+
+    // MARK: - Solutions
+
+    func solution(for problem: Problem) -> ProblemSolution? {
+        guard let slug = LeetCodeSlugExtractor.extractSlug(from: problem.url) else {
+            return nil
+        }
+        return solutionStore.solution(for: slug)
     }
 }

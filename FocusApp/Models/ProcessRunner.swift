@@ -66,6 +66,53 @@ final class ProcessRunner: ProcessRunning {
         self.maxOutputLength = maxOutputLength
     }
 
+    private final class OutputCollector {
+        private let maxOutputLength: Int
+        private let lock = NSLock()
+        private(set) var outputLimitExceeded = false
+        private(set) var errorLimitExceeded = false
+        private var outputData = Data()
+        private var errorData = Data()
+
+        init(maxOutputLength: Int) {
+            self.maxOutputLength = maxOutputLength
+        }
+
+        func appendOutput(_ data: Data) {
+            append(data, to: &outputData, limitExceeded: &outputLimitExceeded)
+        }
+
+        func appendError(_ data: Data) {
+            append(data, to: &errorData, limitExceeded: &errorLimitExceeded)
+        }
+
+        func outputString(truncate: (String) -> String) -> String {
+            truncate(String(data: outputData, encoding: .utf8) ?? "")
+        }
+
+        func errorString(truncate: (String) -> String) -> String {
+            truncate(String(data: errorData, encoding: .utf8) ?? "")
+        }
+
+        private func append(_ data: Data, to buffer: inout Data, limitExceeded: inout Bool) {
+            lock.lock()
+            defer { lock.unlock() }
+
+            guard !limitExceeded else { return }
+            if buffer.count >= maxOutputLength {
+                limitExceeded = true
+                return
+            }
+            let remaining = maxOutputLength - buffer.count
+            if data.count > remaining {
+                buffer.append(data.prefix(remaining))
+                limitExceeded = true
+            } else {
+                buffer.append(data)
+            }
+        }
+    }
+
     func run(
         executable: String,
         arguments: [String],
@@ -99,7 +146,7 @@ final class ProcessRunner: ProcessRunning {
         if Task.isCancelled {
             return ProcessResult(
                 output: "",
-                error: "Execution stopped by user",
+                error: AppUserMessage.executionStopped.text,
                 exitCode: -1,
                 timedOut: false,
                 wasCancelled: true
@@ -120,12 +167,7 @@ final class ProcessRunner: ProcessRunning {
                 process.standardError = errorPipe
                 process.standardInput = inputPipe
 
-                var outputLimitExceeded = false
-                var errorLimitExceeded = false
-
-                let outputLock = NSLock()
-                var outputData = Data()
-                var errorData = Data()
+                let collector = OutputCollector(maxOutputLength: maxOutputLength)
 
                 let cancelHandler: () -> Void = {
                     if process.isRunning {
@@ -135,37 +177,16 @@ final class ProcessRunner: ProcessRunning {
 
                 await state.setCancelHandler(cancelHandler)
 
-                func appendData(_ data: Data, to buffer: inout Data, limitExceeded: inout Bool) {
-                    guard !limitExceeded else { return }
-                    if buffer.count >= maxOutputLength {
-                        limitExceeded = true
-                        return
-                    }
-                    let remaining = maxOutputLength - buffer.count
-                    if data.count > remaining {
-                        buffer.append(data.prefix(remaining))
-                        limitExceeded = true
-                    } else {
-                        buffer.append(data)
-                    }
-                }
-
                 @Sendable func handleOutput(_ data: Data) {
-                    outputLock.lock()
-                    appendData(data, to: &outputData, limitExceeded: &outputLimitExceeded)
-                    let shouldTerminate = outputLimitExceeded
-                    outputLock.unlock()
-                    if shouldTerminate && process.isRunning {
+                    collector.appendOutput(data)
+                    if collector.outputLimitExceeded && process.isRunning {
                         process.terminate()
                     }
                 }
 
                 @Sendable func handleError(_ data: Data) {
-                    outputLock.lock()
-                    appendData(data, to: &errorData, limitExceeded: &errorLimitExceeded)
-                    let shouldTerminate = errorLimitExceeded
-                    outputLock.unlock()
-                    if shouldTerminate && process.isRunning {
+                    collector.appendError(data)
+                    if collector.errorLimitExceeded && process.isRunning {
                         process.terminate()
                     }
                 }
@@ -210,14 +231,14 @@ final class ProcessRunner: ProcessRunning {
                     outputPipe.fileHandleForReading.readabilityHandler = nil
                     errorPipe.fileHandleForReading.readabilityHandler = nil
 
-                    if !outputLimitExceeded {
+                    if !collector.outputLimitExceeded {
                         let remaining = outputPipe.fileHandleForReading.readDataToEndOfFile()
                         if !remaining.isEmpty {
                             handleOutput(remaining)
                         }
                     }
 
-                    if !errorLimitExceeded {
+                    if !collector.errorLimitExceeded {
                         let remaining = errorPipe.fileHandleForReading.readDataToEndOfFile()
                         if !remaining.isEmpty {
                             handleError(remaining)
@@ -228,11 +249,11 @@ final class ProcessRunner: ProcessRunning {
                     errorPipe.fileHandleForReading.closeFile()
 
                     let flags = await state.flags()
-                    let output = self.truncateIfNeeded(String(data: outputData, encoding: .utf8) ?? "")
-                    var error = self.truncateIfNeeded(String(data: errorData, encoding: .utf8) ?? "")
+                    let output = collector.outputString(truncate: self.truncateIfNeeded)
+                    var error = collector.errorString(truncate: self.truncateIfNeeded)
 
-                    if outputLimitExceeded || errorLimitExceeded {
-                        let limitMessage = "Execution stopped: output exceeded limit."
+                    if collector.outputLimitExceeded || collector.errorLimitExceeded {
+                        let limitMessage = AppUserMessage.outputLimitExceeded.text
                         if error.isEmpty {
                             error = limitMessage
                         } else {
@@ -254,7 +275,7 @@ final class ProcessRunner: ProcessRunning {
                     await state.clearCancelHandler()
                     continuation.resume(returning: ProcessResult(
                         output: "",
-                        error: "Failed to run process: \(error.localizedDescription)",
+                        error: AppUserMessage.failedToRunProcess(error.localizedDescription).text,
                         exitCode: -1,
                         timedOut: false,
                         wasCancelled: false

@@ -23,12 +23,14 @@ extension CodingEnvironmentView {
                                 .clipShape(RoundedRectangle(cornerRadius: 4))
                         }
 
-                        Text("Day \(selectedDayLabel) \u{2022} \(presenter.selectedDayTopic)")
+                        Text(L10n.Coding.problemPickerDayTopic(
+                                               selectedDayLabel,
+                                               presenter.selectedDayTopic))
                             .font(.system(size: 10))
                             .foregroundColor(Color.appGray500)
                     }
                 } else {
-                    Text("Select Problem")
+                    Text(L10n.Coding.problemPickerSelect)
                         .font(.system(size: 13, weight: .medium))
                         .foregroundColor(Color.appGray400)
                 }
@@ -65,11 +67,11 @@ extension CodingEnvironmentView {
     var problemPickerPopover: some View {
         VStack(alignment: .leading, spacing: 0) {
             HStack {
-                Text("Problems to Solve")
+                Text(L10n.Coding.problemPickerTitle)
                     .font(.system(size: 12, weight: .semibold))
                     .foregroundColor(.white)
                 Spacer()
-                Text("\(pendingProblemCount) left")
+                Text(L10n.Coding.problemPickerPendingLeft( pendingProblemCount))
                     .font(.system(size: 10))
                     .foregroundColor(Color.appGray500)
             }
@@ -104,7 +106,9 @@ extension CodingEnvironmentView {
     func problemSection(_ section: CodingProblemSection) -> some View {
         VStack(alignment: .leading, spacing: 6) {
             HStack {
-                Text(section.isToday ? "Today · Day \(section.dayId)" : "Backlog · Day \(section.dayId)")
+                Text(section.isToday
+                     ? L10n.Coding.sectionToday( section.dayId)
+                     : L10n.Coding.sectionBacklog( section.dayId))
                     .font(.system(size: 10, weight: .semibold))
                     .foregroundColor(Color.appGray400)
 

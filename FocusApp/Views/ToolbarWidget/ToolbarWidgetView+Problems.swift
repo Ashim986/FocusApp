@@ -4,7 +4,7 @@ extension ToolbarWidgetView {
     var todaysProblemsSection: some View {
         VStack(spacing: 0) {
             HStack {
-                Text("Today's Problems")
+                Text(L10n.Widget.problemsTitle)
                     .font(.system(size: 11, weight: .semibold))
                     .foregroundColor(.white.opacity(0.8))
 
@@ -49,7 +49,7 @@ extension ToolbarWidgetView {
         HStack {
             Image(systemName: "checkmark.seal.fill")
                 .foregroundColor(.green)
-            Text("All done!")
+            Text(L10n.Widget.problemsAllDone)
                 .font(.system(size: 11, weight: .medium))
                 .foregroundColor(.green)
             Spacer()
@@ -57,7 +57,7 @@ extension ToolbarWidgetView {
                 presenter.advanceToNextDay()
             }) {
                 HStack(spacing: 4) {
-                    Text("Start Day \(presenter.tomorrowDayNumber)")
+                    Text(L10n.Widget.problemsStartDayFormat( presenter.tomorrowDayNumber))
                         .font(.system(size: 10, weight: .semibold))
                     Image(systemName: "arrow.right.circle.fill")
                         .font(.system(size: 12))

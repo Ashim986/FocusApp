@@ -1,9 +1,10 @@
 import SwiftUI
 
-enum ProblemDetailTab: String, CaseIterable {
-    case description = "Description"
-    case editorial = "Editorial"
-    case submissions = "Submissions"
+enum ProblemDetailTab: CaseIterable {
+    case description
+    case editorial
+    case solution
+    case submissions
 
     var icon: String {
         switch self {
@@ -11,8 +12,23 @@ enum ProblemDetailTab: String, CaseIterable {
             return "doc.text"
         case .editorial:
             return "lightbulb"
+        case .solution:
+            return "checkmark.seal"
         case .submissions:
             return "clock.arrow.circlepath"
+        }
+    }
+
+    var title: String {
+        switch self {
+        case .description:
+            return L10n.Coding.tabDescription
+        case .editorial:
+            return L10n.Coding.tabEditorial
+        case .solution:
+            return L10n.Coding.tabSolution
+        case .submissions:
+            return L10n.Coding.tabSubmissions
         }
     }
 }
@@ -23,7 +39,7 @@ extension CodingEnvironmentView {
         if presenter.isLoadingProblem {
             VStack(spacing: 10) {
                 ProgressView()
-                Text("Loading problem details...")
+                Text(L10n.Coding.loadingProblem)
                     .font(.system(size: 13))
                     .foregroundColor(Color.appGray500)
             }
@@ -42,7 +58,7 @@ extension CodingEnvironmentView {
                 Image(systemName: "doc.text")
                     .font(.system(size: 22))
                     .foregroundColor(Color.appGray600)
-                Text("Problem description will appear here.")
+                Text(L10n.Coding.descriptionEmpty)
                     .font(.system(size: 13))
                     .foregroundColor(Color.appGray500)
             }
@@ -53,25 +69,25 @@ extension CodingEnvironmentView {
     @ViewBuilder
     var editorialContent: some View {
         VStack(alignment: .leading, spacing: 12) {
-            solutionSection(title: "Intuition") {
-                Text("Explain the key insight that makes the solution work.")
+            solutionSection(title: L10n.Coding.editorialIntuitionTitle) {
+                Text(L10n.Coding.editorialIntuitionBody)
             }
 
-            solutionSection(title: "Approach") {
-                Text("Outline the steps and why each step is necessary.")
+            solutionSection(title: L10n.Coding.editorialApproachTitle) {
+                Text(L10n.Coding.editorialApproachBody)
             }
 
-            solutionSection(title: "Visual Diagram") {
-                Text("[step 1] -> [step 2] -> [step 3]")
+            solutionSection(title: L10n.Coding.editorialVisualTitle) {
+                Text(L10n.Coding.editorialVisualPlaceholder)
                     .font(.system(size: 11, design: .monospaced))
             }
 
-            solutionSection(title: "Test Walkthrough") {
+            solutionSection(title: L10n.Coding.editorialWalkthroughTitle) {
                 walkthroughContent
             }
 
-            solutionSection(title: "Big O") {
-                Text("Time: O(?)   Space: O(?)")
+            solutionSection(title: L10n.Coding.editorialBigOTitle) {
+                Text(L10n.Coding.editorialBigOPlaceholder)
                     .font(.system(size: 11, design: .monospaced))
             }
         }
@@ -83,7 +99,7 @@ extension CodingEnvironmentView {
         if let problem = presenter.selectedProblem {
             let submissions = presenter.submissions(for: problem)
             if submissions.isEmpty {
-                Text("No submissions yet.")
+                Text(L10n.Coding.submissionsEmpty)
                     .font(.system(size: 11))
                     .foregroundColor(Color.appGray500)
                     .frame(maxWidth: .infinity, alignment: .leading)
@@ -96,7 +112,7 @@ extension CodingEnvironmentView {
                 .frame(maxWidth: .infinity, alignment: .leading)
             }
         } else {
-            Text("Select a problem to view past submissions.")
+            Text(L10n.Coding.submissionsSelectPrompt)
                 .font(.system(size: 11))
                 .foregroundColor(Color.appGray500)
                 .frame(maxWidth: .infinity, alignment: .center)
@@ -106,21 +122,21 @@ extension CodingEnvironmentView {
     @ViewBuilder
     private var walkthroughContent: some View {
         if presenter.testCases.isEmpty {
-            Text("Add at least two test cases to document a walkthrough.")
+            Text(L10n.Coding.walkthroughEmpty)
         } else {
             let cases = presenter.testCases.prefix(2)
             VStack(alignment: .leading, spacing: 8) {
                 ForEach(Array(cases.enumerated()), id: \.offset) { index, testCase in
                     VStack(alignment: .leading, spacing: 4) {
-                        Text("Case \(index + 1)")
+                        Text(L10n.Coding.walkthroughCaseLabel( index + 1))
                             .font(.system(size: 10, weight: .semibold))
                             .foregroundColor(Color.appGray400)
 
-                        Text("Input: \(testCase.input)")
+                        Text(L10n.Coding.walkthroughInputFormat( testCase.input))
                             .font(.system(size: 10, design: .monospaced))
                             .foregroundColor(Color.appGray200)
 
-                        Text("Expected: \(testCase.expectedOutput)")
+                        Text(L10n.Coding.walkthroughExpectedFormat( testCase.expectedOutput))
                             .font(.system(size: 10, design: .monospaced))
                             .foregroundColor(Color.appGreen)
                     }

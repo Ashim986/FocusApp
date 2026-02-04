@@ -1,6 +1,6 @@
 import Foundation
-import SwiftUI
 import SwiftData
+import SwiftUI
 
 @MainActor
 final class AppContainer {
@@ -11,6 +11,7 @@ final class AppContainer {
     let leetCodeClient: LeetCodeClientProtocol
     let leetCodeScheduler: LeetCodeSyncScheduler
     let codeExecutionService: CodeExecutionService
+    let solutionStore: SolutionProviding
 
     let contentPresenter: ContentPresenter
     let planPresenter: PlanPresenter
@@ -21,20 +22,25 @@ final class AppContainer {
     let codingEnvironmentPresenter: CodingEnvironmentPresenter
 
     lazy var contentRouter: ContentRouter = {
-        ContentRouter(
-            makePlan: { [unowned self] in
+        let planPresenter = self.planPresenter
+        let todayPresenter = self.todayPresenter
+        let statsPresenter = self.statsPresenter
+        let codingEnvironmentPresenter = self.codingEnvironmentPresenter
+
+        return ContentRouter(
+            makePlan: {
                 PlanView(presenter: planPresenter)
             },
-            makeToday: { [unowned self] codeBinding in
+            makeToday: { codeBinding in
                 TodayView(
                     presenter: todayPresenter,
                     showCodeEnvironment: codeBinding
                 )
             },
-            makeStats: { [unowned self] in
+            makeStats: {
                 StatsView(presenter: statsPresenter)
             },
-            makeCoding: { [unowned self] binding in
+            makeCoding: { binding in
                 CodingEnvironmentView(
                     presenter: codingEnvironmentPresenter,
                     onBack: { binding.wrappedValue = false }
@@ -79,6 +85,9 @@ final class AppContainer {
         let codeExecutionService = CodeExecutionService()
         self.codeExecutionService = codeExecutionService
 
+        let solutionStore = BundledSolutionStore()
+        self.solutionStore = solutionStore
+
         self.contentPresenter = ContentPresenter(
             interactor: ContentInteractor(appStore: appStore)
         )
@@ -113,7 +122,8 @@ final class AppContainer {
             interactor: CodingEnvironmentInteractor(
                 appStore: appStore,
                 leetCodeClient: client,
-                executionService: codeExecutionService
+                executionService: codeExecutionService,
+                solutionStore: solutionStore
             )
         )
     }

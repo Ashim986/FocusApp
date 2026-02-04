@@ -27,6 +27,7 @@ final class CodingEnvironmentPresenter: ObservableObject {
     @Published var showSubmissionTagPrompt: Bool = false
     @Published var submissionTagInput: String = ""
     @Published var errorDiagnostics: [CodeEditorDiagnostic] = []
+    @Published var currentSolution: ProblemSolution?
 
     let interactor: CodingEnvironmentInteractor
     var problemContentCache: [String: QuestionContent] = [:]
@@ -115,10 +116,15 @@ final class CodingEnvironmentPresenter: ObservableObject {
         problemContent = nil
         viewState = .coding
 
-        // Fetch problem content
+        // Fetch problem content and solution
         Task {
             await loadProblemContent(for: problem)
         }
+        loadSolution(for: problem)
+    }
+
+    func loadSolution(for problem: Problem) {
+        currentSolution = interactor.solution(for: problem)
     }
 
     func ensureProblemSelection() {

@@ -36,7 +36,7 @@ final class SwiftExecutor: LanguageExecutor {
         do {
             try code.write(to: sourceFile, atomically: true, encoding: .utf8)
         } catch {
-            return .failure("Failed to write source file: \(error.localizedDescription)")
+            return .failure(AppUserMessage.failedToWriteSource(error.localizedDescription).text)
         }
 
         // Compile
@@ -68,7 +68,7 @@ final class SwiftExecutor: LanguageExecutor {
         if result.exitCode != 0 {
             return ExecutionResult(
                 output: "",
-                error: "Compilation error:\n\(result.error)",
+                error: "\(L10n.Error.compilationErrorPrefix)\n\(result.error)",
                 exitCode: result.exitCode,
                 timedOut: false,
                 wasCancelled: result.wasCancelled

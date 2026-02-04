@@ -1,0 +1,501 @@
+{
+  "version": "1.0.0",
+  "solutions": [
+    {
+      "id": "550e8400-e29b-41d4-a716-446655440001",
+      "problemSlug": "reverse-linked-list",
+      "summary": "Reverse the direction of pointers in a linked list. The key insight is that you need to track three nodes at once: previous, current, and next.",
+      "approaches": [
+        {
+          "id": "550e8400-e29b-41d4-a716-446655440101",
+          "name": "Iterative",
+          "order": 1,
+          "intuition": "We traverse the list once, reversing each pointer as we go. At each step, we need to:\n1. Save the next node (before we lose the reference)\n2. Point current node backwards to previous\n3. Move both pointers forward",
+          "approach": "1. Initialize prev as nil and curr as head\n2. While curr is not nil:\n   - Store next = curr.next (save reference)\n   - Set curr.next = prev (reverse pointer)\n   - Move prev = curr\n   - Move curr = next\n3. Return prev (the new head)",
+          "explanation": "The trick is maintaining three pointers:\n- prev: the node we just processed\n- curr: the node we're currently processing\n- next: the node we'll process next\n\nBefore reversing curr's pointer, we must save curr.next, otherwise we lose access to the rest of the list. After the loop, prev points to what was the last node, which is now the new head.",
+          "code": "func reverseList(_ head: ListNode?) -> ListNode? {\n    var prev: ListNode? = nil\n    var curr = head\n    \n    while curr != nil {\n        let next = curr?.next  // Save next\n        curr?.next = prev      // Reverse pointer\n        prev = curr            // Move prev forward\n        curr = next            // Move curr forward\n    }\n    \n    return prev\n}",
+          "complexity": {
+            "time": "O(n)",
+            "space": "O(1)",
+            "timeExplanation": "We visit each node exactly once",
+            "spaceExplanation": "Only use three pointers regardless of list size"
+          },
+          "testCases": [
+            {
+              "id": "550e8400-e29b-41d4-a716-446655440201",
+              "input": "[1,2,3,4,5]",
+              "expectedOutput": "[5,4,3,2,1]",
+              "explanation": "Each arrow reverses: 1→2→3→4→5 becomes 5→4→3→2→1"
+            },
+            {
+              "id": "550e8400-e29b-41d4-a716-446655440202",
+              "input": "[1,2]",
+              "expectedOutput": "[2,1]",
+              "explanation": "Simple case: 1→2 becomes 2→1"
+            }
+          ]
+        },
+        {
+          "id": "550e8400-e29b-41d4-a716-446655440102",
+          "name": "Recursive",
+          "order": 2,
+          "intuition": "Recursively reverse the rest of the list, then fix up the current node's pointers. The base case is when we reach the last node (which becomes our new head).",
+          "approach": "1. Base case: if head is nil or head.next is nil, return head\n2. Recursively reverse the rest: newHead = reverseList(head.next)\n3. Make the next node point back: head.next.next = head\n4. Clear current node's next: head.next = nil\n5. Return newHead (propagate through all calls)",
+          "explanation": "The recursion reaches the end of the list first, then as it unwinds:\n- At each step, head.next still points to the last node we processed\n- We make that node point back to us (head.next.next = head)\n- We clear our own next pointer (will be set by the previous recursive call)\n\nThe newHead is returned unchanged through all recursive calls.",
+          "code": "func reverseList(_ head: ListNode?) -> ListNode? {\n    // Base case: empty or single node\n    guard let head = head, let next = head.next else {\n        return head\n    }\n    \n    // Recursively reverse the rest\n    let newHead = reverseList(next)\n    \n    // Fix pointers\n    next.next = head  // Make next point back to us\n    head.next = nil   // Clear our forward pointer\n    \n    return newHead\n}",
+          "complexity": {
+            "time": "O(n)",
+            "space": "O(n)",
+            "timeExplanation": "Visit each node once via recursion",
+            "spaceExplanation": "Recursive call stack uses O(n) space"
+          },
+          "testCases": []
+        }
+      ],
+      "relatedProblems": ["reverse-linked-list-ii", "palindrome-linked-list"],
+      "lastUpdated": "2026-02-04T00:00:00Z"
+    },
+    {
+      "id": "550e8400-e29b-41d4-a716-446655440002",
+      "problemSlug": "merge-two-sorted-lists",
+      "summary": "Merge two sorted linked lists by comparing nodes one at a time and building a new list. Use a dummy head to simplify edge cases.",
+      "approaches": [
+        {
+          "id": "550e8400-e29b-41d4-a716-446655440103",
+          "name": "Iterative with Dummy",
+          "order": 1,
+          "intuition": "Compare the heads of both lists, take the smaller one, and advance that list's pointer. A dummy node avoids special-casing the first node.",
+          "approach": "1. Create a dummy node to serve as the start\n2. Use a tail pointer to build the result\n3. While both lists have nodes:\n   - Compare values, append smaller to tail\n   - Advance the list we took from\n4. Append remaining nodes from non-empty list\n5. Return dummy.next",
+          "explanation": "The dummy node trick is powerful: instead of tracking whether we've added the first node, we always have a valid tail to append to. At the end, dummy.next is our actual head.\n\nWhen one list is exhausted, we can directly link the remainder since it's already sorted.",
+          "code": "func mergeTwoLists(_ list1: ListNode?, _ list2: ListNode?) -> ListNode? {\n    let dummy = ListNode(0)\n    var tail = dummy\n    var l1 = list1\n    var l2 = list2\n    \n    while let node1 = l1, let node2 = l2 {\n        if node1.val <= node2.val {\n            tail.next = node1\n            l1 = node1.next\n        } else {\n            tail.next = node2\n            l2 = node2.next\n        }\n        tail = tail.next!\n    }\n    \n    // Append remaining nodes\n    tail.next = l1 ?? l2\n    \n    return dummy.next\n}",
+          "complexity": {
+            "time": "O(n + m)",
+            "space": "O(1)",
+            "timeExplanation": "Visit each node in both lists once",
+            "spaceExplanation": "Only use a few pointers, reuse existing nodes"
+          },
+          "testCases": [
+            {
+              "id": "550e8400-e29b-41d4-a716-446655440203",
+              "input": "list1 = [1,2,4], list2 = [1,3,4]",
+              "expectedOutput": "[1,1,2,3,4,4]",
+              "explanation": "Compare 1≤1, take l1. Compare 2>1, take l2. Continue..."
+            }
+          ]
+        },
+        {
+          "id": "550e8400-e29b-41d4-a716-446655440104",
+          "name": "Recursive",
+          "order": 2,
+          "intuition": "The merged list starts with the smaller head, followed by the merge of the remaining elements.",
+          "approach": "1. Base case: if either list is empty, return the other\n2. Compare heads, take the smaller one as current head\n3. Recursively merge the rest\n4. Return the current head",
+          "explanation": "Each recursive call handles one node, choosing the smaller of the two heads. The recursion naturally unwinds to build the complete list.",
+          "code": "func mergeTwoLists(_ list1: ListNode?, _ list2: ListNode?) -> ListNode? {\n    guard let l1 = list1 else { return list2 }\n    guard let l2 = list2 else { return list1 }\n    \n    if l1.val <= l2.val {\n        l1.next = mergeTwoLists(l1.next, l2)\n        return l1\n    } else {\n        l2.next = mergeTwoLists(l1, l2.next)\n        return l2\n    }\n}",
+          "complexity": {
+            "time": "O(n + m)",
+            "space": "O(n + m)",
+            "timeExplanation": "Each node processed once",
+            "spaceExplanation": "Recursive stack depth equals total nodes"
+          },
+          "testCases": []
+        }
+      ],
+      "relatedProblems": ["merge-k-sorted-lists", "sort-list"],
+      "lastUpdated": "2026-02-04T00:00:00Z"
+    },
+    {
+      "id": "550e8400-e29b-41d4-a716-446655440003",
+      "problemSlug": "linked-list-cycle",
+      "summary": "Detect if a linked list has a cycle using Floyd's Tortoise and Hare algorithm. Two pointers moving at different speeds will meet if there's a cycle.",
+      "approaches": [
+        {
+          "id": "550e8400-e29b-41d4-a716-446655440105",
+          "name": "Floyd's Cycle Detection",
+          "order": 1,
+          "intuition": "Use two pointers: slow moves 1 step, fast moves 2 steps. If there's a cycle, fast will eventually catch up to slow. If no cycle, fast will reach the end.",
+          "approach": "1. Initialize slow and fast to head\n2. While fast and fast.next exist:\n   - Move slow one step\n   - Move fast two steps\n   - If they meet, return true\n3. Return false (fast reached end)",
+          "explanation": "Why does this work? In a cycle, the fast pointer gains one position on slow each iteration. Eventually they must meet.\n\nMathematically: if cycle length is C, fast catches up by 1 each step, so they meet within C steps after slow enters the cycle.",
+          "code": "func hasCycle(_ head: ListNode?) -> Bool {\n    var slow = head\n    var fast = head\n    \n    while fast != nil && fast?.next != nil {\n        slow = slow?.next\n        fast = fast?.next?.next\n        \n        if slow === fast {\n            return true\n        }\n    }\n    \n    return false\n}",
+          "complexity": {
+            "time": "O(n)",
+            "space": "O(1)",
+            "timeExplanation": "At most 2n iterations before detection or end",
+            "spaceExplanation": "Only two pointers used"
+          },
+          "testCases": [
+            {
+              "id": "550e8400-e29b-41d4-a716-446655440204",
+              "input": "[3,2,0,-4], pos = 1",
+              "expectedOutput": "true",
+              "explanation": "Tail connects to node at index 1 (value 2)"
+            },
+            {
+              "id": "550e8400-e29b-41d4-a716-446655440205",
+              "input": "[1], pos = -1",
+              "expectedOutput": "false",
+              "explanation": "Single node with no cycle"
+            }
+          ]
+        },
+        {
+          "id": "550e8400-e29b-41d4-a716-446655440106",
+          "name": "Hash Set",
+          "order": 2,
+          "intuition": "Track visited nodes in a set. If we see a node twice, there's a cycle.",
+          "approach": "1. Create an empty set of visited nodes\n2. Traverse the list:\n   - If current node is in set, return true\n   - Add current node to set\n3. Return false if we reach the end",
+          "explanation": "Simple but uses extra space. We store node references (not values) to handle duplicate values correctly.",
+          "code": "func hasCycle(_ head: ListNode?) -> Bool {\n    var visited = Set<ObjectIdentifier>()\n    var current = head\n    \n    while let node = current {\n        let id = ObjectIdentifier(node)\n        if visited.contains(id) {\n            return true\n        }\n        visited.insert(id)\n        current = node.next\n    }\n    \n    return false\n}",
+          "complexity": {
+            "time": "O(n)",
+            "space": "O(n)",
+            "timeExplanation": "Visit each node once",
+            "spaceExplanation": "Store up to n node references"
+          },
+          "testCases": []
+        }
+      ],
+      "relatedProblems": ["linked-list-cycle-ii", "happy-number"],
+      "lastUpdated": "2026-02-04T00:00:00Z"
+    },
+    {
+      "id": "550e8400-e29b-41d4-a716-446655440004",
+      "problemSlug": "reorder-list",
+      "summary": "Reorder list from L0→L1→...→Ln to L0→Ln→L1→Ln-1→... by finding middle, reversing second half, then merging alternately.",
+      "approaches": [
+        {
+          "id": "550e8400-e29b-41d4-a716-446655440107",
+          "name": "Three-Step Approach",
+          "order": 1,
+          "intuition": "The reordered list alternates between taking from the start and end. We can achieve this by:\n1. Split the list into two halves\n2. Reverse the second half\n3. Merge both halves by alternating nodes",
+          "approach": "1. Find the middle using slow/fast pointers\n2. Split the list at the middle\n3. Reverse the second half\n4. Merge by alternating: take from first, then second, repeat",
+          "explanation": "This approach transforms the problem into three simpler sub-problems we already know how to solve:\n\n- Finding middle: slow/fast pointer technique (slow moves 1 step, fast moves 2)\n- Reversing: standard iterative reversal with prev/curr/next pointers\n- Merging: similar to merge two lists, but we alternate instead of comparing\n\nKey insight: after reversing the second half, both halves are the same length (±1), so we can interleave them directly.",
+          "code": "func reorderList(_ head: ListNode?) {\n    guard let head = head, head.next != nil else { return }\n    \n    // Step 1: Find middle\n    var slow = head\n    var fast = head\n    while fast.next != nil && fast.next?.next != nil {\n        slow = slow.next!\n        fast = fast.next!.next!\n    }\n    \n    // Step 2: Split and reverse second half\n    var second = slow.next\n    slow.next = nil  // Cut the list\n    second = reverseList(second)\n    \n    // Step 3: Merge alternately\n    var first: ListNode? = head\n    while second != nil {\n        let tmp1 = first?.next\n        let tmp2 = second?.next\n        first?.next = second\n        second?.next = tmp1\n        first = tmp1\n        second = tmp2\n    }\n}\n\nprivate func reverseList(_ head: ListNode?) -> ListNode? {\n    var prev: ListNode? = nil\n    var curr = head\n    while curr != nil {\n        let next = curr?.next\n        curr?.next = prev\n        prev = curr\n        curr = next\n    }\n    return prev\n}",
+          "complexity": {
+            "time": "O(n)",
+            "space": "O(1)",
+            "timeExplanation": "Each step (find middle, reverse, merge) is O(n), total is O(n)",
+            "spaceExplanation": "Only use pointer variables, no extra data structures"
+          },
+          "testCases": [
+            {
+              "id": "550e8400-e29b-41d4-a716-446655440206",
+              "input": "[1,2,3,4]",
+              "expectedOutput": "[1,4,2,3]",
+              "explanation": "Split: [1,2] and [3,4]. Reverse second: [4,3]. Merge: 1→4→2→3"
+            },
+            {
+              "id": "550e8400-e29b-41d4-a716-446655440207",
+              "input": "[1,2,3,4,5]",
+              "expectedOutput": "[1,5,2,4,3]",
+              "explanation": "Split: [1,2,3] and [4,5]. Reverse second: [5,4]. Merge: 1→5→2→4→3"
+            }
+          ]
+        },
+        {
+          "id": "550e8400-e29b-41d4-a716-446655440108",
+          "name": "Stack-Based",
+          "order": 2,
+          "intuition": "Use a stack to access nodes from the end. Push all nodes, then pop half while traversing from the front to interleave.",
+          "approach": "1. Push all nodes onto a stack\n2. Calculate how many nodes to interleave (n/2)\n3. Traverse from head, pop from stack, insert popped nodes between current nodes\n4. Handle the final next pointer",
+          "explanation": "The stack gives us O(1) access to the 'end' of the list. By pushing all nodes, the top of the stack is the last node, second-to-top is second-to-last, etc.\n\nWe only need to interleave n/2 nodes from the end, where n is the total count. After interleaving, we must set the final node's next to nil to avoid a cycle.",
+          "code": "func reorderList(_ head: ListNode?) {\n    guard let head = head else { return }\n    \n    // Push all nodes to stack\n    var stack: [ListNode] = []\n    var node: ListNode? = head\n    while let n = node {\n        stack.append(n)\n        node = n.next\n    }\n    \n    let count = stack.count\n    var curr: ListNode? = head\n    \n    // Interleave n/2 nodes from the end\n    for _ in 0..<(count / 2) {\n        let end = stack.removeLast()\n        let next = curr?.next\n        curr?.next = end\n        end.next = next\n        curr = next\n    }\n    \n    // Terminate the list\n    curr?.next = nil\n}",
+          "complexity": {
+            "time": "O(n)",
+            "space": "O(n)",
+            "timeExplanation": "Push n nodes, then interleave n/2 times",
+            "spaceExplanation": "Stack stores all n nodes"
+          },
+          "testCases": []
+        }
+      ],
+      "relatedProblems": ["reverse-linked-list", "palindrome-linked-list"],
+      "lastUpdated": "2026-02-04T00:00:00Z"
+    },
+    {
+      "id": "550e8400-e29b-41d4-a716-446655440005",
+      "problemSlug": "remove-nth-node-from-end-of-list",
+      "summary": "Remove the nth node from the end using two pointers with a gap of n. When the ahead pointer reaches the end, the behind pointer is at the node before the target.",
+      "approaches": [
+        {
+          "id": "550e8400-e29b-41d4-a716-446655440109",
+          "name": "Two Pointers with Gap",
+          "order": 1,
+          "intuition": "If we maintain a gap of n nodes between two pointers, when the front pointer reaches the end, the back pointer will be exactly n nodes from the end.\n\nA dummy node handles edge cases like removing the head.",
+          "approach": "1. Create dummy node pointing to head\n2. Initialize both pointers at dummy\n3. Move ahead pointer n+1 steps (creates gap of n)\n4. Move both pointers until ahead reaches nil\n5. Skip the target: behind.next = behind.next.next\n6. Return dummy.next",
+          "explanation": "The key insight is the gap. If ahead is n+1 nodes ahead of behind, when ahead is nil (past the end), behind is at the node BEFORE the one we want to remove.\n\nWhy n+1 instead of n? Because we need behind to point to the predecessor of the target node so we can update its next pointer.\n\nThe dummy node elegantly handles removing the head: if n equals the list length, behind stays at dummy, and behind.next becomes the original head (which we skip).",
+          "code": "func removeNthFromEnd(_ head: ListNode?, _ n: Int) -> ListNode? {\n    let dummy = ListNode(0)\n    dummy.next = head\n    \n    var behind: ListNode? = dummy\n    var ahead: ListNode? = dummy\n    \n    // Create gap of n+1\n    for _ in 0...n {\n        ahead = ahead?.next\n    }\n    \n    // Move both until ahead reaches end\n    while ahead != nil {\n        behind = behind?.next\n        ahead = ahead?.next\n    }\n    \n    // Skip the nth node from end\n    behind?.next = behind?.next?.next\n    \n    return dummy.next\n}",
+          "complexity": {
+            "time": "O(L)",
+            "space": "O(1)",
+            "timeExplanation": "Single pass through the list where L is list length",
+            "spaceExplanation": "Only use two pointer variables plus dummy"
+          },
+          "testCases": [
+            {
+              "id": "550e8400-e29b-41d4-a716-446655440208",
+              "input": "head = [1,2,3,4,5], n = 2",
+              "expectedOutput": "[1,2,3,5]",
+              "explanation": "Remove 4 (2nd from end). Gap of 2 means when ahead=nil, behind points to 3"
+            },
+            {
+              "id": "550e8400-e29b-41d4-a716-446655440209",
+              "input": "head = [1], n = 1",
+              "expectedOutput": "[]",
+              "explanation": "Remove only node. Dummy handles this: behind stays at dummy, skips head"
+            },
+            {
+              "id": "550e8400-e29b-41d4-a716-446655440210",
+              "input": "head = [1,2], n = 1",
+              "expectedOutput": "[1]",
+              "explanation": "Remove 2 (last node). behind ends at node 1, skips node 2"
+            }
+          ]
+        },
+        {
+          "id": "550e8400-e29b-41d4-a716-446655440110",
+          "name": "Two Pass",
+          "order": 2,
+          "intuition": "First pass counts the total length. Second pass removes the (length - n)th node from the beginning.",
+          "approach": "1. First pass: count total nodes (length)\n2. Calculate target index: length - n\n3. Use dummy node for edge case handling\n4. Second pass: traverse to node at index (target - 1)\n5. Skip the target node",
+          "explanation": "Converting 'nth from end' to 'kth from start' simplifies the problem. If list has L nodes, the nth from end is the (L-n)th from start (0-indexed).\n\nWe traverse to position (L-n-1) to reach the predecessor, then update its next pointer.\n\nLess elegant than one-pass but easier to understand and implement correctly.",
+          "code": "func removeNthFromEnd(_ head: ListNode?, _ n: Int) -> ListNode? {\n    // First pass: count length\n    var length = 0\n    var node = head\n    while node != nil {\n        length += 1\n        node = node?.next\n    }\n    \n    let dummy = ListNode(0)\n    dummy.next = head\n    \n    // Find predecessor of target (at position length - n - 1 from dummy)\n    var curr: ListNode? = dummy\n    for _ in 0..<(length - n) {\n        curr = curr?.next\n    }\n    \n    // Skip target\n    curr?.next = curr?.next?.next\n    \n    return dummy.next\n}",
+          "complexity": {
+            "time": "O(L)",
+            "space": "O(1)",
+            "timeExplanation": "Two passes: first counts L nodes, second traverses L-n nodes",
+            "spaceExplanation": "Only use counter and pointer variables"
+          },
+          "testCases": []
+        }
+      ],
+      "relatedProblems": ["delete-the-middle-node-of-a-linked-list", "swapping-nodes-in-a-linked-list"],
+      "lastUpdated": "2026-02-04T00:00:00Z"
+    },
+    {
+      "id": "550e8400-e29b-41d4-a716-446655440006",
+      "problemSlug": "merge-k-sorted-lists",
+      "summary": "Merge k sorted linked lists into one sorted list. Use a min-heap for O(n log k) efficiency, or divide and conquer by repeatedly merging pairs.",
+      "approaches": [
+        {
+          "id": "550e8400-e29b-41d4-a716-446655440111",
+          "name": "Min-Heap (Priority Queue)",
+          "order": 1,
+          "intuition": "Always pick the smallest available node across all k lists. A min-heap gives us O(log k) access to the minimum among k candidates.\n\nAt any time, the heap contains at most one node from each list (the current head).",
+          "approach": "1. Create a min-heap ordered by node value\n2. Add the head of each non-empty list to the heap\n3. While heap is not empty:\n   - Pop the minimum node\n   - Append it to the result\n   - If that node has a next, push next to heap\n4. Return the merged list",
+          "explanation": "The heap maintains the 'frontier' of each list - the next candidate node from each list. By always extracting the minimum, we build the sorted result.\n\nSwift doesn't have a built-in heap, so we implement a simple one or use an array with manual sorting (less efficient but simpler).\n\nKey insight: each node is pushed and popped exactly once, and each operation is O(log k).",
+          "code": "func mergeKLists(_ lists: [ListNode?]) -> ListNode? {\n    // Simple approach using sorted array (for interview, explain heap would be better)\n    var nodes: [ListNode] = []\n    \n    // Collect all nodes\n    for list in lists {\n        var node = list\n        while let n = node {\n            nodes.append(n)\n            node = n.next\n        }\n    }\n    \n    // Sort by value\n    nodes.sort { $0.val < $1.val }\n    \n    // Rebuild list\n    let dummy = ListNode(0)\n    var tail = dummy\n    for node in nodes {\n        tail.next = node\n        tail = node\n    }\n    tail.next = nil\n    \n    return dummy.next\n}\n\n// Optimal with custom min-heap\nfunc mergeKListsHeap(_ lists: [ListNode?]) -> ListNode? {\n    var heap: [ListNode] = lists.compactMap { $0 }\n    \n    func heapifyUp(_ i: Int) {\n        var i = i\n        while i > 0 && heap[(i-1)/2].val > heap[i].val {\n            heap.swapAt(i, (i-1)/2)\n            i = (i-1)/2\n        }\n    }\n    \n    func heapifyDown(_ i: Int) {\n        var i = i\n        while 2*i + 1 < heap.count {\n            var smallest = 2*i + 1\n            if smallest + 1 < heap.count && heap[smallest+1].val < heap[smallest].val {\n                smallest += 1\n            }\n            if heap[i].val <= heap[smallest].val { break }\n            heap.swapAt(i, smallest)\n            i = smallest\n        }\n    }\n    \n    // Build heap\n    for i in (0..<heap.count).reversed() { heapifyDown(i) }\n    \n    let dummy = ListNode(0)\n    var tail = dummy\n    \n    while !heap.isEmpty {\n        let min = heap[0]\n        tail.next = min\n        tail = min\n        \n        if let next = min.next {\n            heap[0] = next\n            heapifyDown(0)\n        } else {\n            heap[0] = heap[heap.count - 1]\n            heap.removeLast()\n            if !heap.isEmpty { heapifyDown(0) }\n        }\n    }\n    \n    return dummy.next\n}",
+          "complexity": {
+            "time": "O(N log k)",
+            "space": "O(k)",
+            "timeExplanation": "N total nodes, each pushed/popped once with O(log k) heap operations",
+            "spaceExplanation": "Heap stores at most k nodes (one per list)"
+          },
+          "testCases": [
+            {
+              "id": "550e8400-e29b-41d4-a716-446655440211",
+              "input": "lists = [[1,4,5],[1,3,4],[2,6]]",
+              "expectedOutput": "[1,1,2,3,4,4,5,6]",
+              "explanation": "Heap starts with [1,1,2]. Pop 1, push 4. Pop 1, push 3. Continue..."
+            },
+            {
+              "id": "550e8400-e29b-41d4-a716-446655440212",
+              "input": "lists = []",
+              "expectedOutput": "[]",
+              "explanation": "Empty input returns empty list"
+            }
+          ]
+        },
+        {
+          "id": "550e8400-e29b-41d4-a716-446655440112",
+          "name": "Divide and Conquer",
+          "order": 2,
+          "intuition": "Pair up the k lists and merge each pair. After one round, we have k/2 lists. Repeat until one list remains.\n\nThis is like merge sort's merge step, applied to lists instead of arrays.",
+          "approach": "1. If lists is empty, return nil\n2. While we have more than one list:\n   - Pair up lists and merge each pair\n   - Replace lists with merged results\n3. Return the single remaining list",
+          "explanation": "Each 'round' halves the number of lists: k → k/2 → k/4 → ... → 1.\n\nThere are O(log k) rounds, and each round processes all N nodes once (spread across the merges). Total: O(N log k).\n\nThis approach reuses our merge-two-lists solution and is often easier to implement correctly than a heap.",
+          "code": "func mergeKLists(_ lists: [ListNode?]) -> ListNode? {\n    var lists = lists.compactMap { $0 }  // Remove nils\n    if lists.isEmpty { return nil }\n    \n    while lists.count > 1 {\n        var merged: [ListNode] = []\n        for i in stride(from: 0, to: lists.count, by: 2) {\n            let l1 = lists[i]\n            let l2 = i + 1 < lists.count ? lists[i + 1] : nil\n            if let m = mergeTwoLists(l1, l2) {\n                merged.append(m)\n            }\n        }\n        lists = merged\n    }\n    \n    return lists.first\n}\n\nprivate func mergeTwoLists(_ l1: ListNode?, _ l2: ListNode?) -> ListNode? {\n    let dummy = ListNode(0)\n    var tail = dummy\n    var l1 = l1, l2 = l2\n    \n    while let n1 = l1, let n2 = l2 {\n        if n1.val <= n2.val {\n            tail.next = n1\n            l1 = n1.next\n        } else {\n            tail.next = n2\n            l2 = n2.next\n        }\n        tail = tail.next!\n    }\n    tail.next = l1 ?? l2\n    return dummy.next\n}",
+          "complexity": {
+            "time": "O(N log k)",
+            "space": "O(1)",
+            "timeExplanation": "log k rounds, each processing all N nodes",
+            "spaceExplanation": "Merge is done in-place, only using pointers"
+          },
+          "testCases": []
+        }
+      ],
+      "relatedProblems": ["merge-two-sorted-lists", "ugly-number-ii"],
+      "lastUpdated": "2026-02-04T00:00:00Z"
+    },
+    {
+      "id": "550e8400-e29b-41d4-a716-446655440007",
+      "problemSlug": "copy-list-with-random-pointer",
+      "summary": "Create a deep copy of a linked list where each node has a random pointer. Use a hash map to map original nodes to copies, enabling O(1) lookup for random pointers.",
+      "approaches": [
+        {
+          "id": "550e8400-e29b-41d4-a716-446655440113",
+          "name": "Hash Map (Two Pass)",
+          "order": 1,
+          "intuition": "The challenge is that random pointers can point to nodes we haven't created yet. Solution: first create all nodes, then wire up the pointers.\n\nA hash map lets us find the copy of any original node in O(1).",
+          "approach": "1. First pass: create a copy of each node, store original→copy mapping\n2. Second pass: for each original node:\n   - Set copy.next = map[original.next]\n   - Set copy.random = map[original.random]\n3. Return map[head]",
+          "explanation": "The hash map is the key insight. When we encounter original.random pointing to some node X, we need to find the copy of X. The map gives us this in O(1).\n\nFirst pass creates all nodes (values only). Second pass wires up both next and random pointers using the map.\n\nNote: we handle nil by checking before map lookup.",
+          "code": "func copyRandomList(_ head: Node?) -> Node? {\n    guard let head = head else { return nil }\n    \n    var map: [ObjectIdentifier: Node] = [:]\n    \n    // First pass: create all nodes\n    var curr: Node? = head\n    while let node = curr {\n        map[ObjectIdentifier(node)] = Node(node.val)\n        curr = node.next\n    }\n    \n    // Second pass: wire up pointers\n    curr = head\n    while let node = curr {\n        let copy = map[ObjectIdentifier(node)]!\n        if let next = node.next {\n            copy.next = map[ObjectIdentifier(next)]\n        }\n        if let random = node.random {\n            copy.random = map[ObjectIdentifier(random)]\n        }\n        curr = node.next\n    }\n    \n    return map[ObjectIdentifier(head)]\n}",
+          "complexity": {
+            "time": "O(n)",
+            "space": "O(n)",
+            "timeExplanation": "Two passes through n nodes, O(1) per node",
+            "spaceExplanation": "Hash map stores n node mappings"
+          },
+          "testCases": [
+            {
+              "id": "550e8400-e29b-41d4-a716-446655440213",
+              "input": "[[7,null],[13,0],[11,4],[10,2],[1,0]]",
+              "expectedOutput": "[[7,null],[13,0],[11,4],[10,2],[1,0]]",
+              "explanation": "Deep copy with same structure. Node 1's random points to node 0, etc."
+            }
+          ]
+        },
+        {
+          "id": "550e8400-e29b-41d4-a716-446655440114",
+          "name": "Interleaving (O(1) Space)",
+          "order": 2,
+          "intuition": "Avoid the hash map by interleaving copies with originals: A→A'→B→B'→C→C'. Now A'.random = A.random.next (the copy is right after the original).",
+          "approach": "1. Insert copy after each original: A→A'→B→B'→...\n2. Set random pointers: copy.random = original.random?.next\n3. Separate the two lists: restore original, extract copies",
+          "explanation": "The interleaving trick embeds the 'map' in the list structure itself. Original.next always points to its copy.\n\nPhase 1: Create copies, insert after originals.\nPhase 2: Wire random pointers using the interleaved structure.\nPhase 3: Carefully unweave the two lists.\n\nThe separation step is tricky - we must restore the original list while extracting the copy list.",
+          "code": "func copyRandomList(_ head: Node?) -> Node? {\n    guard head != nil else { return nil }\n    \n    // Phase 1: Insert copies after originals\n    var curr = head\n    while let node = curr {\n        let copy = Node(node.val)\n        copy.next = node.next\n        node.next = copy\n        curr = copy.next\n    }\n    \n    // Phase 2: Set random pointers\n    curr = head\n    while let node = curr {\n        let copy = node.next\n        copy?.random = node.random?.next  // Random's copy is right after random\n        curr = copy?.next\n    }\n    \n    // Phase 3: Separate lists\n    let dummy = Node(0)\n    var copyTail = dummy\n    curr = head\n    while let node = curr {\n        let copy = node.next!\n        let nextOrig = copy.next\n        \n        // Extract copy\n        copyTail.next = copy\n        copyTail = copy\n        \n        // Restore original\n        node.next = nextOrig\n        curr = nextOrig\n    }\n    \n    return dummy.next\n}",
+          "complexity": {
+            "time": "O(n)",
+            "space": "O(1)",
+            "timeExplanation": "Three passes, each O(n)",
+            "spaceExplanation": "No extra data structures, only pointers (output doesn't count)"
+          },
+          "testCases": []
+        }
+      ],
+      "relatedProblems": ["clone-graph", "clone-binary-tree-with-random-pointer"],
+      "lastUpdated": "2026-02-04T00:00:00Z"
+    },
+    {
+      "id": "550e8400-e29b-41d4-a716-446655440008",
+      "problemSlug": "add-two-numbers",
+      "summary": "Add two numbers represented as reversed linked lists. Simulate digit-by-digit addition with carry, building the result list as you go.",
+      "approaches": [
+        {
+          "id": "550e8400-e29b-41d4-a716-446655440115",
+          "name": "Elementary Math Simulation",
+          "order": 1,
+          "intuition": "Since digits are in reverse order (ones place first), we can add them directly left-to-right, just like manual addition.\n\nKeep track of the carry: if sum >= 10, carry 1 to the next digit.",
+          "approach": "1. Initialize carry = 0 and result with dummy head\n2. While either list has nodes OR carry > 0:\n   - Get digits (0 if list exhausted)\n   - sum = digit1 + digit2 + carry\n   - Create node with sum % 10\n   - Update carry = sum / 10\n3. Return dummy.next",
+          "explanation": "The reverse order is a gift - it means we process from least significant to most significant, exactly as in manual addition.\n\nHandling unequal lengths: treat exhausted list as contributing 0.\n\nDon't forget the final carry! If sum of last digits produces a carry, we need one more node (e.g., 5+5=10 needs [0,1]).\n\nThe dummy node simplifies appending the first result node.",
+          "code": "func addTwoNumbers(_ l1: ListNode?, _ l2: ListNode?) -> ListNode? {\n    let dummy = ListNode(0)\n    var tail = dummy\n    var p1 = l1\n    var p2 = l2\n    var carry = 0\n    \n    while p1 != nil || p2 != nil || carry > 0 {\n        let val1 = p1?.val ?? 0\n        let val2 = p2?.val ?? 0\n        let sum = val1 + val2 + carry\n        \n        carry = sum / 10\n        tail.next = ListNode(sum % 10)\n        tail = tail.next!\n        \n        p1 = p1?.next\n        p2 = p2?.next\n    }\n    \n    return dummy.next\n}",
+          "complexity": {
+            "time": "O(max(m, n))",
+            "space": "O(max(m, n))",
+            "timeExplanation": "Process max(m,n) digits where m and n are list lengths",
+            "spaceExplanation": "Result list has at most max(m,n)+1 nodes"
+          },
+          "testCases": [
+            {
+              "id": "550e8400-e29b-41d4-a716-446655440214",
+              "input": "l1 = [2,4,3], l2 = [5,6,4]",
+              "expectedOutput": "[7,0,8]",
+              "explanation": "342 + 465 = 807. Process: 2+5=7, 4+6=10 (carry 1), 3+4+1=8"
+            },
+            {
+              "id": "550e8400-e29b-41d4-a716-446655440215",
+              "input": "l1 = [9,9,9], l2 = [1]",
+              "expectedOutput": "[0,0,0,1]",
+              "explanation": "999 + 1 = 1000. Final carry creates extra digit"
+            }
+          ]
+        }
+      ],
+      "relatedProblems": ["add-two-numbers-ii", "multiply-strings"],
+      "lastUpdated": "2026-02-04T00:00:00Z"
+    },
+    {
+      "id": "550e8400-e29b-41d4-a716-446655440009",
+      "problemSlug": "find-the-duplicate-number",
+      "summary": "Find the duplicate in array of n+1 integers where each is in [1,n]. Use Floyd's cycle detection - treat values as pointers to create a linked list with a cycle at the duplicate.",
+      "approaches": [
+        {
+          "id": "550e8400-e29b-41d4-a716-446655440116",
+          "name": "Floyd's Cycle Detection",
+          "order": 1,
+          "intuition": "Treat the array as a linked list where nums[i] points to index nums[i]. Since there's a duplicate, two indices point to the same location, creating a cycle.\n\nThe cycle's entry point is the duplicate value.",
+          "approach": "1. Phase 1 - Find intersection:\n   - slow = nums[slow], fast = nums[nums[fast]]\n   - Continue until they meet (inside cycle)\n2. Phase 2 - Find entry point:\n   - Reset slow to start (index 0)\n   - Move both one step at a time\n   - They meet at the duplicate",
+          "explanation": "Why does this work? Consider the array as a graph where index i has an edge to index nums[i].\n\nSince values are in [1,n] and we start at index 0, we never revisit 0. But since there's a duplicate value, some index is pointed to by two different indices - that's our cycle entry.\n\nThe math for why phase 2 works: if slow traveled distance d to the meeting point, and cycle length is C, then fast traveled 2d. The meeting point is d mod C steps into the cycle. The entry point is exactly d mod C steps back, which equals the distance from start.",
+          "code": "func findDuplicate(_ nums: [Int]) -> Int {\n    // Phase 1: Find intersection point\n    var slow = nums[0]\n    var fast = nums[0]\n    \n    repeat {\n        slow = nums[slow]\n        fast = nums[nums[fast]]\n    } while slow != fast\n    \n    // Phase 2: Find cycle entry (the duplicate)\n    slow = nums[0]\n    while slow != fast {\n        slow = nums[slow]\n        fast = nums[fast]\n    }\n    \n    return slow\n}",
+          "complexity": {
+            "time": "O(n)",
+            "space": "O(1)",
+            "timeExplanation": "Each phase traverses at most n elements",
+            "spaceExplanation": "Only use two pointer variables"
+          },
+          "testCases": [
+            {
+              "id": "550e8400-e29b-41d4-a716-446655440216",
+              "input": "[1,3,4,2,2]",
+              "expectedOutput": "2",
+              "explanation": "Graph: 0→1→3→2→4→2 (cycle at 2). Duplicate is 2"
+            },
+            {
+              "id": "550e8400-e29b-41d4-a716-446655440217",
+              "input": "[3,1,3,4,2]",
+              "expectedOutput": "3",
+              "explanation": "Graph: 0→3→4→2→3 (cycle at 3). Duplicate is 3"
+            }
+          ]
+        },
+        {
+          "id": "550e8400-e29b-41d4-a716-446655440117",
+          "name": "Binary Search on Value Range",
+          "order": 2,
+          "intuition": "Binary search on the answer space [1,n]. For a candidate mid, count numbers ≤ mid. If count > mid, duplicate is in [1,mid].",
+          "approach": "1. Set lo = 1, hi = n\n2. While lo < hi:\n   - mid = (lo + hi) / 2\n   - Count elements ≤ mid\n   - If count > mid: hi = mid (duplicate in lower half)\n   - Else: lo = mid + 1\n3. Return lo",
+          "explanation": "The pigeonhole principle: if we have more than mid numbers in [1,mid], at least one must be duplicated.\n\nThis doesn't find which number is duplicated directly - it narrows down the range until lo == hi, which is the duplicate.\n\nExample: [1,3,4,2,2]. Count ≤ 2 is 3 (elements 1,2,2). Since 3 > 2, duplicate is in [1,2]. Count ≤ 1 is 1. So duplicate is 2.",
+          "code": "func findDuplicate(_ nums: [Int]) -> Int {\n    var lo = 1\n    var hi = nums.count - 1\n    \n    while lo < hi {\n        let mid = lo + (hi - lo) / 2\n        let count = nums.filter { $0 <= mid }.count\n        \n        if count > mid {\n            hi = mid  // Duplicate in lower half\n        } else {\n            lo = mid + 1  // Duplicate in upper half\n        }\n    }\n    \n    return lo\n}",
+          "complexity": {
+            "time": "O(n log n)",
+            "space": "O(1)",
+            "timeExplanation": "O(log n) binary search iterations, each counting O(n) elements",
+            "spaceExplanation": "Only use a few variables"
+          },
+          "testCases": []
+        }
+      ],
+      "relatedProblems": ["linked-list-cycle-ii", "missing-number"],
+      "lastUpdated": "2026-02-04T00:00:00Z"
+    },
+    {
+      "id": "550e8400-e29b-41d4-a716-446655440010",
+      "problemSlug": "lru-cache",
+      "summary": "Implement an LRU cache with O(1) get and put. Combine a hash map (O(1) lookup) with a doubly linked list (O(1) insertion/deletion) to track recency.",
+      "approaches": [
+        {
+          "id": "550e8400-e29b-41d4-a716-446655440118",
+          "name": "Hash Map + Doubly Linked List",
+          "order": 1,
+          "intuition": "We need two operations in O(1):\n1. Find a key → hash map\n2. Track/update recency → doubly linked list\n\nMost recently used at head, least recently used at tail. On access, move node to head.",
+          "approach": "1. Doubly linked list with dummy head/tail\n2. Hash map: key → node reference\n3. get(key): if exists, move to head, return value\n4. put(key, value):\n   - If exists: update value, move to head\n   - If new: create node, add to head, add to map\n   - If over capacity: remove tail node, remove from map",
+          "explanation": "The doubly linked list maintains order by recency. The hash map provides O(1) access to any node.\n\nWhy doubly linked? We need to remove a node from the middle in O(1). With a doubly linked list, given a node reference, we can update prev.next and next.prev directly.\n\nDummy head and tail simplify edge cases (empty list, single element). The actual nodes are always between these dummies.",
+          "code": "class LRUCache {\n    private class Node {\n        let key: Int\n        var value: Int\n        var prev: Node?\n        var next: Node?\n        \n        init(_ key: Int, _ value: Int) {\n            self.key = key\n            self.value = value\n        }\n    }\n    \n    private let capacity: Int\n    private var cache: [Int: Node] = [:]\n    private let head = Node(0, 0)  // Dummy head\n    private let tail = Node(0, 0)  // Dummy tail\n    \n    init(_ capacity: Int) {\n        self.capacity = capacity\n        head.next = tail\n        tail.prev = head\n    }\n    \n    func get(_ key: Int) -> Int {\n        guard let node = cache[key] else { return -1 }\n        moveToHead(node)\n        return node.value\n    }\n    \n    func put(_ key: Int, _ value: Int) {\n        if let node = cache[key] {\n            node.value = value\n            moveToHead(node)\n        } else {\n            let node = Node(key, value)\n            cache[key] = node\n            addToHead(node)\n            \n            if cache.count > capacity {\n                let removed = removeTail()\n                cache.removeValue(forKey: removed.key)\n            }\n        }\n    }\n    \n    private func addToHead(_ node: Node) {\n        node.prev = head\n        node.next = head.next\n        head.next?.prev = node\n        head.next = node\n    }\n    \n    private func removeNode(_ node: Node) {\n        node.prev?.next = node.next\n        node.next?.prev = node.prev\n    }\n    \n    private func moveToHead(_ node: Node) {\n        removeNode(node)\n        addToHead(node)\n    }\n    \n    private func removeTail() -> Node {\n        let node = tail.prev!\n        removeNode(node)\n        return node\n    }\n}",
+          "complexity": {
+            "time": "O(1)",
+            "space": "O(capacity)",
+            "timeExplanation": "Both get and put are O(1) - hash lookup and list operations are constant time",
+            "spaceExplanation": "Store at most 'capacity' nodes in map and list"
+          },
+          "testCases": [
+            {
+              "id": "550e8400-e29b-41d4-a716-446655440218",
+              "input": "[\"LRUCache\",\"put\",\"put\",\"get\",\"put\",\"get\",\"put\",\"get\",\"get\",\"get\"]\n[[2],[1,1],[2,2],[1],[3,3],[2],[4,4],[1],[3],[4]]",
+              "expectedOutput": "[null,null,null,1,null,-1,null,-1,3,4]",
+              "explanation": "After put(3,3), cache is [1,3]. get(2) returns -1 (evicted). After put(4,4), cache is [3,4]."
+            }
+          ]
+        }
+      ],
+      "relatedProblems": ["lfu-cache", "design-in-memory-file-system"],
+      "lastUpdated": "2026-02-04T00:00:00Z"
+    }
+  ]
+}

@@ -4,10 +4,12 @@ import SwiftUI
 #if DEBUG
 struct TodayView_Previews: PreviewProvider {
     static var previews: some View {
-        let container = try! ModelContainer(
+        guard let container = try? ModelContainer(
             for: AppDataRecord.self,
             configurations: ModelConfiguration(isStoredInMemoryOnly: true)
-        )
+        ) else {
+            return Text("Preview unavailable")
+        }
         let appStore = AppStateStore(storage: SwiftDataAppStorage(container: container))
         let client = PreviewLeetCodeClient()
         let leetCodeSync = LeetCodeSyncInteractor(appStore: appStore, client: client)

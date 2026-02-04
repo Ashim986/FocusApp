@@ -13,7 +13,7 @@ extension CodingEnvironmentView {
                         .clipShape(RoundedRectangle(cornerRadius: 6))
                 }
                 .buttonStyle(.plain)
-                .help("Exit coding mode")
+                .help(L10n.Coding.exitHelp)
 
                 Button(action: { showProblemSidebar.toggle() }) {
                     Image(systemName: "sidebar.leading")
@@ -24,7 +24,9 @@ extension CodingEnvironmentView {
                         .clipShape(RoundedRectangle(cornerRadius: 6))
                 }
                 .buttonStyle(.plain)
-                .help(showProblemSidebar ? "Hide problems" : "Show problems")
+                .help(showProblemSidebar
+                      ? L10n.Coding.hideProblems
+                      : L10n.Coding.showProblems)
 
                 problemSelector
             }
@@ -37,12 +39,12 @@ extension CodingEnvironmentView {
             Spacer()
 
             HStack(spacing: 8) {
-                if let problem = presenter.selectedProblem {
-                    Link(destination: URL(string: problem.url)!) {
+                if let problem = presenter.selectedProblem, let url = URL(string: problem.url) {
+                    Link(destination: url) {
                         HStack(spacing: 4) {
                             Image(systemName: "arrow.up.right")
                                 .font(.system(size: 10))
-                            Text("LeetCode")
+                            Text(L10n.Coding.leetcodeLink)
                                 .font(.system(size: 11, weight: .medium))
                         }
                         .foregroundColor(Color.appGray400)
@@ -58,7 +60,7 @@ extension CodingEnvironmentView {
                         HStack(spacing: 5) {
                             Image(systemName: "stop.fill")
                                 .font(.system(size: 9))
-                            Text("Stop")
+                            Text(L10n.Coding.stop)
                                 .font(.system(size: 11, weight: .semibold))
                         }
                         .foregroundColor(.white)
@@ -74,7 +76,7 @@ extension CodingEnvironmentView {
                         HStack(spacing: 5) {
                             Image(systemName: "play.fill")
                                 .font(.system(size: 9))
-                            Text("Run")
+                            Text(L10n.Coding.run)
                                 .font(.system(size: 11, weight: .semibold))
                         }
                         .foregroundColor(.white)
@@ -90,7 +92,7 @@ extension CodingEnvironmentView {
                         HStack(spacing: 5) {
                             Image(systemName: "checkmark.circle.fill")
                                 .font(.system(size: 10))
-                            Text("Submit")
+                            Text(L10n.Coding.submit)
                                 .font(.system(size: 11, weight: .semibold))
                         }
                         .foregroundColor(.white)
@@ -124,7 +126,9 @@ extension CodingEnvironmentView {
         let timeString = String(format: "%02d:%02d", minutes, seconds)
         let progress = focusPresenter.progress
         let ringColor = focusPresenter.isCompleted ? Color.appGreen : Color.appPurple
-        let labelText = focusPresenter.isCompleted ? "Done" : timeString
+        let labelText = focusPresenter.isCompleted
+            ? L10n.Coding.timerDone
+            : timeString
         let labelColor = focusPresenter.isCompleted ? Color.appGreen : Color.white
 
         return HStack(spacing: 8) {
@@ -151,7 +155,7 @@ extension CodingEnvironmentView {
                     .foregroundColor(Color.appGray400)
             }
             .buttonStyle(.plain)
-            .help("Restart focus timer")
+            .help(L10n.Coding.timerRestartHelp)
         }
         .padding(.horizontal, 12)
         .padding(.vertical, 6)

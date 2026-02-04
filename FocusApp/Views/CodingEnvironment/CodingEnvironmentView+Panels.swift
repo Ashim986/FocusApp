@@ -4,13 +4,13 @@ extension CodingEnvironmentView {
     var codeEditorPanel: some View {
         VStack(spacing: 0) {
             HStack(spacing: 12) {
-                Text("Code")
+                Text(L10n.Coding.codeTitle)
                     .font(.system(size: 12, weight: .semibold))
                     .foregroundColor(.white)
 
                 languageMenu
 
-                Text("Solution.\(presenter.language.fileExtension)")
+                Text(L10n.Coding.solutionFilename( presenter.language.fileExtension))
                     .font(.system(size: 11, weight: .medium, design: .monospaced))
                     .foregroundColor(Color.appGray400)
 
@@ -73,7 +73,7 @@ extension CodingEnvironmentView {
     private var bottomPanel: some View {
         VStack(spacing: 0) {
             HStack {
-                Text("Console")
+                Text(L10n.Coding.consoleTitle)
                     .font(.system(size: 11, weight: .semibold))
                     .foregroundColor(.white)
 
@@ -81,7 +81,9 @@ extension CodingEnvironmentView {
 
                 Button(action: { isBottomPanelCollapsed.toggle() }) {
                     HStack(spacing: 4) {
-                        Text(isBottomPanelCollapsed ? "Expand" : "Collapse")
+                        Text(isBottomPanelCollapsed
+                             ? L10n.Coding.consoleExpand
+                             : L10n.Coding.consoleCollapse)
                             .font(.system(size: 10, weight: .medium))
                             .foregroundColor(Color.appGray400)
                         Image(systemName: isBottomPanelCollapsed ? "chevron.up" : "chevron.down")

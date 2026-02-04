@@ -4,7 +4,7 @@ extension ToolbarWidgetView {
     var settingsSection: some View {
         VStack(spacing: 8) {
             HStack {
-                Text("LeetCode Username")
+                Text(L10n.Widget.leetcodeUsername)
                     .font(.system(size: 10, weight: .medium))
                     .foregroundColor(.gray)
                 Spacer()
@@ -14,7 +14,7 @@ extension ToolbarWidgetView {
                     HStack(spacing: 2) {
                         Image(systemName: "checkmark.circle.fill")
                             .font(.system(size: 10))
-                        Text("Valid")
+                        Text(L10n.Widget.validationValid)
                             .font(.system(size: 9))
                     }
                     .foregroundColor(.green)
@@ -22,7 +22,7 @@ extension ToolbarWidgetView {
                     HStack(spacing: 2) {
                         Image(systemName: "xmark.circle.fill")
                             .font(.system(size: 10))
-                        Text("User not found")
+                        Text(L10n.Widget.validationNotFound)
                             .font(.system(size: 9))
                     }
                     .foregroundColor(.red)
@@ -32,7 +32,7 @@ extension ToolbarWidgetView {
             }
 
             HStack(spacing: 8) {
-                TextField("Username", text: $presenter.editingUsername)
+                TextField(L10n.Widget.usernamePlaceholder, text: $presenter.editingUsername)
                     .textFieldStyle(.plain)
                     .font(.system(size: 11))
                     .foregroundColor(.white)
@@ -49,7 +49,7 @@ extension ToolbarWidgetView {
                     .onSubmit {
                         presenter.validateAndSaveUsername()
                     }
-                    .onChange(of: presenter.editingUsername) { _ in
+                    .onChange(of: presenter.editingUsername) { _, _ in
                         presenter.resetValidationState()
                     }
 
@@ -63,7 +63,9 @@ extension ToolbarWidgetView {
                             Image(systemName: "arrow.clockwise")
                                 .font(.system(size: 10))
                         }
-                        Text(presenter.isValidatingUsername ? "Checking..." : "Save & Sync")
+                        Text(presenter.isValidatingUsername
+                             ? L10n.Widget.checking
+                             : L10n.Widget.saveSync)
                             .font(.system(size: 10, weight: .medium))
                     }
                     .foregroundColor(.white)
@@ -82,7 +84,7 @@ extension ToolbarWidgetView {
                 Image(systemName: "info.circle")
                     .font(.system(size: 9))
                     .foregroundColor(.gray)
-                Text("Your LeetCode profile must be public")
+                Text(L10n.Widget.leetcodePublicNotice)
                     .font(.system(size: 9))
                     .foregroundColor(.gray)
                 Spacer()

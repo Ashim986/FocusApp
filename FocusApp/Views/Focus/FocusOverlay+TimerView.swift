@@ -27,13 +27,15 @@ extension FocusOverlay {
                         .font(.system(size: 56, weight: .bold, design: .monospaced))
                         .foregroundColor(.white)
 
-                    Text(presenter.isPaused ? "Paused" : "Remaining")
+                    Text(presenter.isPaused
+                        ? L10n.Focus.timerPaused
+                        : L10n.Focus.timerRemaining)
                         .font(.system(size: 14))
                         .foregroundColor(.white.opacity(0.6))
                 }
             }
 
-            Text("Stay focused!")
+            Text(L10n.Focus.timerPrompt)
                 .font(.system(size: 18, weight: .medium))
                 .foregroundColor(.white.opacity(0.8))
 
@@ -41,7 +43,9 @@ extension FocusOverlay {
                 Button(action: presenter.togglePause) {
                     HStack(spacing: 8) {
                         Image(systemName: presenter.isPaused ? "play.fill" : "pause.fill")
-                        Text(presenter.isPaused ? "Resume" : "Pause")
+                        Text(presenter.isPaused
+                            ? L10n.Focus.timerResume
+                            : L10n.Focus.timerPause)
                     }
                     .font(.system(size: 14, weight: .semibold))
                     .foregroundColor(.white)
@@ -57,7 +61,7 @@ extension FocusOverlay {
                 Button(action: { closeSession() }) {
                     HStack(spacing: 8) {
                         Image(systemName: "xmark")
-                        Text("End Session")
+                        Text(L10n.Focus.timerEndSession)
                     }
                     .font(.system(size: 14, weight: .semibold))
                     .foregroundColor(Color.appRed)

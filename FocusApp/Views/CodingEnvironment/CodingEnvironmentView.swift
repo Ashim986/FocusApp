@@ -65,11 +65,11 @@ struct CodingEnvironmentView: View {
 
     private var submissionTagSheet: some View {
         VStack(alignment: .leading, spacing: 16) {
-            Text("Tag this solution")
+            Text(L10n.Coding.submissionTagTitle)
                 .font(.system(size: 16, weight: .semibold))
                 .foregroundColor(.white)
 
-            Text("Add a short label to distinguish this algorithm (optional).")
+            Text(L10n.Coding.submissionTagBody)
                 .font(.system(size: 12))
                 .foregroundColor(Color.appGray400)
 

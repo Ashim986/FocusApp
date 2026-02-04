@@ -8,12 +8,12 @@ struct SettingsView: View {
             Section {
                 if !presenter.notificationsAuthorized {
                     VStack(alignment: .leading, spacing: 8) {
-                        Text("Notifications are not enabled")
+                        Text(L10n.Settings.notificationsDisabledTitle)
                             .font(.headline)
-                        Text("Enable notifications to receive study reminders and celebration alerts.")
+                        Text(L10n.Settings.notificationsDisabledBody)
                             .font(.caption)
                             .foregroundColor(.secondary)
-                        Button("Enable Notifications") {
+                        Button(L10n.Settings.enableNotifications) {
                             presenter.requestAuthorization()
                         }
                         .buttonStyle(.borderedProminent)
@@ -22,86 +22,86 @@ struct SettingsView: View {
                     .padding(.vertical, 8)
                 }
             } header: {
-                Text("Notification Status")
+                Text(L10n.Settings.notificationStatus)
             }
 
             Section {
-                Toggle("Daily Study Reminder", isOn: studyReminderEnabled)
+                Toggle(L10n.Settings.dailyStudyReminderToggle, isOn: studyReminderEnabled)
                     .disabled(!presenter.notificationsAuthorized)
 
                 if presenter.settings.studyReminderEnabled {
                     DatePicker(
-                        "Reminder Time",
+                        L10n.Settings.reminderTime,
                         selection: studyReminderTime,
                         displayedComponents: .hourAndMinute
                     )
                     .disabled(!presenter.notificationsAuthorized)
                 }
             } header: {
-                Text("Study Reminders")
+                Text(L10n.Settings.studyRemindersHeader)
             } footer: {
-                Text("Get a daily reminder to work on your DSA problems.")
+                Text(L10n.Settings.studyRemindersFooter)
             }
 
             Section {
-                Toggle("Daily Habit Reminder", isOn: habitReminderEnabled)
+                Toggle(L10n.Settings.dailyHabitReminderToggle, isOn: habitReminderEnabled)
                     .disabled(!presenter.notificationsAuthorized)
 
                 if presenter.settings.habitReminderEnabled {
                     DatePicker(
-                        "Reminder Time",
+                        L10n.Settings.reminderTime,
                         selection: habitReminderTime,
                         displayedComponents: .hourAndMinute
                     )
                     .disabled(!presenter.notificationsAuthorized)
                 }
             } header: {
-                Text("Habit Reminders")
+                Text(L10n.Settings.habitRemindersHeader)
             } footer: {
-                Text("Get a daily reminder to complete your habits.")
+                Text(L10n.Settings.habitRemindersFooter)
             }
 
             Section {
                 VStack(alignment: .leading, spacing: 8) {
-                    Label("Topic Completion", systemImage: "trophy.fill")
+                    Label(L10n.Settings.topicCompletion, systemImage: "trophy.fill")
                         .foregroundColor(.yellow)
-                    Text("You'll receive a notification when you complete all problems for a topic.")
+                    Text(L10n.Settings.topicCompletionBody)
                         .font(.caption)
                         .foregroundColor(.secondary)
                 }
                 .padding(.vertical, 4)
 
                 VStack(alignment: .leading, spacing: 8) {
-                    Label("All Habits Done", systemImage: "checkmark.circle.fill")
+                    Label(L10n.Settings.allHabitsDone, systemImage: "checkmark.circle.fill")
                         .foregroundColor(.green)
-                    Text("You'll receive a notification when you complete all daily habits.")
+                    Text(L10n.Settings.allHabitsDoneBody)
                         .font(.caption)
                         .foregroundColor(.secondary)
                 }
                 .padding(.vertical, 4)
             } header: {
-                Text("Celebration Notifications")
+                Text(L10n.Settings.celebrationHeader)
             } footer: {
-                Text("These are sent automatically when you achieve milestones.")
+                Text(L10n.Settings.celebrationFooter)
             }
 
             Section {
                 VStack(alignment: .leading, spacing: 8) {
                     HStack {
-                        Text("LeetCode Username")
+                        Text(L10n.Settings.leetcodeUsername)
                             .font(.subheadline)
                         Spacer()
                         validationStatusView
                     }
 
                     HStack(spacing: 8) {
-                        TextField("username", text: $presenter.leetCodeUsername)
+                        TextField(L10n.Settings.usernamePlaceholder, text: $presenter.leetCodeUsername)
                             .textFieldStyle(.roundedBorder)
                             .overlay(
                                 RoundedRectangle(cornerRadius: 6)
                                     .stroke(validationBorderColor, lineWidth: 1)
                             )
-                            .onChange(of: presenter.leetCodeUsername) { _ in
+                            .onChange(of: presenter.leetCodeUsername) { _, _ in
                                 presenter.resetValidationState()
                             }
 
@@ -112,7 +112,7 @@ struct SettingsView: View {
                                 ProgressView()
                                     .progressViewStyle(.circular)
                             } else {
-                                Text("Validate & Sync")
+                                Text(L10n.Settings.validateSync)
                             }
                         }
                         .buttonStyle(.borderedProminent)
@@ -120,22 +120,22 @@ struct SettingsView: View {
                     }
                 }
             } header: {
-                Text("LeetCode")
+                Text(L10n.Settings.leetcodeHeader)
             } footer: {
-                Text("Your LeetCode profile must be public for syncing.")
+                Text(L10n.Settings.leetcodeFooter)
             }
 
             Section {
                 VStack(alignment: .leading, spacing: 4) {
-                    Text("FocusApp")
+                    Text(L10n.Settings.appName)
                         .font(.headline)
-                    Text("Version 1.0")
+                    Text(L10n.Settings.versionLabel)
                         .font(.caption)
                         .foregroundColor(.secondary)
                 }
                 .padding(.vertical, 4)
             } header: {
-                Text("About")
+                Text(L10n.Settings.aboutHeader)
             }
         }
         .formStyle(.grouped)

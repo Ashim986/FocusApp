@@ -14,12 +14,12 @@ extension ToolbarWidgetView {
                         .foregroundColor(.gray)
                         .frame(width: 12)
 
-                    Text("Tomorrow")
+                    Text(L10n.Widget.tomorrowTitle)
                         .font(.system(size: 11, weight: .semibold))
                         .foregroundColor(.white.opacity(0.7))
 
                     if !presenter.carryoverProblems.isEmpty {
-                        Text("(\(presenter.carryoverProblems.count) carryover)")
+                        Text(L10n.Widget.tomorrowCarryoverCount(presenter.carryoverProblems.count))
                             .font(.system(size: 9))
                             .foregroundColor(.orange.opacity(0.8))
                     }
@@ -27,7 +27,7 @@ extension ToolbarWidgetView {
                     Spacer()
 
                     if presenter.hasTomorrow {
-                        Text("Day \(presenter.tomorrowDayNumber)")
+                        Text(L10n.Widget.tomorrowDayFormat( presenter.tomorrowDayNumber))
                             .font(.system(size: 10))
                             .foregroundColor(.gray)
                     }
@@ -44,7 +44,7 @@ extension ToolbarWidgetView {
                                 Image(systemName: "arrow.uturn.forward")
                                     .font(.system(size: 9))
                                     .foregroundColor(.orange)
-                                Text("Carryover from Today")
+                                Text(L10n.Widget.tomorrowCarryoverTitle)
                                     .font(.system(size: 10, weight: .medium))
                                     .foregroundColor(.orange)
                                 Spacer()
@@ -72,7 +72,7 @@ extension ToolbarWidgetView {
                                     .font(.system(size: 10, weight: .medium))
                                     .foregroundColor(.blue)
                                 Spacer()
-                                Text("\(presenter.tomorrowsProblems.count) problems")
+                                Text(L10n.Widget.tomorrowProblemCount(presenter.tomorrowsProblems.count))
                                     .font(.system(size: 9))
                                     .foregroundColor(.gray)
                             }

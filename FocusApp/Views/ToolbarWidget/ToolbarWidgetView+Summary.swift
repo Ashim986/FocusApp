@@ -27,16 +27,16 @@ extension ToolbarWidgetView {
 
             VStack(alignment: .leading, spacing: 2) {
                 HStack(spacing: 4) {
-                    Text("Day \(presenter.currentDayNumber)")
+                    Text(L10n.Widget.summaryDayFormat( presenter.currentDayNumber))
                         .font(.system(size: 13, weight: .semibold))
                         .foregroundColor(.white)
 
-                    Text("of 13")
+                    Text(L10n.Widget.summaryOfTotalFormat( dsaPlan.count))
                         .font(.system(size: 10))
                         .foregroundColor(.gray)
                 }
 
-                Text("Today's Topic")
+                Text(L10n.Widget.summaryTopicTitle)
                     .font(.system(size: 9, weight: .medium))
                     .foregroundColor(.white.opacity(0.5))
 
@@ -49,7 +49,7 @@ extension ToolbarWidgetView {
             Spacer()
 
             VStack(alignment: .trailing, spacing: 2) {
-                Text("Habits")
+                Text(L10n.Widget.summaryHabitsTitle)
                     .font(.system(size: 9))
                     .foregroundColor(.gray)
                 Text("\(presenter.habitsCompletedToday)/\(AppConstants.totalHabits)")

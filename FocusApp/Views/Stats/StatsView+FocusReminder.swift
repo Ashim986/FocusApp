@@ -8,14 +8,14 @@ extension StatsView {
                     .font(.system(size: 16))
                     .foregroundColor(Color.appRed)
 
-                Text("Stay Focused")
+                Text(L10n.Stats.focusReminderTitle)
                     .font(.system(size: 16, weight: .semibold))
                     .foregroundColor(Color.appGray800)
 
                 Spacer()
             }
 
-            Text("Use Focus Mode to block these distracting sites during study:")
+            Text(L10n.Stats.focusReminderBody)
                 .font(.system(size: 13))
                 .foregroundColor(Color.appGray600)
 

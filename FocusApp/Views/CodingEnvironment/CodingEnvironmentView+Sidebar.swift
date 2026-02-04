@@ -51,13 +51,13 @@ extension CodingEnvironmentView {
 
     private var sidebarHeader: some View {
         HStack {
-            Text("Problems")
+            Text(L10n.Coding.sidebarTitle)
                 .font(.system(size: 13, weight: .semibold))
                 .foregroundColor(.white)
 
             Spacer()
 
-            Text("\(pendingCount) left")
+            Text(L10n.Coding.sidebarPendingLeft( pendingCount))
                 .font(.system(size: 11))
                 .foregroundColor(Color.appGray400)
         }
@@ -76,7 +76,9 @@ extension CodingEnvironmentView {
                             .foregroundColor(.white)
                             .lineLimit(2)
 
-                        Text("Day \(selectedDayLabel) · \(presenter.selectedDayTopic)")
+                        Text(L10n.Coding.sidebarDayTopic(
+                                               selectedDayLabel,
+                                               presenter.selectedDayTopic))
                             .font(.system(size: 12))
                             .foregroundColor(Color.appGray400)
                     }
@@ -89,10 +91,10 @@ extension CodingEnvironmentView {
                 HStack(spacing: 8) {
                     difficultyBadge(problem.difficulty)
                     infoBadge(title: presenter.selectedDayTopic, icon: "tag")
-                    infoBadge(title: "Day \(selectedDayLabel)", icon: "calendar")
+                    infoBadge(title: L10n.Coding.sidebarDayBadge( selectedDayLabel), icon: "calendar")
                 }
             } else {
-                Text("Select a problem to view details")
+                Text(L10n.Coding.sidebarSelectPrompt)
                     .font(.system(size: 12))
                     .foregroundColor(Color.appGray500)
             }
@@ -110,24 +112,8 @@ extension CodingEnvironmentView {
 
     private var detailTabBar: some View {
         HStack(spacing: 16) {
-            ForEach(ProblemDetailTab.allCases, id: \.rawValue) { tab in
-                Button(action: { detailTab = tab }) {
-                    HStack(spacing: 6) {
-                        Image(systemName: tab.icon)
-                            .font(.system(size: 10, weight: .semibold))
-                        Text(tab.rawValue)
-                            .font(.system(size: 11, weight: detailTab == tab ? .semibold : .regular))
-                    }
-                    .foregroundColor(detailTab == tab ? .white : Color.appGray500)
-                    .padding(.vertical, 8)
-                    .overlay(
-                        Rectangle()
-                            .fill(detailTab == tab ? Color.appPurple : Color.clear)
-                            .frame(height: 2),
-                        alignment: .bottom
-                    )
-                }
-                .buttonStyle(.plain)
+            ForEach(ProblemDetailTab.allCases, id: \.self) { tab in
+                detailTabButton(tab)
             }
             Spacer()
         }
@@ -140,6 +126,26 @@ extension CodingEnvironmentView {
                 .frame(height: 1),
             alignment: .bottom
         )
+    }
+
+    private func detailTabButton(_ tab: ProblemDetailTab) -> some View {
+        Button(action: { detailTab = tab }) {
+            HStack(spacing: 6) {
+                Image(systemName: tab.icon)
+                    .font(.system(size: 10, weight: .semibold))
+                Text(tab.title)
+                    .font(.system(size: 11, weight: detailTab == tab ? .semibold : .regular))
+            }
+            .foregroundColor(detailTab == tab ? .white : Color.appGray500)
+            .padding(.vertical, 8)
+            .overlay(
+                Rectangle()
+                    .fill(detailTab == tab ? Color.appPurple : Color.clear)
+                    .frame(height: 2),
+                alignment: .bottom
+            )
+        }
+        .buttonStyle(.plain)
     }
 
     private func difficultyBadge(_ difficulty: Difficulty) -> some View {
@@ -174,7 +180,9 @@ extension CodingEnvironmentView {
         HStack(spacing: 4) {
             Image(systemName: isSolved ? "checkmark.circle.fill" : "circle")
                 .font(.system(size: 10, weight: .semibold))
-            Text(isSolved ? "Solved" : "Unsolved")
+            Text(isSolved
+                 ? L10n.Coding.statusSolved
+                 : L10n.Coding.statusUnsolved)
                 .font(.system(size: 10, weight: .semibold))
         }
         .foregroundColor(isSolved ? Color.appGreen : Color.appGray400)
@@ -198,6 +206,8 @@ extension CodingEnvironmentView {
             descriptionContent
         case .editorial:
             editorialContent
+        case .solution:
+            SolutionTabView(solution: presenter.currentSolution)
         case .submissions:
             pastSubmissionsContent
         }
@@ -206,7 +216,9 @@ extension CodingEnvironmentView {
     private func sectionView(_ section: CodingProblemSection) -> some View {
         VStack(alignment: .leading, spacing: 8) {
             HStack {
-                Text(section.isToday ? "Today · Day \(section.dayId)" : "Backlog · Day \(section.dayId)")
+                Text(section.isToday
+                     ? L10n.Coding.sectionToday( section.dayId)
+                     : L10n.Coding.sectionBacklog( section.dayId))
                     .font(.system(size: 11, weight: .semibold))
                     .foregroundColor(Color.appGray300)
 

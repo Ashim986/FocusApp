@@ -1,15 +1,23 @@
 import SwiftUI
 
-enum Tab: String, CaseIterable {
-    case plan = "Plan"
-    case today = "Today"
-    case stats = "Stats"
+enum Tab: CaseIterable {
+    case plan
+    case today
+    case stats
 
     var icon: String {
         switch self {
         case .plan: return "list.bullet.clipboard"
         case .today: return "sun.max.fill"
         case .stats: return "chart.bar.fill"
+        }
+    }
+
+    var title: String {
+        switch self {
+        case .plan: return L10n.Tab.plan
+        case .today: return L10n.Tab.today
+        case .stats: return L10n.Tab.stats
         }
     }
 }
@@ -60,11 +68,11 @@ struct ContentView: View {
         VStack(spacing: 16) {
             HStack {
                 VStack(alignment: .leading, spacing: 4) {
-                    Text("FocusApp")
+                    Text(L10n.Content.appTitle)
                         .font(.system(size: 24, weight: .bold))
                         .foregroundColor(Color.appGray800)
 
-                    Text("13-Day Interview Prep Plan")
+                    Text(L10n.Content.subtitle)
                         .font(.system(size: 13))
                         .foregroundColor(Color.appGray500)
                 }
@@ -73,11 +81,11 @@ struct ContentView: View {
 
                 HStack(spacing: 12) {
                     VStack(alignment: .trailing, spacing: 2) {
-                        Text("\(presenter.solvedProblems)/\(presenter.totalProblems)")
+                        Text(L10n.Content.progressCount( presenter.solvedProblems, presenter.totalProblems))
                             .font(.system(size: 14, weight: .semibold))
                             .foregroundColor(Color.appGray700)
 
-                        Text("problems solved")
+                        Text(L10n.Content.problemsSolved)
                             .font(.system(size: 11))
                             .foregroundColor(Color.appGray500)
                     }
@@ -123,7 +131,7 @@ struct ContentView: View {
                 Image(systemName: tab.icon)
                     .font(.system(size: 12))
 
-                Text(tab.rawValue)
+                Text(tab.title)
                     .font(.system(size: 13, weight: presenter.selectedTab == tab ? .semibold : .medium))
             }
             .foregroundColor(presenter.selectedTab == tab ? Color.appPurple : Color.appGray500)

@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+  <key>coding.output.tests_passed</key>
+  <dict>
+    <key>NSStringLocalizedFormatKey</key>
+    <string>%1$d of %2$#@total@ passed</string>
+    <key>total</key>
+    <dict>
+      <key>NSStringFormatSpecTypeKey</key>
+      <string>NSStringPluralRuleType</string>
+      <key>NSStringFormatValueTypeKey</key>
+      <string>d</string>
+      <key>one</key>
+      <string>%d test case</string>
+      <key>other</key>
+      <string>%d test cases</string>
+    </dict>
+  </dict>
+  <key>output.line_count</key>
+  <dict>
+    <key>NSStringLocalizedFormatKey</key>
+    <string>%#@lines@</string>
+    <key>lines</key>
+    <dict>
+      <key>NSStringFormatSpecTypeKey</key>
+      <string>NSStringPluralRuleType</string>
+      <key>NSStringFormatValueTypeKey</key>
+      <string>d</string>
+      <key>one</key>
+      <string>%d line</string>
+      <key>other</key>
+      <string>%d lines</string>
+    </dict>
+  </dict>
+  <key>widget.tomorrow_problem_count</key>
+  <dict>
+    <key>NSStringLocalizedFormatKey</key>
+    <string>%#@problems@</string>
+    <key>problems</key>
+    <dict>
+      <key>NSStringFormatSpecTypeKey</key>
+      <string>NSStringPluralRuleType</string>
+      <key>NSStringFormatValueTypeKey</key>
+      <string>d</string>
+      <key>one</key>
+      <string>%d problem</string>
+      <key>other</key>
+      <string>%d problems</string>
+    </dict>
+  </dict>
+  <key>widget.tomorrow_carryover_count</key>
+  <dict>
+    <key>NSStringLocalizedFormatKey</key>
+    <string>(%#@carryovers@)</string>
+    <key>carryovers</key>
+    <dict>
+      <key>NSStringFormatSpecTypeKey</key>
+      <string>NSStringPluralRuleType</string>
+      <key>NSStringFormatValueTypeKey</key>
+      <string>d</string>
+      <key>one</key>
+      <string>%d carryover</string>
+      <key>other</key>
+      <string>%d carryovers</string>
+    </dict>
+  </dict>
+</dict>
+</plist>

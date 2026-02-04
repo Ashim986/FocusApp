@@ -33,13 +33,13 @@ struct PlanView: View {
                     .font(.system(size: 20))
                     .foregroundColor(Color.appGreen)
 
-                Text("Already Completed")
+                Text(L10n.Plan.precompletedTitle)
                     .font(.system(size: 16, weight: .semibold))
                     .foregroundColor(Color.appGray800)
 
                 Spacer()
 
-                Text("\(preCompletedTopics.count) topics")
+                Text(L10n.Plan.precompletedCountFormat( preCompletedTopics.count))
                     .font(.system(size: 13))
                     .foregroundColor(Color.appGray500)
             }
@@ -78,11 +78,13 @@ struct PlanView: View {
     private var syncCard: some View {
         HStack(spacing: 16) {
             VStack(alignment: .leading, spacing: 4) {
-                Text("LeetCode Sync")
+                Text(L10n.Plan.syncTitle)
                     .font(.system(size: 16, weight: .semibold))
                     .foregroundColor(Color.appGray800)
 
-                Text(presenter.lastSyncResult.isEmpty ? "Pull the latest solved problems." : presenter.lastSyncResult)
+                Text(presenter.lastSyncResult.isEmpty
+                     ? L10n.Plan.syncDefaultStatus
+                     : presenter.lastSyncResult)
                     .font(.system(size: 12))
                     .foregroundColor(Color.appGray500)
             }
@@ -96,7 +98,7 @@ struct PlanView: View {
                 Button(action: { presenter.syncNow() }) {
                     HStack(spacing: 6) {
                         Image(systemName: "arrow.triangle.2.circlepath")
-                        Text("Sync Now")
+                        Text(L10n.Plan.syncNow)
                     }
                     .font(.system(size: 12, weight: .semibold))
                     .foregroundColor(.white)
@@ -125,11 +127,11 @@ struct PlanView: View {
                 .foregroundColor(Color.appPurple)
 
             VStack(alignment: .leading, spacing: 2) {
-                Text("Buffer Days: Feb 16-17")
+                Text(L10n.Plan.bufferTitle)
                     .font(.system(size: 14, weight: .medium))
                     .foregroundColor(Color.appGray700)
 
-                Text("Use these for catch-up or extra practice before your interview")
+                Text(L10n.Plan.bufferBody)
                     .font(.system(size: 12))
                     .foregroundColor(Color.appGray500)
             }
@@ -192,10 +194,12 @@ struct FlowLayout: Layout {
 #if DEBUG
 struct PlanView_Previews: PreviewProvider {
     static var previews: some View {
-        let container = try! ModelContainer(
+        guard let container = try? ModelContainer(
             for: AppDataRecord.self,
             configurations: ModelConfiguration(isStoredInMemoryOnly: true)
-        )
+        ) else {
+            return Text("Preview unavailable")
+        }
         let appStore = AppStateStore(storage: SwiftDataAppStorage(container: container))
         let client = PreviewLeetCodeClient()
         let leetCodeSync = LeetCodeSyncInteractor(appStore: appStore, client: client)

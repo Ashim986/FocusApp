@@ -31,6 +31,7 @@
 		A10001017 /* CodeExecutionService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002018 /* CodeExecutionService.swift */; };
 		A10001018 /* CodingEnvironmentPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002019 /* CodingEnvironmentPresenter.swift */; };
 		A10001019 /* CodeEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000201A /* CodeEditorView.swift */; };
+		A10001091 /* CodeEditorLineNumberRulerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002091 /* CodeEditorLineNumberRulerView.swift */; };
 		A1000101A /* OutputPanelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000201B /* OutputPanelView.swift */; };
 		A1000101B /* ProblemSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000201C /* ProblemSelectionView.swift */; };
 		A1000101C /* CodingEnvironmentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000201D /* CodingEnvironmentView.swift */; };
@@ -172,6 +173,7 @@
 		A10002018 /* CodeExecutionService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodeExecutionService.swift; sourceTree = "<group>"; };
 		A10002019 /* CodingEnvironmentPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodingEnvironmentPresenter.swift; sourceTree = "<group>"; };
 		A1000201A /* CodeEditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodeEditorView.swift; sourceTree = "<group>"; };
+		A10002091 /* CodeEditorLineNumberRulerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodeEditorLineNumberRulerView.swift; sourceTree = "<group>"; };
 		A1000201B /* OutputPanelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OutputPanelView.swift; sourceTree = "<group>"; };
 		A1000201C /* ProblemSelectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProblemSelectionView.swift; sourceTree = "<group>"; };
 		A1000201D /* CodingEnvironmentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodingEnvironmentView.swift; sourceTree = "<group>"; };
@@ -379,6 +381,7 @@
 				A1000500E /* ToolbarWidget */,
 				A1000500F /* CodingEnvironment */,
 				A1000201A /* CodeEditorView.swift */,
+				A10002091 /* CodeEditorLineNumberRulerView.swift */,
 				A10002037 /* CodeEditorView+Coordinator.swift */,
 				A10002038 /* CodeEditorView+CoordinatorInput.swift */,
 				A10002039 /* CodeEditorView+CoordinatorHighlighting.swift */,
@@ -694,6 +697,7 @@
 				A10001017 /* CodeExecutionService.swift in Sources */,
 				A10001018 /* CodingEnvironmentPresenter.swift in Sources */,
 				A10001019 /* CodeEditorView.swift in Sources */,
+				A10001091 /* CodeEditorLineNumberRulerView.swift in Sources */,
 				A1000101A /* OutputPanelView.swift in Sources */,
 				A1000101B /* ProblemSelectionView.swift in Sources */,
 				A1000101C /* CodingEnvironmentView.swift in Sources */,

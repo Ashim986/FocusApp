@@ -10,6 +10,9 @@ extension CodingEnvironmentPresenter {
     func handleCodeChange(oldValue: String) {
         guard !isApplyingExternalCode else { return }
         guard code != oldValue else { return }
+        if !errorDiagnostics.isEmpty {
+            errorDiagnostics = []
+        }
         scheduleCodeSave()
     }
 
@@ -40,6 +43,14 @@ extension CodingEnvironmentPresenter {
     func solutionKey(for problem: Problem, language: ProgrammingLanguage) -> String {
         let base = LeetCodeSlugExtractor.extractSlug(from: problem.url) ?? problem.url
         return "\(base)|\(language.langSlug)"
+    }
+
+    func submissionKey(for problem: Problem) -> String {
+        LeetCodeSlugExtractor.extractSlug(from: problem.url) ?? problem.url
+    }
+
+    func submissions(for problem: Problem) -> [CodeSubmission] {
+        interactor.submissions(for: submissionKey(for: problem))
     }
 
     func loadStoredCode(for problem: Problem, language: ProgrammingLanguage) -> String? {

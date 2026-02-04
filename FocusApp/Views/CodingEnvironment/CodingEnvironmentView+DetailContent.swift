@@ -31,7 +31,7 @@ extension CodingEnvironmentView {
         } else if let content = presenter.problemContent {
             VStack(alignment: .leading, spacing: 12) {
                 Text(attributedDescription(from: content.content))
-                    .font(.system(size: 18))
+                    .font(.system(size: 14))
                     .foregroundColor(Color.appGray50)
                     .lineSpacing(4)
                     .textSelection(.enabled)
@@ -81,30 +81,20 @@ extension CodingEnvironmentView {
     @ViewBuilder
     var pastSubmissionsContent: some View {
         if let problem = presenter.selectedProblem {
-            VStack(alignment: .leading, spacing: 12) {
-                ForEach(ProgrammingLanguage.allCases, id: \.rawValue) { lang in
-                    VStack(alignment: .leading, spacing: 6) {
-                        Text("\(lang.rawValue) Submission")
-                            .font(.system(size: 11, weight: .semibold))
-                            .foregroundColor(.white)
-
-                        if let code = presenter.loadStoredCode(for: problem, language: lang),
-                           !code.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
-                            codeBlock(code)
-                        } else {
-                            Text("No saved code yet.")
-                                .font(.system(size: 11))
-                                .foregroundColor(Color.appGray500)
-                        }
+            let submissions = presenter.submissions(for: problem)
+            if submissions.isEmpty {
+                Text("No submissions yet.")
+                    .font(.system(size: 11))
+                    .foregroundColor(Color.appGray500)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+            } else {
+                VStack(alignment: .leading, spacing: 10) {
+                    ForEach(submissions) { submission in
+                        submissionRow(submission)
                     }
-                    .padding(10)
-                    .background(
-                        RoundedRectangle(cornerRadius: 8)
-                            .fill(Color.appGray800.opacity(0.6))
-                    )
                 }
+                .frame(maxWidth: .infinity, alignment: .leading)
             }
-            .frame(maxWidth: .infinity, alignment: .leading)
         } else {
             Text("Select a problem to view past submissions.")
                 .font(.system(size: 11))
@@ -169,14 +159,60 @@ extension CodingEnvironmentView {
         .clipShape(RoundedRectangle(cornerRadius: 6))
     }
 
+    private func submissionRow(_ submission: CodeSubmission) -> some View {
+        DisclosureGroup {
+            codeBlock(submission.code)
+        } label: {
+            HStack {
+                Text(languageLabel(for: submission.languageSlug))
+                    .font(.system(size: 11, weight: .semibold))
+                    .foregroundColor(.white)
+
+                if let tag = submission.algorithmTag, !tag.isEmpty {
+                    Text(tag)
+                        .font(.system(size: 10, weight: .semibold))
+                        .foregroundColor(Color.appPurple)
+                        .padding(.horizontal, 8)
+                        .padding(.vertical, 3)
+                        .background(Color.appPurple.opacity(0.15))
+                        .clipShape(Capsule())
+                }
+
+                Spacer()
+
+                Text(formatSubmissionDate(submission.createdAt))
+                    .font(.system(size: 10))
+                    .foregroundColor(Color.appGray400)
+            }
+        }
+        .padding(10)
+        .background(
+            RoundedRectangle(cornerRadius: 8)
+                .fill(Color.appGray800.opacity(0.6))
+        )
+    }
+
+    private func languageLabel(for slug: String) -> String {
+        if let match = ProgrammingLanguage.allCases.first(where: { $0.langSlug == slug }) {
+            return match.rawValue
+        }
+        return slug
+    }
+
+    private func formatSubmissionDate(_ date: Date) -> String {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "MMM d, h:mm a"
+        return formatter.string(from: date)
+    }
+
     private func attributedDescription(from html: String) -> AttributedString {
         let styledHTML = """
         <style>
-        body { font-family: -apple-system; font-size: 18px; line-height: 1.6; color: #E6EDF8; }
-        p, li { font-size: 18px; }
-        h1, h2, h3, h4 { color: #FFFFFF; font-size: 20px; margin: 0 0 8px 0; }
+        body { font-family: -apple-system; font-size: 14px; line-height: 1.6; color: #E6EDF8; }
+        p, li { font-size: 14px; }
+        h1, h2, h3, h4 { color: #FFFFFF; font-size: 18px; margin: 0 0 8px 0; }
         strong { color: #F9FAFB; }
-        pre, code { font-family: Menlo, monospace; font-size: 16px; line-height: 1.5; }
+        pre, code { font-family: Menlo, monospace; font-size: 14px; line-height: 1.5; }
         </style>
         \(html)
         """
@@ -188,8 +224,32 @@ extension CodingEnvironmentView {
             .characterEncoding: String.Encoding.utf8.rawValue
         ]
         if let attributed = try? NSAttributedString(data: data, options: options, documentAttributes: nil) {
-            return AttributedString(attributed)
+            let highlighted = highlightLabels(in: attributed)
+            return AttributedString(highlighted)
         }
         return AttributedString(html)
+    }
+
+    private func highlightLabels(in attributed: NSAttributedString) -> NSAttributedString {
+        let mutable = NSMutableAttributedString(attributedString: attributed)
+        let text = attributed.string as NSString
+
+        func apply(_ label: String, color: NSColor) {
+            var searchRange = NSRange(location: 0, length: text.length)
+            while true {
+                let found = text.range(of: label, options: [.caseInsensitive], range: searchRange)
+                if found.location == NSNotFound { break }
+                mutable.addAttributes([.foregroundColor: color], range: found)
+                let nextLocation = found.location + found.length
+                if nextLocation >= text.length { break }
+                searchRange = NSRange(location: nextLocation, length: text.length - nextLocation)
+            }
+        }
+
+        apply("Input:", color: NSColor(Color.appAmber))
+        apply("Output:", color: NSColor(Color.appGreen))
+        apply("Explanation:", color: NSColor(Color.appPurple))
+
+        return mutable
     }
 }

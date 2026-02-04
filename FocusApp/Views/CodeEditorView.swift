@@ -1,9 +1,22 @@
 import AppKit
 import SwiftUI
 
+struct CodeEditorDiagnostic: Hashable {
+    let line: Int
+    let column: Int?
+    let message: String
+}
+
 struct CodeEditorView: NSViewRepresentable {
     @Binding var code: String
     let language: ProgrammingLanguage
+    let diagnostics: [CodeEditorDiagnostic]
+
+    init(code: Binding<String>, language: ProgrammingLanguage, diagnostics: [CodeEditorDiagnostic] = []) {
+        self._code = code
+        self.language = language
+        self.diagnostics = diagnostics
+    }
 
     func makeNSView(context: Context) -> NSScrollView {
         let scrollView = NSTextView.scrollableTextView()
@@ -40,6 +53,13 @@ struct CodeEditorView: NSViewRepresentable {
         textView.delegate = context.coordinator
         context.coordinator.textView = textView
         context.coordinator.language = language
+        context.coordinator.diagnostics = diagnostics
+
+        let ruler = CodeEditorLineNumberRulerView(textView: textView)
+        ruler.diagnostics = diagnostics
+        scrollView.hasVerticalRuler = true
+        scrollView.rulersVisible = true
+        scrollView.verticalRulerView = ruler
 
         textView.string = code
         context.coordinator.applySyntaxHighlighting()
@@ -55,6 +75,14 @@ struct CodeEditorView: NSViewRepresentable {
             textView.string = code
             context.coordinator.applySyntaxHighlighting()
             return
+        }
+
+        context.coordinator.diagnostics = diagnostics
+        context.coordinator.applyErrorHighlights()
+        if let ruler = nsView.verticalRulerView as? CodeEditorLineNumberRulerView {
+            ruler.diagnostics = diagnostics
+        } else {
+            nsView.verticalRulerView?.needsDisplay = true
         }
 
         if textView.string != code && !context.coordinator.isEditing {

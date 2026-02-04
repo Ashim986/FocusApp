@@ -41,6 +41,18 @@ final class CodingEnvironmentInteractor {
         appStore.saveSolution(code: code, for: key)
     }
 
+    func submissions(for key: String) -> [CodeSubmission] {
+        appStore.submissions(for: key)
+    }
+
+    func addSubmission(code: String, language: ProgrammingLanguage, for key: String) {
+        appStore.addSubmission(code: code, language: language, algorithmTag: nil, for: key)
+    }
+
+    func addSubmission(code: String, language: ProgrammingLanguage, algorithmTag: String?, for key: String) {
+        appStore.addSubmission(code: code, language: language, algorithmTag: algorithmTag, for: key)
+    }
+
     func fetchProblemContent(slug: String) async throws -> QuestionContent? {
         try await leetCodeClient.fetchProblemContent(slug: slug)
     }

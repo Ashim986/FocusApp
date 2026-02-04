@@ -40,6 +40,9 @@ struct CodingEnvironmentView: View {
             }
         }
         .background(Color.appGray900)
+        .sheet(isPresented: $presenter.showSubmissionTagPrompt) {
+            submissionTagSheet
+        }
         .onAppear {
             presenter.ensureProblemSelection()
             startFocusIfNeeded()
@@ -58,5 +61,43 @@ struct CodingEnvironmentView: View {
             focusPresenter.duration = 30
             focusPresenter.startTimer()
         }
+    }
+
+    private var submissionTagSheet: some View {
+        VStack(alignment: .leading, spacing: 16) {
+            Text("Tag this solution")
+                .font(.system(size: 16, weight: .semibold))
+                .foregroundColor(.white)
+
+            Text("Add a short label to distinguish this algorithm (optional).")
+                .font(.system(size: 12))
+                .foregroundColor(Color.appGray400)
+
+            TextField("e.g. Iterative, Recursive, Two pointers", text: $presenter.submissionTagInput)
+                .textFieldStyle(.roundedBorder)
+
+            HStack {
+                Button("Skip") {
+                    presenter.confirmSubmissionTag(saveWithTag: false)
+                }
+                .buttonStyle(.plain)
+                .foregroundColor(Color.appGray400)
+
+                Spacer()
+
+                Button("Save") {
+                    presenter.confirmSubmissionTag(saveWithTag: true)
+                }
+                .buttonStyle(.plain)
+                .foregroundColor(.white)
+                .padding(.horizontal, 14)
+                .padding(.vertical, 6)
+                .background(Color.appPurple)
+                .clipShape(RoundedRectangle(cornerRadius: 6))
+            }
+        }
+        .padding(20)
+        .frame(width: 360)
+        .background(Color.appGray900)
     }
 }

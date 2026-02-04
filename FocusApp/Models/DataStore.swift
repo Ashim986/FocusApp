@@ -79,6 +79,32 @@ final class AppStateStore: ObservableObject {
         save()
     }
 
+    func submissions(for key: String) -> [CodeSubmission] {
+        let entries = data.submissions[key] ?? []
+        return entries.sorted { $0.createdAt > $1.createdAt }
+    }
+
+    func addSubmission(code: String, language: ProgrammingLanguage, algorithmTag: String?, for key: String) {
+        let trimmed = code.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !trimmed.isEmpty else { return }
+        let normalized = normalizeCode(trimmed, language: language)
+        var entries = data.submissions[key] ?? []
+        entries.removeAll { entry in
+            entry.languageSlug == language.langSlug &&
+            normalizeCode(entry.code, language: language) == normalized
+        }
+        let submission = CodeSubmission(
+            id: UUID(),
+            languageSlug: language.langSlug,
+            code: code,
+            createdAt: Date(),
+            algorithmTag: algorithmTag?.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty == true ? nil : algorithmTag
+        )
+        entries.insert(submission, at: 0)
+        data.submissions[key] = entries
+        save()
+    }
+
     func advanceToNextDay() {
         let currentDay = currentDayNumber()
         guard currentDay < 13 else { return }
@@ -118,5 +144,26 @@ final class AppStateStore: ObservableObject {
         }
 
         return (syncedCount, totalMatched)
+    }
+
+    private func normalizeCode(_ code: String, language: ProgrammingLanguage) -> String {
+        var cleaned = code
+        let commentPatterns: [String]
+        switch language {
+        case .swift:
+            commentPatterns = [
+                "//.*",
+                "/\\*([\\s\\S]*?)\\*/"
+            ]
+        case .python:
+            commentPatterns = [
+                "#.*"
+            ]
+        }
+        for pattern in commentPatterns {
+            cleaned = cleaned.replacingOccurrences(of: pattern, with: "", options: .regularExpression)
+        }
+        cleaned = cleaned.replacingOccurrences(of: "\\s+", with: "", options: .regularExpression)
+        return cleaned
     }
 }

@@ -26,7 +26,7 @@ extension CodingEnvironmentView {
                 alignment: .bottom
             )
 
-            CodeEditorView(code: $presenter.code, language: presenter.language)
+            CodeEditorView(code: $presenter.code, language: presenter.language, diagnostics: presenter.errorDiagnostics)
         }
     }
 

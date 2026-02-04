@@ -6,6 +6,7 @@ struct AppData: Codable {
     var dayOffset: Int  // Days advanced ahead of schedule (when completing all problems early)
     var leetCodeUsername: String  // LeetCode username for syncing
     var savedSolutions: [String: String]  // "problemKey|langSlug": code
+    var submissions: [String: [CodeSubmission]]  // "problemSlug": submissions
 
     init() {
         self.progress = [:]
@@ -13,6 +14,7 @@ struct AppData: Codable {
         self.dayOffset = 0
         self.leetCodeUsername = "ashim986"  // Default username
         self.savedSolutions = [:]
+        self.submissions = [:]
     }
 
     // Custom decoder to handle missing fields in old data files
@@ -23,6 +25,7 @@ struct AppData: Codable {
         dayOffset = try container.decodeIfPresent(Int.self, forKey: .dayOffset) ?? 0
         leetCodeUsername = try container.decodeIfPresent(String.self, forKey: .leetCodeUsername) ?? "ashim986"
         savedSolutions = try container.decodeIfPresent([String: String].self, forKey: .savedSolutions) ?? [:]
+        submissions = try container.decodeIfPresent([String: [CodeSubmission]].self, forKey: .submissions) ?? [:]
     }
 
     // Get completion status for a specific problem
@@ -76,4 +79,12 @@ struct AppData: Codable {
         formatter.dateFormat = "yyyy-MM-dd"
         return formatter.string(from: Date())
     }
+}
+
+struct CodeSubmission: Codable, Identifiable, Equatable {
+    let id: UUID
+    let languageSlug: String
+    let code: String
+    let createdAt: Date
+    let algorithmTag: String?
 }

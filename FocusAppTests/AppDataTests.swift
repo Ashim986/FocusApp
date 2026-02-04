@@ -59,6 +59,7 @@ final class AppDataTests: XCTestCase {
         XCTAssertEqual(data.dayOffset, 0)
         XCTAssertEqual(data.leetCodeUsername, "ashim986")
         XCTAssertTrue(data.savedSolutions.isEmpty)
+        XCTAssertTrue(data.submissions.isEmpty)
     }
 
     func testEncodingPreservesAllFields() throws {
@@ -68,6 +69,9 @@ final class AppDataTests: XCTestCase {
         data.dayOffset = 3
         data.leetCodeUsername = "testuser"
         data.savedSolutions["key|swift"] = "code"
+        data.submissions["two-sum"] = [
+            CodeSubmission(id: UUID(), languageSlug: "swift", code: "class Solution {}", createdAt: Date(), algorithmTag: "Two pointers")
+        ]
 
         let encoded = try JSONEncoder().encode(data)
         let decoded = try JSONDecoder().decode(AppData.self, from: encoded)
@@ -77,5 +81,6 @@ final class AppDataTests: XCTestCase {
         XCTAssertEqual(decoded.dayOffset, data.dayOffset)
         XCTAssertEqual(decoded.leetCodeUsername, data.leetCodeUsername)
         XCTAssertEqual(decoded.savedSolutions, data.savedSolutions)
+        XCTAssertEqual(decoded.submissions, data.submissions)
     }
 }

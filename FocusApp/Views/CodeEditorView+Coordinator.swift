@@ -9,6 +9,7 @@ extension CodeEditorView {
         var language: ProgrammingLanguage = .swift
         var isInsertingMatchingBracket = false
         let indentUnit = "    "
+        var diagnostics: [CodeEditorDiagnostic] = []
 
         let colors = SyntaxColors()
 
@@ -70,6 +71,7 @@ extension CodeEditorView {
             guard let textView = notification.object as? NSTextView else { return }
             parent.code = textView.string
             applySyntaxHighlighting()
+            textView.enclosingScrollView?.verticalRulerView?.needsDisplay = true
         }
     }
 }

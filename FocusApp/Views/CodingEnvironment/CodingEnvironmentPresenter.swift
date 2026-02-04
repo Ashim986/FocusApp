@@ -24,12 +24,16 @@ final class CodingEnvironmentPresenter: ObservableObject {
     @Published var compilationOutput: String = ""
     @Published var errorOutput: String = ""
     @Published var problemContent: QuestionContent?
+    @Published var showSubmissionTagPrompt: Bool = false
+    @Published var submissionTagInput: String = ""
+    @Published var errorDiagnostics: [CodeEditorDiagnostic] = []
 
     let interactor: CodingEnvironmentInteractor
     var problemContentCache: [String: QuestionContent] = [:]
     var codeSaveTask: Task<Void, Never>?
     var isApplyingExternalCode: Bool = false
     var runTask: Task<Void, Never>?
+    var pendingSubmission: (problem: Problem, code: String, language: ProgrammingLanguage)?
 
     var currentDayNumber: Int {
         interactor.currentDayNumber()

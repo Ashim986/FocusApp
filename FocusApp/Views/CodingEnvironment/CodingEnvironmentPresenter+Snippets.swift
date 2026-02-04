@@ -534,9 +534,7 @@ struct LeetCodeExecutionWrapper {
         }
 
         func parseArgs(from input: String, expectedCount: Int) -> [Any] {
-            let trimmed = input
-                .replacingOccurrences(of: "Input:", with: "")
-                .trimmingCharacters(in: .whitespacesAndNewlines)
+            let trimmed = input.trimmingCharacters(in: .whitespacesAndNewlines)
             guard !trimmed.isEmpty else { return [] }
             let keyValues = parseKeyValueInput(trimmed, paramNames: paramNames)
             if !keyValues.isEmpty {
@@ -652,7 +650,15 @@ struct LeetCodeExecutionWrapper {
         print(jsonString(from: output))
         """
 
-        return "import Foundation\n\n\(code)\n\n\(wrapper)"
+        return """
+        import Foundation
+
+        #sourceLocation(file: "Solution.swift", line: 1)
+        \(code)
+        #sourceLocation()
+
+        \(wrapper)
+        """
     }
 
     private static func wrapPython(code: String, meta: LeetCodeMetaData) -> String {
@@ -773,8 +779,6 @@ struct LeetCodeExecutionWrapper {
             raw = raw.strip()
             if not raw:
                 return []
-            if raw.lower().startswith("input:"):
-                raw = raw[6:].strip()
             kv = _parse_kv_input(raw, PARAM_NAMES)
             if kv:
                 return [kv[name] for name in PARAM_NAMES if name in kv]

@@ -4,6 +4,7 @@ struct AppData: Codable {
     var progress: [String: Bool]  // "day-problemIndex": true/false
     var habits: [String: [String: Bool]]  // "2026-02-02": {"dsa": true, "exercise": false, "other": true}
     var dayOffset: Int  // Days advanced ahead of schedule (when completing all problems early)
+    var planStartDate: Date  // The date when the plan should start
     var leetCodeUsername: String  // LeetCode username for syncing
     var savedSolutions: [String: String]  // "problemKey|langSlug": code
     var submissions: [String: [CodeSubmission]]  // "problemSlug": submissions
@@ -12,6 +13,7 @@ struct AppData: Codable {
         self.progress = [:]
         self.habits = [:]
         self.dayOffset = 0
+        self.planStartDate = Self.startOfToday()
         self.leetCodeUsername = "ashim986"  // Default username
         self.savedSolutions = [:]
         self.submissions = [:]
@@ -23,6 +25,7 @@ struct AppData: Codable {
         progress = try container.decode([String: Bool].self, forKey: .progress)
         habits = try container.decode([String: [String: Bool]].self, forKey: .habits)
         dayOffset = try container.decodeIfPresent(Int.self, forKey: .dayOffset) ?? 0
+        planStartDate = try container.decodeIfPresent(Date.self, forKey: .planStartDate) ?? Self.startOfToday()
         leetCodeUsername = try container.decodeIfPresent(String.self, forKey: .leetCodeUsername) ?? "ashim986"
         savedSolutions = try container.decodeIfPresent([String: String].self, forKey: .savedSolutions) ?? [:]
         submissions = try container.decodeIfPresent([String: [CodeSubmission]].self, forKey: .submissions) ?? [:]
@@ -75,6 +78,10 @@ struct AppData: Codable {
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyy-MM-dd"
         return formatter.string(from: Date())
+    }
+
+    static func startOfToday(calendar: Calendar = Calendar.current) -> Date {
+        calendar.startOfDay(for: Date())
     }
 }
 

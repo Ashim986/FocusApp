@@ -30,6 +30,7 @@ final class CodingEnvironmentPresenter: ObservableObject {
     @Published var currentSolution: ProblemSolution?
 
     let interactor: CodingEnvironmentInteractor
+    let logger: DebugLogRecording?
     var problemContentCache: [String: QuestionContent] = [:]
     var codeSaveTask: Task<Void, Never>?
     var isApplyingExternalCode: Bool = false
@@ -100,8 +101,12 @@ final class CodingEnvironmentPresenter: ObservableObject {
         }
     }
 
-    init(interactor: CodingEnvironmentInteractor) {
+    init(
+        interactor: CodingEnvironmentInteractor,
+        logger: DebugLogRecording? = nil
+    ) {
         self.interactor = interactor
+        self.logger = logger
         self.code = ""
     }
 

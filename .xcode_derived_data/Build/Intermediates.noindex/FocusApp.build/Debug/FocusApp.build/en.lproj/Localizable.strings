@@ -354,6 +354,14 @@
 	<string>Enable notifications to get study and habit reminders.</string>
 	<key>settings.notifications_disabled_title</key>
 	<string>Notifications Disabled</string>
+	<key>settings.plan_start_date_title</key>
+	<string>Start Date</string>
+	<key>settings.plan_start_footer</key>
+	<string>Adjust the date to align the 13-day plan with your schedule.</string>
+	<key>settings.plan_start_header</key>
+	<string>Plan Start</string>
+	<key>settings.plan_start_reset</key>
+	<string>Reset to Today</string>
 	<key>settings.reminder_time</key>
 	<string>Reminder Time</string>
 	<key>settings.study_reminders_footer</key>

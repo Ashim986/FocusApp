@@ -5,13 +5,15 @@ import SwiftUI
 struct SettingsView_Previews: PreviewProvider {
     static var previews: some View {
         Group {
-            if let container = try? ModelContainer(
-                for: AppDataRecord.self,
-                configurations: ModelConfiguration(isStoredInMemoryOnly: true)
-            ) {
+            if let container = try? ModelContainer(for: AppDataRecord.self) {
                 let appStore = AppStateStore(storage: SwiftDataAppStorage(container: container))
                 let client = PreviewLeetCodeClient()
-                let leetCodeSync = LeetCodeSyncInteractor(appStore: appStore, client: client)
+                let debugLogStore = DebugLogStore()
+                let leetCodeSync = LeetCodeSyncInteractor(
+                    appStore: appStore,
+                    client: client,
+                    logger: debugLogStore
+                )
                 let presenter = SettingsPresenter(
                     interactor: SettingsInteractor(
                         notificationManager: NotificationManager(
@@ -22,7 +24,10 @@ struct SettingsView_Previews: PreviewProvider {
                         leetCodeSync: leetCodeSync
                     )
                 )
-                SettingsView(presenter: presenter)
+                SettingsView(
+                    presenter: presenter,
+                    debugLogStore: debugLogStore
+                )
             } else {
                 Text("Preview unavailable")
             }

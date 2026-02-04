@@ -91,11 +91,21 @@ final class PlanPresenter: ObservableObject {
             }
             return PlanDayViewModel(
                 id: day.id,
-                date: day.date,
+                date: formattedDate(for: day.id, startDate: data.planStartDate),
                 topic: day.topic,
                 problems: problems,
                 completedCount: completedCount
             )
         }
+    }
+
+    private static func formattedDate(for dayId: Int, startDate: Date) -> String {
+        let calendar = Calendar.current
+        let normalizedStart = calendar.startOfDay(for: startDate)
+        let date = calendar.date(byAdding: .day, value: max(dayId - 1, 0), to: normalizedStart) ?? normalizedStart
+        let formatter = DateFormatter()
+        formatter.locale = Locale.current
+        formatter.setLocalizedDateFormatFromTemplate("MMM d")
+        return formatter.string(from: date)
     }
 }

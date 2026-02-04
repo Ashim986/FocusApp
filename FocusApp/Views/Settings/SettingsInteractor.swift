@@ -49,4 +49,12 @@ final class SettingsInteractor {
         _ = await leetCodeSync.syncSolvedProblems(username: trimmed, limit: LeetCodeConstants.recentSubmissionsLimit)
         return true
     }
+
+    func currentPlanStartDate() -> Date {
+        appStore.planStartDate()
+    }
+
+    func updatePlanStartDate(_ date: Date) {
+        appStore.updatePlanStartDate(date)
+    }
 }

@@ -35,7 +35,10 @@ struct FocusApp: App {
         }
 
         Settings {
-            SettingsView(presenter: container.settingsPresenter)
+            SettingsView(
+                presenter: container.settingsPresenter,
+                debugLogStore: container.debugLogStore
+            )
         }
     }
 }

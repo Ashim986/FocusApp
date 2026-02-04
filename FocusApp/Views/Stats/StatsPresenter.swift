@@ -55,7 +55,7 @@ final class StatsPresenter: ObservableObject {
         let completedTopics = data.completedTopicsCount()
         let totalTopics = dsaPlan.count
         let habitsToday = data.todayHabitsCount()
-        let daysLeft = Self.daysLeftUntilEnd()
+        let daysLeft = Self.daysLeftUntilEnd(from: data.planStartDate)
         let breakdown = dsaPlan.map { day in
             let completed = data.completedProblemsCount(day: day.id, totalProblems: day.problems.count)
             return TopicBreakdownViewModel(
@@ -77,13 +77,14 @@ final class StatsPresenter: ObservableObject {
         )
     }
 
-    private static func daysLeftUntilEnd() -> Int {
+    private static func daysLeftUntilEnd(from startDate: Date) -> Int {
         let calendar = Calendar.current
-        let formatter = DateFormatter()
-        formatter.dateFormat = "yyyy-MM-dd"
-        guard let endDate = formatter.date(from: "2026-02-17") else { return 0 }
-        let today = Date()
-        let components = calendar.dateComponents([.day], from: today, to: endDate)
-        return max(0, components.day ?? 0)
+        let normalizedStart = calendar.startOfDay(for: startDate)
+        let today = calendar.startOfDay(for: Date())
+        let daysElapsed = calendar.dateComponents([.day], from: normalizedStart, to: today).day ?? 0
+        let clampedElapsed = max(0, daysElapsed)
+        let totalDays = dsaPlan.count
+        let remaining = totalDays - (clampedElapsed + 1)
+        return max(0, remaining)
     }
 }

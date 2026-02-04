@@ -52,7 +52,10 @@
           "testCases": []
         }
       ],
-      "relatedProblems": ["reverse-linked-list-ii", "palindrome-linked-list"],
+      "relatedProblems": [
+        "reverse-linked-list-ii",
+        "palindrome-linked-list"
+      ],
       "lastUpdated": "2026-02-04T00:00:00Z"
     },
     {
@@ -100,7 +103,10 @@
           "testCases": []
         }
       ],
-      "relatedProblems": ["merge-k-sorted-lists", "sort-list"],
+      "relatedProblems": [
+        "merge-k-sorted-lists",
+        "sort-list"
+      ],
       "lastUpdated": "2026-02-04T00:00:00Z"
     },
     {
@@ -154,7 +160,10 @@
           "testCases": []
         }
       ],
-      "relatedProblems": ["linked-list-cycle-ii", "happy-number"],
+      "relatedProblems": [
+        "linked-list-cycle-ii",
+        "happy-number"
+      ],
       "lastUpdated": "2026-02-04T00:00:00Z"
     },
     {
@@ -208,7 +217,10 @@
           "testCases": []
         }
       ],
-      "relatedProblems": ["reverse-linked-list", "palindrome-linked-list"],
+      "relatedProblems": [
+        "reverse-linked-list",
+        "palindrome-linked-list"
+      ],
       "lastUpdated": "2026-02-04T00:00:00Z"
     },
     {
@@ -268,7 +280,10 @@
           "testCases": []
         }
       ],
-      "relatedProblems": ["delete-the-middle-node-of-a-linked-list", "swapping-nodes-in-a-linked-list"],
+      "relatedProblems": [
+        "delete-the-middle-node-of-a-linked-list",
+        "swapping-nodes-in-a-linked-list"
+      ],
       "lastUpdated": "2026-02-04T00:00:00Z"
     },
     {
@@ -322,7 +337,10 @@
           "testCases": []
         }
       ],
-      "relatedProblems": ["merge-two-sorted-lists", "ugly-number-ii"],
+      "relatedProblems": [
+        "merge-two-sorted-lists",
+        "ugly-number-ii"
+      ],
       "lastUpdated": "2026-02-04T00:00:00Z"
     },
     {
@@ -370,7 +388,10 @@
           "testCases": []
         }
       ],
-      "relatedProblems": ["clone-graph", "clone-binary-tree-with-random-pointer"],
+      "relatedProblems": [
+        "clone-graph",
+        "clone-binary-tree-with-random-pointer"
+      ],
       "lastUpdated": "2026-02-04T00:00:00Z"
     },
     {
@@ -408,7 +429,10 @@
           ]
         }
       ],
-      "relatedProblems": ["add-two-numbers-ii", "multiply-strings"],
+      "relatedProblems": [
+        "add-two-numbers-ii",
+        "multiply-strings"
+      ],
       "lastUpdated": "2026-02-04T00:00:00Z"
     },
     {
@@ -462,7 +486,10 @@
           "testCases": []
         }
       ],
-      "relatedProblems": ["linked-list-cycle-ii", "missing-number"],
+      "relatedProblems": [
+        "linked-list-cycle-ii",
+        "missing-number"
+      ],
       "lastUpdated": "2026-02-04T00:00:00Z"
     },
     {
@@ -494,7 +521,734 @@
           ]
         }
       ],
-      "relatedProblems": ["lfu-cache", "design-in-memory-file-system"],
+      "relatedProblems": [
+        "lfu-cache",
+        "design-in-memory-file-system"
+      ],
+      "lastUpdated": "2026-02-04T00:00:00Z"
+    },
+    {
+      "id": "113bd68d-ec6b-40ce-b8d5-e276ed1a6f55",
+      "problemSlug": "invert-binary-tree",
+      "summary": "Invert a binary tree by swapping every node's left and right child. The simplest way is a DFS that swaps then recurses.",
+      "approaches": [
+        {
+          "id": "0d68f729-008b-4c44-a14b-5db7877db5b5",
+          "name": "Recursive DFS",
+          "order": 1,
+          "intuition": "If you swap a node's left and right children, and then do the same for its children, the entire tree becomes its mirror image.",
+          "approach": "1. If root is nil, return nil.\n2. Swap root.left and root.right.\n3. Recursively invert the left subtree.\n4. Recursively invert the right subtree.\n5. Return root.",
+          "explanation": "Each node is visited once. Swapping children at each node creates the mirror image. The recursion unwinds after reaching leaves.",
+          "code": "func invertTree(_ root: TreeNode?) -> TreeNode? {\n    guard let root = root else { return nil }\n    let temp = root.left\n    root.left = root.right\n    root.right = temp\n    _ = invertTree(root.left)\n    _ = invertTree(root.right)\n    return root\n}",
+          "complexity": {
+            "time": "O(n)",
+            "space": "O(h)",
+            "timeExplanation": "Every node is visited exactly once",
+            "spaceExplanation": "Recursion stack depth equals tree height h"
+          },
+          "testCases": [
+            {
+              "id": "0f14dc66-108b-4b35-b924-5eff2f49797c",
+              "input": "root = [4,2,7,1,3,6,9]",
+              "expectedOutput": "[4,7,2,9,6,3,1]",
+              "explanation": "Each level is mirrored: (2,7) swap, then (1,3) and (6,9) swap."
+            },
+            {
+              "id": "67919ef7-73d2-44f6-bf81-ae8463aacbbb",
+              "input": "root = [2,1,3]",
+              "expectedOutput": "[2,3,1]",
+              "explanation": "Swap the two children of the root."
+            }
+          ]
+        },
+        {
+          "id": "f3ccd674-5539-4a80-a251-444b32df5cb2",
+          "name": "Iterative BFS",
+          "order": 2,
+          "intuition": "A level-order traversal lets us swap children for every node without recursion.",
+          "approach": "1. If root is nil, return nil.\n2. Push root to a queue.\n3. While queue not empty: pop a node, swap its children, push non-nil children.\n4. Return root.",
+          "explanation": "The queue visits nodes level by level. Swapping children during the visit yields the same mirror as the recursive solution.",
+          "code": "func invertTree(_ root: TreeNode?) -> TreeNode? {\n    guard let root = root else { return nil }\n    var queue: [TreeNode] = [root]\n    var index = 0\n    while index < queue.count {\n        let node = queue[index]\n        index += 1\n        let temp = node.left\n        node.left = node.right\n        node.right = temp\n        if let left = node.left { queue.append(left) }\n        if let right = node.right { queue.append(right) }\n    }\n    return root\n}",
+          "complexity": {
+            "time": "O(n)",
+            "space": "O(n)",
+            "timeExplanation": "Each node is processed once",
+            "spaceExplanation": "Queue can hold up to a full level of nodes"
+          },
+          "testCases": []
+        }
+      ],
+      "relatedProblems": [
+        "maximum-depth-of-binary-tree",
+        "same-tree"
+      ],
+      "lastUpdated": "2026-02-04T00:00:00Z"
+    },
+    {
+      "id": "d60edf13-e40b-4234-9de4-80e19e97ae9d",
+      "problemSlug": "maximum-depth-of-binary-tree",
+      "summary": "Maximum depth is the length of the longest root-to-leaf path. Compute it via DFS recursion or BFS level counting.",
+      "approaches": [
+        {
+          "id": "050c5512-9554-480c-99ec-4fb2c0986636",
+          "name": "Recursive DFS",
+          "order": 1,
+          "intuition": "The depth of a node is 1 plus the maximum depth of its children.",
+          "approach": "1. If root is nil, return 0.\n2. Recursively compute leftDepth and rightDepth.\n3. Return 1 + max(leftDepth, rightDepth).",
+          "explanation": "The recursion bottoms out at empty subtrees (depth 0). Each call returns the depth of that subtree.",
+          "code": "func maxDepth(_ root: TreeNode?) -> Int {\n    guard let root = root else { return 0 }\n    return 1 + max(maxDepth(root.left), maxDepth(root.right))\n}",
+          "complexity": {
+            "time": "O(n)",
+            "space": "O(h)",
+            "timeExplanation": "Each node is visited once",
+            "spaceExplanation": "Recursion stack depth equals tree height h"
+          },
+          "testCases": [
+            {
+              "id": "d8ea7529-25a9-46df-a1d5-ad66d281758e",
+              "input": "root = [3,9,20,null,null,15,7]",
+              "expectedOutput": "3",
+              "explanation": "Longest path is 3 nodes: 3 → 20 → 15 (or 7)."
+            },
+            {
+              "id": "b57d4658-6b70-4a70-a4c2-e6cc4d34e311",
+              "input": "root = [1,null,2]",
+              "expectedOutput": "2",
+              "explanation": "Path length is 2 nodes: 1 → 2."
+            }
+          ]
+        },
+        {
+          "id": "4a6e14d7-b155-4d01-86fd-0e782f6bb436",
+          "name": "BFS Level Order",
+          "order": 2,
+          "intuition": "Each BFS layer corresponds to one depth level.",
+          "approach": "1. If root is nil, return 0.\n2. Push root to a queue.\n3. For each level, process all nodes in the queue, enqueue their children.\n4. Count levels.",
+          "explanation": "BFS processes nodes level by level, so the number of levels processed equals the maximum depth.",
+          "code": "func maxDepth(_ root: TreeNode?) -> Int {\n    guard let root = root else { return 0 }\n    var queue: [TreeNode] = [root]\n    var depth = 0\n    var index = 0\n    while index < queue.count {\n        let levelCount = queue.count - index\n        for _ in 0..<levelCount {\n            let node = queue[index]\n            index += 1\n            if let left = node.left { queue.append(left) }\n            if let right = node.right { queue.append(right) }\n        }\n        depth += 1\n    }\n    return depth\n}",
+          "complexity": {
+            "time": "O(n)",
+            "space": "O(n)",
+            "timeExplanation": "Each node enqueued and dequeued once",
+            "spaceExplanation": "Queue stores up to one full level"
+          },
+          "testCases": []
+        }
+      ],
+      "relatedProblems": [
+        "invert-binary-tree",
+        "minimum-depth-of-binary-tree"
+      ],
+      "lastUpdated": "2026-02-04T00:00:00Z"
+    },
+    {
+      "id": "e0d239e6-12c6-431f-881c-d362768f9b11",
+      "problemSlug": "same-tree",
+      "summary": "Two trees are the same if their structures match and all corresponding node values are equal. Compare them node by node.",
+      "approaches": [
+        {
+          "id": "67ad78db-e53d-41e1-bfb6-fc5d00c078c7",
+          "name": "Recursive DFS",
+          "order": 1,
+          "intuition": "Both trees are equal if the current values match and both left subtrees and right subtrees are equal.",
+          "approach": "1. If both nodes are nil, return true.\n2. If only one is nil, return false.\n3. If values differ, return false.\n4. Recursively compare left and right children.",
+          "explanation": "The recursion enforces structural equality and value equality at every position.",
+          "code": "func isSameTree(_ p: TreeNode?, _ q: TreeNode?) -> Bool {\n    if p == nil && q == nil { return true }\n    guard let p = p, let q = q else { return false }\n    if p.val != q.val { return false }\n    return isSameTree(p.left, q.left) && isSameTree(p.right, q.right)\n}",
+          "complexity": {
+            "time": "O(n)",
+            "space": "O(h)",
+            "timeExplanation": "Each node is visited at most once",
+            "spaceExplanation": "Recursion stack depth equals tree height"
+          },
+          "testCases": [
+            {
+              "id": "122dfbc8-09a4-45e0-a5f3-409788a05360",
+              "input": "p = [1,2,3], q = [1,2,3]",
+              "expectedOutput": "true",
+              "explanation": "Same structure and values."
+            },
+            {
+              "id": "d32e933d-3be7-4018-887f-a9570607ba37",
+              "input": "p = [1,2], q = [1,null,2]",
+              "expectedOutput": "false",
+              "explanation": "Structures differ (left vs right child)."
+            },
+            {
+              "id": "2dbb90c1-24c7-4b23-bd27-a3af1e8dd072",
+              "input": "p = [1,2,1], q = [1,1,2]",
+              "expectedOutput": "false",
+              "explanation": "Values differ at corresponding nodes."
+            }
+          ]
+        },
+        {
+          "id": "9901b309-c7f0-4a01-9f62-cb632648a7d1",
+          "name": "Iterative Stack",
+          "order": 2,
+          "intuition": "Use a stack to compare nodes in lockstep without recursion.",
+          "approach": "1. Push (p, q) onto a stack.\n2. While stack not empty: pop, compare nodes similarly to recursion.\n3. Push child pairs.\n4. If any mismatch, return false; otherwise true.",
+          "explanation": "This mirrors DFS recursion but uses an explicit stack to avoid call stack usage.",
+          "code": "func isSameTree(_ p: TreeNode?, _ q: TreeNode?) -> Bool {\n    var stack: [(TreeNode?, TreeNode?)] = [(p, q)]\n    while let (left, right) = stack.popLast() {\n        if left == nil && right == nil { continue }\n        guard let l = left, let r = right else { return false }\n        if l.val != r.val { return false }\n        stack.append((l.left, r.left))\n        stack.append((l.right, r.right))\n    }\n    return true\n}",
+          "complexity": {
+            "time": "O(n)",
+            "space": "O(h)",
+            "timeExplanation": "Each node pair processed once",
+            "spaceExplanation": "Stack holds nodes along a path"
+          },
+          "testCases": []
+        }
+      ],
+      "relatedProblems": [
+        "subtree-of-another-tree",
+        "same-tree"
+      ],
+      "lastUpdated": "2026-02-04T00:00:00Z"
+    },
+    {
+      "id": "39b75eb0-0ce6-46cd-a8d0-18e7f882b767",
+      "problemSlug": "subtree-of-another-tree",
+      "summary": "Check every node in the main tree as a potential root and compare subtrees for equality.",
+      "approaches": [
+        {
+          "id": "3b0434af-e80d-47ad-985c-7923e0154acd",
+          "name": "DFS + Same Tree",
+          "order": 1,
+          "intuition": "If two trees are identical, then subRoot matches the subtree at that node. Try this at every node in root.",
+          "approach": "1. If root is nil, return false (subRoot is non-nil).\n2. If isSameTree(root, subRoot) return true.\n3. Otherwise, recurse on root.left and root.right.",
+          "explanation": "We reuse a same-tree check. The first match we find proves subRoot is a subtree.",
+          "code": "func isSubtree(_ root: TreeNode?, _ subRoot: TreeNode?) -> Bool {\n    guard let root = root else { return false }\n    if isSameTree(root, subRoot) { return true }\n    return isSubtree(root.left, subRoot) || isSubtree(root.right, subRoot)\n}\n\nprivate func isSameTree(_ p: TreeNode?, _ q: TreeNode?) -> Bool {\n    if p == nil && q == nil { return true }\n    guard let p = p, let q = q else { return false }\n    if p.val != q.val { return false }\n    return isSameTree(p.left, q.left) && isSameTree(p.right, q.right)\n}",
+          "complexity": {
+            "time": "O(n * m)",
+            "space": "O(h)",
+            "timeExplanation": "In the worst case, compare subRoot at every node",
+            "spaceExplanation": "Recursion stack height of root tree"
+          },
+          "testCases": [
+            {
+              "id": "20a2a01b-f130-4d94-b320-438eca23093b",
+              "input": "root = [3,4,5,1,2], subRoot = [4,1,2]",
+              "expectedOutput": "true",
+              "explanation": "The subtree rooted at node 4 matches subRoot."
+            },
+            {
+              "id": "e9aba558-e4fa-4d94-8296-6cbd49810888",
+              "input": "root = [3,4,5,1,2,null,null,null,null,0], subRoot = [4,1,2]",
+              "expectedOutput": "false",
+              "explanation": "The extra 0 breaks structural equality."
+            }
+          ]
+        },
+        {
+          "id": "2c55fff8-4140-49a2-b3c2-053861a7769e",
+          "name": "Serialization",
+          "order": 2,
+          "intuition": "Serialize both trees with null markers; subRoot is a subtree if its serialization is a substring of root's serialization.",
+          "approach": "1. Serialize root with preorder + null markers.\n2. Serialize subRoot similarly.\n3. Check if subRoot serialization is contained in root serialization.",
+          "explanation": "Null markers prevent false matches where different structures have the same value sequence.",
+          "code": "func isSubtree(_ root: TreeNode?, _ subRoot: TreeNode?) -> Bool {\n    let rootStr = serialize(root)\n    let subStr = serialize(subRoot)\n    return rootStr.contains(subStr)\n}\n\nprivate func serialize(_ node: TreeNode?) -> String {\n    guard let node = node else { return \"#\" }\n    return \"(\\(node.val)),\\(serialize(node.left)),\\(serialize(node.right))\"\n}",
+          "complexity": {
+            "time": "O(n + m)",
+            "space": "O(n + m)",
+            "timeExplanation": "Serialize both trees once",
+            "spaceExplanation": "Serialized strings store all nodes and nulls"
+          },
+          "testCases": []
+        }
+      ],
+      "relatedProblems": [
+        "same-tree",
+        "find-duplicate-subtrees"
+      ],
+      "lastUpdated": "2026-02-04T00:00:00Z"
+    },
+    {
+      "id": "32841a93-64e4-40c2-8f8a-bee6d4c5f666",
+      "problemSlug": "lowest-common-ancestor-of-a-binary-search-tree",
+      "summary": "Use the BST ordering: if both targets are less than the current node, go left; if greater, go right; otherwise current is the LCA.",
+      "approaches": [
+        {
+          "id": "153d1e3d-75a6-4b8e-86bc-81ea9dbc1dba",
+          "name": "Iterative BST Walk",
+          "order": 1,
+          "intuition": "In a BST, all left values are smaller and all right values are larger. The first split point is the LCA.",
+          "approach": "1. Start at root.\n2. If both p and q are smaller, move left.\n3. If both larger, move right.\n4. Otherwise, current node is the LCA.",
+          "explanation": "The LCA is the node where the paths to p and q diverge (or where one equals the current node).",
+          "code": "func lowestCommonAncestor(_ root: TreeNode?, _ p: TreeNode?, _ q: TreeNode?) -> TreeNode? {\n    var node = root\n    guard let p = p, let q = q else { return nil }\n    while let current = node {\n        if p.val < current.val && q.val < current.val {\n            node = current.left\n        } else if p.val > current.val && q.val > current.val {\n            node = current.right\n        } else {\n            return current\n        }\n    }\n    return nil\n}",
+          "complexity": {
+            "time": "O(h)",
+            "space": "O(1)",
+            "timeExplanation": "Walks down one path of height h",
+            "spaceExplanation": "Iterative, constant extra space"
+          },
+          "testCases": [
+            {
+              "id": "38f1a9a5-13a3-4905-a7d9-bd93b2027500",
+              "input": "root = [6,2,8,0,4,7,9,null,null,3,5], p = 2, q = 8",
+              "expectedOutput": "6",
+              "explanation": "p and q split at 6, so 6 is the LCA."
+            },
+            {
+              "id": "812c7249-8f40-4310-978c-f8f10b0a8f6f",
+              "input": "root = [6,2,8,0,4,7,9,null,null,3,5], p = 2, q = 4",
+              "expectedOutput": "2",
+              "explanation": "p is an ancestor of q, so LCA is 2."
+            }
+          ]
+        },
+        {
+          "id": "25e41dd6-c040-42ec-83e3-965baa348c08",
+          "name": "Recursive BST",
+          "order": 2,
+          "intuition": "The BST property lets us eliminate half the tree at each step using recursion.",
+          "approach": "1. If both values are less than root, recurse left.\n2. If both greater, recurse right.\n3. Otherwise, root is the LCA.",
+          "explanation": "Same logic as the iterative approach, but expressed recursively.",
+          "code": "func lowestCommonAncestor(_ root: TreeNode?, _ p: TreeNode?, _ q: TreeNode?) -> TreeNode? {\n    guard let root = root, let p = p, let q = q else { return nil }\n    if p.val < root.val && q.val < root.val {\n        return lowestCommonAncestor(root.left, p, q)\n    }\n    if p.val > root.val && q.val > root.val {\n        return lowestCommonAncestor(root.right, p, q)\n    }\n    return root\n}",
+          "complexity": {
+            "time": "O(h)",
+            "space": "O(h)",
+            "timeExplanation": "Traverses one root-to-leaf path",
+            "spaceExplanation": "Recursion stack depth equals tree height"
+          },
+          "testCases": [
+            {
+              "id": "56d579d8-24d9-4502-8d47-d9c3bf6a0301",
+              "input": "root = [2,1], p = 2, q = 1",
+              "expectedOutput": "2",
+              "explanation": "Root is the ancestor of both nodes."
+            }
+          ]
+        }
+      ],
+      "relatedProblems": [
+        "lowest-common-ancestor-of-a-binary-tree",
+        "validate-binary-search-tree"
+      ],
+      "lastUpdated": "2026-02-04T00:00:00Z"
+    },
+    {
+      "id": "bf8d33be-a2fd-469f-9a92-9dee92c4d0fe",
+      "problemSlug": "binary-tree-level-order-traversal",
+      "summary": "Traverse the tree level by level using a queue, collecting values for each level as you go.",
+      "approaches": [
+        {
+          "id": "25312294-5031-458e-90c6-4c8cab60dacb",
+          "name": "BFS by Level",
+          "order": 1,
+          "intuition": "Breadth-first search naturally visits nodes in level order. If we process nodes in fixed-size batches per level, we can build the result list of lists.",
+          "approach": "1. If root is nil, return [].\n2. Initialize a queue with root.\n3. While queue not empty: record current queue size, pop that many nodes, collect values, and enqueue children.\n4. Append each level list to the result.",
+          "explanation": "The queue holds nodes in the next level to process. Capturing the queue size before processing ensures each iteration only handles one level at a time.",
+          "code": "func levelOrder(_ root: TreeNode?) -> [[Int]] {\n    guard let root = root else { return [] }\n    var result: [[Int]] = []\n    var queue: [TreeNode] = [root]\n    var index = 0\n\n    while index < queue.count {\n        let levelCount = queue.count - index\n        var level: [Int] = []\n        for _ in 0..<levelCount {\n            let node = queue[index]\n            index += 1\n            level.append(node.val)\n            if let left = node.left { queue.append(left) }\n            if let right = node.right { queue.append(right) }\n        }\n        result.append(level)\n    }\n\n    return result\n}",
+          "complexity": {
+            "time": "O(n)",
+            "space": "O(n)",
+            "timeExplanation": "Each node is enqueued and dequeued exactly once",
+            "spaceExplanation": "Queue can hold up to one full level of nodes"
+          },
+          "testCases": [
+            {
+              "id": "9f2e77b8-7e7f-4d6b-a5d4-7655d72ac176",
+              "input": "root = [3,9,20,null,null,15,7]",
+              "expectedOutput": "[[3],[9,20],[15,7]]",
+              "explanation": "Level 0: [3], level 1: [9,20], level 2: [15,7]."
+            },
+            {
+              "id": "4151eab9-a595-48a9-8e25-859a8941a9c3",
+              "input": "root = [1]",
+              "expectedOutput": "[[1]]",
+              "explanation": "Single node forms one level."
+            },
+            {
+              "id": "21a31bc5-894f-494f-85d1-1d21f0008299",
+              "input": "root = []",
+              "expectedOutput": "[]",
+              "explanation": "Empty tree produces empty result."
+            }
+          ]
+        }
+      ],
+      "relatedProblems": [
+        "binary-tree-level-order-traversal-ii",
+        "binary-tree-zigzag-level-order-traversal"
+      ],
+      "lastUpdated": "2026-02-04T00:00:00Z"
+    },
+    {
+      "id": "0353cc5c-702e-4d1a-a450-1ccb23ae4ff3",
+      "problemSlug": "validate-binary-search-tree",
+      "summary": "A BST is valid if every node value lies within allowed bounds and both subtrees are valid. Use DFS with min/max bounds.",
+      "approaches": [
+        {
+          "id": "89f02580-9ff3-4722-84a5-5c0266733222",
+          "name": "DFS with Bounds",
+          "order": 1,
+          "intuition": "Each node must be greater than all values in its left ancestors and less than all values in its right ancestors.",
+          "approach": "1. Recurse with optional min and max bounds.\n2. If node.val <= min or node.val >= max, return false.\n3. Recurse left with max = node.val, right with min = node.val.",
+          "explanation": "Bounds carry the valid range down the tree, enforcing the BST rule at every node, not just locally.",
+          "code": "func isValidBST(_ root: TreeNode?) -> Bool {\n    func dfs(_ node: TreeNode?, _ minVal: Int?, _ maxVal: Int?) -> Bool {\n        guard let node = node else { return true }\n        if let minVal = minVal, node.val <= minVal { return false }\n        if let maxVal = maxVal, node.val >= maxVal { return false }\n        return dfs(node.left, minVal, node.val) && dfs(node.right, node.val, maxVal)\n    }\n    return dfs(root, nil, nil)\n}",
+          "complexity": {
+            "time": "O(n)",
+            "space": "O(h)",
+            "timeExplanation": "Each node is visited once",
+            "spaceExplanation": "Recursion stack depth equals tree height"
+          },
+          "testCases": [
+            {
+              "id": "c2954d68-4c67-4523-88eb-70976739d27b",
+              "input": "root = [2,1,3]",
+              "expectedOutput": "true",
+              "explanation": "All nodes satisfy BST ordering."
+            },
+            {
+              "id": "dd924f21-6113-4c2b-8b02-b135313db87f",
+              "input": "root = [5,1,4,null,null,3,6]",
+              "expectedOutput": "false",
+              "explanation": "Right subtree contains 3 which is less than 5."
+            }
+          ]
+        },
+        {
+          "id": "b33d33bc-0d11-40c8-8325-73ad89c9a61a",
+          "name": "Inorder Traversal",
+          "order": 2,
+          "intuition": "Inorder traversal of a BST yields a strictly increasing sequence.",
+          "approach": "1. Traverse inorder while tracking previous value.\n2. If current value <= previous, return false.\n3. Otherwise continue.",
+          "explanation": "A single pass through the inorder sequence is enough to verify strict ordering.",
+          "code": "func isValidBST(_ root: TreeNode?) -> Bool {\n    var prev: Int? = nil\n    var stack: [TreeNode] = []\n    var node = root\n\n    while node != nil || !stack.isEmpty {\n        while let current = node {\n            stack.append(current)\n            node = current.left\n        }\n        let current = stack.removeLast()\n        if let prev = prev, current.val <= prev { return false }\n        prev = current.val\n        node = current.right\n    }\n    return true\n}",
+          "complexity": {
+            "time": "O(n)",
+            "space": "O(h)",
+            "timeExplanation": "Each node is pushed/popped once",
+            "spaceExplanation": "Stack holds at most one root-to-leaf path"
+          },
+          "testCases": []
+        }
+      ],
+      "relatedProblems": [
+        "validate-binary-search-tree",
+        "lowest-common-ancestor-of-a-binary-search-tree"
+      ],
+      "lastUpdated": "2026-02-04T00:00:00Z"
+    },
+    {
+      "id": "8caca365-f1ea-4ee1-9d57-18b73d6ffa78",
+      "problemSlug": "kth-smallest-element-in-a-bst",
+      "summary": "The inorder traversal of a BST is sorted. Walk inorder and stop at the kth value.",
+      "approaches": [
+        {
+          "id": "a4188ae4-1591-4141-a97d-54be7ab95628",
+          "name": "Iterative Inorder",
+          "order": 1,
+          "intuition": "Inorder traversal returns values in increasing order, so the kth visited node is the answer.",
+          "approach": "1. Use a stack to simulate inorder traversal.\n2. Pop nodes and count visits.\n3. When count reaches k, return the node value.",
+          "explanation": "The stack walks left as far as possible, then processes nodes in ascending order.",
+          "code": "func kthSmallest(_ root: TreeNode?, _ k: Int) -> Int {\n    var stack: [TreeNode] = []\n    var node = root\n    var remaining = k\n\n    while node != nil || !stack.isEmpty {\n        while let current = node {\n            stack.append(current)\n            node = current.left\n        }\n        let current = stack.removeLast()\n        remaining -= 1\n        if remaining == 0 { return current.val }\n        node = current.right\n    }\n    return 0\n}",
+          "complexity": {
+            "time": "O(h + k)",
+            "space": "O(h)",
+            "timeExplanation": "Walk down height h, then visit k nodes",
+            "spaceExplanation": "Stack holds at most h nodes"
+          },
+          "testCases": [
+            {
+              "id": "e1c24e01-a57c-4661-a5bc-5c2f02f2a718",
+              "input": "root = [3,1,4,null,2], k = 1",
+              "expectedOutput": "1",
+              "explanation": "Inorder sequence is [1,2,3,4], kth=1."
+            },
+            {
+              "id": "5796f1a9-8de9-4dfc-8d34-dea87d368c27",
+              "input": "root = [5,3,6,2,4,null,null,1], k = 3",
+              "expectedOutput": "3",
+              "explanation": "Inorder sequence is [1,2,3,4,5,6], kth=3."
+            }
+          ]
+        }
+      ],
+      "relatedProblems": [
+        "validate-binary-search-tree",
+        "binary-search-tree-iterator"
+      ],
+      "lastUpdated": "2026-02-04T00:00:00Z"
+    },
+    {
+      "id": "0f6835b4-c6b9-4e33-9ea7-7652f64e3434",
+      "problemSlug": "construct-binary-tree-from-preorder-and-inorder-traversal",
+      "summary": "Preorder gives the root, inorder splits left and right subtrees. Rebuild recursively using index boundaries.",
+      "approaches": [
+        {
+          "id": "e371a4eb-53b2-4d10-96d8-2c3844972ffa",
+          "name": "Recursive with Index Map",
+          "order": 1,
+          "intuition": "The first preorder value is always the root. In inorder, everything left of the root belongs to the left subtree, and everything right belongs to the right subtree.",
+          "approach": "1. Build a map from inorder value to index.\n2. Use a preorder index pointer.\n3. Recurse on inorder ranges to construct left and right subtrees.",
+          "explanation": "The map gives O(1) splits. The preorder index advances as we create nodes, preserving root-left-right ordering.",
+          "code": "func buildTree(_ preorder: [Int], _ inorder: [Int]) -> TreeNode? {\n    var indexMap: [Int: Int] = [:]\n    for (i, val) in inorder.enumerated() { indexMap[val] = i }\n    var preIndex = 0\n\n    func helper(_ left: Int, _ right: Int) -> TreeNode? {\n        if left > right { return nil }\n        let rootVal = preorder[preIndex]\n        preIndex += 1\n        let root = TreeNode(rootVal)\n        let mid = indexMap[rootVal] ?? 0\n        root.left = helper(left, mid - 1)\n        root.right = helper(mid + 1, right)\n        return root\n    }\n\n    return helper(0, inorder.count - 1)\n}",
+          "complexity": {
+            "time": "O(n)",
+            "space": "O(n)",
+            "timeExplanation": "Each node is created once",
+            "spaceExplanation": "Index map plus recursion stack"
+          },
+          "testCases": [
+            {
+              "id": "9769abcb-30d8-4e89-b038-dfa6aa7917c4",
+              "input": "preorder = [3,9,20,15,7], inorder = [9,3,15,20,7]",
+              "expectedOutput": "[3,9,20,null,null,15,7]",
+              "explanation": "Root 3 splits inorder into [9] and [15,20,7]."
+            },
+            {
+              "id": "7b95b045-a63f-444a-8fe5-3117532115f5",
+              "input": "preorder = [-1], inorder = [-1]",
+              "expectedOutput": "[-1]",
+              "explanation": "Single node tree."
+            }
+          ]
+        }
+      ],
+      "relatedProblems": [
+        "construct-binary-tree-from-inorder-and-postorder-traversal",
+        "serialize-and-deserialize-binary-tree"
+      ],
+      "lastUpdated": "2026-02-04T00:00:00Z"
+    },
+    {
+      "id": "cd5da6fc-1d62-4a2a-860f-36786c25a511",
+      "problemSlug": "binary-tree-maximum-path-sum",
+      "summary": "Compute the maximum path sum by tracking the best gain from each node and updating a global maximum for paths that pass through the node.",
+      "approaches": [
+        {
+          "id": "d9d42e75-cc17-4b5e-bfd9-711ee17cc498",
+          "name": "DFS with Max Gain",
+          "order": 1,
+          "intuition": "For each node, the best path going up can include only one child. But the best path overall might use both children plus the node.",
+          "approach": "1. DFS returns max gain from a node to its parent.\n2. At each node, compute leftGain and rightGain (ignore negatives).\n3. Update global answer with leftGain + node.val + rightGain.\n4. Return node.val + max(leftGain, rightGain).",
+          "explanation": "This separates the path-to-parent (one side only) from the best path through a node (both sides). The global maximum is updated at every node.",
+          "code": "func maxPathSum(_ root: TreeNode?) -> Int {\n    var best = Int.min\n\n    func dfs(_ node: TreeNode?) -> Int {\n        guard let node = node else { return 0 }\n        let left = max(0, dfs(node.left))\n        let right = max(0, dfs(node.right))\n        best = max(best, left + node.val + right)\n        return node.val + max(left, right)\n    }\n\n    _ = dfs(root)\n    return best\n}",
+          "complexity": {
+            "time": "O(n)",
+            "space": "O(h)",
+            "timeExplanation": "Each node is visited once",
+            "spaceExplanation": "Recursion stack depth equals tree height"
+          },
+          "testCases": [
+            {
+              "id": "01213095-ad3e-45dc-9ef2-a463c884ef88",
+              "input": "root = [1,2,3]",
+              "expectedOutput": "6",
+              "explanation": "Best path is 2 -> 1 -> 3 with sum 6."
+            },
+            {
+              "id": "bc57200e-8fb6-44ce-a318-49381be2bb4c",
+              "input": "root = [-10,9,20,null,null,15,7]",
+              "expectedOutput": "42",
+              "explanation": "Best path is 15 -> 20 -> 7 with sum 42."
+            }
+          ]
+        }
+      ],
+      "relatedProblems": [
+        "binary-tree-maximum-path-sum",
+        "binary-tree-maximum-path-sum-ii"
+      ],
+      "lastUpdated": "2026-02-04T00:00:00Z"
+    },
+    {
+      "id": "5631cebc-4b66-43d6-b7a3-e5cceade37a0",
+      "problemSlug": "implement-trie-prefix-tree",
+      "summary": "Store characters in a trie so insert/search/startsWith all run in time proportional to the word length.",
+      "approaches": [
+        {
+          "id": "d23ec3a2-765a-4364-9cac-9fe8c9c8b47f",
+          "name": "Array-Backed Trie",
+          "order": 1,
+          "intuition": "Each node keeps 26 children for a-z. Walking characters from the root visits the prefix path.",
+          "approach": "1. Insert: create missing children for each character, then mark end.\n2. Search: walk characters and ensure end marker.\n3. StartsWith: walk characters and ensure path exists.",
+          "explanation": "All operations traverse at most L nodes where L is the word length.",
+          "code": "class Trie {\n    class Node {\n        var children: [Node?] = Array(repeating: nil, count: 26)\n        var isEnd = false\n    }\n\n    private let root = Node()\n\n    func insert(_ word: String) {\n        var node = root\n        for char in word {\n            let index = Int(char.asciiValue! - Character(\"a\").asciiValue!)\n            if node.children[index] == nil {\n                node.children[index] = Node()\n            }\n            node = node.children[index]!\n        }\n        node.isEnd = true\n    }\n\n    func search(_ word: String) -> Bool {\n        guard let node = walk(word) else { return false }\n        return node.isEnd\n    }\n\n    func startsWith(_ prefix: String) -> Bool {\n        return walk(prefix) != nil\n    }\n\n    private func walk(_ word: String) -> Node? {\n        var node: Node? = root\n        for char in word {\n            let index = Int(char.asciiValue! - Character(\"a\").asciiValue!)\n            node = node?.children[index]\n            if node == nil { return nil }\n        }\n        return node\n    }\n}",
+          "complexity": {
+            "time": "O(L)",
+            "space": "O(total chars)",
+            "timeExplanation": "Each operation scans L characters",
+            "spaceExplanation": "Trie stores one node per character inserted"
+          },
+          "testCases": [
+            {
+              "id": "d5b74d5e-0be1-4a54-9b51-b831e8f9a06b",
+              "input": "[\"Trie\",\"insert\",\"search\",\"search\",\"startsWith\",\"insert\",\"search\"]\n[[],[\"apple\"],[\"apple\"],[\"app\"],[\"app\"],[\"app\"],[\"app\"]]",
+              "expectedOutput": "[null,null,true,false,true,null,true]",
+              "explanation": "search(\"app\") is false before inserting \"app\" and true afterward."
+            }
+          ]
+        }
+      ],
+      "relatedProblems": [
+        "design-add-and-search-words-data-structure",
+        "word-search-ii"
+      ],
+      "lastUpdated": "2026-02-04T00:00:00Z"
+    },
+    {
+      "id": "5c72dc35-6d92-4233-8cab-5483ab374461",
+      "problemSlug": "design-add-and-search-words-data-structure",
+      "summary": "Use a trie with DFS to support wildcard dots in search while keeping addWord efficient.",
+      "approaches": [
+        {
+          "id": "1439dfbb-c19a-451d-a4df-44f0ed92869e",
+          "name": "Trie + DFS Wildcard",
+          "order": 1,
+          "intuition": "A dot can match any child, so search must branch when encountering a dot.",
+          "approach": "1. addWord inserts into a trie.\n2. search uses DFS: if char is dot, try all children; otherwise follow the matching child.\n3. If end of word, require node.isEnd.",
+          "explanation": "The trie compresses shared prefixes, and DFS handles the wildcard branching only when needed.",
+          "code": "class WordDictionary {\n    class Node {\n        var children: [Node?] = Array(repeating: nil, count: 26)\n        var isEnd = false\n    }\n\n    private let root = Node()\n\n    func addWord(_ word: String) {\n        var node = root\n        for char in word {\n            let index = Int(char.asciiValue! - Character(\"a\").asciiValue!)\n            if node.children[index] == nil {\n                node.children[index] = Node()\n            }\n            node = node.children[index]!\n        }\n        node.isEnd = true\n    }\n\n    func search(_ word: String) -> Bool {\n        let chars = Array(word)\n        func dfs(_ node: Node?, _ i: Int) -> Bool {\n            guard let node = node else { return false }\n            if i == chars.count { return node.isEnd }\n            let c = chars[i]\n            if c == \".\" {\n                for child in node.children {\n                    if dfs(child, i + 1) { return true }\n                }\n                return false\n            }\n            let index = Int(c.asciiValue! - Character(\"a\").asciiValue!)\n            return dfs(node.children[index], i + 1)\n        }\n        return dfs(root, 0)\n    }\n}",
+          "complexity": {
+            "time": "O(L) average, O(26^L) worst",
+            "space": "O(total chars)",
+            "timeExplanation": "Wildcards can branch across children in the worst case",
+            "spaceExplanation": "Trie stores all inserted characters"
+          },
+          "testCases": [
+            {
+              "id": "528c7f9f-bd8d-46d8-8e95-c313e0b4b2e1",
+              "input": "[\"WordDictionary\",\"addWord\",\"addWord\",\"addWord\",\"search\",\"search\",\"search\",\"search\"]\n[[],[\"bad\"],[\"dad\"],[\"mad\"],[\"pad\"],[\"bad\"],[\".ad\"],[\"b..\"]]",
+              "expectedOutput": "[null,null,null,null,false,true,true,true]",
+              "explanation": "Wildcards match any letter (\".ad\" matches bad/dad/mad)."
+            }
+          ]
+        }
+      ],
+      "relatedProblems": [
+        "implement-trie-prefix-tree",
+        "word-search-ii"
+      ],
+      "lastUpdated": "2026-02-04T00:00:00Z"
+    },
+    {
+      "id": "d90f3c15-1512-4eab-8c4d-7da3267a3264",
+      "problemSlug": "word-search-ii",
+      "summary": "Build a trie of all words, then DFS the board to find any paths that match trie prefixes.",
+      "approaches": [
+        {
+          "id": "104fbf07-a53f-4c54-a1d8-f574d1b2edfd",
+          "name": "Trie + DFS",
+          "order": 1,
+          "intuition": "A trie lets us prune searches early when a prefix does not exist. DFS explores valid paths on the board.",
+          "approach": "1. Insert all words into a trie.\n2. For each board cell, DFS while tracking trie nodes.\n3. When a trie node contains a word, add it to results and mark as used.\n4. Mark cells as visited during DFS to avoid reuse.",
+          "explanation": "The trie avoids checking every word separately, and DFS explores only viable prefixes from each cell.",
+          "code": "func findWords(_ board: [[Character]], _ words: [String]) -> [String] {\n    class TrieNode {\n        var children: [TrieNode?] = Array(repeating: nil, count: 26)\n        var word: String? = nil\n    }\n\n    let root = TrieNode()\n    for word in words {\n        var node = root\n        for char in word {\n            let index = Int(char.asciiValue! - Character(\"a\").asciiValue!)\n            if node.children[index] == nil { node.children[index] = TrieNode() }\n            node = node.children[index]!\n        }\n        node.word = word\n    }\n\n    var board = board\n    let rows = board.count\n    let cols = board.first?.count ?? 0\n    var results: [String] = []\n    let dirs = [(1,0),(-1,0),(0,1),(0,-1)]\n\n    func dfs(_ r: Int, _ c: Int, _ node: TrieNode) {\n        let char = board[r][c]\n        let index = Int(char.asciiValue! - Character(\"a\").asciiValue!)\n        guard let next = node.children[index] else { return }\n\n        if let word = next.word {\n            results.append(word)\n            next.word = nil\n        }\n\n        board[r][c] = \"#\"\n        for (dr, dc) in dirs {\n            let nr = r + dr\n            let nc = c + dc\n            if nr >= 0, nr < rows, nc >= 0, nc < cols, board[nr][nc] != \"#\" {\n                dfs(nr, nc, next)\n            }\n        }\n        board[r][c] = char\n    }\n\n    for r in 0..<rows {\n        for c in 0..<cols {\n            dfs(r, c, root)\n        }\n    }\n    return results\n}",
+          "complexity": {
+            "time": "O(m * n * 4^L)",
+            "space": "O(total chars + L)",
+            "timeExplanation": "Worst-case DFS from each cell with pruning by trie",
+            "spaceExplanation": "Trie plus recursion depth up to max word length"
+          },
+          "testCases": [
+            {
+              "id": "8134f717-85dc-4975-a0e3-7659b08d15a1",
+              "input": "board = [[\"o\",\"a\",\"a\",\"n\"],[\"e\",\"t\",\"a\",\"e\"],[\"i\",\"h\",\"k\",\"r\"],[\"i\",\"f\",\"l\",\"v\"]], words = [\"oath\",\"pea\",\"eat\",\"rain\"]",
+              "expectedOutput": "[\"eat\",\"oath\"]",
+              "explanation": "Only \"eat\" and \"oath\" can be formed by adjacent cells."
+            },
+            {
+              "id": "061876ba-28aa-4184-b735-8db3209332ed",
+              "input": "board = [[\"a\",\"b\"],[\"c\",\"d\"]], words = [\"abcb\"]",
+              "expectedOutput": "[]",
+              "explanation": "Cannot reuse the same cell twice to form \"abcb\"."
+            }
+          ]
+        }
+      ],
+      "relatedProblems": [
+        "word-search",
+        "implement-trie-prefix-tree"
+      ],
+      "lastUpdated": "2026-02-04T00:00:00Z"
+    },
+    {
+      "id": "089040a5-891d-4aa8-8015-eec25ac45f8e",
+      "problemSlug": "count-good-nodes-in-binary-tree",
+      "summary": "Track the maximum value along the path from the root to each node; a node is good if it is at least that maximum.",
+      "approaches": [
+        {
+          "id": "8c3fe2b2-84c5-446c-8794-99ae762f95e0",
+          "name": "DFS with Path Maximum",
+          "order": 1,
+          "intuition": "A node is good if its value is greater than or equal to all values seen so far on the path.",
+          "approach": "1. DFS from the root with current max value.\n2. If node.val >= max, count it as good.\n3. Update max and recurse on children.",
+          "explanation": "The max value on the path fully determines whether a node is good.",
+          "code": "func goodNodes(_ root: TreeNode?) -> Int {\n    func dfs(_ node: TreeNode?, _ currentMax: Int) -> Int {\n        guard let node = node else { return 0 }\n        let isGood = node.val >= currentMax ? 1 : 0\n        let nextMax = max(currentMax, node.val)\n        return isGood + dfs(node.left, nextMax) + dfs(node.right, nextMax)\n    }\n    guard let root = root else { return 0 }\n    return dfs(root, root.val)\n}",
+          "complexity": {
+            "time": "O(n)",
+            "space": "O(h)",
+            "timeExplanation": "Each node visited once",
+            "spaceExplanation": "Recursion stack depth equals tree height"
+          },
+          "testCases": [
+            {
+              "id": "e37487e8-c61c-4bdf-ab6c-e62ce931337a",
+              "input": "root = [3,1,4,3,null,1,5]",
+              "expectedOutput": "4",
+              "explanation": "Good nodes are 3,4,5,3 (left grandchild)."
+            },
+            {
+              "id": "68ad95d2-659d-4f24-b8f1-eed1d5fa6459",
+              "input": "root = [3,3,null,4,2]",
+              "expectedOutput": "3",
+              "explanation": "All except node 2 are good."
+            },
+            {
+              "id": "954e0167-f0a8-4e0f-9a59-d47c51cd61fc",
+              "input": "root = [1]",
+              "expectedOutput": "1",
+              "explanation": "Root is always good."
+            }
+          ]
+        }
+      ],
+      "relatedProblems": [
+        "binary-tree-maximum-path-sum",
+        "same-tree"
+      ],
+      "lastUpdated": "2026-02-04T00:00:00Z"
+    },
+    {
+      "id": "9dc90726-ad7b-42b7-bbf9-4f34ef32ba8c",
+      "problemSlug": "serialize-and-deserialize-binary-tree",
+      "summary": "Use preorder traversal with null markers to serialize, then rebuild the tree by consuming the token list in order.",
+      "approaches": [
+        {
+          "id": "296bba88-9dd2-4f56-bce6-600215ee37fc",
+          "name": "Preorder with Null Markers",
+          "order": 1,
+          "intuition": "Preorder with explicit nulls uniquely represents the tree structure.",
+          "approach": "1. Serialize by DFS preorder, output value or \"#\" for nil.\n2. Deserialize by reading tokens in order and rebuilding nodes recursively.",
+          "explanation": "Null markers make the structure unambiguous, so a single pass over tokens can reconstruct the original tree.",
+          "code": "class Codec {\n    func serialize(_ root: TreeNode?) -> String {\n        var result: [String] = []\n        func dfs(_ node: TreeNode?) {\n            guard let node = node else {\n                result.append(\"#\")\n                return\n            }\n            result.append(String(node.val))\n            dfs(node.left)\n            dfs(node.right)\n        }\n        dfs(root)\n        return result.joined(separator: \",\")\n    }\n\n    func deserialize(_ data: String) -> TreeNode? {\n        let tokens = data.split(separator: \",\").map(String.init)\n        var index = 0\n\n        func dfs() -> TreeNode? {\n            if index >= tokens.count { return nil }\n            let token = tokens[index]\n            index += 1\n            if token == \"#\" { return nil }\n            let node = TreeNode(Int(token) ?? 0)\n            node.left = dfs()\n            node.right = dfs()\n            return node\n        }\n\n        return dfs()\n    }\n}",
+          "complexity": {
+            "time": "O(n)",
+            "space": "O(n)",
+            "timeExplanation": "Each node is visited once in both serialize and deserialize",
+            "spaceExplanation": "Tokens plus recursion stack"
+          },
+          "testCases": [
+            {
+              "id": "bac9f4b5-62ce-43dd-8019-472f11c5deb1",
+              "input": "root = [1,2,3,null,null,4,5]",
+              "expectedOutput": "[1,2,3,null,null,4,5]",
+              "explanation": "Serialization and deserialization preserve the same shape and values."
+            },
+            {
+              "id": "9d538869-272a-4bd4-97b7-e8d55f231969",
+              "input": "root = []",
+              "expectedOutput": "[]",
+              "explanation": "Empty tree serializes to a null marker and deserializes to nil."
+            }
+          ]
+        }
+      ],
+      "relatedProblems": [
+        "serialize-and-deserialize-bst",
+        "construct-binary-tree-from-preorder-and-inorder-traversal"
+      ],
       "lastUpdated": "2026-02-04T00:00:00Z"
     }
   ]

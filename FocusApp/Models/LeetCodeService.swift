@@ -56,25 +56,30 @@ final class LeetCodeRestClient: LeetCodeClientProtocol {
         }
 
         if slugs.isEmpty {
-            let submissions = try await fetchSubmissions(
-                username: username,
-                path: "submission",
-                limit: cappedLimit
-            )
-            let accepted = submissions.filter { submission in
-                submission.statusDisplay?.caseInsensitiveCompare("accepted") == .orderedSame
+            do {
+                let submissions = try await fetchSubmissions(
+                    username: username,
+                    path: "submission",
+                    limit: cappedLimit
+                )
+                let accepted = submissions.filter { submission in
+                    submission.statusDisplay?.caseInsensitiveCompare("accepted") == .orderedSame
+                }
+                slugs.formUnion(accepted.map { $0.titleSlug })
+            } catch {
+                // Fall through to GraphQL fallback
             }
-            slugs.formUnion(accepted.map { $0.titleSlug })
         }
 
-        if slugs.isEmpty && limit >= LeetCodeConstants.manualSubmissionsLimit {
+        if let recentFallback = try? await fetchSolvedSlugsGraphQLRecent(
+            username: username,
+            limit: min(cappedLimit, 200)
+        ) {
+            slugs.formUnion(recentFallback)
+        }
+
+        if limit >= LeetCodeConstants.manualSubmissionsLimit {
             if let fallback = try? await fetchSolvedSlugsGraphQLAll(username: username, limit: cappedLimit) {
-                slugs.formUnion(fallback)
-            }
-        }
-
-        if slugs.isEmpty {
-            if let fallback = try? await fetchSolvedSlugsGraphQLRecent(username: username, limit: cappedLimit) {
                 slugs.formUnion(fallback)
             }
         }
@@ -83,33 +88,42 @@ final class LeetCodeRestClient: LeetCodeClientProtocol {
     }
 
     func fetchProblemContent(slug: String) async throws -> QuestionContent? {
-        let request = try makeRequest(
-            path: "select",
-            queryItems: [
-                URLQueryItem(name: "titleSlug", value: slug)
-            ]
-        )
-        let data = try await executor.execute(request)
-        let response = try decoder.decode(LeetCodeRestProblemResponse.self, from: data)
-        let snippets = Dictionary(uniqueKeysWithValues: response.codeSnippets.map { ($0.langSlug, $0.code) })
-        let title = response.title.isEmpty ? slug.replacingOccurrences(of: "-", with: " ").capitalized : response.title
+        var restContent: QuestionContent?
 
-        let restContent = QuestionContent(
-            title: title,
-            content: response.content,
-            exampleTestcases: response.exampleTestcases,
-            sampleTestCase: response.sampleTestCase,
-            difficulty: response.difficulty.isEmpty ? "Unknown" : response.difficulty,
-            codeSnippets: snippets,
-            metaData: response.metaData
-        )
+        do {
+            let request = try makeRequest(
+                path: "select",
+                queryItems: [
+                    URLQueryItem(name: "titleSlug", value: slug)
+                ]
+            )
+            let data = try await executor.execute(request)
+            let response = try decoder.decode(LeetCodeRestProblemResponse.self, from: data)
+            let snippets = Dictionary(uniqueKeysWithValues: response.codeSnippets.map { ($0.langSlug, $0.code) })
+            let title = response.title.isEmpty ? slug.replacingOccurrences(of: "-", with: " ").capitalized : response.title
 
-        let needsFallback = restContent.metaData == nil || restContent.codeSnippets.isEmpty
-        if needsFallback, let fallback = try? await fetchProblemContentGraphQL(slug: slug) {
-            return mergeProblemContent(primary: restContent, fallback: fallback, slug: slug)
+            restContent = QuestionContent(
+                title: title,
+                content: response.content,
+                exampleTestcases: response.exampleTestcases,
+                sampleTestCase: response.sampleTestCase,
+                difficulty: response.difficulty.isEmpty ? "Unknown" : response.difficulty,
+                codeSnippets: snippets,
+                metaData: response.metaData
+            )
+        } catch {
+            // Fall through to GraphQL fallback
         }
 
-        return restContent
+        if let restContent {
+            let needsFallback = restContent.metaData == nil || restContent.codeSnippets.isEmpty
+            if needsFallback, let fallback = try? await fetchProblemContentGraphQL(slug: slug) {
+                return mergeProblemContent(primary: restContent, fallback: fallback, slug: slug)
+            }
+            return restContent
+        }
+
+        return try? await fetchProblemContentGraphQL(slug: slug)
     }
 
     private func makeRequest(
@@ -333,10 +347,16 @@ struct LeetCodeSyncResult {
 final class LeetCodeSyncInteractor {
     private let appStore: AppStateStore
     private let client: LeetCodeClientProtocol
+    private let logger: DebugLogRecording?
 
-    init(appStore: AppStateStore, client: LeetCodeClientProtocol) {
+    init(
+        appStore: AppStateStore,
+        client: LeetCodeClientProtocol,
+        logger: DebugLogRecording? = nil
+    ) {
         self.appStore = appStore
         self.client = client
+        self.logger = logger
     }
 
     func validateUsername(_ username: String) async -> Bool {
@@ -348,11 +368,46 @@ final class LeetCodeSyncInteractor {
     }
 
     func syncSolvedProblems(username: String, limit: Int) async -> LeetCodeSyncResult {
+        logger?.recordAsync(
+            DebugLogEntry(
+                level: .info,
+                category: .sync,
+                title: "Sync started",
+                message: "Fetching solved problems",
+                metadata: [
+                    "username": username,
+                    "limit": "\(limit)"
+                ]
+            )
+        )
         do {
             let solved = try await client.fetchSolvedSlugs(username: username, limit: limit)
             let result = appStore.applySolvedSlugs(solved)
+            logger?.recordAsync(
+                DebugLogEntry(
+                    level: .info,
+                    category: .sync,
+                    title: "Sync complete",
+                    message: "Updated progress",
+                    metadata: [
+                        "matched": "\(result.totalMatched)",
+                        "new": "\(result.syncedCount)"
+                    ]
+                )
+            )
             return LeetCodeSyncResult(syncedCount: result.syncedCount, totalMatched: result.totalMatched)
         } catch {
+            logger?.recordAsync(
+                DebugLogEntry(
+                    level: .error,
+                    category: .sync,
+                    title: "Sync failed",
+                    message: "Unable to fetch solved problems",
+                    metadata: [
+                        "error": error.localizedDescription
+                    ]
+                )
+            )
             return LeetCodeSyncResult(syncedCount: 0, totalMatched: 0)
         }
     }

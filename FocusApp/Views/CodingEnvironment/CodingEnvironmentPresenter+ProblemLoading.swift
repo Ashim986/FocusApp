@@ -3,6 +3,15 @@ import Foundation
 extension CodingEnvironmentPresenter {
     func loadProblemContent(for problem: Problem) async {
         guard let slug = LeetCodeSlugExtractor.extractSlug(from: problem.url) else {
+            logger?.recordAsync(
+                DebugLogEntry(
+                    level: .warning,
+                    category: .app,
+                    title: "Slug extraction failed",
+                    message: "Unable to parse problem slug",
+                    metadata: ["url": problem.url]
+                )
+            )
             return
         }
 
@@ -20,16 +29,41 @@ extension CodingEnvironmentPresenter {
         }
 
         do {
-            if let content = try await interactor.fetchProblemContent(slug: slug) {
+            let content = try await interactor.fetchProblemContent(slug: slug)
+            if let content {
                 problemContentCache[slug] = content
-                await MainActor.run {
-                    self.problemContent = content
+            } else {
+                logger?.recordAsync(
+                    DebugLogEntry(
+                        level: .warning,
+                        category: .network,
+                        title: "Problem content missing",
+                        message: "No content returned for slug",
+                        metadata: ["slug": slug]
+                    )
+                )
+            }
+            await MainActor.run {
+                self.problemContent = content
+                if let content {
                     self.parseTestCases(from: content)
                     self.applySnippetIfNeeded(from: content)
-                    self.isLoadingProblem = false
                 }
+                self.isLoadingProblem = false
             }
         } catch {
+            logger?.recordAsync(
+                DebugLogEntry(
+                    level: .error,
+                    category: .network,
+                    title: "Problem content fetch failed",
+                    message: "Failed to load problem content",
+                    metadata: [
+                        "slug": slug,
+                        "error": error.localizedDescription
+                    ]
+                )
+            )
             await MainActor.run {
                 self.isLoadingProblem = false
             }

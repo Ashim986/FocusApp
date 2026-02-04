@@ -90,10 +90,10 @@ final class SolutionStoreTests: XCTestCase {
 
     func testBundledSolutionStoreLoadsFromBundle() {
         // This test verifies that BundledSolutionStore can be instantiated
-        // It will load from the (currently empty) Solutions.json bundle
+        // and can load bundled solutions.
         let store = BundledSolutionStore()
 
-        // With empty Solutions.json, should have 0 solutions
-        XCTAssertEqual(store.solutionCount, 0)
+        XCTAssertGreaterThan(store.solutionCount, 0)
+        XCTAssertNotNil(store.solution(for: "reverse-linked-list"))
     }
 }

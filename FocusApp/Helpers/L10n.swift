@@ -310,6 +310,57 @@ enum L10n {
         }
     }
 
+    enum Debug {
+        static var header: String {
+            tr("debug.header")
+        }
+        static var footer: String {
+            tr("debug.footer")
+        }
+        static var logsTitle: String {
+            tr("debug.logs_title")
+        }
+        static var logsSubtitle: String {
+            tr("debug.logs_subtitle")
+        }
+        static var openLogs: String {
+            tr("debug.open_logs")
+        }
+        static var clearLogs: String {
+            tr("debug.clear_logs")
+        }
+        static var copyLogs: String {
+            tr("debug.copy_logs")
+        }
+        static var levelLabel: String {
+            tr("debug.level_label")
+        }
+        static var categoryLabel: String {
+            tr("debug.category_label")
+        }
+        static var levelAll: String {
+            tr("debug.level_all")
+        }
+        static var categoryAll: String {
+            tr("debug.category_all")
+        }
+        static var searchPlaceholder: String {
+            tr("debug.search_placeholder")
+        }
+        static var emptyTitle: String {
+            tr("debug.empty_title")
+        }
+        static var emptyBody: String {
+            tr("debug.empty_body")
+        }
+        static var showDetails: String {
+            tr("debug.show_details")
+        }
+        static var hideDetails: String {
+            tr("debug.hide_details")
+        }
+    }
+
     enum Content {
         static var appTitle: String {
             tr("content.app_title")
@@ -592,6 +643,18 @@ enum L10n {
         }
         static var notificationsDisabledTitle: String {
             tr("settings.notifications_disabled_title")
+        }
+        static var planStartDateTitle: String {
+            tr("settings.plan_start_date_title")
+        }
+        static var planStartFooter: String {
+            tr("settings.plan_start_footer")
+        }
+        static var planStartHeader: String {
+            tr("settings.plan_start_header")
+        }
+        static var planStartReset: String {
+            tr("settings.plan_start_reset")
         }
         static var reminderTime: String {
             tr("settings.reminder_time")

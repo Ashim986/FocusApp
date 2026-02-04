@@ -3,14 +3,24 @@ import XCTest
 
 @MainActor
 final class AppStateStoreTests: XCTestCase {
+    private func makeStore(
+        start: Date,
+        today: Date,
+        initialData: AppData = AppData()
+    ) -> AppStateStore {
+        var data = initialData
+        data.planStartDate = start
+        let storage = InMemoryAppStorage(initial: data)
+        return AppStateStore(
+            storage: storage,
+            calendar: Calendar.current,
+            dateProvider: FixedDateProvider(date: today)
+        )
+    }
+
     func testToggleProblemUpdatesProgress() {
         let start = makeDate(year: 2026, month: 2, day: 3)
-        let storage = InMemoryAppStorage()
-        let store = AppStateStore(
-            storage: storage,
-            calendar: PlanCalendar(startDate: start),
-            dateProvider: FixedDateProvider(date: start)
-        )
+        let store = makeStore(start: start, today: start)
 
         XCTAssertFalse(store.isProblemCompleted(day: 1, problemIndex: 0))
         store.toggleProblem(day: 1, problemIndex: 0)
@@ -21,12 +31,7 @@ final class AppStateStoreTests: XCTestCase {
 
     func testToggleHabitUpdatesToday() {
         let start = makeDate(year: 2026, month: 2, day: 3)
-        let storage = InMemoryAppStorage()
-        let store = AppStateStore(
-            storage: storage,
-            calendar: PlanCalendar(startDate: start),
-            dateProvider: FixedDateProvider(date: start)
-        )
+        let store = makeStore(start: start, today: start)
 
         XCTAssertFalse(store.isHabitDone("dsa"))
         store.toggleHabit("dsa")
@@ -54,12 +59,7 @@ final class AppStateStoreTests: XCTestCase {
 
     func testAdvanceToNextDayMovesForward() {
         let start = makeDate(year: 2026, month: 2, day: 3)
-        let storage = InMemoryAppStorage()
-        let store = AppStateStore(
-            storage: storage,
-            calendar: PlanCalendar(startDate: start),
-            dateProvider: FixedDateProvider(date: start)
-        )
+        let store = makeStore(start: start, today: start)
 
         XCTAssertEqual(store.currentDayNumber(), 1)
         store.advanceToNextDay()
@@ -68,12 +68,7 @@ final class AppStateStoreTests: XCTestCase {
 
     func testApplySolvedSlugsMarksProgress() {
         let start = makeDate(year: 2026, month: 2, day: 3)
-        let storage = InMemoryAppStorage()
-        let store = AppStateStore(
-            storage: storage,
-            calendar: PlanCalendar(startDate: start),
-            dateProvider: FixedDateProvider(date: start)
-        )
+        let store = makeStore(start: start, today: start)
 
         let slug = "reverse-linked-list"
         let result = store.applySolvedSlugs([slug])
@@ -85,12 +80,7 @@ final class AppStateStoreTests: XCTestCase {
 
     func testTodaysTopicUsesPlan() {
         let start = makeDate(year: 2026, month: 2, day: 3)
-        let storage = InMemoryAppStorage()
-        let store = AppStateStore(
-            storage: storage,
-            calendar: PlanCalendar(startDate: start),
-            dateProvider: FixedDateProvider(date: start)
-        )
+        let store = makeStore(start: start, today: start)
 
         XCTAssertEqual(store.todaysTopic(), "Linked List")
     }
@@ -129,12 +119,7 @@ final class AppStateStoreTests: XCTestCase {
     func testCurrentDayNumberClampsTo13() {
         let start = makeDate(year: 2026, month: 1, day: 1)
         let farFuture = makeDate(year: 2026, month: 12, day: 31)
-        let storage = InMemoryAppStorage()
-        let store = AppStateStore(
-            storage: storage,
-            calendar: PlanCalendar(startDate: start),
-            dateProvider: FixedDateProvider(date: farFuture)
-        )
+        let store = makeStore(start: start, today: farFuture)
 
         XCTAssertEqual(store.currentDayNumber(), 13)
     }
@@ -142,12 +127,7 @@ final class AppStateStoreTests: XCTestCase {
     func testCurrentDayNumberClampsTo1() {
         let start = makeDate(year: 2026, month: 2, day: 10)
         let past = makeDate(year: 2026, month: 1, day: 1)
-        let storage = InMemoryAppStorage()
-        let store = AppStateStore(
-            storage: storage,
-            calendar: PlanCalendar(startDate: start),
-            dateProvider: FixedDateProvider(date: past)
-        )
+        let store = makeStore(start: start, today: past)
 
         XCTAssertEqual(store.currentDayNumber(), 1)
     }
@@ -156,12 +136,7 @@ final class AppStateStoreTests: XCTestCase {
         let start = makeDate(year: 2026, month: 2, day: 3)
         var data = AppData()
         data.dayOffset = 12
-        let storage = InMemoryAppStorage(initial: data)
-        let store = AppStateStore(
-            storage: storage,
-            calendar: PlanCalendar(startDate: start),
-            dateProvider: FixedDateProvider(date: start)
-        )
+        let store = makeStore(start: start, today: start, initialData: data)
 
         XCTAssertEqual(store.currentDayNumber(), 13)
         XCTAssertEqual(store.todaysTopic(), "1-D DP (cont.) + 2-D DP Intro")
@@ -169,12 +144,7 @@ final class AppStateStoreTests: XCTestCase {
 
     func testApplySolvedSlugsWithNoMatches() {
         let start = makeDate(year: 2026, month: 2, day: 3)
-        let storage = InMemoryAppStorage()
-        let store = AppStateStore(
-            storage: storage,
-            calendar: PlanCalendar(startDate: start),
-            dateProvider: FixedDateProvider(date: start)
-        )
+        let store = makeStore(start: start, today: start)
 
         let result = store.applySolvedSlugs(["non-existent-slug", "another-fake-slug"])
 
@@ -186,12 +156,7 @@ final class AppStateStoreTests: XCTestCase {
         let start = makeDate(year: 2026, month: 2, day: 3)
         var data = AppData()
         data.progress["1-0"] = true
-        let storage = InMemoryAppStorage(initial: data)
-        let store = AppStateStore(
-            storage: storage,
-            calendar: PlanCalendar(startDate: start),
-            dateProvider: FixedDateProvider(date: start)
-        )
+        let store = makeStore(start: start, today: start, initialData: data)
 
         let result = store.applySolvedSlugs(["reverse-linked-list"])
 

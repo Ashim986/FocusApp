@@ -14,6 +14,7 @@ final class SettingsPresenter: ObservableObject {
     @Published var leetCodeUsername: String
     @Published var isValidatingUsername: Bool = false
     @Published var usernameValidationState: UsernameValidationState = .none
+    @Published var planStartDate: Date
 
     private let interactor: SettingsInteractor
 
@@ -21,9 +22,11 @@ final class SettingsPresenter: ObservableObject {
         self.interactor = interactor
         self.settings = interactor.loadSettings()
         self.leetCodeUsername = interactor.currentUsername()
+        self.planStartDate = interactor.currentPlanStartDate()
     }
 
     func onAppear() {
+        planStartDate = interactor.currentPlanStartDate()
         Task {
             let authorized = await interactor.checkAuthorizationStatus()
             notificationsAuthorized = authorized
@@ -61,6 +64,17 @@ final class SettingsPresenter: ObservableObject {
 
     func resetValidationState() {
         usernameValidationState = .none
+    }
+
+    func updatePlanStartDate(_ date: Date) {
+        planStartDate = date
+        interactor.updatePlanStartDate(date)
+    }
+
+    func resetPlanStartDateToToday() {
+        let today = Date()
+        planStartDate = today
+        interactor.updatePlanStartDate(today)
     }
 
     private func scheduleValidationReset() {

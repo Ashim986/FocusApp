@@ -13,18 +13,27 @@ final class AppStateStore: ObservableObject {
     @Published private(set) var data: AppData
 
     private let storage: AppStorage
-    private let calendar: PlanCalendar
+    private let calendar: Calendar
     private let dateProvider: DateProviding
 
     init(
         storage: AppStorage,
-        calendar: PlanCalendar = PlanCalendar(),
+        calendar: Calendar = Calendar.current,
         dateProvider: DateProviding = SystemDateProvider()
     ) {
         self.storage = storage
         self.calendar = calendar
         self.dateProvider = dateProvider
         self.data = storage.load()
+    }
+
+    convenience init(
+        storage: AppStorage,
+        calendar: PlanCalendar,
+        dateProvider: DateProviding = SystemDateProvider()
+    ) {
+        self.init(storage: storage, calendar: calendar.calendar, dateProvider: dateProvider)
+        data.planStartDate = calendar.startDate
     }
 
     func reload() {
@@ -115,7 +124,18 @@ final class AppStateStore: ObservableObject {
     }
 
     func currentDayNumber() -> Int {
-        calendar.currentDayNumber(today: dateProvider.now(), offset: data.dayOffset)
+        let planCalendar = PlanCalendar(calendar: calendar, startDate: data.planStartDate)
+        return planCalendar.currentDayNumber(today: dateProvider.now(), offset: data.dayOffset)
+    }
+
+    func planStartDate() -> Date {
+        data.planStartDate
+    }
+
+    func updatePlanStartDate(_ date: Date) {
+        data.planStartDate = calendar.startOfDay(for: date)
+        data.dayOffset = 0
+        save()
     }
 
     func todaysTopic() -> String {

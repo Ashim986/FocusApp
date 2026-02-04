@@ -12,6 +12,7 @@ final class AppContainer {
     let leetCodeScheduler: LeetCodeSyncScheduler
     let codeExecutionService: CodeExecutionService
     let solutionStore: SolutionProviding
+    let debugLogStore: DebugLogStore
 
     let contentPresenter: ContentPresenter
     let planPresenter: PlanPresenter
@@ -68,7 +69,10 @@ final class AppContainer {
         )
         self.notificationManager = notificationManager
 
-        let executor = URLSessionRequestExecutor()
+        let debugLogStore = DebugLogStore()
+        self.debugLogStore = debugLogStore
+
+        let executor = URLSessionRequestExecutor(logger: debugLogStore)
         let client = LeetCodeRestClient(
             baseURL: LeetCodeConstants.restBaseURL,
             requestBuilder: DefaultRequestBuilder(),
@@ -76,7 +80,11 @@ final class AppContainer {
         )
         self.leetCodeClient = client
 
-        let leetCodeSync = LeetCodeSyncInteractor(appStore: appStore, client: client)
+        let leetCodeSync = LeetCodeSyncInteractor(
+            appStore: appStore,
+            client: client,
+            logger: debugLogStore
+        )
         self.leetCodeSync = leetCodeSync
         let leetCodeScheduler = LeetCodeSyncScheduler(appStore: appStore, syncer: leetCodeSync)
         leetCodeScheduler.start()
@@ -124,7 +132,8 @@ final class AppContainer {
                 leetCodeClient: client,
                 executionService: codeExecutionService,
                 solutionStore: solutionStore
-            )
+            ),
+            logger: debugLogStore
         )
     }
 }

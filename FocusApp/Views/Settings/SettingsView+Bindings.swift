@@ -36,4 +36,13 @@ extension SettingsView {
             }
         )
     }
+
+    var planStartDate: Binding<Date> {
+        Binding(
+            get: { presenter.planStartDate },
+            set: { value in
+                presenter.updatePlanStartDate(value)
+            }
+        )
+    }
 }

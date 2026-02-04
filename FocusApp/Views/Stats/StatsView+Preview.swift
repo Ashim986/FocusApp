@@ -5,10 +5,7 @@ import SwiftUI
 struct StatsView_Previews: PreviewProvider {
     static var previews: some View {
         Group {
-            if let container = try? ModelContainer(
-                for: AppDataRecord.self,
-                configurations: ModelConfiguration(isStoredInMemoryOnly: true)
-            ) {
+            if let container = try? ModelContainer(for: AppDataRecord.self) {
                 let appStore = AppStateStore(storage: SwiftDataAppStorage(container: container))
                 let presenter = StatsPresenter(interactor: StatsInteractor(appStore: appStore))
                 StatsView(presenter: presenter)

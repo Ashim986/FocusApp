@@ -27,20 +27,18 @@ extension CodingEnvironmentView {
     }
 
     private var problemDetailPanel: some View {
-        VStack(spacing: 12) {
-            detailHeader
-
-            detailToggle
+        VStack(spacing: 0) {
+            detailTabBar
 
             ScrollView {
-                VStack(alignment: .leading, spacing: 16) {
+                VStack(alignment: .leading, spacing: 20) {
+                    detailHeader
                     detailContent
                 }
-                .padding(16)
+                .padding(18)
                 .frame(maxWidth: .infinity, alignment: .leading)
             }
         }
-        .padding(12)
         .background(Color.appGray900)
     }
 
@@ -70,22 +68,28 @@ extension CodingEnvironmentView {
 
     private var detailHeader: some View {
         VStack(alignment: .leading, spacing: 8) {
-            Text("Problem Details")
-                .font(.system(size: 11, weight: .semibold))
-                .foregroundColor(Color.appGray400)
-
             if let problem = presenter.selectedProblem {
-                Text(problem.name)
-                    .font(.system(size: 18, weight: .bold))
-                    .foregroundColor(.white)
-                    .lineLimit(2)
+                HStack(alignment: .top, spacing: 12) {
+                    VStack(alignment: .leading, spacing: 6) {
+                        Text(problem.name)
+                            .font(.system(size: 20, weight: .bold))
+                            .foregroundColor(.white)
+                            .lineLimit(2)
+
+                        Text("Day \(selectedDayLabel) · \(presenter.selectedDayTopic)")
+                            .font(.system(size: 12))
+                            .foregroundColor(Color.appGray400)
+                    }
+
+                    Spacer()
+
+                    statusBadge(isSolved: isSelectedProblemSolved)
+                }
 
                 HStack(spacing: 8) {
-                    Text("Day \(selectedDayLabel) · \(presenter.selectedDayTopic)")
-                        .font(.system(size: 12))
-                        .foregroundColor(Color.appGray400)
-
                     difficultyBadge(problem.difficulty)
+                    infoBadge(title: presenter.selectedDayTopic, icon: "tag")
+                    infoBadge(title: "Day \(selectedDayLabel)", icon: "calendar")
                 }
             } else {
                 Text("Select a problem to view details")
@@ -104,28 +108,37 @@ extension CodingEnvironmentView {
         )
     }
 
-    private var detailToggle: some View {
-        HStack(spacing: 6) {
+    private var detailTabBar: some View {
+        HStack(spacing: 16) {
             ForEach(ProblemDetailTab.allCases, id: \.rawValue) { tab in
                 Button(action: { detailTab = tab }) {
-                    Text(tab.rawValue)
-                        .font(.system(size: 11, weight: detailTab == tab ? .semibold : .regular))
-                        .foregroundColor(detailTab == tab ? .white : Color.appGray400)
-                        .padding(.horizontal, 12)
-                        .padding(.vertical, 7)
-                        .background(
-                            RoundedRectangle(cornerRadius: 6)
-                                .fill(detailTab == tab ? Color.appPurple : Color.clear)
-                        )
+                    HStack(spacing: 6) {
+                        Image(systemName: tab.icon)
+                            .font(.system(size: 10, weight: .semibold))
+                        Text(tab.rawValue)
+                            .font(.system(size: 11, weight: detailTab == tab ? .semibold : .regular))
+                    }
+                    .foregroundColor(detailTab == tab ? .white : Color.appGray500)
+                    .padding(.vertical, 8)
+                    .overlay(
+                        Rectangle()
+                            .fill(detailTab == tab ? Color.appPurple : Color.clear)
+                            .frame(height: 2),
+                        alignment: .bottom
+                    )
                 }
                 .buttonStyle(.plain)
             }
             Spacer()
         }
-        .padding(6)
-        .background(
-            RoundedRectangle(cornerRadius: 10)
-                .fill(Color.appGray800.opacity(0.6))
+        .padding(.horizontal, 18)
+        .padding(.vertical, 10)
+        .background(Color.appGray900)
+        .overlay(
+            Rectangle()
+                .fill(Color.appGray700)
+                .frame(height: 1),
+            alignment: .bottom
         )
     }
 
@@ -141,14 +154,51 @@ extension CodingEnvironmentView {
             )
     }
 
+    private func infoBadge(title: String, icon: String) -> some View {
+        HStack(spacing: 4) {
+            Image(systemName: icon)
+                .font(.system(size: 9, weight: .semibold))
+            Text(title)
+                .font(.system(size: 10, weight: .medium))
+        }
+        .foregroundColor(Color.appGray300)
+        .padding(.horizontal, 8)
+        .padding(.vertical, 4)
+        .background(
+            RoundedRectangle(cornerRadius: 6)
+                .fill(Color.appGray800.opacity(0.6))
+        )
+    }
+
+    private func statusBadge(isSolved: Bool) -> some View {
+        HStack(spacing: 4) {
+            Image(systemName: isSolved ? "checkmark.circle.fill" : "circle")
+                .font(.system(size: 10, weight: .semibold))
+            Text(isSolved ? "Solved" : "Unsolved")
+                .font(.system(size: 10, weight: .semibold))
+        }
+        .foregroundColor(isSolved ? Color.appGreen : Color.appGray400)
+        .padding(.horizontal, 10)
+        .padding(.vertical, 6)
+        .background(
+            RoundedRectangle(cornerRadius: 8)
+                .fill((isSolved ? Color.appGreen : Color.appGray600).opacity(0.15))
+        )
+    }
+
+    private var isSelectedProblemSolved: Bool {
+        guard presenter.selectedProblem != nil else { return false }
+        return presenter.isProblemCompleted(day: selectedDayLabel, index: presenter.selectedProblemIndex)
+    }
+
     @ViewBuilder
     private var detailContent: some View {
         switch detailTab {
         case .description:
             descriptionContent
-        case .solution:
-            solutionContent
-        case .history:
+        case .editorial:
+            editorialContent
+        case .submissions:
             pastSubmissionsContent
         }
     }

@@ -49,11 +49,11 @@ final class ToolbarWidgetInteractor {
         let isValid = await leetCodeSync.validateUsername(trimmed)
         guard isValid else { return false }
         appStore.updateLeetCodeUsername(trimmed)
-        _ = await leetCodeSync.syncSolvedProblems(username: trimmed, limit: LeetCodeConstants.recentSubmissionsLimit)
+        _ = await leetCodeSync.syncSolvedProblems(username: trimmed, limit: LeetCodeConstants.manualSubmissionsLimit)
         return true
     }
 
     func syncSolvedProblems(username: String) async -> LeetCodeSyncResult {
-        await leetCodeSync.syncSolvedProblems(username: username, limit: LeetCodeConstants.recentSubmissionsLimit)
+        await leetCodeSync.syncSolvedProblems(username: username, limit: LeetCodeConstants.manualSubmissionsLimit)
     }
 }

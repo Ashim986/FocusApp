@@ -23,7 +23,6 @@ struct TodayView_Previews: PreviewProvider {
         )
         return TodayView(
             presenter: presenter,
-            showFocusMode: .constant(false),
             showCodeEnvironment: .constant(false)
         )
             .frame(width: 600, height: 800)

@@ -32,8 +32,7 @@ extension CodingEnvironmentView {
 
             Spacer()
 
-            languageToggle
-                .padding(.horizontal, 16)
+            focusTimerIndicator
 
             Spacer()
 
@@ -118,26 +117,51 @@ extension CodingEnvironmentView {
         )
     }
 
-    var languageToggle: some View {
-        HStack(spacing: 0) {
-            ForEach(ProgrammingLanguage.allCases, id: \.rawValue) { lang in
-                Button(action: { presenter.changeLanguage(lang) }) {
-                    Text(lang.rawValue)
-                        .font(.system(size: 11, weight: presenter.language == lang ? .semibold : .regular))
-                        .foregroundColor(presenter.language == lang ? .white : Color.appGray500)
-                        .padding(.horizontal, 16)
-                        .padding(.vertical, 6)
-                        .background(
-                            presenter.language == lang ?
-                            Color.appPurple : Color.clear
-                        )
-                        .clipShape(RoundedRectangle(cornerRadius: 6))
-                }
-                .buttonStyle(.plain)
+    private var focusTimerIndicator: some View {
+        let remaining = max(focusPresenter.timeRemaining, 0)
+        let minutes = remaining / 60
+        let seconds = remaining % 60
+        let timeString = String(format: "%02d:%02d", minutes, seconds)
+        let progress = focusPresenter.progress
+        let ringColor = focusPresenter.isCompleted ? Color.appGreen : Color.appPurple
+        let labelText = focusPresenter.isCompleted ? "Done" : timeString
+        let labelColor = focusPresenter.isCompleted ? Color.appGreen : Color.white
+
+        return HStack(spacing: 8) {
+            ZStack {
+                Circle()
+                    .stroke(Color.appGray700, lineWidth: 2)
+                Circle()
+                    .trim(from: 0, to: progress)
+                    .stroke(ringColor, style: StrokeStyle(lineWidth: 2, lineCap: .round))
+                    .rotationEffect(.degrees(-90))
             }
+            .frame(width: 16, height: 16)
+
+            Text(labelText)
+                .font(.system(size: 12, weight: .semibold, design: .monospaced))
+                .foregroundColor(labelColor)
+
+            Button(action: {
+                focusPresenter.duration = 30
+                focusPresenter.startTimer()
+            }) {
+                Image(systemName: "arrow.clockwise")
+                    .font(.system(size: 10, weight: .semibold))
+                    .foregroundColor(Color.appGray400)
+            }
+            .buttonStyle(.plain)
+            .help("Restart focus timer")
         }
-        .padding(3)
-        .background(Color.appGray800)
-        .clipShape(RoundedRectangle(cornerRadius: 8))
+        .padding(.horizontal, 12)
+        .padding(.vertical, 6)
+        .background(
+            RoundedRectangle(cornerRadius: 8)
+                .fill(Color.appGray800)
+        )
+        .overlay(
+            RoundedRectangle(cornerRadius: 8)
+                .stroke(Color.appGray700, lineWidth: 1)
+        )
     }
 }

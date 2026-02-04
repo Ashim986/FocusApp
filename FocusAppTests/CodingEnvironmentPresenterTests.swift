@@ -19,7 +19,8 @@ final class CodingEnvironmentPresenterTests: XCTestCase {
             exampleTestcases: "",
             sampleTestCase: "",
             difficulty: "Easy",
-            codeSnippets: ["swift": snippet, "python3": "def solve():\n    pass"]
+            codeSnippets: ["swift": snippet, "python3": "def solve():\n    pass"],
+            metaData: nil
         )
         let executor = FakeCodeExecutor()
         let interactor = CodingEnvironmentInteractor(appStore: store, leetCodeClient: client, executionService: executor)
@@ -49,7 +50,8 @@ final class CodingEnvironmentPresenterTests: XCTestCase {
             exampleTestcases: "",
             sampleTestCase: "",
             difficulty: "Easy",
-            codeSnippets: ["swift": "class Solution { }"]
+            codeSnippets: ["swift": "class Solution { }"],
+            metaData: nil
         )
         let executor = FakeCodeExecutor()
         let interactor = CodingEnvironmentInteractor(appStore: store, leetCodeClient: client, executionService: executor)

@@ -106,7 +106,8 @@ final class CodingEnvironmentInteractorTests: XCTestCase {
             exampleTestcases: "1,2,3",
             sampleTestCase: "1,2,3",
             difficulty: "Easy",
-            codeSnippets: ["swift": "class Solution {}"]
+            codeSnippets: ["swift": "class Solution {}"],
+            metaData: nil
         )
         let executor = FakeCodeExecutor()
         let interactor = CodingEnvironmentInteractor(

@@ -3,26 +3,21 @@ import SwiftUI
 extension CodingEnvironmentView {
     var codeEditorPanel: some View {
         VStack(spacing: 0) {
-            HStack(spacing: 0) {
-                HStack(spacing: 6) {
-                    Image(systemName: presenter.language == .swift ? "swift" : "chevron.left.forwardslash.chevron.right")
-                        .font(.system(size: 10))
-                        .foregroundColor(presenter.language == .swift ? Color.orange : Color.blue)
+            HStack(spacing: 12) {
+                Text("Code")
+                    .font(.system(size: 12, weight: .semibold))
+                    .foregroundColor(.white)
 
-                    Text("Solution.\(presenter.language.fileExtension)")
-                        .font(.system(size: 11, weight: .medium))
-                        .foregroundColor(.white)
-                }
-                .padding(.horizontal, 12)
-                .padding(.vertical, 8)
-                .background(Color.appGray800)
+                languageMenu
 
-                Rectangle()
-                    .fill(Color.appGray800)
-                    .frame(height: 32)
+                Text("Solution.\(presenter.language.fileExtension)")
+                    .font(.system(size: 11, weight: .medium, design: .monospaced))
+                    .foregroundColor(Color.appGray400)
 
                 Spacer()
             }
+            .padding(.horizontal, 12)
+            .padding(.vertical, 8)
             .background(Color.appGray900)
             .overlay(
                 Rectangle()
@@ -33,6 +28,35 @@ extension CodingEnvironmentView {
 
             CodeEditorView(code: $presenter.code, language: presenter.language)
         }
+    }
+
+    private var languageMenu: some View {
+        Menu {
+            ForEach(ProgrammingLanguage.allCases, id: \.rawValue) { lang in
+                Button(action: { presenter.changeLanguage(lang) }) {
+                    Text(lang.rawValue)
+                }
+            }
+        } label: {
+            HStack(spacing: 4) {
+                Image(systemName: presenter.language == .swift ? "swift" : "chevron.left.forwardslash.chevron.right")
+                    .font(.system(size: 10))
+                    .foregroundColor(presenter.language == .swift ? Color.orange : Color.blue)
+
+                Text(presenter.language.rawValue)
+                    .font(.system(size: 11, weight: .semibold))
+                    .foregroundColor(.white)
+
+                Image(systemName: "chevron.down")
+                    .font(.system(size: 9, weight: .semibold))
+                    .foregroundColor(Color.appGray500)
+            }
+            .padding(.horizontal, 10)
+            .padding(.vertical, 6)
+            .background(Color.appGray800)
+            .clipShape(RoundedRectangle(cornerRadius: 6))
+        }
+        .menuStyle(.borderlessButton)
     }
 
     var rightPanel: some View {

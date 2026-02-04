@@ -64,7 +64,7 @@ final class PlanPresenter: ObservableObject {
 
     private func bind() {
         interactor.dataPublisher
-            .receive(on: DispatchQueue.main)
+            .receive(on: RunLoop.main)
             .sink { [weak self] data in
                 self?.days = Self.buildDayViewModels(from: data)
             }

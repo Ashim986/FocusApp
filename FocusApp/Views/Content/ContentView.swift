@@ -16,16 +16,14 @@ enum Tab: String, CaseIterable {
 
 struct ContentRouter {
     let makePlan: () -> PlanView
-    let makeToday: (_ showFocusMode: Binding<Bool>, _ showCodeEnvironment: Binding<Bool>) -> TodayView
+    let makeToday: (_ showCodeEnvironment: Binding<Bool>) -> TodayView
     let makeStats: () -> StatsView
-    let makeFocus: (_ isPresented: Binding<Bool>) -> FocusOverlay
     let makeCoding: (_ isPresented: Binding<Bool>) -> CodingEnvironmentView
 }
 
 struct ContentView: View {
     @ObservedObject var presenter: ContentPresenter
     let router: ContentRouter
-    @State private var showFocusMode = false
     @State private var showCodeEnvironment = false
 
     var body: some View {
@@ -39,19 +37,13 @@ struct ContentView: View {
                         case .plan:
                             router.makePlan()
                         case .today:
-                            router.makeToday($showFocusMode, $showCodeEnvironment)
+                            router.makeToday($showCodeEnvironment)
                         case .stats:
                             router.makeStats()
                         }
                     }
                 }
-                .blur(radius: showFocusMode ? 10 : 0)
                 .allowsHitTesting(!showCodeEnvironment)
-
-                if showFocusMode {
-                    router.makeFocus($showFocusMode)
-                        .transition(.opacity)
-                }
 
                 if showCodeEnvironment {
                     router.makeCoding($showCodeEnvironment)
@@ -59,7 +51,6 @@ struct ContentView: View {
                         .zIndex(1)
                 }
             }
-            .animation(.easeInOut(duration: 0.3), value: showFocusMode)
             .animation(.easeInOut(duration: 0.3), value: showCodeEnvironment)
             .onAppear { presenter.onAppear() }
         }
@@ -108,22 +99,6 @@ struct ContentView: View {
                     }
                 }
 
-                Button(action: { showFocusMode = true }) {
-                    HStack(spacing: 6) {
-                        Image(systemName: "bolt.fill")
-                        Text("Focus")
-                    }
-                    .font(.system(size: 13, weight: .semibold))
-                    .foregroundColor(.white)
-                    .padding(.horizontal, 16)
-                    .padding(.vertical, 8)
-                    .background(
-                        RoundedRectangle(cornerRadius: 8)
-                            .fill(Color.appPurple)
-                    )
-                }
-                .buttonStyle(.plain)
-                .padding(.leading, 16)
             }
 
             HStack(spacing: 4) {

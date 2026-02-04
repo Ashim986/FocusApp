@@ -52,7 +52,9 @@ struct CodeEditorView: NSViewRepresentable {
 
         if context.coordinator.language != language {
             context.coordinator.language = language
+            textView.string = code
             context.coordinator.applySyntaxHighlighting()
+            return
         }
 
         if textView.string != code && !context.coordinator.isEditing {

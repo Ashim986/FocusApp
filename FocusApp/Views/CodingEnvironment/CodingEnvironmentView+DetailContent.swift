@@ -2,8 +2,19 @@ import SwiftUI
 
 enum ProblemDetailTab: String, CaseIterable {
     case description = "Description"
-    case solution = "Solution"
-    case history = "Submissions"
+    case editorial = "Editorial"
+    case submissions = "Submissions"
+
+    var icon: String {
+        switch self {
+        case .description:
+            return "doc.text"
+        case .editorial:
+            return "lightbulb"
+        case .submissions:
+            return "clock.arrow.circlepath"
+        }
+    }
 }
 
 extension CodingEnvironmentView {
@@ -19,13 +30,9 @@ extension CodingEnvironmentView {
             .frame(maxWidth: .infinity, maxHeight: .infinity)
         } else if let content = presenter.problemContent {
             VStack(alignment: .leading, spacing: 12) {
-                Text(content.title)
-                    .font(.system(size: 16, weight: .semibold))
-                    .foregroundColor(.white)
-
                 Text(attributedDescription(from: content.content))
-                    .font(.system(size: 14))
-                    .foregroundColor(Color.appGray200)
+                    .font(.system(size: 18))
+                    .foregroundColor(Color.appGray50)
                     .lineSpacing(4)
                     .textSelection(.enabled)
             }
@@ -44,7 +51,7 @@ extension CodingEnvironmentView {
     }
 
     @ViewBuilder
-    var solutionContent: some View {
+    var editorialContent: some View {
         VStack(alignment: .leading, spacing: 12) {
             solutionSection(title: "Intuition") {
                 Text("Explain the key insight that makes the solution work.")
@@ -163,7 +170,17 @@ extension CodingEnvironmentView {
     }
 
     private func attributedDescription(from html: String) -> AttributedString {
-        guard let data = html.data(using: .utf8) else {
+        let styledHTML = """
+        <style>
+        body { font-family: -apple-system; font-size: 18px; line-height: 1.6; color: #E6EDF8; }
+        p, li { font-size: 18px; }
+        h1, h2, h3, h4 { color: #FFFFFF; font-size: 20px; margin: 0 0 8px 0; }
+        strong { color: #F9FAFB; }
+        pre, code { font-family: Menlo, monospace; font-size: 16px; line-height: 1.5; }
+        </style>
+        \(html)
+        """
+        guard let data = styledHTML.data(using: .utf8) else {
             return AttributedString(html)
         }
         let options: [NSAttributedString.DocumentReadingOptionKey: Any] = [

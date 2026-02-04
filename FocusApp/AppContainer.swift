@@ -17,7 +17,6 @@ final class AppContainer {
     let todayPresenter: TodayPresenter
     let statsPresenter: StatsPresenter
     let settingsPresenter: SettingsPresenter
-    let focusPresenter: FocusPresenter
     let toolbarWidgetPresenter: ToolbarWidgetPresenter
     let codingEnvironmentPresenter: CodingEnvironmentPresenter
 
@@ -26,21 +25,14 @@ final class AppContainer {
             makePlan: { [unowned self] in
                 PlanView(presenter: planPresenter)
             },
-            makeToday: { [unowned self] focusBinding, codeBinding in
+            makeToday: { [unowned self] codeBinding in
                 TodayView(
                     presenter: todayPresenter,
-                    showFocusMode: focusBinding,
                     showCodeEnvironment: codeBinding
                 )
             },
             makeStats: { [unowned self] in
                 StatsView(presenter: statsPresenter)
-            },
-            makeFocus: { [unowned self] binding in
-                FocusOverlay(
-                    presenter: focusPresenter,
-                    isPresented: binding
-                )
             },
             makeCoding: { [unowned self] binding in
                 CodingEnvironmentView(
@@ -114,7 +106,6 @@ final class AppContainer {
                 leetCodeSync: leetCodeSync
             )
         )
-        self.focusPresenter = FocusPresenter()
         self.toolbarWidgetPresenter = ToolbarWidgetPresenter(
             interactor: ToolbarWidgetInteractor(appStore: appStore, leetCodeSync: leetCodeSync)
         )

@@ -135,6 +135,7 @@ final class PlanPresenterTests: XCTestCase {
     }
 }
 
+@MainActor
 private func makeLeetCodeSync(store: AppStateStore) -> LeetCodeSyncInteractor {
     LeetCodeSyncInteractor(appStore: store, client: FakeLeetCodeClient())
 }

@@ -39,12 +39,22 @@ extension CodingEnvironmentPresenter {
     func parseTestCases(from content: QuestionContent) {
         let inputs = content.exampleTestcases.components(separatedBy: "\n").filter { !$0.isEmpty }
         let outputs = parseOutputsFromHTML(content.content)
+        let meta = LeetCodeMetaData.decode(from: content.metaData)
 
         var cases: [TestCase] = []
-        for i in 0..<min(inputs.count, max(outputs.count, 1)) {
-            let input = inputs.indices.contains(i) ? inputs[i] : ""
-            let output = outputs.indices.contains(i) ? outputs[i] : "Expected output"
-            cases.append(TestCase(input: input, expectedOutput: output))
+        if let meta, !meta.isClassDesign, !meta.primaryParams.isEmpty {
+            let groupedInputs = groupInputs(inputs, size: meta.primaryParams.count)
+            for i in 0..<min(groupedInputs.count, max(outputs.count, 1)) {
+                let input = groupedInputs.indices.contains(i) ? groupedInputs[i] : ""
+                let output = outputs.indices.contains(i) ? outputs[i] : "Expected output"
+                cases.append(TestCase(input: input, expectedOutput: output))
+            }
+        } else {
+            for i in 0..<min(inputs.count, max(outputs.count, 1)) {
+                let input = inputs.indices.contains(i) ? inputs[i] : ""
+                let output = outputs.indices.contains(i) ? outputs[i] : "Expected output"
+                cases.append(TestCase(input: input, expectedOutput: output))
+            }
         }
 
         if cases.isEmpty && !content.sampleTestCase.isEmpty {
@@ -52,6 +62,20 @@ extension CodingEnvironmentPresenter {
         }
 
         testCases = cases
+    }
+
+    private func groupInputs(_ inputs: [String], size: Int) -> [String] {
+        guard size > 0 else { return inputs }
+        var grouped: [String] = []
+        var index = 0
+        while index < inputs.count {
+            let endIndex = min(index + size, inputs.count)
+            let group = inputs[index..<endIndex]
+            if group.count < size { break }
+            grouped.append(group.joined(separator: "\n"))
+            index = endIndex
+        }
+        return grouped
     }
 
     func parseOutputsFromHTML(_ html: String) -> [String] {

@@ -19,6 +19,7 @@ enum LeetCodeError: Error, LocalizedError {
     case noData
     case decodingError
     case invalidPayload
+    case graphQLError(String)
 
     var errorDescription: String? {
         switch self {
@@ -30,6 +31,8 @@ enum LeetCodeError: Error, LocalizedError {
             return "Failed to decode LeetCode response"
         case .invalidPayload:
             return "Unexpected data from LeetCode"
+        case .graphQLError(let message):
+            return "LeetCode GraphQL error: \(message)"
         }
     }
 }

@@ -31,7 +31,7 @@ final class PlanInteractor {
         guard !username.isEmpty else { return nil }
         return await leetCodeSync.syncSolvedProblems(
             username: username,
-            limit: LeetCodeConstants.recentSubmissionsLimit
+            limit: LeetCodeConstants.manualSubmissionsLimit
         )
     }
 

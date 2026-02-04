@@ -37,6 +37,32 @@ final class LeetCodeRestClientTests: XCTestCase {
         XCTAssertTrue(builder.lastEndpoint?.url.query?.contains("limit=20") == true)
     }
 
+    func testFetchSolvedSlugsFallsBackToGraphQLAll() async throws {
+        let builder = CapturingRequestBuilder()
+        let graphQLResponse = """
+        {"data":{"recentAcSubmissionList":[{"titleSlug":"add-two-numbers"}]}}
+        """
+        let executor = SequenceRequestExecutor(responses: [
+            Data("{\"submission\":[]}".utf8),
+            Data("{\"submission\":[]}".utf8),
+            Data(graphQLResponse.utf8)
+        ])
+        let client = LeetCodeRestClient(
+            baseURL: URL(string: "https://example.com")!,
+            graphQLURL: LeetCodeConstants.graphQLBaseURL,
+            requestBuilder: builder,
+            executor: executor
+        )
+
+        let slugs = try await client.fetchSolvedSlugs(
+            username: "user",
+            limit: LeetCodeConstants.manualSubmissionsLimit
+        )
+
+        XCTAssertEqual(slugs, ["add-two-numbers"])
+        XCTAssertEqual(builder.lastEndpoint?.url, LeetCodeConstants.graphQLBaseURL)
+    }
+
     func testFetchProblemContentMapsSnippets() async throws {
         let builder = CapturingRequestBuilder()
         let executor = StubRequestExecutor()
@@ -77,5 +103,20 @@ private final class StubRequestExecutor: RequestExecuting {
             throw error
         }
         return data
+    }
+}
+
+private final class SequenceRequestExecutor: RequestExecuting {
+    private var responses: [Data]
+
+    init(responses: [Data]) {
+        self.responses = responses
+    }
+
+    func execute(_ request: URLRequest) async throws -> Data {
+        guard !responses.isEmpty else {
+            throw LeetCodeError.noData
+        }
+        return responses.removeFirst()
     }
 }

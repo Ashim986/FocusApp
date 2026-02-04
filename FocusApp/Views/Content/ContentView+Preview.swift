@@ -34,7 +34,7 @@ struct ContentView_Previews: PreviewProvider {
                 )
                 return PlanView(presenter: planPresenter)
             },
-            makeToday: { focusBinding, codeBinding in
+            makeToday: { codeBinding in
                 let todayPresenter = TodayPresenter(
                     interactor: TodayInteractor(
                         appStore: appStore,
@@ -47,17 +47,12 @@ struct ContentView_Previews: PreviewProvider {
                 )
                 return TodayView(
                     presenter: todayPresenter,
-                    showFocusMode: focusBinding,
                     showCodeEnvironment: codeBinding
                 )
             },
             makeStats: {
                 let statsPresenter = StatsPresenter(interactor: StatsInteractor(appStore: appStore))
                 return StatsView(presenter: statsPresenter)
-            },
-            makeFocus: { binding in
-                let focusPresenter = FocusPresenter()
-                return FocusOverlay(presenter: focusPresenter, isPresented: binding)
             },
             makeCoding: { binding in
                 CodingEnvironmentView(presenter: codingPresenter, onBack: { binding.wrappedValue = false })

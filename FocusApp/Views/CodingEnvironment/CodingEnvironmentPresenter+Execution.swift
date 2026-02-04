@@ -15,9 +15,10 @@ extension CodingEnvironmentPresenter {
                     self.runTask = nil
                 }
             }
+            let executionCode = self.wrappedCodeForExecution()
             let runInput = testCases.first?.input ?? ""
             let result = await interactor.executeCode(
-                code: code,
+                code: executionCode,
                 language: language,
                 input: runInput
             )
@@ -55,12 +56,13 @@ extension CodingEnvironmentPresenter {
             var updatedTestCases = testCases
             var consoleLogs: [String] = []
             var errorLogs: [String] = []
+            let executionCode = self.wrappedCodeForExecution()
 
             for i in updatedTestCases.indices {
                 if Task.isCancelled { break }
                 let testCase = updatedTestCases[i]
                 let result = await interactor.executeCode(
-                    code: code,
+                    code: executionCode,
                     language: language,
                     input: testCase.input
                 )
@@ -115,6 +117,11 @@ extension CodingEnvironmentPresenter {
         runTask = nil
         isRunning = false
         errorOutput = "Execution stopped by user."
+    }
+
+    private func wrappedCodeForExecution() -> String {
+        guard let meta = LeetCodeMetaData.decode(from: problemContent?.metaData) else { return code }
+        return LeetCodeExecutionWrapper.wrap(code: code, language: language, meta: meta)
     }
 
     func normalizeOutputForComparison(_ output: String, expected: String) -> String {

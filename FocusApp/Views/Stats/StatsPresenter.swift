@@ -42,7 +42,7 @@ final class StatsPresenter: ObservableObject {
 
     private func bind() {
         interactor.dataPublisher
-            .receive(on: DispatchQueue.main)
+            .receive(on: RunLoop.main)
             .sink { [weak self] data in
                 self?.viewModel = Self.buildViewModel(from: data)
             }

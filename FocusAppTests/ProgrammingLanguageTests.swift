@@ -46,7 +46,8 @@ final class ProgrammingLanguageTests: XCTestCase {
             exampleTestcases: "[2,7,11,15]\n9",
             sampleTestCase: "[2,7,11,15]",
             difficulty: "Easy",
-            codeSnippets: snippets
+            codeSnippets: snippets,
+            metaData: nil
         )
 
         XCTAssertEqual(content.title, "Two Sum")

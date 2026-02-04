@@ -8,17 +8,20 @@ protocol LeetCodeClientProtocol {
 
 final class LeetCodeRestClient: LeetCodeClientProtocol {
     private let baseURL: URL
+    private let graphQLURL: URL
     private let requestBuilder: RequestBuilding
     private let executor: RequestExecuting
     private let decoder: JSONDecoder
 
     init(
         baseURL: URL,
+        graphQLURL: URL = LeetCodeConstants.graphQLBaseURL,
         requestBuilder: RequestBuilding,
         executor: RequestExecuting,
         decoder: JSONDecoder = JSONDecoder()
     ) {
         self.baseURL = baseURL
+        self.graphQLURL = graphQLURL
         self.requestBuilder = requestBuilder
         self.executor = executor
         self.decoder = decoder
@@ -38,16 +41,45 @@ final class LeetCodeRestClient: LeetCodeClientProtocol {
     }
 
     func fetchSolvedSlugs(username: String, limit: Int) async throws -> Set<String> {
-        let request = try makeRequest(
-            path: "\(username)/acSubmission",
-            queryItems: [
-                URLQueryItem(name: "limit", value: "\(limit)")
-            ]
-        )
-        let data = try await executor.execute(request)
-        let response = try decoder.decode(LeetCodeRestSubmissionListResponse.self, from: data)
-        let slugs = response.submissions.map { $0.titleSlug }
-        return Set(slugs)
+        var slugs = Set<String>()
+        let cappedLimit = min(limit, LeetCodeConstants.manualSubmissionsLimit)
+
+        do {
+            let submissions = try await fetchSubmissions(
+                username: username,
+                path: "acSubmission",
+                limit: cappedLimit
+            )
+            slugs.formUnion(submissions.map { $0.titleSlug })
+        } catch {
+            // Fall through to attempt broader submission fetch
+        }
+
+        if slugs.isEmpty {
+            let submissions = try await fetchSubmissions(
+                username: username,
+                path: "submission",
+                limit: cappedLimit
+            )
+            let accepted = submissions.filter { submission in
+                submission.statusDisplay?.caseInsensitiveCompare("accepted") == .orderedSame
+            }
+            slugs.formUnion(accepted.map { $0.titleSlug })
+        }
+
+        if slugs.isEmpty && limit >= LeetCodeConstants.manualSubmissionsLimit {
+            if let fallback = try? await fetchSolvedSlugsGraphQLAll(username: username, limit: cappedLimit) {
+                slugs.formUnion(fallback)
+            }
+        }
+
+        if slugs.isEmpty {
+            if let fallback = try? await fetchSolvedSlugsGraphQLRecent(username: username, limit: cappedLimit) {
+                slugs.formUnion(fallback)
+            }
+        }
+
+        return slugs
     }
 
     func fetchProblemContent(slug: String) async throws -> QuestionContent? {
@@ -62,14 +94,22 @@ final class LeetCodeRestClient: LeetCodeClientProtocol {
         let snippets = Dictionary(uniqueKeysWithValues: response.codeSnippets.map { ($0.langSlug, $0.code) })
         let title = response.title.isEmpty ? slug.replacingOccurrences(of: "-", with: " ").capitalized : response.title
 
-        return QuestionContent(
+        let restContent = QuestionContent(
             title: title,
             content: response.content,
             exampleTestcases: response.exampleTestcases,
             sampleTestCase: response.sampleTestCase,
             difficulty: response.difficulty.isEmpty ? "Unknown" : response.difficulty,
-            codeSnippets: snippets
+            codeSnippets: snippets,
+            metaData: response.metaData
         )
+
+        let needsFallback = restContent.metaData == nil || restContent.codeSnippets.isEmpty
+        if needsFallback, let fallback = try? await fetchProblemContentGraphQL(slug: slug) {
+            return mergeProblemContent(primary: restContent, fallback: fallback, slug: slug)
+        }
+
+        return restContent
     }
 
     private func makeRequest(
@@ -97,6 +137,184 @@ final class LeetCodeRestClient: LeetCodeClientProtocol {
             body: nil
         )
         return requestBuilder.buildRequest(for: endpoint)
+    }
+
+    private func makeGraphQLRequest(query: String, variables: [String: Any]) throws -> URLRequest {
+        let body = try JSONSerialization.data(withJSONObject: [
+            "query": query,
+            "variables": variables
+        ])
+        let endpoint = NetworkEndpoint(
+            url: graphQLURL,
+            method: .post,
+            headers: [
+                "Accept": "application/json",
+                "Content-Type": "application/json",
+                "User-Agent": "FocusApp/1.0"
+            ],
+            body: body
+        )
+        return requestBuilder.buildRequest(for: endpoint)
+    }
+
+    private func fetchSubmissions(
+        username: String,
+        path: String,
+        limit: Int
+    ) async throws -> [LeetCodeRestSubmission] {
+        let request = try makeRequest(
+            path: "\(username)/\(path)",
+            queryItems: [
+                URLQueryItem(name: "limit", value: "\(limit)")
+            ]
+        )
+        let data = try await executor.execute(request)
+        let response = try decoder.decode(LeetCodeRestSubmissionListResponse.self, from: data)
+        return response.submissions
+    }
+
+    private func fetchSolvedSlugsGraphQLRecent(username: String, limit: Int) async throws -> Set<String> {
+        let submissions = try await fetchGraphQLAcSubmissions(
+            username: username,
+            limit: min(limit, 200),
+            offset: nil
+        )
+        return Set(submissions.map { $0.titleSlug })
+    }
+
+    private func fetchSolvedSlugsGraphQLAll(username: String, limit: Int) async throws -> Set<String> {
+        let targetLimit = min(limit, LeetCodeConstants.manualSubmissionsLimit)
+        let pageSize = min(200, targetLimit)
+        var offset = 0
+        var slugs = Set<String>()
+        var seen = Set<String>()
+
+        while offset < targetLimit {
+            let submissions = try await fetchGraphQLAcSubmissions(
+                username: username,
+                limit: pageSize,
+                offset: offset
+            )
+            if submissions.isEmpty { break }
+
+            let beforeCount = slugs.count
+            for submission in submissions {
+                if seen.insert(submission.titleSlug).inserted {
+                    slugs.insert(submission.titleSlug)
+                }
+            }
+            if slugs.count == beforeCount { break }
+            if submissions.count < pageSize { break }
+
+            offset += pageSize
+        }
+
+        if slugs.isEmpty {
+            return try await fetchSolvedSlugsGraphQLRecent(username: username, limit: targetLimit)
+        }
+
+        return slugs
+    }
+
+    private func fetchGraphQLAcSubmissions(
+        username: String,
+        limit: Int,
+        offset: Int?
+    ) async throws -> [LeetCodeGraphQLSubmission] {
+        let query: String
+        var variables: [String: Any] = [
+            "username": username,
+            "limit": limit
+        ]
+
+        if let offset {
+            query = """
+            query recentAcSubmissions($username: String!, $limit: Int!, $offset: Int!) {
+              recentAcSubmissionList(username: $username, limit: $limit, offset: $offset) {
+                titleSlug
+              }
+            }
+            """
+            variables["offset"] = offset
+        } else {
+            query = """
+            query recentAcSubmissions($username: String!, $limit: Int!) {
+              recentAcSubmissionList(username: $username, limit: $limit) {
+                titleSlug
+              }
+            }
+            """
+        }
+
+        let request = try makeGraphQLRequest(query: query, variables: variables)
+        let data = try await executor.execute(request)
+        let response = try decoder.decode(LeetCodeGraphQLResponse<LeetCodeRecentAcSubmissionsData>.self, from: data)
+        if let errors = response.errors, !errors.isEmpty {
+            let message = errors.map { $0.message }.joined(separator: "; ")
+            throw LeetCodeError.graphQLError(message)
+        }
+        return response.data?.recentAcSubmissionList ?? []
+    }
+
+    private func fetchProblemContentGraphQL(slug: String) async throws -> QuestionContent? {
+        let query = """
+        query questionData($titleSlug: String!) {
+          question(titleSlug: $titleSlug) {
+            title
+            content
+            exampleTestcases
+            sampleTestCase
+            difficulty
+            codeSnippets {
+              langSlug
+              code
+            }
+            metaData
+          }
+        }
+        """
+        let request = try makeGraphQLRequest(query: query, variables: ["titleSlug": slug])
+        let data = try await executor.execute(request)
+        let response = try decoder.decode(LeetCodeGraphQLResponse<LeetCodeGraphQLQuestionData>.self, from: data)
+        if let errors = response.errors, !errors.isEmpty {
+            let message = errors.map { $0.message }.joined(separator: "; ")
+            throw LeetCodeError.graphQLError(message)
+        }
+        guard let question = response.data?.question else { return nil }
+
+        let snippets = Dictionary(uniqueKeysWithValues: question.codeSnippets.map { ($0.langSlug, $0.code) })
+        let title = question.title.isEmpty ? slug.replacingOccurrences(of: "-", with: " ").capitalized : question.title
+
+        return QuestionContent(
+            title: title,
+            content: question.content,
+            exampleTestcases: question.exampleTestcases,
+            sampleTestCase: question.sampleTestCase,
+            difficulty: question.difficulty.isEmpty ? "Unknown" : question.difficulty,
+            codeSnippets: snippets,
+            metaData: question.metaData
+        )
+    }
+
+    private func mergeProblemContent(primary: QuestionContent, fallback: QuestionContent, slug: String) -> QuestionContent {
+        let title = primary.title.isEmpty ? fallback.title : primary.title
+        let content = primary.content.isEmpty ? fallback.content : primary.content
+        let exampleTestcases = primary.exampleTestcases.isEmpty ? fallback.exampleTestcases : primary.exampleTestcases
+        let sampleTestCase = primary.sampleTestCase.isEmpty ? fallback.sampleTestCase : primary.sampleTestCase
+        let difficulty = primary.difficulty == "Unknown" ? fallback.difficulty : primary.difficulty
+        let snippets = primary.codeSnippets.isEmpty ? fallback.codeSnippets : primary.codeSnippets
+        let metaData = primary.metaData ?? fallback.metaData
+        let normalizedTitle = title.isEmpty ? slug.replacingOccurrences(of: "-", with: " ").capitalized : title
+
+        return QuestionContent(
+            title: normalizedTitle,
+            content: content,
+            exampleTestcases: exampleTestcases,
+            sampleTestCase: sampleTestCase,
+            difficulty: difficulty.isEmpty ? "Unknown" : difficulty,
+            codeSnippets: snippets,
+            metaData: metaData
+        )
     }
 }
 

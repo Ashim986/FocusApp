@@ -53,11 +53,7 @@ struct PlanCalendar {
         if let startDate {
             self.startDate = startDate
         } else {
-            var components = DateComponents()
-            components.year = 2026
-            components.month = 2
-            components.day = 3
-            self.startDate = calendar.date(from: components) ?? Date()
+            self.startDate = calendar.startOfDay(for: Date())
         }
     }
 

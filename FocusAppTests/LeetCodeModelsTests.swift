@@ -58,13 +58,15 @@ final class LeetCodeModelsTests: XCTestCase {
           "exampleTestcases": "1\\n2",
           "sampleTestCase": "1",
           "difficulty": "Medium",
-          "codeSnippets": [{"langSlug": "python3", "code": "# code"}]
+          "codeSnippets": [{"langSlug": "python3", "code": "# code"}],
+          "metaData": "{\\"name\\":\\"addTwoNumbers\\"}"
         }
         """
         let response: LeetCodeRestProblemResponse = try decode(json)
         XCTAssertEqual(response.title, "Add Two Numbers")
         XCTAssertEqual(response.content, "<p>Primary</p>")
         XCTAssertEqual(response.codeSnippets.first?.langSlug, "python3")
+        XCTAssertEqual(response.metaData, "{\"name\":\"addTwoNumbers\"}")
     }
 
     func testUserProfileResponseDecodesProfile() throws {

@@ -97,4 +97,5 @@ struct QuestionContent {
     let sampleTestCase: String
     let difficulty: String
     let codeSnippets: [String: String]  // langSlug -> code
+    let metaData: String?
 }

@@ -21,9 +21,8 @@ final class ContentRouterTests: XCTestCase {
 
         let router = ContentRouter(
             makePlan: { PlanView(presenter: presenter) },
-            makeToday: { _, _ in fatalError("not under test") },
+            makeToday: { _ in fatalError("not under test") },
             makeStats: { fatalError("not under test") },
-            makeFocus: { _ in fatalError("not under test") },
             makeCoding: { _ in fatalError("not under test") }
         )
 
@@ -50,20 +49,17 @@ final class ContentRouterTests: XCTestCase {
 
         let router = ContentRouter(
             makePlan: { fatalError("not under test") },
-            makeToday: { showFocus, showCode in
-                TodayView(presenter: presenter, showFocusMode: showFocus, showCodeEnvironment: showCode)
+            makeToday: { showCode in
+                TodayView(presenter: presenter, showCodeEnvironment: showCode)
             },
             makeStats: { fatalError("not under test") },
-            makeFocus: { _ in fatalError("not under test") },
             makeCoding: { _ in fatalError("not under test") }
         )
 
-        var showFocus = false
         var showCode = false
-        let focusBinding = Binding(get: { showFocus }, set: { showFocus = $0 })
         let codeBinding = Binding(get: { showCode }, set: { showCode = $0 })
 
-        let view = router.makeToday(focusBinding, codeBinding)
+        let view = router.makeToday(codeBinding)
 
         XCTAssertNotNil(view)
     }
@@ -81,33 +77,12 @@ final class ContentRouterTests: XCTestCase {
 
         let router = ContentRouter(
             makePlan: { fatalError("not under test") },
-            makeToday: { _, _ in fatalError("not under test") },
+            makeToday: { _ in fatalError("not under test") },
             makeStats: { StatsView(presenter: presenter) },
-            makeFocus: { _ in fatalError("not under test") },
             makeCoding: { _ in fatalError("not under test") }
         )
 
         let view = router.makeStats()
-
-        XCTAssertNotNil(view)
-    }
-
-    @MainActor
-    func testMakeFocusReturnsFocusOverlay() {
-        let presenter = FocusPresenter()
-
-        let router = ContentRouter(
-            makePlan: { fatalError("not under test") },
-            makeToday: { _, _ in fatalError("not under test") },
-            makeStats: { fatalError("not under test") },
-            makeFocus: { isPresented in FocusOverlay(presenter: presenter, isPresented: isPresented) },
-            makeCoding: { _ in fatalError("not under test") }
-        )
-
-        var isPresented = false
-        let binding = Binding(get: { isPresented }, set: { isPresented = $0 })
-
-        let view = router.makeFocus(binding)
 
         XCTAssertNotNil(view)
     }
@@ -131,9 +106,8 @@ final class ContentRouterTests: XCTestCase {
 
         let router = ContentRouter(
             makePlan: { fatalError("not under test") },
-            makeToday: { _, _ in fatalError("not under test") },
+            makeToday: { _ in fatalError("not under test") },
             makeStats: { fatalError("not under test") },
-            makeFocus: { _ in fatalError("not under test") },
             makeCoding: { isPresented in
                 CodingEnvironmentView(presenter: presenter, onBack: { isPresented.wrappedValue = false })
             }
@@ -148,6 +122,7 @@ final class ContentRouterTests: XCTestCase {
     }
 }
 
+@MainActor
 private func makeLeetCodeSync(store: AppStateStore) -> LeetCodeSyncInteractor {
     LeetCodeSyncInteractor(appStore: store, client: FakeLeetCodeClient())
 }

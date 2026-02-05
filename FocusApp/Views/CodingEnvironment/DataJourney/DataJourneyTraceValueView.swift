@@ -33,7 +33,7 @@ struct TraceValueView: View {
     @ViewBuilder
     private func arrayView(_ items: [TraceValue]) -> some View {
         if let adjacency = adjacencyList(from: items) {
-            GraphView(adjacency: adjacency)
+            GraphView(adjacency: adjacency, pointers: [])
         } else {
             sequenceView(items, showIndices: true)
         }
@@ -80,7 +80,8 @@ struct TraceValueView: View {
             items,
             showIndices: false,
             cycleIndex: list.cycleIndex,
-            isTruncated: list.isTruncated
+            isTruncated: list.isTruncated,
+            isDoubly: list.isDoubly
         )
     }
 
@@ -100,13 +101,15 @@ struct TraceValueView: View {
         _ items: [TraceValue],
         showIndices: Bool,
         cycleIndex: Int? = nil,
-        isTruncated: Bool = false
+        isTruncated: Bool = false,
+        isDoubly: Bool = false
     ) -> some View {
         SequenceBubbleRow(
             items: items,
             showIndices: showIndices,
             cycleIndex: cycleIndex,
             isTruncated: isTruncated,
+            isDoubly: isDoubly,
             pointers: []
         )
     }

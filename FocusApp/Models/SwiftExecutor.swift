@@ -64,11 +64,30 @@ final class SwiftExecutor: LanguageExecutor {
             ]
         )
         let compileResult = await compile(sourceFile: sourceFile, outputFile: executableFile)
-        if !compileResult.isSuccess {
+        if compileResult.exitCode != 0 || compileResult.timedOut || compileResult.wasCancelled {
             logResult(title: "Swift compile failed", result: compileResult)
             return compileResult
         }
-        logResult(title: "Swift compile finished", result: compileResult)
+        if !compileResult.error.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+            log(
+                level: .warning,
+                title: "Swift compile warning",
+                message: "Compiler emitted warnings.",
+                metadata: [
+                    "warning": trimForLog(compileResult.error)
+                ]
+            )
+            let sanitized = ExecutionResult(
+                output: compileResult.output,
+                error: "",
+                exitCode: compileResult.exitCode,
+                timedOut: compileResult.timedOut,
+                wasCancelled: compileResult.wasCancelled
+            )
+            logResult(title: "Swift compile finished", result: sanitized)
+        } else {
+            logResult(title: "Swift compile finished", result: compileResult)
+        }
 
         var isDirectory: ObjCBool = false
         let exists = fileManager.fileExists(atPath: executableFile.path, isDirectory: &isDirectory)

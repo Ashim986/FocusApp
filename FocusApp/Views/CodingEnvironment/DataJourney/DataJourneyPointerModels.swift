@@ -33,13 +33,30 @@ enum PointerPalette {
 struct PointerBadge: View {
     let text: String
     let color: Color
+    let fontSize: CGFloat
+    let horizontalPadding: CGFloat
+    let verticalPadding: CGFloat
+
+    init(
+        text: String,
+        color: Color,
+        fontSize: CGFloat = 8,
+        horizontalPadding: CGFloat = 6,
+        verticalPadding: CGFloat = 2
+    ) {
+        self.text = text
+        self.color = color
+        self.fontSize = fontSize
+        self.horizontalPadding = horizontalPadding
+        self.verticalPadding = verticalPadding
+    }
 
     var body: some View {
         Text(text)
-            .font(.system(size: 8, weight: .semibold))
+            .font(.system(size: fontSize, weight: .semibold))
             .foregroundColor(.white)
-            .padding(.horizontal, 6)
-            .padding(.vertical, 2)
+            .padding(.horizontal, horizontalPadding)
+            .padding(.vertical, verticalPadding)
             .background(
                 Capsule()
                     .fill(color)

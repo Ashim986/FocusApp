@@ -3,19 +3,26 @@ import SwiftUI
 struct TraceBubble: View {
     let text: String
     let fill: Color
+    let size: CGFloat
+
+    init(text: String, fill: Color, size: CGFloat = 30) {
+        self.text = text
+        self.fill = fill
+        self.size = size
+    }
 
     var body: some View {
         ZStack {
             Circle()
                 .fill(fill)
             Text(text)
-                .font(.system(size: 10, weight: .semibold))
+                .font(.system(size: max(8, size * 0.33), weight: .semibold))
                 .foregroundColor(.white)
                 .lineLimit(1)
                 .minimumScaleFactor(0.6)
                 .padding(.horizontal, 4)
         }
-        .frame(width: 30, height: 30)
+        .frame(width: size, height: size)
     }
 }
 

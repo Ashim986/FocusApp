@@ -5,6 +5,7 @@ struct SequenceBubbleRow: View {
     let showIndices: Bool
     let cycleIndex: Int?
     let isTruncated: Bool
+    let isDoubly: Bool
     let pointers: [PointerMarker]
 
     private let bubbleSize: CGFloat = 30
@@ -17,6 +18,7 @@ struct SequenceBubbleRow: View {
     private let arrowColor = Color.appPurple.opacity(0.8)
     private let loopArrowHeight: CGFloat = 18
     private let loopArrowColor = Color.appPurple.opacity(0.95)
+    private let doublyOffset: CGFloat = 8
     private let pointerSpacing: CGFloat = 2
     private let pointerHeight: CGFloat = 14
 
@@ -29,7 +31,7 @@ struct SequenceBubbleRow: View {
             ? 0
             : CGFloat(maxPointerCount) * (pointerHeight + pointerSpacing) + 4
         let groupHeight = bubbleSize + (showIndices ? (labelHeight + labelSpacing) : 0)
-        let rowHeight = groupHeight + loopInset + pointerInset
+        let rowHeight = groupHeight + loopInset + pointerInset + (isDoubly ? doublyOffset : 0)
         let totalWidth = bubbleSize + CGFloat(max(renderItems.count - 1, 0)) * centerSpacing
 
         return ScrollView(.horizontal, showsIndicators: false) {
@@ -53,6 +55,29 @@ struct SequenceBubbleRow: View {
                         path.addLine(to: end)
                         context.stroke(path, with: .color(arrowColor), lineWidth: arrowLineWidth)
                         drawArrowHead(context: &context, from: start, to: end, color: arrowColor)
+
+                        if isDoubly {
+                            let backY = y + doublyOffset
+                            let backStart = CGPoint(
+                                x: xPosition(for: index + 1) - bubbleRadius - arrowGap,
+                                y: backY
+                            )
+                            let backEnd = CGPoint(
+                                x: xPosition(for: index) + bubbleRadius + arrowGap,
+                                y: backY
+                            )
+                            guard backStart.x > backEnd.x else { continue }
+                            var backPath = Path()
+                            backPath.move(to: backStart)
+                            backPath.addLine(to: backEnd)
+                            context.stroke(backPath, with: .color(arrowColor.opacity(0.75)), lineWidth: 1.6)
+                            drawArrowHead(
+                                context: &context,
+                                from: backStart,
+                                to: backEnd,
+                                color: arrowColor.opacity(0.85)
+                            )
+                        }
                     }
 
                     if let cycleTarget {
@@ -194,7 +219,7 @@ struct SequenceBubbleRow: View {
         case .object(let map):
             return "o\(map.count)"
         case .list(let list):
-            return "l\(list.nodes.count)-\(list.cycleIndex ?? -1)-\(list.isTruncated)"
+            return "l\(list.nodes.count)-\(list.cycleIndex ?? -1)-\(list.isTruncated)-\(list.isDoubly)"
         case .tree(let tree):
             return "t\(tree.nodes.count)-\(tree.rootId ?? "nil")"
         case .listPointer(let id), .treePointer(let id):

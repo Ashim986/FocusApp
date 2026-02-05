@@ -198,18 +198,18 @@ extension LeetCodeExecutionWrapper {
             var current: ListNode? = node
             var visited: [ObjectIdentifier: Int] = [:]
             var index = 0
-            while let current, index < maxNodes {
-                let id = ObjectIdentifier(current)
+            while let currentNode = current, index < maxNodes {
+                let id = ObjectIdentifier(currentNode)
                 if let cycleAt = visited[id] {
                     return (nodes, cycleAt, false)
                 }
                 visited[id] = index
                 let nodePayload: [String: Any] = [
-                    "id": listNodeIdentifier(current),
-                    "value": current.val
+                    "id": listNodeIdentifier(currentNode),
+                    "value": currentNode.val
                 ]
                 nodes.append(nodePayload)
-                current = current.next
+                current = currentNode.next
                 index += 1
             }
             let truncated = current != nil

@@ -44,6 +44,7 @@ struct TraceList: Equatable {
     let nodes: [TraceListNode]
     let cycleIndex: Int?
     let isTruncated: Bool
+    let isDoubly: Bool
 }
 
 struct TraceTreeNode: Equatable {
@@ -136,7 +137,22 @@ extension TraceValue {
             let nodes = TraceValue.listNodes(from: dictValue["nodes"])
             let cycleIndex = TraceValue.intValue(from: dictValue["cycleIndex"])
             let isTruncated = (dictValue["truncated"] as? Bool) ?? false
-            return .list(TraceList(nodes: nodes, cycleIndex: cycleIndex, isTruncated: isTruncated))
+            return .list(TraceList(
+                nodes: nodes,
+                cycleIndex: cycleIndex,
+                isTruncated: isTruncated,
+                isDoubly: false
+            ))
+        case "doublylist":
+            let nodes = TraceValue.listNodes(from: dictValue["nodes"])
+            let cycleIndex = TraceValue.intValue(from: dictValue["cycleIndex"])
+            let isTruncated = (dictValue["truncated"] as? Bool) ?? false
+            return .list(TraceList(
+                nodes: nodes,
+                cycleIndex: cycleIndex,
+                isTruncated: isTruncated,
+                isDoubly: true
+            ))
         case "listpointer":
             if let id = dictValue["id"] as? String {
                 return .listPointer(id)

@@ -37,6 +37,8 @@ extension LeetCodeExecutionWrapper {
             ])
         }
 
+        traceValueLines.append(contentsOf: swiftRunnerDoublyListLines)
+
         traceValueLines.append(contentsOf: swiftRunnerTraceTailLines)
 
         let traceValueBody = traceValueLines.joined(separator: "\n")
@@ -76,6 +78,21 @@ extension LeetCodeExecutionWrapper {
         "                }",
         "                if let stringValue = value as? String { return stringValue }",
         "                return String(describing: value)"
+    ]
+
+    private static let swiftRunnerDoublyListLines: [String] = [
+        "                if isDoublyListNode(value) {",
+        "                    if structured {",
+        "                        let payload = traceDoublyListStructure(value)",
+        "                        var result: [String: Any] = [\"__type\": \"doublyList\", \"nodes\": payload.nodes]",
+        "                        if let cycleIndex = payload.cycleIndex {",
+        "                            result[\"cycleIndex\"] = cycleIndex",
+        "                        }",
+        "                        if payload.truncated { result[\"truncated\"] = true }",
+        "                        return result",
+        "                    }",
+        "                    return doublyListPointerPayload(value)",
+        "                }"
     ]
 
     private static let swiftRunnerTraceTemplateStart = """
@@ -133,6 +150,71 @@ extension LeetCodeExecutionWrapper {
                       let data = try? JSONSerialization.data(withJSONObject: payload),
                       let json = String(data: data, encoding: .utf8) else { return }
                 print(prefix + json)
+            }
+
+            private static func isDoublyListNode(_ value: Any) -> Bool {
+                let mirror = Mirror(reflecting: value)
+                guard mirror.displayStyle == .class else { return false }
+                let labels = Set(mirror.children.compactMap { $0.label })
+                let hasPrev = labels.contains("prev")
+                let hasNext = labels.contains("next")
+                let hasVal = labels.contains("val") || labels.contains("value")
+                return hasPrev && hasNext && hasVal
+            }
+
+            private static func doublyListPointerPayload(_ value: Any) -> Any {
+                guard let object = value as AnyObject? else { return NSNull() }
+                return ["__type": "listPointer", "id": doublyListIdentifier(object)]
+            }
+
+            private static func doublyListIdentifier(_ object: AnyObject) -> String {
+                String(ObjectIdentifier(object).hashValue)
+            }
+
+            private static func traceDoublyListStructure(_ value: Any, maxNodes: Int = 40) -> (
+                nodes: [Any],
+                cycleIndex: Int?,
+                truncated: Bool
+            ) {
+                guard let start = value as AnyObject? else { return ([], nil, false) }
+                var nodes: [Any] = []
+                var current: Any? = start
+                var visited: [ObjectIdentifier: Int] = [:]
+                var index = 0
+                while let currentValue = current, index < maxNodes {
+                    guard let currentObject = currentValue as AnyObject? else { break }
+                    let id = ObjectIdentifier(currentObject)
+                    if let cycleAt = visited[id] {
+                        return (nodes, cycleAt, false)
+                    }
+                    visited[id] = index
+                    let val = childValue(in: currentValue, names: ["val", "value"]) ?? NSNull()
+                    let payload: [String: Any] = [
+                        "id": doublyListIdentifier(currentObject),
+                        "value": traceValue(val, structured: true)
+                    ]
+                    nodes.append(payload)
+                    let nextValue = childValue(in: currentValue, names: ["next"]).flatMap { unwrapOptional($0) }
+                    current = nextValue
+                    index += 1
+                }
+                let truncated = current != nil
+                return (nodes, nil, truncated)
+            }
+
+            private static func childValue(in value: Any, names: [String]) -> Any? {
+                let mirror = Mirror(reflecting: value)
+                for child in mirror.children {
+                    guard let label = child.label else { continue }
+                    if names.contains(label) { return child.value }
+                }
+                return nil
+            }
+
+            private static func unwrapOptional(_ value: Any) -> Any? {
+                let mirror = Mirror(reflecting: value)
+                guard mirror.displayStyle == .optional else { return value }
+                return mirror.children.first?.value
             }
         }
 

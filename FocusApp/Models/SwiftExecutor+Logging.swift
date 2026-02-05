@@ -34,7 +34,7 @@ extension SwiftExecutor {
         )
     }
 
-    private func trimForLog(_ value: String, limit: Int = 240) -> String {
+    func trimForLog(_ value: String, limit: Int = 240) -> String {
         guard value.count > limit else { return value }
         return String(value.prefix(limit)) + "…"
     }

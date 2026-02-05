@@ -2,11 +2,14 @@ import SwiftUI
 
 struct GraphView: View {
     let adjacency: [[Int]]
+    let pointers: [PointerMarker]
     private let nodeSize: CGFloat = 30
+    private let pointerSpacing: CGFloat = 2
 
     var body: some View {
         GeometryReader { proxy in
             let layout = GraphLayout(adjacency: adjacency, size: proxy.size, nodeSize: nodeSize)
+            let pointersByIndex = groupedPointers
             ZStack {
                 Canvas { context, _ in
                     for edge in layout.edges {
@@ -18,8 +21,18 @@ struct GraphView: View {
                 }
 
                 ForEach(layout.nodes) { node in
-                    TraceBubble(text: "\(node.index)", fill: Color.appGray700)
-                        .position(node.position)
+                    ZStack(alignment: .top) {
+                        TraceBubble(text: "\(node.index)", fill: Color.appGray700)
+                        if let pointerStack = pointersByIndex[node.index] {
+                            VStack(spacing: pointerSpacing) {
+                                ForEach(pointerStack) { pointer in
+                                    PointerBadge(text: pointer.name, color: pointer.color)
+                                }
+                            }
+                            .offset(y: -(nodeSize * 0.8))
+                        }
+                    }
+                    .position(node.position)
                 }
             }
             .frame(height: layout.height)
@@ -30,6 +43,15 @@ struct GraphView: View {
     private var graphHeight: CGFloat {
         let base = CGFloat(adjacency.count) * 14
         return max(180, min(260, base))
+    }
+
+    private var groupedPointers: [Int: [PointerMarker]] {
+        var grouped: [Int: [PointerMarker]] = [:]
+        for pointer in pointers {
+            guard let index = pointer.index else { continue }
+            grouped[index, default: []].append(pointer)
+        }
+        return grouped
     }
 }
 

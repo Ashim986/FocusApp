@@ -219,6 +219,15 @@ extension LeetCodeExecutionWrapper {
     ) -> String {
         let argumentsString = arguments.joined(separator: "\n")
         let setupString = setupLines.joined(separator: "\n")
+        let traceArgsList = (0..<paramsCount).map { "arg\($0) as Any" }.joined(separator: ", ")
+        let traceInput = paramsCount == 0
+            ? ""
+            : """
+            let traceArgs: [Any] = [\(traceArgsList)]
+            if hasInput {
+                Trace.input(paramNames: paramNames, args: traceArgs)
+            }
+            """
         return """
 
         let inputData = FileHandle.standardInput.readDataToEndOfFile()
@@ -226,11 +235,9 @@ extension LeetCodeExecutionWrapper {
         let args = parseArgs(from: input, expectedCount: \(paramsCount))
         let hasInput = !args.isEmpty
         let solution = Solution()
-        if hasInput {
-            Trace.input(paramNames: paramNames, args: args)
-        }
         \(setupString)
         \(argumentsString)
+        \(traceInput)
         \(callLine)
         let output: Any = \(outputExpression)
         if hasInput {

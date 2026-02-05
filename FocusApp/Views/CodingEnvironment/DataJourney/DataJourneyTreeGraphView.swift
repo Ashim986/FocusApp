@@ -3,9 +3,30 @@ import SwiftUI
 struct TreeGraphView: View {
     let tree: TraceTree
     let pointers: [PointerMarker]
-    private let nodeSize: CGFloat = 30
+    let nodeSize: CGFloat
+    let pointerFontSize: CGFloat
+    let pointerHorizontalPadding: CGFloat
+    let pointerVerticalPadding: CGFloat
     private let levelSpacing: CGFloat = 50
     private let pointerSpacing: CGFloat = 2
+
+    private var pointerHeight: CGFloat { pointerFontSize + pointerVerticalPadding * 2 + 4 }
+
+    init(
+        tree: TraceTree,
+        pointers: [PointerMarker],
+        nodeSize: CGFloat = 30,
+        pointerFontSize: CGFloat = 8,
+        pointerHorizontalPadding: CGFloat = 6,
+        pointerVerticalPadding: CGFloat = 2
+    ) {
+        self.tree = tree
+        self.pointers = pointers
+        self.nodeSize = nodeSize
+        self.pointerFontSize = pointerFontSize
+        self.pointerHorizontalPadding = pointerHorizontalPadding
+        self.pointerVerticalPadding = pointerVerticalPadding
+    }
 
     var body: some View {
         GeometryReader { proxy in
@@ -28,14 +49,22 @@ struct TreeGraphView: View {
 
                 ForEach(layout.nodes) { node in
                     ZStack(alignment: .top) {
-                        TraceValueNode(value: node.value)
+                        TraceValueNode(value: node.value, size: nodeSize)
                         if let pointerStack = pointersById[node.id] {
+                            let stackHeight = CGFloat(pointerStack.count) * pointerHeight +
+                                CGFloat(max(pointerStack.count - 1, 0)) * pointerSpacing
                             VStack(spacing: pointerSpacing) {
                                 ForEach(pointerStack) { pointer in
-                                    PointerBadge(text: pointer.name, color: pointer.color)
+                                    PointerBadge(
+                                        text: pointer.name,
+                                        color: pointer.color,
+                                        fontSize: pointerFontSize,
+                                        horizontalPadding: pointerHorizontalPadding,
+                                        verticalPadding: pointerVerticalPadding
+                                    )
                                 }
                             }
-                            .offset(y: -(nodeSize * 0.8))
+                            .offset(y: -(nodeSize / 2 + stackHeight))
                         }
                     }
                     .position(node.position)
@@ -58,10 +87,16 @@ struct TreeGraphView: View {
 
 struct TraceValueNode: View {
     let value: TraceValue
+    let size: CGFloat
+
+    init(value: TraceValue, size: CGFloat = 30) {
+        self.value = value
+        self.size = size
+    }
 
     var body: some View {
         let model = TraceBubbleModel.from(value, compact: true)
-        return TraceBubble(text: model.text, fill: model.fill)
+        return TraceBubble(text: model.text, fill: model.fill, size: size)
     }
 }
 

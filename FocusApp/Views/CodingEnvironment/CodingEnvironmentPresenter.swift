@@ -32,6 +32,7 @@ final class CodingEnvironmentPresenter: ObservableObject {
     @Published var selectedJourneyEventID: UUID?
     @Published var highlightedExecutionLine: Int?
     @Published private(set) var isJourneyTruncated = false
+    @Published var codeResetNotice: String?
 
     let interactor: CodingEnvironmentInteractor
     let logger: DebugLogRecording?
@@ -210,6 +211,18 @@ final class CodingEnvironmentPresenter: ObservableObject {
             return
         }
         setCode(initialCode(for: problem, language: newLanguage))
+    }
+
+    func announceCodeReset(_ message: String) {
+        codeResetNotice = message
+        Task { [weak self] in
+            try? await Task.sleep(nanoseconds: 3_000_000_000)
+            await MainActor.run {
+                if self?.codeResetNotice == message {
+                    self?.codeResetNotice = nil
+                }
+            }
+        }
     }
 
     func addManualTestCase() {

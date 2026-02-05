@@ -35,7 +35,7 @@ struct ModernOutputView: View {
                         HStack(spacing: 4) {
                             if tab == .result && hasTestResults {
                                 Circle()
-                                    .fill(allTestsPassed ? Color.appGreen : Color.appRed)
+                                    .fill(resultIndicatorColor)
                                     .frame(width: 6, height: 6)
                             }
 
@@ -90,7 +90,25 @@ struct ModernOutputView: View {
         testCases.contains { $0.passed != nil }
     }
 
+    var hasFailures: Bool {
+        testCases.contains { $0.passed == false }
+    }
+
+    var hasPendingResults: Bool {
+        testCases.contains { $0.passed == nil }
+    }
+
     var allTestsPassed: Bool {
-        testCases.allSatisfy { $0.passed == true }
+        !testCases.isEmpty && !hasFailures && !hasPendingResults
+    }
+
+    var resultIndicatorColor: Color {
+        if hasFailures {
+            return Color.appRed
+        }
+        if allTestsPassed {
+            return Color.appGreen
+        }
+        return Color.appAmber
     }
 }

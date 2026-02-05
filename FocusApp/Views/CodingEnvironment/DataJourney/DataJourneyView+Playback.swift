@@ -1,85 +1,55 @@
 import SwiftUI
 
 extension DataJourneyView {
-    var stepControls: some View {
-        VStack(alignment: .leading, spacing: 8) {
-            HStack(spacing: 8) {
-                Button(action: selectPrevious) {
-                    Image(systemName: "backward.fill")
-                        .font(.system(size: 10, weight: .bold))
-                }
-                .buttonStyle(.plain)
-                .foregroundColor(currentPlaybackIndex == 0 ? Color.appGray600 : Color.appGray300)
-                .disabled(currentPlaybackIndex == 0)
+    enum StepControlsStyle {
+        case standalone
+        case embedded
+    }
 
-                Button(action: togglePlayback) {
-                    Image(systemName: isPlaying ? "pause.fill" : "play.fill")
-                        .font(.system(size: 10, weight: .bold))
-                }
-                .buttonStyle(.plain)
-                .foregroundColor(playbackEvents.count > 1 ? Color.appGray300 : Color.appGray600)
-                .disabled(playbackEvents.count <= 1)
+    func stepControls(style: StepControlsStyle = .standalone) -> some View {
+        let isEmbedded = style == .embedded
+        let iconSize: CGFloat = isEmbedded ? 9 : 10
+        let textSize: CGFloat = isEmbedded ? 9 : 10
+        let spacing: CGFloat = isEmbedded ? 6 : 8
+        let chipFontSize: CGFloat = isEmbedded ? 9 : 10
+        let chipVerticalPadding: CGFloat = isEmbedded ? 4 : 6
+        let controlPadding: CGFloat = isEmbedded ? 0 : 10
+        let pickerWidth: CGFloat = isEmbedded ? 120 : 140
+        let sliderHeight: CGFloat = isEmbedded ? 12 : 18
 
-                Button(action: selectNext) {
-                    Image(systemName: "forward.fill")
-                        .font(.system(size: 10, weight: .bold))
-                }
-                .buttonStyle(.plain)
-                .foregroundColor(currentPlaybackIndex >= playbackEvents.count - 1 ? Color.appGray600 : Color.appGray300)
-                .disabled(currentPlaybackIndex >= playbackEvents.count - 1)
-
-                Text(stepLabel(for: playbackEvents[currentPlaybackIndex]))
-                    .font(.system(size: 10, weight: .semibold))
-                    .foregroundColor(Color.appGray300)
-
-                Spacer()
-
-                Picker("Speed", selection: $playbackSpeed) {
-                    Text("0.5x").tag(0.5)
-                    Text("1x").tag(1.0)
-                    Text("1.5x").tag(1.5)
-                    Text("2x").tag(2.0)
-                }
-                .pickerStyle(.segmented)
-                .frame(width: 140)
-
-                if !isPlaying, currentPlaybackIndex >= playbackEvents.count - 1 {
-                    Button(action: { selectIndex(0) }, label: {
-                        Text("Start Over")
-                            .font(.system(size: 10, weight: .semibold))
-                            .foregroundColor(Color.appGray200)
-                            .padding(.horizontal, 10)
-                            .padding(.vertical, 6)
-                            .background(
-                                RoundedRectangle(cornerRadius: 6)
-                                    .fill(Color.appGray800)
-                            )
-                    })
-                    .buttonStyle(.plain)
-                }
-            }
+        return VStack(alignment: .leading, spacing: spacing) {
+            stepControlsHeader(
+                iconSize: iconSize,
+                textSize: textSize,
+                spacing: spacing,
+                pickerWidth: pickerWidth,
+                isEmbedded: isEmbedded
+            )
 
             let sliderBinding = Binding(
                 get: { Double(currentPlaybackIndex) },
                 set: { selectIndex(Int($0)) }
             )
             let sliderRange = 0...Double(max(playbackEvents.count - 1, 1))
-            if playbackEvents.count > 1 {
-                Slider(value: sliderBinding, in: sliderRange, step: 1)
-                    .tint(Color.appPurple)
-            } else {
-                Slider(value: sliderBinding, in: sliderRange)
-                    .tint(Color.appPurple)
-                    .disabled(true)
+            Group {
+                if playbackEvents.count > 1 {
+                    Slider(value: sliderBinding, in: sliderRange, step: 1)
+                        .tint(Color.appPurple)
+                } else {
+                    Slider(value: sliderBinding, in: sliderRange)
+                        .tint(Color.appPurple)
+                        .disabled(true)
+                }
             }
+            .frame(height: sliderHeight)
 
             if isTruncated {
                 HStack(spacing: 6) {
                     Image(systemName: "exclamationmark.triangle.fill")
-                        .font(.system(size: 10, weight: .semibold))
+                        .font(.system(size: textSize, weight: .semibold))
                         .foregroundColor(Color.appAmber)
                     Text("Showing first 40 steps. Reduce `Trace.step` calls to see more.")
-                        .font(.system(size: 9, weight: .medium))
+                        .font(.system(size: isEmbedded ? 8 : 9, weight: .medium))
                         .foregroundColor(Color.appAmber)
                 }
             }
@@ -95,10 +65,10 @@ extension DataJourneyView {
                                     .fill(event.id == selectedEventID ? Color.appPurple : Color.appGray600)
                                     .frame(width: 6, height: 6)
                                 Text(stepLabel(for: event))
-                                    .font(.system(size: 10, weight: .semibold))
+                                    .font(.system(size: chipFontSize, weight: .semibold))
                             }
                             .padding(.horizontal, 8)
-                            .padding(.vertical, 6)
+                            .padding(.vertical, chipVerticalPadding)
                             .background(
                                 RoundedRectangle(cornerRadius: 6)
                                     .fill(event.id == selectedEventID ? Color.appPurple.opacity(0.2) : Color.appGray800)
@@ -110,28 +80,155 @@ extension DataJourneyView {
                 .padding(.horizontal, 2)
             }
         }
-        .padding(10)
+        .padding(controlPadding)
         .background(
             RoundedRectangle(cornerRadius: 8)
-                .fill(Color.appGray900.opacity(0.35))
+                .fill(isEmbedded ? Color.clear : Color.appGray900.opacity(0.35))
         )
-        .onChange(of: isPlaying) { _, playing in
-            playbackTask?.cancel()
-            guard playing else { return }
-            playbackTask = Task {
-                await runPlaybackLoop()
+    }
+
+    func stepControlsHeader(style: StepControlsStyle = .standalone) -> some View {
+        let isEmbedded = style == .embedded
+        let iconSize: CGFloat = isEmbedded ? 9 : 10
+        let textSize: CGFloat = isEmbedded ? 9 : 10
+        let spacing: CGFloat = isEmbedded ? 6 : 8
+        let pickerWidth: CGFloat = isEmbedded ? 120 : 140
+
+        return stepControlsHeader(
+            iconSize: iconSize,
+            textSize: textSize,
+            spacing: spacing,
+            pickerWidth: pickerWidth,
+            isEmbedded: isEmbedded
+        )
+    }
+
+    func stepControlsTimeline(style: StepControlsStyle = .standalone) -> some View {
+        let isEmbedded = style == .embedded
+        let textSize: CGFloat = isEmbedded ? 9 : 10
+        let chipFontSize: CGFloat = isEmbedded ? 9 : 10
+        let chipVerticalPadding: CGFloat = isEmbedded ? 4 : 6
+        let sliderHeight: CGFloat = isEmbedded ? 12 : 18
+
+        let sliderBinding = Binding(
+            get: { Double(currentPlaybackIndex) },
+            set: { selectIndex(Int($0)) }
+        )
+        let sliderRange = 0...Double(max(playbackEvents.count - 1, 1))
+
+        return VStack(alignment: .leading, spacing: isEmbedded ? 6 : 8) {
+            Group {
+                if playbackEvents.count > 1 {
+                    Slider(value: sliderBinding, in: sliderRange, step: 1)
+                        .tint(Color.appPurple)
+                } else {
+                    Slider(value: sliderBinding, in: sliderRange)
+                        .tint(Color.appPurple)
+                        .disabled(true)
+                }
+            }
+            .frame(height: sliderHeight)
+
+            if isTruncated {
+                HStack(spacing: 6) {
+                    Image(systemName: "exclamationmark.triangle.fill")
+                        .font(.system(size: textSize, weight: .semibold))
+                        .foregroundColor(Color.appAmber)
+                    Text("Showing first 40 steps. Reduce `Trace.step` calls to see more.")
+                        .font(.system(size: isEmbedded ? 8 : 9, weight: .medium))
+                        .foregroundColor(Color.appAmber)
+                }
+            }
+
+            ScrollView(.horizontal, showsIndicators: false) {
+                HStack(spacing: 6) {
+                    ForEach(playbackEvents) { event in
+                        Button(action: {
+                            selectEvent(event)
+                        }, label: {
+                            HStack(spacing: 6) {
+                                Circle()
+                                    .fill(event.id == selectedEventID ? Color.appPurple : Color.appGray600)
+                                    .frame(width: 6, height: 6)
+                                Text(stepLabel(for: event))
+                                    .font(.system(size: chipFontSize, weight: .semibold))
+                            }
+                            .padding(.horizontal, 8)
+                            .padding(.vertical, chipVerticalPadding)
+                            .background(
+                                RoundedRectangle(cornerRadius: 6)
+                                    .fill(event.id == selectedEventID ? Color.appPurple.opacity(0.2) : Color.appGray800)
+                            )
+                        })
+                        .buttonStyle(.plain)
+                    }
+                }
+                .padding(.horizontal, 2)
             }
         }
-        .onChange(of: events.map(\.id)) { _, _ in
-            isPlaying = false
-            playbackTask?.cancel()
-            ensurePlaybackSelection()
-        }
-        .onAppear {
-            ensurePlaybackSelection()
-        }
-        .onDisappear {
-            playbackTask?.cancel()
+    }
+
+    private func stepControlsHeader(
+        iconSize: CGFloat,
+        textSize: CGFloat,
+        spacing: CGFloat,
+        pickerWidth: CGFloat,
+        isEmbedded: Bool
+    ) -> some View {
+        HStack(spacing: spacing) {
+            Button(action: selectPrevious) {
+                Image(systemName: "backward.fill")
+                    .font(.system(size: iconSize, weight: .bold))
+            }
+            .buttonStyle(.plain)
+            .foregroundColor(currentPlaybackIndex == 0 ? Color.appGray600 : Color.appGray300)
+            .disabled(currentPlaybackIndex == 0)
+
+            Button(action: togglePlayback) {
+                Image(systemName: isPlaying ? "pause.fill" : "play.fill")
+                    .font(.system(size: iconSize, weight: .bold))
+            }
+            .buttonStyle(.plain)
+            .foregroundColor(playbackEvents.count > 1 ? Color.appGray300 : Color.appGray600)
+            .disabled(playbackEvents.count <= 1)
+
+            Button(action: selectNext) {
+                Image(systemName: "forward.fill")
+                    .font(.system(size: iconSize, weight: .bold))
+            }
+            .buttonStyle(.plain)
+            .foregroundColor(currentPlaybackIndex >= playbackEvents.count - 1 ? Color.appGray600 : Color.appGray300)
+            .disabled(currentPlaybackIndex >= playbackEvents.count - 1)
+
+            Text(stepLabel(for: playbackEvents[currentPlaybackIndex]))
+                .font(.system(size: textSize, weight: .semibold))
+                .foregroundColor(Color.appGray300)
+
+            Spacer()
+
+            Picker("Speed", selection: $playbackSpeed) {
+                Text("0.5x").tag(0.5)
+                Text("1x").tag(1.0)
+                Text("1.5x").tag(1.5)
+                Text("2x").tag(2.0)
+            }
+            .pickerStyle(.segmented)
+            .frame(width: pickerWidth)
+
+            if !isPlaying, currentPlaybackIndex >= playbackEvents.count - 1 {
+                Button(action: { selectIndex(0) }, label: {
+                    Text("Start Over")
+                        .font(.system(size: textSize, weight: .semibold))
+                        .foregroundColor(Color.appGray200)
+                        .padding(.horizontal, isEmbedded ? 8 : 10)
+                        .padding(.vertical, isEmbedded ? 4 : 6)
+                        .background(
+                            RoundedRectangle(cornerRadius: 6)
+                                .fill(Color.appGray800)
+                        )
+                })
+                .buttonStyle(.plain)
+            }
         }
     }
 

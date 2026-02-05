@@ -2,19 +2,23 @@ import SwiftUI
 
 extension DataJourneyView {
     var content: some View {
-        VStack(alignment: .leading, spacing: 12) {
+        let structure = resolvedStructure
+        return VStack(alignment: .leading, spacing: 10) {
             if let input = inputEvent {
-                valuesSection(title: "Input", event: input)
+                valuesSection(title: "Input", event: input, style: .compact)
             }
 
-            if !playbackEvents.isEmpty {
-                stepControls
+            if let structure {
+                DataJourneyStructureCanvasView(
+                    inputEvent: inputEvent,
+                    selectedEvent: selectedEvent,
+                    structureOverride: structure,
+                    header: playbackEvents.isEmpty ? nil : AnyView(stepControlsHeader(style: .embedded)),
+                    footer: playbackEvents.isEmpty ? nil : AnyView(stepControlsTimeline(style: .embedded))
+                )
+            } else if !playbackEvents.isEmpty {
+                stepControls()
             }
-
-            DataJourneyStructureCanvasView(
-                inputEvent: inputEvent,
-                selectedEvent: selectedEvent
-            )
 
             if let selected = selectedEvent {
                 valuesSection(title: selectedTitle(for: selected), event: selected)
@@ -38,26 +42,41 @@ extension DataJourneyView {
         .frame(maxWidth: .infinity, alignment: .leading)
     }
 
-    func valuesSection(title: String, event: DataJourneyEvent) -> some View {
+    enum ValuesSectionStyle {
+        case standard
+        case compact
+    }
+
+    func valuesSection(
+        title: String,
+        event: DataJourneyEvent,
+        style: ValuesSectionStyle = .standard
+    ) -> some View {
         let listContext = resolvedListContext()
+        let isCompact = style == .compact
+        let verticalPadding: CGFloat = isCompact ? 8 : 10
+        let rowSpacing: CGFloat = isCompact ? 6 : 10
+        let titleSize: CGFloat = isCompact ? 9 : 10
+        let keyWidth: CGFloat = isCompact ? 70 : 80
+        let infoSize: CGFloat = isCompact ? 9 : 10
         return VStack(alignment: .leading, spacing: 8) {
             Text(title)
-                .font(.system(size: 10, weight: .semibold))
+                .font(.system(size: titleSize, weight: .semibold))
                 .foregroundColor(Color.appGray400)
 
             if event.values.isEmpty {
                 Text("No values captured for this step.")
-                    .font(.system(size: 10))
+                    .font(.system(size: infoSize))
                     .foregroundColor(Color.appGray500)
             } else {
-                VStack(alignment: .leading, spacing: 10) {
+                VStack(alignment: .leading, spacing: rowSpacing) {
                     ForEach(event.values.keys.sorted(), id: \.self) { key in
                         if let value = event.values[key] {
                             HStack(alignment: .center, spacing: 10) {
                                 Text(key)
-                                    .font(.system(size: 10, weight: .semibold))
+                                    .font(.system(size: infoSize, weight: .semibold))
                                     .foregroundColor(Color.appGray300)
-                                    .frame(width: 80, alignment: .leading)
+                                    .frame(width: keyWidth, alignment: .leading)
 
                                 valueView(for: value, listContext: listContext)
                             }
@@ -66,11 +85,16 @@ extension DataJourneyView {
                 }
             }
         }
-        .padding(10)
+        .padding(verticalPadding)
         .background(
             RoundedRectangle(cornerRadius: 8)
                 .fill(Color.appGray900.opacity(0.45))
         )
+    }
+
+    private var resolvedStructure: TraceStructure? {
+        if let fromInput = DataJourneyStructureCanvasView.structure(in: inputEvent) { return fromInput }
+        return DataJourneyStructureCanvasView.structure(in: selectedEvent)
     }
 
     @ViewBuilder

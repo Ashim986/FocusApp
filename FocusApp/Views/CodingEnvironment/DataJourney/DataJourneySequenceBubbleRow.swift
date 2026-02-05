@@ -8,19 +8,49 @@ struct SequenceBubbleRow: View {
     let isDoubly: Bool
     let pointers: [PointerMarker]
 
-    private let bubbleSize: CGFloat = 30
-    private let centerSpacing: CGFloat = 58
-    private let labelHeight: CGFloat = 12
+    let bubbleSize: CGFloat
+    let pointerFontSize: CGFloat
+    let pointerHorizontalPadding: CGFloat
+    let pointerVerticalPadding: CGFloat
+    let pointerSpacing: CGFloat
+
+    private var centerSpacing: CGFloat { bubbleSize * 1.9 }
+    private var labelHeight: CGFloat { bubbleSize * 0.4 }
     private let labelSpacing: CGFloat = 4
-    private let arrowGap: CGFloat = 6
-    private let arrowLineWidth: CGFloat = 2
-    private let arrowHeadSize: CGFloat = 8
+    private var arrowGap: CGFloat { bubbleSize * 0.2 }
+    private var arrowLineWidth: CGFloat { max(1.5, bubbleSize * 0.067) }
+    private var arrowHeadSize: CGFloat { bubbleSize * 0.27 }
     private let arrowColor = Color.appPurple.opacity(0.8)
-    private let loopArrowHeight: CGFloat = 18
+    private var loopArrowHeight: CGFloat { bubbleSize * 0.6 }
     private let loopArrowColor = Color.appPurple.opacity(0.95)
-    private let doublyOffset: CGFloat = 8
-    private let pointerSpacing: CGFloat = 2
-    private let pointerHeight: CGFloat = 14
+    private var doublyOffset: CGFloat { bubbleSize * 0.27 }
+    private var pointerHeight: CGFloat { pointerFontSize + pointerVerticalPadding * 2 + 4 }
+
+    init(
+        items: [TraceValue],
+        showIndices: Bool,
+        cycleIndex: Int?,
+        isTruncated: Bool,
+        isDoubly: Bool,
+        pointers: [PointerMarker],
+        bubbleSize: CGFloat = 30,
+        pointerFontSize: CGFloat = 8,
+        pointerHorizontalPadding: CGFloat = 6,
+        pointerVerticalPadding: CGFloat = 2,
+        pointerSpacing: CGFloat = 2
+    ) {
+        self.items = items
+        self.showIndices = showIndices
+        self.cycleIndex = cycleIndex
+        self.isTruncated = isTruncated
+        self.isDoubly = isDoubly
+        self.pointers = pointers
+        self.bubbleSize = bubbleSize
+        self.pointerFontSize = pointerFontSize
+        self.pointerHorizontalPadding = pointerHorizontalPadding
+        self.pointerVerticalPadding = pointerVerticalPadding
+        self.pointerSpacing = pointerSpacing
+    }
 
     var body: some View {
         let bubbleItems = bubbleItems(for: renderItems)
@@ -100,10 +130,10 @@ struct SequenceBubbleRow: View {
                     let model = TraceBubbleModel.from(item.value)
                     ZStack(alignment: .top) {
                         VStack(spacing: showIndices ? labelSpacing : 0) {
-                            TraceBubble(text: model.text, fill: model.fill)
+                            TraceBubble(text: model.text, fill: model.fill, size: bubbleSize)
                             if showIndices {
                                 Text("\(index)")
-                                    .font(.system(size: 8, weight: .semibold))
+                                    .font(.system(size: max(8, bubbleSize * 0.28), weight: .semibold))
                                     .foregroundColor(Color.appGray500)
                                     .frame(height: labelHeight)
                             }
@@ -111,7 +141,13 @@ struct SequenceBubbleRow: View {
                         if let pointerStack = pointersByIndex[index] {
                             VStack(spacing: pointerSpacing) {
                                 ForEach(pointerStack) { pointer in
-                                    PointerBadge(text: pointer.name, color: pointer.color)
+                                    PointerBadge(
+                                        text: pointer.name,
+                                        color: pointer.color,
+                                        fontSize: pointerFontSize,
+                                        horizontalPadding: pointerHorizontalPadding,
+                                        verticalPadding: pointerVerticalPadding
+                                    )
                                         .frame(height: pointerHeight)
                                 }
                             }

@@ -11,16 +11,46 @@ enum TraceStructure {
 struct DataJourneyStructureCanvasView: View {
     let inputEvent: DataJourneyEvent?
     let selectedEvent: DataJourneyEvent?
+    let structureOverride: TraceStructure?
+    let header: AnyView?
+    let footer: AnyView?
+
+    private let structureBubbleSize: CGFloat = 40
+    private let structurePointerFontSize: CGFloat = 10
+    private let structurePointerHorizontalPadding: CGFloat = 9
+    private let structurePointerVerticalPadding: CGFloat = 3
+
+    init(
+        inputEvent: DataJourneyEvent?,
+        selectedEvent: DataJourneyEvent?,
+        structureOverride: TraceStructure? = nil,
+        header: AnyView? = nil,
+        footer: AnyView? = nil
+    ) {
+        self.inputEvent = inputEvent
+        self.selectedEvent = selectedEvent
+        self.structureOverride = structureOverride
+        self.header = header
+        self.footer = footer
+    }
 
     var body: some View {
         guard let structure else {
             return AnyView(EmptyView())
         }
         return AnyView(
-            VStack(alignment: .leading, spacing: 8) {
-                Text("Structure")
-                    .font(.system(size: 10, weight: .semibold))
-                    .foregroundColor(Color.appGray400)
+            VStack(alignment: .leading, spacing: 6) {
+                HStack(spacing: 8) {
+                    Text("Structure")
+                        .font(.system(size: 10, weight: .semibold))
+                        .foregroundColor(Color.appGray400)
+
+                    Spacer()
+
+                    if let header {
+                        header
+                    }
+                }
 
                 switch structure {
                 case .list(let list):
@@ -30,10 +60,21 @@ struct DataJourneyStructureCanvasView: View {
                         cycleIndex: list.cycleIndex,
                         isTruncated: list.isTruncated,
                         isDoubly: list.isDoubly,
-                        pointers: pointerMarkers
+                        pointers: pointerMarkers,
+                        bubbleSize: structureBubbleSize,
+                        pointerFontSize: structurePointerFontSize,
+                        pointerHorizontalPadding: structurePointerHorizontalPadding,
+                        pointerVerticalPadding: structurePointerVerticalPadding
                     )
                 case .tree(let tree):
-                    TreeGraphView(tree: tree, pointers: pointerMarkers)
+                    TreeGraphView(
+                        tree: tree,
+                        pointers: pointerMarkers,
+                        nodeSize: structureBubbleSize,
+                        pointerFontSize: structurePointerFontSize,
+                        pointerHorizontalPadding: structurePointerHorizontalPadding,
+                        pointerVerticalPadding: structurePointerVerticalPadding
+                    )
                 case .array(let items):
                     SequenceBubbleRow(
                         items: items,
@@ -41,15 +82,38 @@ struct DataJourneyStructureCanvasView: View {
                         cycleIndex: nil,
                         isTruncated: false,
                         isDoubly: false,
-                        pointers: pointerMarkers
+                        pointers: pointerMarkers,
+                        bubbleSize: structureBubbleSize,
+                        pointerFontSize: structurePointerFontSize,
+                        pointerHorizontalPadding: structurePointerHorizontalPadding,
+                        pointerVerticalPadding: structurePointerVerticalPadding
                     )
                 case .graph(let adjacency):
-                    GraphView(adjacency: adjacency, pointers: pointerMarkers)
+                    GraphView(
+                        adjacency: adjacency,
+                        pointers: pointerMarkers,
+                        nodeSize: structureBubbleSize,
+                        pointerFontSize: structurePointerFontSize,
+                        pointerHorizontalPadding: structurePointerHorizontalPadding,
+                        pointerVerticalPadding: structurePointerVerticalPadding
+                    )
                 case .dictionary(let entries):
-                    DictionaryStructureRow(entries: entries, pointers: pointerMarkers)
+                    DictionaryStructureRow(
+                        entries: entries,
+                        pointers: pointerMarkers,
+                        bubbleSize: structureBubbleSize,
+                        pointerFontSize: structurePointerFontSize,
+                        pointerHorizontalPadding: structurePointerHorizontalPadding,
+                        pointerVerticalPadding: structurePointerVerticalPadding
+                    )
+                }
+
+                if let footer {
+                    footer
+                        .padding(.top, 6)
                 }
             }
-            .padding(10)
+            .padding(8)
             .background(
                 RoundedRectangle(cornerRadius: 8)
                     .fill(Color.appGray900.opacity(0.45))
@@ -58,11 +122,12 @@ struct DataJourneyStructureCanvasView: View {
     }
 
     private var structure: TraceStructure? {
-        if let fromInput = structure(in: inputEvent) { return fromInput }
-        return structure(in: selectedEvent)
+        if let structureOverride { return structureOverride }
+        if let fromInput = Self.structure(in: inputEvent) { return fromInput }
+        return Self.structure(in: selectedEvent)
     }
 
-    private func structure(in event: DataJourneyEvent?) -> TraceStructure? {
+    static func structure(in event: DataJourneyEvent?) -> TraceStructure? {
         guard let event else { return nil }
         for key in event.values.keys.sorted() {
             guard let value = event.values[key] else { continue }
@@ -168,7 +233,7 @@ struct DataJourneyStructureCanvasView: View {
         return allowed.contains(lowered)
     }
 
-    private func graphAdjacency(from items: [TraceValue]) -> [[Int]]? {
+    private static func graphAdjacency(from items: [TraceValue]) -> [[Int]]? {
         guard !items.isEmpty else { return nil }
         var rows: [[Int]] = []
         for item in items {
@@ -197,7 +262,7 @@ struct DataJourneyStructureCanvasView: View {
         return rows
     }
 
-    private func dictionaryEntries(from map: [String: TraceValue]) -> [DictionaryEntry] {
+    private static func dictionaryEntries(from map: [String: TraceValue]) -> [DictionaryEntry] {
         map.keys.sorted().compactMap { key in
             guard let value = map[key] else { return nil }
             return DictionaryEntry(key: key, value: value)
@@ -215,8 +280,30 @@ struct DictionaryStructureRow: View {
     let entries: [DictionaryEntry]
     let pointers: [PointerMarker]
 
+    let bubbleSize: CGFloat
+    let pointerFontSize: CGFloat
+    let pointerHorizontalPadding: CGFloat
+    let pointerVerticalPadding: CGFloat
     private let pointerSpacing: CGFloat = 2
-    private let pointerHeight: CGFloat = 14
+
+    private var pointerHeight: CGFloat { pointerFontSize + pointerVerticalPadding * 2 + 4 }
+    private var arrowSize: CGFloat { max(10, bubbleSize * 0.33) }
+
+    init(
+        entries: [DictionaryEntry],
+        pointers: [PointerMarker],
+        bubbleSize: CGFloat = 30,
+        pointerFontSize: CGFloat = 8,
+        pointerHorizontalPadding: CGFloat = 6,
+        pointerVerticalPadding: CGFloat = 2
+    ) {
+        self.entries = entries
+        self.pointers = pointers
+        self.bubbleSize = bubbleSize
+        self.pointerFontSize = pointerFontSize
+        self.pointerHorizontalPadding = pointerHorizontalPadding
+        self.pointerVerticalPadding = pointerVerticalPadding
+    }
 
     var body: some View {
         ScrollView(.horizontal, showsIndicators: false) {
@@ -227,20 +314,28 @@ struct DictionaryStructureRow: View {
                     VStack(spacing: 4) {
                         ZStack(alignment: .top) {
                             HStack(spacing: 6) {
-                                TraceBubble(text: entry.key, fill: Color.appGray700)
+                                TraceBubble(text: entry.key, fill: Color.appGray700, size: bubbleSize)
                                 Image(systemName: "arrow.right")
-                                    .font(.system(size: 10, weight: .semibold))
+                                    .font(.system(size: arrowSize, weight: .semibold))
                                     .foregroundColor(Color.appPurple.opacity(0.8))
-                                TraceBubble(text: model.text, fill: model.fill)
+                                TraceBubble(text: model.text, fill: model.fill, size: bubbleSize)
                             }
                             if !pointerStack.isEmpty {
+                                let stackHeight = CGFloat(pointerStack.count) * pointerHeight +
+                                    CGFloat(max(pointerStack.count - 1, 0)) * pointerSpacing
                                 VStack(spacing: pointerSpacing) {
                                     ForEach(pointerStack) { pointer in
-                                        PointerBadge(text: pointer.name, color: pointer.color)
+                                        PointerBadge(
+                                            text: pointer.name,
+                                            color: pointer.color,
+                                            fontSize: pointerFontSize,
+                                            horizontalPadding: pointerHorizontalPadding,
+                                            verticalPadding: pointerVerticalPadding
+                                        )
                                             .frame(height: pointerHeight)
                                     }
                                 }
-                                .offset(y: -18)
+                                .offset(y: -(stackHeight + bubbleSize * 0.2))
                             }
                         }
                     }

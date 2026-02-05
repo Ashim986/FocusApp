@@ -14,6 +14,24 @@ struct DataJourneyView: View {
             emptyState
         } else {
             content
+                .onChange(of: isPlaying) { _, playing in
+                    playbackTask?.cancel()
+                    guard playing else { return }
+                    playbackTask = Task {
+                        await runPlaybackLoop()
+                    }
+                }
+                .onChange(of: events.map(\.id)) { _, _ in
+                    isPlaying = false
+                    playbackTask?.cancel()
+                    ensurePlaybackSelection()
+                }
+                .onAppear {
+                    ensurePlaybackSelection()
+                }
+                .onDisappear {
+                    playbackTask?.cancel()
+                }
         }
     }
 }

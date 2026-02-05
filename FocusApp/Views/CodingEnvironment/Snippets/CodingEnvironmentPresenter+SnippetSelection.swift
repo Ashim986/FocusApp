@@ -10,7 +10,13 @@ extension CodingEnvironmentPresenter {
             let trimmed = storedCode.trimmingCharacters(in: .whitespacesAndNewlines)
             let defaultTrimmed = language.defaultTemplate.trimmingCharacters(in: .whitespacesAndNewlines)
             if trimmed != defaultTrimmed {
-                return storedCode
+                if let slug = LeetCodeSlugExtractor.extractSlug(from: problem.url),
+                   let cached = problemContentCache[slug],
+                   !isStoredCodeCompatible(storedCode, with: cached, language: language) {
+                    // Ignore stale code that doesn't match the current problem signature.
+                } else {
+                    return storedCode
+                }
             }
         }
 
@@ -35,7 +41,12 @@ extension CodingEnvironmentPresenter {
         if let storedCode = loadStoredCode(for: problem, language: language) {
             let trimmed = storedCode.trimmingCharacters(in: .whitespacesAndNewlines)
             if trimmed != defaultTrimmed {
-                return
+                if isStoredCodeCompatible(storedCode, with: content, language: language) {
+                    return
+                }
+                // Clear incompatible stored code so it doesn't keep reappearing.
+                interactor.saveSolution(code: "", for: solutionKey(for: problem, language: language))
+                announceCodeReset("Stored code didn't match this problem's signature. Reset to template.")
             }
         }
         let trimmed = code.trimmingCharacters(in: .whitespacesAndNewlines)
@@ -58,5 +69,48 @@ extension CodingEnvironmentPresenter {
             }
         }
         return nil
+    }
+
+    private func isStoredCodeCompatible(
+        _ storedCode: String,
+        with content: QuestionContent,
+        language: ProgrammingLanguage
+    ) -> Bool {
+        guard let meta = LeetCodeMetaData.decode(from: content.metaData) else { return true }
+
+        if meta.isClassDesign, let className = meta.className {
+            switch language {
+            case .swift:
+                let safeName = LeetCodeTemplateBuilder.swiftSafeIdentifier(className, index: 0)
+                let boundary = safeName.contains("`") ? "" : "\\b"
+                return storedCode.range(
+                    of: "\\b(class|struct)\\s+\(boundary)\(NSRegularExpression.escapedPattern(for: safeName))\(boundary)",
+                    options: .regularExpression
+                ) != nil
+            case .python:
+                let safeName = LeetCodeTemplateBuilder.pythonSafeIdentifier(className, index: 0)
+                return storedCode.range(
+                    of: "\\bclass\\s+\(NSRegularExpression.escapedPattern(for: safeName))\\b",
+                    options: .regularExpression
+                ) != nil
+            }
+        }
+
+        guard let name = meta.name else { return true }
+        switch language {
+        case .swift:
+            let safeName = LeetCodeTemplateBuilder.swiftSafeIdentifier(name, index: 0)
+            let boundary = safeName.contains("`") ? "" : "\\b"
+            return storedCode.range(
+                of: "\\bfunc\\s+\(boundary)\(NSRegularExpression.escapedPattern(for: safeName))\(boundary)",
+                options: .regularExpression
+            ) != nil
+        case .python:
+            let safeName = LeetCodeTemplateBuilder.pythonSafeIdentifier(name, index: 0)
+            return storedCode.range(
+                of: "\\bdef\\s+\(NSRegularExpression.escapedPattern(for: safeName))\\b",
+                options: .regularExpression
+            ) != nil
+        }
     }
 }

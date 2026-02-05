@@ -16,17 +16,18 @@ extension ModernOutputView {
         } else if hasTestResults {
             ScrollView {
                 VStack(alignment: .leading, spacing: 12) {
+                    let statusColor = hasFailures ? Color.appRed : (allTestsPassed ? Color.appGreen : Color.appAmber)
                     HStack(spacing: 10) {
-                        Image(systemName: allTestsPassed ? "checkmark.circle.fill" : "xmark.circle.fill")
+                        Image(systemName: hasFailures ? "xmark.circle.fill" : (allTestsPassed ? "checkmark.circle.fill" : "clock.fill"))
                             .font(.system(size: 24))
-                            .foregroundColor(allTestsPassed ? Color.appGreen : Color.appRed)
+                            .foregroundColor(statusColor)
 
                         VStack(alignment: .leading, spacing: 2) {
-                        Text(allTestsPassed
-                            ? L10n.Coding.Output.accepted
-                            : L10n.Coding.Output.wrongAnswer)
+                        Text(hasFailures
+                            ? L10n.Coding.Output.wrongAnswer
+                            : (allTestsPassed ? L10n.Coding.Output.accepted : L10n.Coding.Output.running))
                                 .font(.system(size: 14, weight: .semibold))
-                                .foregroundColor(allTestsPassed ? Color.appGreen : Color.appRed)
+                                .foregroundColor(statusColor)
 
                             let passedCount = testCases.filter { $0.passed == true }.count
                         Text(L10n.Coding.Output.testsPassed(passedCount, testCases.count))
@@ -39,7 +40,7 @@ extension ModernOutputView {
                     .padding(12)
                     .background(
                         RoundedRectangle(cornerRadius: 8)
-                            .fill((allTestsPassed ? Color.appGreen : Color.appRed).opacity(0.1))
+                            .fill(statusColor.opacity(0.1))
                     )
 
                     ForEach(Array(testCases.enumerated()), id: \.element.id) { index, testCase in

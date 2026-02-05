@@ -3,8 +3,31 @@ import SwiftUI
 struct GraphView: View {
     let adjacency: [[Int]]
     let pointers: [PointerMarker]
-    private let nodeSize: CGFloat = 30
-    private let pointerSpacing: CGFloat = 2
+    let nodeSize: CGFloat
+    let pointerFontSize: CGFloat
+    let pointerHorizontalPadding: CGFloat
+    let pointerVerticalPadding: CGFloat
+    let pointerSpacing: CGFloat
+
+    private var pointerHeight: CGFloat { pointerFontSize + pointerVerticalPadding * 2 + 4 }
+
+    init(
+        adjacency: [[Int]],
+        pointers: [PointerMarker],
+        nodeSize: CGFloat = 30,
+        pointerFontSize: CGFloat = 8,
+        pointerHorizontalPadding: CGFloat = 6,
+        pointerVerticalPadding: CGFloat = 2,
+        pointerSpacing: CGFloat = 2
+    ) {
+        self.adjacency = adjacency
+        self.pointers = pointers
+        self.nodeSize = nodeSize
+        self.pointerFontSize = pointerFontSize
+        self.pointerHorizontalPadding = pointerHorizontalPadding
+        self.pointerVerticalPadding = pointerVerticalPadding
+        self.pointerSpacing = pointerSpacing
+    }
 
     var body: some View {
         GeometryReader { proxy in
@@ -22,14 +45,22 @@ struct GraphView: View {
 
                 ForEach(layout.nodes) { node in
                     ZStack(alignment: .top) {
-                        TraceBubble(text: "\(node.index)", fill: Color.appGray700)
+                        TraceBubble(text: "\(node.index)", fill: Color.appGray700, size: nodeSize)
                         if let pointerStack = pointersByIndex[node.index] {
+                            let stackHeight = CGFloat(pointerStack.count) * pointerHeight +
+                                CGFloat(max(pointerStack.count - 1, 0)) * pointerSpacing
                             VStack(spacing: pointerSpacing) {
                                 ForEach(pointerStack) { pointer in
-                                    PointerBadge(text: pointer.name, color: pointer.color)
+                                    PointerBadge(
+                                        text: pointer.name,
+                                        color: pointer.color,
+                                        fontSize: pointerFontSize,
+                                        horizontalPadding: pointerHorizontalPadding,
+                                        verticalPadding: pointerVerticalPadding
+                                    )
                                 }
                             }
-                            .offset(y: -(nodeSize * 0.8))
+                            .offset(y: -(nodeSize / 2 + stackHeight))
                         }
                     }
                     .position(node.position)

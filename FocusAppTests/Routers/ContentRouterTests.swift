@@ -97,10 +97,12 @@ final class ContentRouterTests: XCTestCase {
         )
         let client = FakeLeetCodeClient()
         let executor = FakeCodeExecutor()
+        let solutionStore = FakeSolutionStore()
         let interactor = CodingEnvironmentInteractor(
             appStore: store,
             leetCodeClient: client,
-            executionService: executor
+            executionService: executor,
+            solutionStore: solutionStore
         )
         let presenter = CodingEnvironmentPresenter(interactor: interactor)
 
@@ -109,7 +111,7 @@ final class ContentRouterTests: XCTestCase {
             makeToday: { _ in fatalError("not under test") },
             makeStats: { fatalError("not under test") },
             makeCoding: { isPresented in
-                CodingEnvironmentView(presenter: presenter, onBack: { isPresented.wrappedValue = false })
+                CodingEnvironmentView(presenter: presenter, debugLogStore: DebugLogStore(), onBack: { isPresented.wrappedValue = false })
             }
         )
 

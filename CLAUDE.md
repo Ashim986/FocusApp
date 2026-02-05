@@ -10,42 +10,13 @@ FocusApp is a native macOS study companion app for Data Structures & Algorithms 
 FocusApp/
 ├── FocusApp.xcodeproj/              # Xcode project
 ├── FocusAppTests/                   # Unit tests (non-view logic)
-│   ├── Fixtures.swift
-│   ├── AppDataTests.swift
-│   ├── AppStateStoreTests.swift
-│   ├── CodeExecutionServiceTests.swift
-│   ├── CodingEnvironmentInteractorTests.swift
-│   ├── CodingEnvironmentPresenterTests.swift
-│   ├── ContentInteractorTests.swift
-│   ├── ContentPresenterTests.swift
-│   ├── ContentRouterTests.swift
-│   ├── DSAPlanTests.swift
-│   ├── ExecutionConfigTests.swift
-│   ├── ExecutorTests.swift
-│   ├── FocusPresenterTests.swift
-│   ├── LeetCodeConstantsTests.swift
-│   ├── LeetCodeErrorsTests.swift
-│   ├── LeetCodeModelsTests.swift
-│   ├── LeetCodeNetworkingTests.swift
-│   ├── LeetCodeRestClientTests.swift
-│   ├── LeetCodeSlugExtractorTests.swift
-│   ├── LeetCodeSyncInteractorTests.swift
-│   ├── LeetCodeSyncSchedulerTests.swift
-│   ├── NotificationManagerTests.swift
-│   ├── PlanCalendarTests.swift
-│   ├── PlanInteractorTests.swift
-│   ├── PlanPresenterTests.swift
-│   ├── ProcessRunnerTests.swift
-│   ├── ProgrammingLanguageTests.swift
-│   ├── SettingsInteractorTests.swift
-│   ├── SettingsPresenterTests.swift
-│   ├── SharedDataStoreTests.swift
-│   ├── StatsInteractorTests.swift
-│   ├── StatsPresenterTests.swift
-│   ├── TodayInteractorTests.swift
-│   ├── TodayPresenterTests.swift
-│   ├── ToolbarWidgetInteractorTests.swift
-│   └── ToolbarWidgetPresenterTests.swift
+│   ├── Interactors/
+│   ├── Models/
+│   ├── Presenters/
+│   ├── Routers/
+│   ├── Services/
+│   ├── Stores/
+│   └── Support/
 ├── FocusApp/                        # Main app source
 │   ├── FocusApp.swift               # App entry point, MenuBarExtra, FloatingWidgetController
 │   ├── AppContainer.swift           # Dependency injection container

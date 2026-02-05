@@ -12,10 +12,12 @@ final class CodingEnvironmentInteractorTests: XCTestCase {
         )
         let client = FakeLeetCodeClient()
         let executor = FakeCodeExecutor()
+        let solutionStore = FakeSolutionStore()
         let interactor = CodingEnvironmentInteractor(
             appStore: store,
             leetCodeClient: client,
-            executionService: executor
+            executionService: executor,
+            solutionStore: solutionStore
         )
 
         let problems = interactor.todaysProblems()
@@ -34,10 +36,12 @@ final class CodingEnvironmentInteractorTests: XCTestCase {
         )
         let client = FakeLeetCodeClient()
         let executor = FakeCodeExecutor()
+        let solutionStore = FakeSolutionStore()
         let interactor = CodingEnvironmentInteractor(
             appStore: store,
             leetCodeClient: client,
-            executionService: executor
+            executionService: executor,
+            solutionStore: solutionStore
         )
 
         XCTAssertFalse(interactor.isProblemCompleted(day: 1, problemIndex: 0))
@@ -57,10 +61,12 @@ final class CodingEnvironmentInteractorTests: XCTestCase {
         )
         let client = FakeLeetCodeClient()
         let executor = FakeCodeExecutor()
+        let solutionStore = FakeSolutionStore()
         let interactor = CodingEnvironmentInteractor(
             appStore: store,
             leetCodeClient: client,
-            executionService: executor
+            executionService: executor,
+            solutionStore: solutionStore
         )
 
         let key = "reverse-linked-list|swift"
@@ -79,10 +85,12 @@ final class CodingEnvironmentInteractorTests: XCTestCase {
         )
         let client = FakeLeetCodeClient()
         let executor = FakeCodeExecutor()
+        let solutionStore = FakeSolutionStore()
         let interactor = CodingEnvironmentInteractor(
             appStore: store,
             leetCodeClient: client,
-            executionService: executor
+            executionService: executor,
+            solutionStore: solutionStore
         )
 
         let key = "reverse-linked-list|swift"
@@ -110,10 +118,12 @@ final class CodingEnvironmentInteractorTests: XCTestCase {
             metaData: nil
         )
         let executor = FakeCodeExecutor()
+        let solutionStore = FakeSolutionStore()
         let interactor = CodingEnvironmentInteractor(
             appStore: store,
             leetCodeClient: client,
-            executionService: executor
+            executionService: executor,
+            solutionStore: solutionStore
         )
 
         let content = try await interactor.fetchProblemContent(slug: "reverse-linked-list")
@@ -132,11 +142,13 @@ final class CodingEnvironmentInteractorTests: XCTestCase {
         )
         let client = FakeLeetCodeClient()
         let executor = FakeCodeExecutor()
+        let solutionStore = FakeSolutionStore()
         executor.result = ExecutionResult(output: "Hello", error: "", exitCode: 0, timedOut: false, wasCancelled: false)
         let interactor = CodingEnvironmentInteractor(
             appStore: store,
             leetCodeClient: client,
-            executionService: executor
+            executionService: executor,
+            solutionStore: solutionStore
         )
 
         let result = await interactor.executeCode(code: "print(\"Hello\")", language: .swift, input: "")
@@ -156,10 +168,12 @@ final class CodingEnvironmentInteractorTests: XCTestCase {
         )
         let client = FakeLeetCodeClient()
         let executor = FakeCodeExecutor()
+        let solutionStore = FakeSolutionStore()
         let interactor = CodingEnvironmentInteractor(
             appStore: store,
             leetCodeClient: client,
-            executionService: executor
+            executionService: executor,
+            solutionStore: solutionStore
         )
 
         // Should not throw

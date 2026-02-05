@@ -23,7 +23,8 @@ final class CodingEnvironmentPresenterTests: XCTestCase {
             metaData: nil
         )
         let executor = FakeCodeExecutor()
-        let interactor = CodingEnvironmentInteractor(appStore: store, leetCodeClient: client, executionService: executor)
+        let solutionStore = FakeSolutionStore()
+        let interactor = CodingEnvironmentInteractor(appStore: store, leetCodeClient: client, executionService: executor, solutionStore: solutionStore)
         let presenter = CodingEnvironmentPresenter(interactor: interactor)
 
         let problem = dsaPlan[0].problems[0]
@@ -54,11 +55,12 @@ final class CodingEnvironmentPresenterTests: XCTestCase {
             metaData: nil
         )
         let executor = FakeCodeExecutor()
-        let interactor = CodingEnvironmentInteractor(appStore: store, leetCodeClient: client, executionService: executor)
+        let solutionStore = FakeSolutionStore()
+        let interactor = CodingEnvironmentInteractor(appStore: store, leetCodeClient: client, executionService: executor, solutionStore: solutionStore)
         let presenter = CodingEnvironmentPresenter(interactor: interactor)
 
         let problem = dsaPlan[0].problems[0]
-        let key = presenter.solutionKey(for: problem, language: .swift)
+        let key = presenter.solutionKey(for: problem, language: ProgrammingLanguage.swift)
         store.saveSolution(code: "print(\"hi\")", for: key)
 
         presenter.selectProblem(problem, at: 0, day: 1)

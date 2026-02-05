@@ -30,6 +30,9 @@
     "%lld%%" : {
 
     },
+    "Close" : {
+
+    },
     "coding.code_title" : {
       "extractionState" : "stale",
       "localizations" : {

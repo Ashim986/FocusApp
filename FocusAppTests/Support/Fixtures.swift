@@ -121,6 +121,22 @@ final class FakeLanguageExecutor: LanguageExecutor {
     }
 }
 
+final class FakeSolutionStore: SolutionProviding, @unchecked Sendable {
+    var solutionsBySlug: [String: ProblemSolution] = [:]
+
+    func solution(for slug: String) -> ProblemSolution? {
+        solutionsBySlug[slug]
+    }
+
+    func allSolutions() -> [ProblemSolution] {
+        Array(solutionsBySlug.values)
+    }
+
+    var solutionCount: Int {
+        solutionsBySlug.count
+    }
+}
+
 func makeDate(year: Int, month: Int, day: Int) -> Date {
     var components = DateComponents()
     components.year = year
@@ -201,4 +217,3 @@ final class FakeLeetCodeSyncInteractor {
         return syncResult
     }
 }
-

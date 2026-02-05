@@ -31,6 +31,7 @@ final class CodingEnvironmentPresenter: ObservableObject {
     @Published private(set) var dataJourney: [DataJourneyEvent] = []
     @Published var selectedJourneyEventID: UUID?
     @Published var highlightedExecutionLine: Int?
+    @Published private(set) var isJourneyTruncated = false
 
     let interactor: CodingEnvironmentInteractor
     let logger: DebugLogRecording?
@@ -156,10 +157,12 @@ final class CodingEnvironmentPresenter: ObservableObject {
         dataJourney = []
         selectedJourneyEventID = nil
         highlightedExecutionLine = nil
+        isJourneyTruncated = false
     }
 
-    func updateJourney(_ events: [DataJourneyEvent]) {
+    func updateJourney(_ events: [DataJourneyEvent], truncated: Bool = false) {
         dataJourney = events
+        isJourneyTruncated = truncated
         if let step = events.first(where: { $0.kind == .step }) {
             selectJourneyEvent(step)
         } else if let input = events.first(where: { $0.kind == .input }) {

@@ -47,15 +47,17 @@ extension CodeEditorView {
         }
 
         struct SyntaxColors {
-            let keyword = NSColor(Color.appPurple)
-            let type = NSColor(red: 0.35, green: 0.78, blue: 0.98, alpha: 1.0)
-            let function = NSColor(red: 0.65, green: 0.14, blue: 0.2, alpha: 1.0)
-            let declaration = NSColor(red: 0.65, green: 0.14, blue: 0.2, alpha: 1.0)
-            let string = NSColor(Color.appGreen)
-            let number = NSColor(Color.appAmber)
-            let comment = NSColor(Color.appGray500)
-            let `default` = NSColor.white
-            let executionHighlight = NSColor(Color.appPurple).withAlphaComponent(0.18)
+            // Xcode Default (Dark) theme values.
+            let keyword = NSColor(calibratedRed: 0.988394, green: 0.37355, blue: 0.638329, alpha: 1.0)
+            let type = NSColor(calibratedRed: 0.621449, green: 0.943864, blue: 0.868194, alpha: 1.0)
+            let function = NSColor(calibratedRed: 0.403922, green: 0.717647, blue: 0.643137, alpha: 1.0)
+            let variable = NSColor(calibratedRed: 0.405383, green: 0.717051, blue: 0.642088, alpha: 1.0)
+            let declaration = NSColor(calibratedRed: 0.988394, green: 0.37355, blue: 0.638329, alpha: 1.0)
+            let string = NSColor(calibratedRed: 0.989117, green: 0.41558, blue: 0.365684, alpha: 1.0)
+            let number = NSColor(calibratedRed: 0.814983, green: 0.749393, blue: 0.412334, alpha: 1.0)
+            let comment = NSColor(calibratedRed: 0.423943, green: 0.474618, blue: 0.525183, alpha: 1.0)
+            let `default` = NSColor(white: 1.0, alpha: 0.85)
+            let executionHighlight = NSColor(calibratedRed: 0.138526, green: 0.146864, blue: 0.169283, alpha: 1.0)
         }
 
         init(_ parent: CodeEditorView) {

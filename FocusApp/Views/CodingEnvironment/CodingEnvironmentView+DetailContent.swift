@@ -88,7 +88,8 @@ extension CodingEnvironmentView {
                     selectedEventID: $presenter.selectedJourneyEventID,
                     onSelectEvent: { event in
                         presenter.selectJourneyEvent(event)
-                    }
+                    },
+                    isTruncated: presenter.isJourneyTruncated
                 )
             }
 

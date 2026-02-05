@@ -626,13 +626,13 @@ struct LeetCodeExecutionWrapper {
         struct Trace {
             private static let prefix = "__focus_trace__"
 
-            static func step(_ label: String, _ values: [String: Any] = [:], line: Int = #line) {
+            static func step(_ label: String, _ values: [String: Any?] = [:], line: Int = #line) {
                 emit(kind: "step", line: line, label: label, values: values)
             }
 
             static func input(paramNames: [String], args: [Any]) {
                 guard !args.isEmpty else { return }
-                var values: [String: Any] = [:]
+                var values: [String: Any?] = [:]
                 for (index, name) in paramNames.enumerated() {
                     let value = index < args.count ? args[index] : NSNull()
                     values[name] = traceValue(value)
@@ -645,7 +645,20 @@ struct LeetCodeExecutionWrapper {
             }
 
             private static func traceValue(_ value: Any) -> Any {
+                let mirror = Mirror(reflecting: value)
+                if mirror.displayStyle == .optional {
+                    if let child = mirror.children.first {
+                        return traceValue(child.value)
+                    }
+                    return NSNull()
+                }
                 if value is NSNull { return NSNull() }
+                if let numberValue = value as? NSNumber {
+                    if CFGetTypeID(numberValue) == CFBooleanGetTypeID() {
+                        return numberValue.boolValue
+                    }
+                    return numberValue
+                }
                 if let boolValue = value as? Bool { return boolValue }
                 \(needsListNode ? "if let node = value as? ListNode { return [\"__type\": \"list\", \"value\": listNodeToArray(node)] }" : "")
                 \(needsTreeNode ? "if let node = value as? TreeNode { return [\"__type\": \"tree\", \"value\": treeNodeToArray(node)] }" : "")
@@ -659,15 +672,18 @@ struct LeetCodeExecutionWrapper {
                     }
                     return mapped
                 }
-                if let numberValue = value as? NSNumber { return numberValue }
                 if let stringValue = value as? String { return stringValue }
                 return String(describing: value)
             }
 
-            private static func emit(kind: String, line: Int? = nil, label: String? = nil, values: [String: Any]) {
+            private static func emit(kind: String, line: Int? = nil, label: String? = nil, values: [String: Any?]) {
                 var mapped: [String: Any] = [:]
                 for (key, val) in values {
-                    mapped[key] = traceValue(val)
+                    if let val {
+                        mapped[key] = traceValue(val)
+                    } else {
+                        mapped[key] = NSNull()
+                    }
                 }
                 var payload: [String: Any] = [
                     "kind": kind,
@@ -683,9 +699,14 @@ struct LeetCodeExecutionWrapper {
         }
 
         func jsonString(from value: Any) -> String {
-            if value is NSNull {
+            let mirror = Mirror(reflecting: value)
+            if mirror.displayStyle == .optional {
+                if let child = mirror.children.first {
+                    return jsonString(from: child.value)
+                }
                 return "null"
             }
+            if value is NSNull { return "null" }
             if JSONSerialization.isValidJSONObject(value),
                let data = try? JSONSerialization.data(withJSONObject: value),
                let string = String(data: data, encoding: .utf8) {

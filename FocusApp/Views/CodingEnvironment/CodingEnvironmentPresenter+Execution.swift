@@ -69,7 +69,7 @@ extension CodingEnvironmentPresenter {
                     code: self.code
                 )
                 if result.isSuccess, !parsed.events.isEmpty {
-                    self.updateJourney(parsed.events)
+                    self.updateJourney(parsed.events, truncated: parsed.isTruncated)
                 }
                 self.isRunning = false
             }
@@ -134,7 +134,7 @@ extension CodingEnvironmentPresenter {
                     }
                     self.testCases = updatedTestCases
                     if index == 0, result.isSuccess, !parsed.events.isEmpty {
-                        self.updateJourney(parsed.events)
+                        self.updateJourney(parsed.events, truncated: parsed.isTruncated)
                     }
                 }
 
@@ -269,12 +269,13 @@ extension CodingEnvironmentPresenter {
     private struct TraceParseResult {
         let events: [DataJourneyEvent]
         let cleanOutput: String
+        let isTruncated: Bool
     }
 
     private func parseTraceOutput(_ output: String) -> TraceParseResult {
         let prefix = "__focus_trace__"
         guard output.contains(prefix) else {
-            return TraceParseResult(events: [], cleanOutput: output)
+            return TraceParseResult(events: [], cleanOutput: output, isTruncated: false)
         }
 
         let lines = output.split(omittingEmptySubsequences: false, whereSeparator: \.isNewline)
@@ -295,8 +296,29 @@ extension CodingEnvironmentPresenter {
             }
         }
 
+        let capped = capTraceEvents(events)
         let cleanOutput = cleanLines.joined(separator: "\n")
-        return TraceParseResult(events: events, cleanOutput: cleanOutput)
+        return TraceParseResult(events: capped.events, cleanOutput: cleanOutput, isTruncated: capped.isTruncated)
+    }
+
+    private func capTraceEvents(_ events: [DataJourneyEvent]) -> (events: [DataJourneyEvent], isTruncated: Bool) {
+        let maxSteps = 40
+        var stepCount = 0
+        var capped: [DataJourneyEvent] = []
+        var isTruncated = false
+
+        for event in events {
+            if event.kind == .step {
+                guard stepCount < maxSteps else {
+                    isTruncated = true
+                    continue
+                }
+                stepCount += 1
+            }
+            capped.append(event)
+        }
+
+        return (capped, isTruncated)
     }
 
     private func extractPythonFallbackMessage(from lines: [Substring]) -> String? {

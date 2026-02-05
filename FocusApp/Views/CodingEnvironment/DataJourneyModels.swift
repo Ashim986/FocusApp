@@ -46,7 +46,6 @@ indirect enum TraceValue: Equatable {
 
     static func from(json: Any) -> TraceValue {
         if json is NSNull { return .null }
-        if let boolValue = json as? Bool { return .bool(boolValue) }
         if let number = json as? NSNumber {
             if CFGetTypeID(number) == CFBooleanGetTypeID() {
                 return .bool(number.boolValue)
@@ -56,6 +55,7 @@ indirect enum TraceValue: Equatable {
             let isInt = Double(intValue) == doubleValue
             return .number(doubleValue, isInt: isInt)
         }
+        if let boolValue = json as? Bool { return .bool(boolValue) }
         if let stringValue = json as? String { return .string(stringValue) }
         if let arrayValue = json as? [Any] {
             return .array(arrayValue.map { TraceValue.from(json: $0) })

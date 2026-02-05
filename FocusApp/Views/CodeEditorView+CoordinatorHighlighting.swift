@@ -283,18 +283,18 @@ extension CodeEditorView.Coordinator {
             "\\b(func|let|var|class|struct|enum|protocol|actor|extension|typealias|associatedtype)\\b",
             in: textStorage,
             text: text,
-            color: colors.declaration
+            color: colors.keyword
         )
-        highlightPattern("(?<=\\bclass\\s)\\w+", in: textStorage, text: text, color: colors.declaration)
-        highlightPattern("(?<=\\bstruct\\s)\\w+", in: textStorage, text: text, color: colors.declaration)
-        highlightPattern("(?<=\\benum\\s)\\w+", in: textStorage, text: text, color: colors.declaration)
-        highlightPattern("(?<=\\bprotocol\\s)\\w+", in: textStorage, text: text, color: colors.declaration)
-        highlightPattern("(?<=\\bactor\\s)\\w+", in: textStorage, text: text, color: colors.declaration)
-        highlightPattern("(?<=\\bextension\\s)\\w+", in: textStorage, text: text, color: colors.declaration)
-        highlightPattern("(?<=\\btypealias\\s)\\w+", in: textStorage, text: text, color: colors.declaration)
-        highlightPattern("(?<=\\bassociatedtype\\s)\\w+", in: textStorage, text: text, color: colors.declaration)
-        highlightPattern("(?<=\\blet\\s)\\w+", in: textStorage, text: text, color: colors.declaration)
-        highlightPattern("(?<=\\bvar\\s)\\w+", in: textStorage, text: text, color: colors.declaration)
+        highlightPattern("(?<=\\bclass\\s)\\w+", in: textStorage, text: text, color: colors.type)
+        highlightPattern("(?<=\\bstruct\\s)\\w+", in: textStorage, text: text, color: colors.type)
+        highlightPattern("(?<=\\benum\\s)\\w+", in: textStorage, text: text, color: colors.type)
+        highlightPattern("(?<=\\bprotocol\\s)\\w+", in: textStorage, text: text, color: colors.type)
+        highlightPattern("(?<=\\bactor\\s)\\w+", in: textStorage, text: text, color: colors.type)
+        highlightPattern("(?<=\\bextension\\s)\\w+", in: textStorage, text: text, color: colors.type)
+        highlightPattern("(?<=\\btypealias\\s)\\w+", in: textStorage, text: text, color: colors.type)
+        highlightPattern("(?<=\\bassociatedtype\\s)\\w+", in: textStorage, text: text, color: colors.type)
+        highlightPattern("(?<=\\blet\\s)\\w+", in: textStorage, text: text, color: colors.variable)
+        highlightPattern("(?<=\\bvar\\s)\\w+", in: textStorage, text: text, color: colors.variable)
     }
 
     private func highlightSwiftTypeAnnotations(

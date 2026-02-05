@@ -30,6 +30,18 @@
     "%lld%%" : {
 
     },
+    "0.5x" : {
+
+    },
+    "1.5x" : {
+
+    },
+    "1x" : {
+
+    },
+    "2x" : {
+
+    },
     "Add `Trace.step(\"label\", [\"key\": value])` inside loops to visualize iterations." : {
 
     },
@@ -2353,7 +2365,16 @@
         }
       }
     },
+    "Showing first 40 steps. Reduce `Trace.step` calls to see more." : {
+
+    },
     "Skip" : {
+
+    },
+    "Speed" : {
+
+    },
+    "Start Over" : {
 
     },
     "stats.card_days_left" : {

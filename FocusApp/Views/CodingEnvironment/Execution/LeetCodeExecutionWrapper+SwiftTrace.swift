@@ -8,7 +8,7 @@ extension LeetCodeExecutionWrapper {
             traceValueLines.append(contentsOf: [
                 "                if let node = value as? ListNode {",
                 "                    if structured {",
-                "                        let payload = traceListNodeStructure(node)",
+                "                        let payload = traceListNodeStructure(node, maxNodes: structuredNodeLimit)",
                 "                        var result: [String: Any] = [\"__type\": \"list\", \"nodes\": payload.nodes]",
                 "                        if let cycleIndex = payload.cycleIndex {",
                 "                            result[\"cycleIndex\"] = cycleIndex",
@@ -24,7 +24,7 @@ extension LeetCodeExecutionWrapper {
             traceValueLines.append(contentsOf: [
                 "                if let node = value as? TreeNode {",
                 "                    if structured {",
-                "                        let payload = traceTreeStructure(node)",
+                "                        let payload = traceTreeStructure(node, maxNodes: structuredNodeLimit)",
                 "                        var result: [String: Any] = [\"__type\": \"tree\", \"nodes\": payload.nodes]",
                 "                        if let rootId = payload.rootId {",
                 "                            result[\"rootId\"] = rootId",
@@ -62,17 +62,43 @@ extension LeetCodeExecutionWrapper {
         "                    }",
         "                    return numberValue",
         "                }",
+        "                if let intValue = value as? Int { return intValue }",
+        "                if let doubleValue = value as? Double { return doubleValue }",
+        "                if let floatValue = value as? Float { return Double(floatValue) }",
         "                if let boolValue = value as? Bool { return boolValue }"
     ]
 
     private static let swiftRunnerTraceTailLines: [String] = [
         "                if let array = value as? [Any] {",
+        "                    if structured {",
+        "                        let isSimple = array.allSatisfy { isSimpleValue($0) }",
+        "                        let limit = isSimple ? structuredSimpleArrayLimit : structuredComplexArrayLimit",
+        "                        if array.count > limit { didTruncate = true }",
+        "                        return array.prefix(limit).map { traceValue($0, structured: structured) }",
+        "                    }",
         "                    return array.map { traceValue($0, structured: structured) }",
         "                }",
         "                if let dict = value as? [String: Any] {",
         "                    var mapped: [String: Any] = [:]",
-        "                    for (key, val) in dict {",
-        "                        mapped[key] = traceValue(val, structured: structured)",
+        "                    let keys = Array(dict.keys).sorted()",
+        "                    if structured {",
+        "                        let isSimple = keys.allSatisfy { key in",
+        "                            if let value = dict[key] { return isSimpleValue(value) }",
+        "                            return true",
+        "                        }",
+        "                        let limit = isSimple ? structuredSimpleDictLimit : structuredComplexDictLimit",
+        "                        if keys.count > limit { didTruncate = true }",
+        "                        for key in keys.prefix(limit) {",
+        "                            if let val = dict[key] {",
+        "                                mapped[key] = traceValue(val, structured: structured)",
+        "                            }",
+        "                        }",
+        "                        return mapped",
+        "                    }",
+        "                    for key in keys {",
+        "                        if let val = dict[key] {",
+        "                            mapped[key] = traceValue(val, structured: structured)",
+        "                        }",
         "                    }",
         "                    return mapped",
         "                }",
@@ -83,7 +109,7 @@ extension LeetCodeExecutionWrapper {
     private static let swiftRunnerDoublyListLines: [String] = [
         "                if isDoublyListNode(value) {",
         "                    if structured {",
-        "                        let payload = traceDoublyListStructure(value)",
+        "                        let payload = traceDoublyListStructure(value, maxNodes: structuredNodeLimit)",
         "                        var result: [String: Any] = [\"__type\": \"doublyList\", \"nodes\": payload.nodes]",
         "                        if let cycleIndex = payload.cycleIndex {",
         "                            result[\"cycleIndex\"] = cycleIndex",
@@ -99,8 +125,21 @@ extension LeetCodeExecutionWrapper {
 
         struct Trace {
             private static let prefix = "__focus_trace__"
+            private static var stepCount = 0
+            private static let stepLimit = 40
+            private static var didTruncate = false
+            private static let structuredNodeLimit = 25
+            private static let structuredSimpleArrayLimit = 50
+            private static let structuredComplexArrayLimit = 8
+            private static let structuredSimpleDictLimit = 30
+            private static let structuredComplexDictLimit = 10
 
             static func step(_ label: String, _ values: [String: Any?] = [:], line: Int = #line) {
+                guard stepCount < stepLimit else {
+                    didTruncate = true
+                    return
+                }
+                stepCount += 1
                 emit(kind: "step", line: line, label: label, values: values, structured: false)
             }
 
@@ -111,11 +150,19 @@ extension LeetCodeExecutionWrapper {
                     let value = index < args.count ? args[index] : NSNull()
                     values[name] = traceValue(value, structured: true)
                 }
+                values["__trace_truncated"] = didTruncate
                 emit(kind: "input", values: values, structured: true)
             }
 
             static func output(_ value: Any) {
-                emit(kind: "output", values: ["result": traceValue(value, structured: true)], structured: true)
+                emit(
+                    kind: "output",
+                    values: [
+                        "result": traceValue(value, structured: true),
+                        "__trace_truncated": didTruncate
+                    ],
+                    structured: true
+                )
             }
 
             private static func traceValue(_ value: Any, structured: Bool) -> Any {
@@ -215,6 +262,24 @@ extension LeetCodeExecutionWrapper {
                 let mirror = Mirror(reflecting: value)
                 guard mirror.displayStyle == .optional else { return value }
                 return mirror.children.first?.value
+            }
+
+            private static func isSimpleValue(_ value: Any) -> Bool {
+                let mirror = Mirror(reflecting: value)
+                if mirror.displayStyle == .optional {
+                    if let child = mirror.children.first {
+                        return isSimpleValue(child.value)
+                    }
+                    return true
+                }
+                if value is NSNull { return true }
+                if value is NSNumber { return true }
+                if value is Int { return true }
+                if value is Double { return true }
+                if value is Float { return true }
+                if value is Bool { return true }
+                if value is String { return true }
+                return false
             }
         }
 

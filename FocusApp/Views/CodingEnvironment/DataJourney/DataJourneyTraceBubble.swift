@@ -1,20 +1,25 @@
 import SwiftUI
 
 struct TraceBubble: View {
+    enum Style {
+        case solid
+    }
+
     let text: String
     let fill: Color
     let size: CGFloat
+    let style: Style
 
-    init(text: String, fill: Color, size: CGFloat = 30) {
+    init(text: String, fill: Color, size: CGFloat = 30, style: Style = .solid) {
         self.text = text
         self.fill = fill
         self.size = size
+        self.style = style
     }
 
     var body: some View {
         ZStack {
-            Circle()
-                .fill(fill)
+            bubbleBackground
             Text(text)
                 .font(.system(size: max(8, size * 0.33), weight: .semibold))
                 .foregroundColor(.white)
@@ -23,6 +28,15 @@ struct TraceBubble: View {
                 .padding(.horizontal, 4)
         }
         .frame(width: size, height: size)
+    }
+
+    @ViewBuilder
+    private var bubbleBackground: some View {
+        switch style {
+        case .solid:
+            Circle()
+                .fill(fill)
+        }
     }
 }
 
@@ -62,4 +76,5 @@ struct TraceBubbleModel {
             return from(inner, compact: compact)
         }
     }
+
 }

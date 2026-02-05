@@ -7,6 +7,7 @@ struct TreeGraphView: View {
     let pointerFontSize: CGFloat
     let pointerHorizontalPadding: CGFloat
     let pointerVerticalPadding: CGFloat
+    let bubbleStyle: TraceBubble.Style
     private let levelSpacing: CGFloat = 50
     private let pointerSpacing: CGFloat = 2
 
@@ -15,6 +16,7 @@ struct TreeGraphView: View {
     init(
         tree: TraceTree,
         pointers: [PointerMarker],
+        bubbleStyle: TraceBubble.Style = .solid,
         nodeSize: CGFloat = 30,
         pointerFontSize: CGFloat = 8,
         pointerHorizontalPadding: CGFloat = 6,
@@ -26,6 +28,7 @@ struct TreeGraphView: View {
         self.pointerFontSize = pointerFontSize
         self.pointerHorizontalPadding = pointerHorizontalPadding
         self.pointerVerticalPadding = pointerVerticalPadding
+        self.bubbleStyle = bubbleStyle
     }
 
     var body: some View {
@@ -49,7 +52,7 @@ struct TreeGraphView: View {
 
                 ForEach(layout.nodes) { node in
                     ZStack(alignment: .top) {
-                        TraceValueNode(value: node.value, size: nodeSize)
+                        TraceValueNode(value: node.value, size: nodeSize, style: bubbleStyle)
                         if let pointerStack = pointersById[node.id] {
                             let stackHeight = CGFloat(pointerStack.count) * pointerHeight +
                                 CGFloat(max(pointerStack.count - 1, 0)) * pointerSpacing
@@ -88,15 +91,17 @@ struct TreeGraphView: View {
 struct TraceValueNode: View {
     let value: TraceValue
     let size: CGFloat
+    let style: TraceBubble.Style
 
-    init(value: TraceValue, size: CGFloat = 30) {
+    init(value: TraceValue, size: CGFloat = 30, style: TraceBubble.Style = .solid) {
         self.value = value
         self.size = size
+        self.style = style
     }
 
     var body: some View {
         let model = TraceBubbleModel.from(value, compact: true)
-        return TraceBubble(text: model.text, fill: model.fill, size: size)
+        return TraceBubble(text: model.text, fill: model.fill, size: size, style: style)
     }
 }
 

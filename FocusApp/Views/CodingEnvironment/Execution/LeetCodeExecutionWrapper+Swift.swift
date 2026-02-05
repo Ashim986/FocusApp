@@ -41,6 +41,7 @@ extension LeetCodeExecutionWrapper {
         let callSuffix = callArgs.isEmpty ? "()" : "(\(callArgs))"
         let callLine = "let result = solution.\(resolvedMethodName)\(callSuffix)"
         let outputExpression = swiftOutputExpression(for: returnType)
+        let traceOutputExpression = (returnType == .listNode || returnType == .treeNode) ? "result" : "output"
         let paramNamesLiteral = swiftParamNamesLiteral(params)
 
         let runner = [
@@ -52,6 +53,7 @@ extension LeetCodeExecutionWrapper {
                 arguments: arguments,
                 callLine: callLine,
                 outputExpression: outputExpression,
+                traceOutputExpression: traceOutputExpression,
                 setupLines: isSingleListNode ? ["let cyclePos = parseCyclePos(from: input)"] : []
             )
         ].joined()

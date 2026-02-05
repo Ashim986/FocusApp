@@ -7,6 +7,10 @@ struct SequenceBubbleRow: View {
     let isTruncated: Bool
     let isDoubly: Bool
     let pointers: [PointerMarker]
+    let pointerMotions: [PointerMotion]
+    let sequenceLinks: [SequenceLink]
+    let gapIndices: Set<Int>
+    let bubbleStyle: TraceBubble.Style
 
     let bubbleSize: CGFloat
     let pointerFontSize: CGFloat
@@ -17,9 +21,14 @@ struct SequenceBubbleRow: View {
     private var centerSpacing: CGFloat { bubbleSize * 1.9 }
     private var labelHeight: CGFloat { bubbleSize * 0.4 }
     private let labelSpacing: CGFloat = 4
-    private var arrowGap: CGFloat { bubbleSize * 0.2 }
+    private var arrowGap: CGFloat { bubbleSize * 0.06 }
     private var arrowLineWidth: CGFloat { max(1.5, bubbleSize * 0.067) }
     private var arrowHeadSize: CGFloat { bubbleSize * 0.27 }
+    private var pointerMotionInset: CGFloat { pointerMotions.isEmpty ? 0 : max(12, bubbleSize * 0.55) }
+    private var sequenceInset: CGFloat { sequenceLinks.isEmpty ? 0 : max(14, bubbleSize * 0.85) }
+    private var sequenceClearance: CGFloat { bubbleSize * 0.25 }
+    private var motionInset: CGFloat { pointerMotionInset + sequenceInset }
+    private var gapSpacing: CGFloat { max(10, bubbleSize * 0.8) }
     private let arrowColor = Color.appPurple.opacity(0.8)
     private var loopArrowHeight: CGFloat { bubbleSize * 0.6 }
     private let loopArrowColor = Color.appPurple.opacity(0.95)
@@ -33,6 +42,10 @@ struct SequenceBubbleRow: View {
         isTruncated: Bool,
         isDoubly: Bool,
         pointers: [PointerMarker],
+        pointerMotions: [PointerMotion] = [],
+        sequenceLinks: [SequenceLink] = [],
+        gapIndices: Set<Int> = [],
+        bubbleStyle: TraceBubble.Style = .solid,
         bubbleSize: CGFloat = 30,
         pointerFontSize: CGFloat = 8,
         pointerHorizontalPadding: CGFloat = 6,
@@ -45,6 +58,10 @@ struct SequenceBubbleRow: View {
         self.isTruncated = isTruncated
         self.isDoubly = isDoubly
         self.pointers = pointers
+        self.pointerMotions = pointerMotions
+        self.sequenceLinks = sequenceLinks
+        self.gapIndices = gapIndices
+        self.bubbleStyle = bubbleStyle
         self.bubbleSize = bubbleSize
         self.pointerFontSize = pointerFontSize
         self.pointerHorizontalPadding = pointerHorizontalPadding
@@ -56,21 +73,37 @@ struct SequenceBubbleRow: View {
         let bubbleItems = bubbleItems(for: renderItems)
         let cycleTarget = resolvedCycleIndex
         let loopInset = cycleTarget == nil ? 0 : loopArrowHeight
+        let motionInset = motionInset
         let maxPointerCount = pointersByIndex.values.map(\.count).max() ?? 0
         let pointerInset = maxPointerCount == 0
             ? 0
             : CGFloat(maxPointerCount) * (pointerHeight + pointerSpacing) + 4
         let groupHeight = bubbleSize + (showIndices ? (labelHeight + labelSpacing) : 0)
-        let rowHeight = groupHeight + loopInset + pointerInset + (isDoubly ? doublyOffset : 0)
-        let totalWidth = bubbleSize + CGFloat(max(renderItems.count - 1, 0)) * centerSpacing
+        let totalWidth = (xPositions.last ?? bubbleSize / 2) + bubbleSize / 2
+        let sequenceOffsets = sequenceLaneOffsets(for: sequenceLinks)
+        let baseRowTop = loopInset + pointerInset + motionInset
+        let baseHeight = groupHeight + loopInset + pointerInset + motionInset + (isDoubly ? doublyOffset : 0)
+        let arcBaseOffset = bubbleSize / 2 + arrowGap
+        let (minOffset, maxOffset) = sequenceArcOffsets(
+            links: sequenceLinks,
+            laneOffsets: sequenceOffsets,
+            arcBaseOffset: arcBaseOffset
+        )
+        let extraTop = max(0, -(baseRowTop + bubbleSize / 2 + minOffset))
+        let extraBottom = max(0, baseRowTop + bubbleSize / 2 + maxOffset - baseHeight)
+        let rowHeight = baseHeight + extraTop + extraBottom
+        let rowCenterY = baseRowTop + extraTop + bubbleSize / 2
+        let topBaseY = rowCenterY - arcBaseOffset
+        let bottomBaseY = rowCenterY + arcBaseOffset
 
         return ScrollView(.horizontal, showsIndicators: false) {
             ZStack(alignment: .topLeading) {
                 Canvas { context, _ in
                     guard renderItems.count > 1 else { return }
-                    let y = loopInset + pointerInset + bubbleSize / 2
+                    let y = loopInset + pointerInset + motionInset + bubbleSize / 2
                     let bubbleRadius = bubbleSize / 2
                     for index in 0..<(renderItems.count - 1) {
+                        if gapIndices.contains(index) { continue }
                         let start = CGPoint(
                             x: xPosition(for: index) + bubbleRadius + arrowGap,
                             y: y
@@ -123,14 +156,38 @@ struct SequenceBubbleRow: View {
                             loopInset: loopInset
                         )
                     }
+
+                    let motionTop = loopInset + pointerInset + extraTop
+                    if !sequenceLinks.isEmpty, sequenceInset > 0 {
+                        for link in sequenceLinks {
+                            drawSequenceLink(
+                                context: &context,
+                                link: link,
+                                topBaseY: topBaseY,
+                                bottomBaseY: bottomBaseY,
+                                laneOffset: sequenceOffsets[link.id] ?? 0
+                            )
+                        }
+                    }
+                    if !pointerMotions.isEmpty, pointerMotionInset > 0 {
+                        let pointerY = motionTop + sequenceInset + pointerMotionInset * 0.6
+                        for motion in pointerMotions {
+                            drawPointerMotion(
+                                context: &context,
+                                motion: motion,
+                                baseY: pointerY
+                            )
+                        }
+                    }
                 }
                 .frame(width: totalWidth, height: rowHeight)
 
                 ForEach(Array(bubbleItems.enumerated()), id: \.element.id) { index, item in
                     let model = TraceBubbleModel.from(item.value)
+                    let fill = model.fill
                     ZStack(alignment: .top) {
                         VStack(spacing: showIndices ? labelSpacing : 0) {
-                            TraceBubble(text: model.text, fill: model.fill, size: bubbleSize)
+                            TraceBubble(text: model.text, fill: fill, size: bubbleSize, style: bubbleStyle)
                             if showIndices {
                                 Text("\(index)")
                                     .font(.system(size: max(8, bubbleSize * 0.28), weight: .semibold))
@@ -155,7 +212,10 @@ struct SequenceBubbleRow: View {
                         }
                     }
                     .frame(width: bubbleSize, height: groupHeight, alignment: .top)
-                    .position(x: xPosition(for: index), y: loopInset + pointerInset + groupHeight / 2)
+                    .position(
+                        x: xPosition(for: index),
+                        y: loopInset + pointerInset + motionInset + extraTop + groupHeight / 2
+                    )
                 }
             }
             .frame(width: totalWidth, height: rowHeight)
@@ -163,10 +223,30 @@ struct SequenceBubbleRow: View {
         }
         .animation(.spring(response: 0.35, dampingFraction: 0.82), value: renderItems)
         .animation(.spring(response: 0.35, dampingFraction: 0.82), value: pointers.map(\.id))
+        .animation(.spring(response: 0.35, dampingFraction: 0.82), value: pointerMotions.map(\.id))
+        .animation(.spring(response: 0.35, dampingFraction: 0.82), value: gapIndices)
     }
 
     private func xPosition(for index: Int) -> CGFloat {
-        CGFloat(index) * centerSpacing + bubbleSize / 2
+        guard xPositions.indices.contains(index) else { return bubbleSize / 2 }
+        return xPositions[index]
+    }
+
+    private var xPositions: [CGFloat] {
+        guard !renderItems.isEmpty else { return [] }
+        var positions: [CGFloat] = []
+        var current = bubbleSize / 2
+        positions.append(current)
+        for index in 1..<renderItems.count {
+            let previousIndex = index - 1
+            var spacing = centerSpacing
+            if gapIndices.contains(previousIndex) {
+                spacing += gapSpacing
+            }
+            current += spacing
+            positions.append(current)
+        }
+        return positions
     }
 
     private func drawArrowHead(context: inout GraphicsContext, from: CGPoint, to: CGPoint, color: Color) {
@@ -220,6 +300,182 @@ struct SequenceBubbleRow: View {
         path.addQuadCurve(to: end, control: control)
         context.stroke(path, with: .color(loopArrowColor), lineWidth: arrowLineWidth)
         drawArrowHead(context: &context, from: control, to: end, color: loopArrowColor)
+    }
+
+    private func drawPointerMotion(
+        context: inout GraphicsContext,
+        motion: PointerMotion,
+        baseY: CGFloat
+    ) {
+        let fromIndex = motion.fromIndex
+        let toIndex = motion.toIndex
+        guard renderItems.indices.contains(fromIndex),
+              renderItems.indices.contains(toIndex),
+              fromIndex != toIndex else { return }
+        let start = CGPoint(x: xPosition(for: fromIndex), y: baseY)
+        let end = CGPoint(x: xPosition(for: toIndex), y: baseY)
+        let span = abs(end.x - start.x)
+        let lift = min(28, max(12, span * 0.25))
+        let control = CGPoint(x: (start.x + end.x) / 2, y: baseY - lift)
+        var path = Path()
+        path.move(to: start)
+        path.addQuadCurve(to: end, control: control)
+        context.stroke(path, with: .color(motion.color.opacity(0.8)), lineWidth: arrowLineWidth)
+        drawArrowHead(context: &context, from: control, to: end, color: motion.color.opacity(0.9))
+    }
+
+    private func drawSequenceLink(
+        context: inout GraphicsContext,
+        link: SequenceLink,
+        topBaseY: CGFloat,
+        bottomBaseY: CGFloat,
+        laneOffset: CGFloat
+    ) {
+        guard renderItems.indices.contains(link.fromIndex),
+              renderItems.indices.contains(link.toIndex),
+              link.fromIndex != link.toIndex else { return }
+        let useBottom = laneOffset >= 0
+        let offsetMagnitude = max(abs(laneOffset), sequenceClearance)
+        let adjustedY = useBottom
+            ? bottomBaseY + offsetMagnitude
+            : topBaseY - offsetMagnitude
+        let direction: CGFloat = link.toIndex >= link.fromIndex ? 1 : -1
+        let inset = bubbleSize / 2 + arrowGap
+        let endInset = inset + arrowHeadSize * 0.6
+        let start = CGPoint(
+            x: xPosition(for: link.fromIndex) + direction * inset,
+            y: adjustedY
+        )
+        let end = CGPoint(
+            x: xPosition(for: link.toIndex) - direction * endInset,
+            y: adjustedY
+        )
+        let span = abs(end.x - start.x)
+        let liftBase = min(28, max(10, span * 0.24))
+        let lift = liftBase + offsetMagnitude * 0.35
+        let bendDirection: CGFloat = useBottom ? 1 : -1
+        let controlY = adjustedY + bendDirection * lift
+        let control = CGPoint(x: (start.x + end.x) / 2, y: controlY)
+        var path = Path()
+        path.move(to: start)
+        path.addQuadCurve(to: end, control: control)
+        context.stroke(path, with: .color(link.color.opacity(0.85)), lineWidth: arrowLineWidth)
+        drawArrowHead(context: &context, from: control, to: end, color: link.color.opacity(0.95))
+    }
+
+    private func sequenceLaneOffsets(for links: [SequenceLink]) -> [String: CGFloat] {
+        guard !links.isEmpty else { return [:] }
+        struct Lane {
+            var lastEndX: CGFloat
+            let offset: CGFloat
+        }
+        struct Span {
+            let start: CGFloat
+            let end: CGFloat
+        }
+        func overlaps(_ a: Span, _ b: Span) -> Bool {
+            a.start < b.end && a.end > b.start
+        }
+        let unit = max(8, min(sequenceInset * 0.22, bubbleSize * 0.4))
+        let startInset = bubbleSize * 0.33
+        let endInset = startInset + arrowHeadSize * 0.55
+        let minGap = bubbleSize * 0.45
+        var topLanes: [Lane] = []
+        var bottomLanes: [Lane] = []
+        var topSpans: [Span] = []
+        var assignments: [String: CGFloat] = [:]
+        let sorted = links.compactMap { link -> (SequenceLink, CGFloat, CGFloat, CGFloat)? in
+            let direction: CGFloat = link.toIndex >= link.fromIndex ? 1 : -1
+            let startX = xPosition(for: link.fromIndex) + direction * startInset
+            let endX = xPosition(for: link.toIndex) - direction * endInset
+            let normalizedStart = min(startX, endX)
+            let normalizedEnd = max(startX, endX)
+            if normalizedEnd <= normalizedStart {
+                return nil
+            }
+            return (link, normalizedStart, normalizedEnd, normalizedEnd - normalizedStart)
+        }.sorted { lhs, rhs in
+            if lhs.3 != rhs.3 { return lhs.3 > rhs.3 }
+            return lhs.1 < rhs.1
+        }
+        for (link, normalizedStart, normalizedEnd, _) in sorted {
+            let span = Span(start: normalizedStart, end: normalizedEnd)
+            let overlapCount = topSpans.filter { overlaps($0, span) }.count
+            let useBottom = overlapCount >= 2
+            if useBottom {
+                var laneIndex: Int?
+                for index in bottomLanes.indices {
+                    if normalizedStart > bottomLanes[index].lastEndX + minGap {
+                        laneIndex = index
+                        break
+                    }
+                }
+                if laneIndex == nil {
+                    let idx = bottomLanes.count
+                    let magnitude = sequenceClearance + CGFloat(idx) * unit
+                    bottomLanes.append(Lane(lastEndX: normalizedEnd, offset: magnitude))
+                    laneIndex = idx
+                } else if let index = laneIndex {
+                    bottomLanes[index].lastEndX = max(bottomLanes[index].lastEndX, normalizedEnd)
+                }
+                if let index = laneIndex {
+                    assignments[link.id] = bottomLanes[index].offset
+                }
+            } else {
+                var laneIndex: Int?
+                for index in topLanes.indices {
+                    if normalizedStart > topLanes[index].lastEndX + minGap {
+                        laneIndex = index
+                        break
+                    }
+                }
+                if laneIndex == nil {
+                    let idx = topLanes.count
+                    let magnitude = sequenceClearance + CGFloat(idx) * unit
+                    topLanes.append(Lane(lastEndX: normalizedEnd, offset: -magnitude))
+                    laneIndex = idx
+                } else if let index = laneIndex {
+                    topLanes[index].lastEndX = max(topLanes[index].lastEndX, normalizedEnd)
+                }
+                if let index = laneIndex {
+                    assignments[link.id] = topLanes[index].offset
+                }
+                topSpans.append(span)
+            }
+        }
+        return assignments
+    }
+
+    private func sequenceArcOffsets(
+        links: [SequenceLink],
+        laneOffsets: [String: CGFloat],
+        arcBaseOffset: CGFloat
+    ) -> (min: CGFloat, max: CGFloat) {
+        guard !links.isEmpty else { return (0, 0) }
+        let inset = bubbleSize / 2 + arrowGap
+        let endInset = inset + arrowHeadSize * 0.6
+        var minOffset: CGFloat = 0
+        var maxOffset: CGFloat = 0
+        for link in links {
+            guard renderItems.indices.contains(link.fromIndex),
+                  renderItems.indices.contains(link.toIndex),
+                  link.fromIndex != link.toIndex else { continue }
+            let laneOffset = laneOffsets[link.id] ?? 0
+            let useBottom = laneOffset >= 0
+            let offsetMagnitude = max(abs(laneOffset), sequenceClearance)
+            let baseOffset = arcBaseOffset + offsetMagnitude
+            let direction: CGFloat = link.toIndex >= link.fromIndex ? 1 : -1
+            let startX = xPosition(for: link.fromIndex) + direction * inset
+            let endX = xPosition(for: link.toIndex) - direction * endInset
+            let span = abs(endX - startX)
+            let liftBase = min(28, max(10, span * 0.24))
+            let lift = liftBase + offsetMagnitude * 0.35
+            let offset = useBottom ? baseOffset : -baseOffset
+            let controlOffset = useBottom ? offset + lift : offset - lift
+            minOffset = min(minOffset, offset, controlOffset)
+            maxOffset = max(maxOffset, offset, controlOffset)
+        }
+        return (minOffset, maxOffset)
     }
 
     private func point(on center: CGPoint, radius: CGFloat, angle: Angle) -> CGPoint {

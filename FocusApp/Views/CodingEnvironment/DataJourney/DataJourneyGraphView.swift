@@ -8,12 +8,14 @@ struct GraphView: View {
     let pointerHorizontalPadding: CGFloat
     let pointerVerticalPadding: CGFloat
     let pointerSpacing: CGFloat
+    let bubbleStyle: TraceBubble.Style
 
     private var pointerHeight: CGFloat { pointerFontSize + pointerVerticalPadding * 2 + 4 }
 
     init(
         adjacency: [[Int]],
         pointers: [PointerMarker],
+        bubbleStyle: TraceBubble.Style = .solid,
         nodeSize: CGFloat = 30,
         pointerFontSize: CGFloat = 8,
         pointerHorizontalPadding: CGFloat = 6,
@@ -27,6 +29,7 @@ struct GraphView: View {
         self.pointerHorizontalPadding = pointerHorizontalPadding
         self.pointerVerticalPadding = pointerVerticalPadding
         self.pointerSpacing = pointerSpacing
+        self.bubbleStyle = bubbleStyle
     }
 
     var body: some View {
@@ -45,7 +48,13 @@ struct GraphView: View {
 
                 ForEach(layout.nodes) { node in
                     ZStack(alignment: .top) {
-                        TraceBubble(text: "\(node.index)", fill: Color.appGray700, size: nodeSize)
+                        let fill = Color.appGray700
+                        TraceBubble(
+                            text: "\(node.index)",
+                            fill: fill,
+                            size: nodeSize,
+                            style: bubbleStyle
+                        )
                         if let pointerStack = pointersByIndex[node.index] {
                             let stackHeight = CGFloat(pointerStack.count) * pointerHeight +
                                 CGFloat(max(pointerStack.count - 1, 0)) * pointerSpacing

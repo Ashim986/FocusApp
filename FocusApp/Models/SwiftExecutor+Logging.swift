@@ -34,6 +34,29 @@ extension SwiftExecutor {
         )
     }
 
+    func filterTraceWarnings(_ value: String) -> String {
+        guard !value.isEmpty else { return value }
+        let lines = value.split(whereSeparator: \.isNewline)
+        var filtered: [String] = []
+        var skipNotes = false
+        for line in lines {
+            let text = String(line)
+            if text.contains("warning: expression implicitly coerced from")
+                && text.contains("to 'Any'") {
+                skipNotes = true
+                continue
+            }
+            if skipNotes {
+                if text.contains("note:") {
+                    continue
+                }
+                skipNotes = false
+            }
+            filtered.append(text)
+        }
+        return filtered.joined(separator: "\n")
+    }
+
     func trimForLog(_ value: String, limit: Int = 240) -> String {
         guard value.count > limit else { return value }
         return String(value.prefix(limit)) + "…"

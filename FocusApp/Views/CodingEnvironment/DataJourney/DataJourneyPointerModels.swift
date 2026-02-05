@@ -16,6 +16,36 @@ struct PointerMarker: Identifiable, Hashable {
     }
 }
 
+struct PointerMotion: Identifiable {
+    let id: String
+    let name: String
+    let fromIndex: Int
+    let toIndex: Int
+    let color: Color
+
+    init(name: String, fromIndex: Int, toIndex: Int) {
+        self.id = "\(name)-\(fromIndex)-\(toIndex)"
+        self.name = name
+        self.fromIndex = fromIndex
+        self.toIndex = toIndex
+        self.color = PointerPalette.color(for: name)
+    }
+}
+
+struct SequenceLink: Identifiable {
+    let id: String
+    let fromIndex: Int
+    let toIndex: Int
+    let color: Color
+
+    init(fromIndex: Int, toIndex: Int, color: Color) {
+        self.id = "\(fromIndex)-\(toIndex)-\(color)"
+        self.fromIndex = fromIndex
+        self.toIndex = toIndex
+        self.color = color
+    }
+}
+
 enum PointerPalette {
     static func color(for name: String) -> Color {
         let palette: [Color] = [

@@ -13,6 +13,7 @@ FocusApp is a native macOS study companion for Data Structures & Algorithms prep
 - Daily habits and progress tracking
 - Focus timer indicator in the editor header
 - Tomorrow preview and auto-carryover for unsolved problems
+- Data journey visualization (arrays, lists, trees, graphs) with pointer tracking
 
 ## Requirements
 - macOS 14.0+
@@ -43,6 +44,35 @@ Progress is stored locally in a SwiftData persistent store (default location und
 
 ## Code Execution & Sandbox
 The app uses `Process` to compile/run code. App Sandbox is disabled for the macOS target to allow execution of compiled binaries. If you re-enable sandboxing, you will need a helper tool or XPC service to run code safely.
+
+## Data Journey Visualization Coverage
+
+Currently supported:
+- Single linked list
+- Doubly linked list
+- Array of lists (list-of-lists)
+- Binary tree (level-order structure)
+- Arrays
+- Dictionaries (flat key/value row)
+- Graph (adjacency list)
+- Pointer motion (step-to-step)
+- Output sequence links for combined lists
+
+Known gaps / partial support:
+- Sets (treated as arrays/objects)
+- Tuples (treated as generic objects/strings)
+- Graph variants (directed/weighted/edge list)
+- Deeply nested dictionaries/arrays (basic rendering only)
+- Multiple pointers to the same node (overlay can be noisy)
+- Trees with parent pointers/custom node shapes
+- Circular list display beyond cycle arrow
+- Queue/stack/heap abstractions
+- Large inputs (trace steps capped and values truncated)
+
+High-risk edge cases:
+- Aliasing/shared nodes across lists or outputs
+- High-degree graphs (edge clutter)
+- Very large inputs (truncation and step caps)
 
 ## Project Structure
 ```

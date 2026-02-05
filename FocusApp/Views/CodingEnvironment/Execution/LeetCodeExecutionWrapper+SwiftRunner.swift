@@ -215,6 +215,7 @@ extension LeetCodeExecutionWrapper {
         arguments: [String],
         callLine: String,
         outputExpression: String,
+        traceOutputExpression: String,
         setupLines: [String] = []
     ) -> String {
         let argumentsString = arguments.joined(separator: "\n")
@@ -241,7 +242,7 @@ extension LeetCodeExecutionWrapper {
         \(callLine)
         let output: Any = \(outputExpression)
         if hasInput {
-            Trace.output(output)
+            Trace.output(\(traceOutputExpression))
         }
         print(jsonString(from: output))
         """

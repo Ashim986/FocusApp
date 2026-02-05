@@ -48,7 +48,7 @@ extension DataJourneyView {
                     Image(systemName: "exclamationmark.triangle.fill")
                         .font(.system(size: textSize, weight: .semibold))
                         .foregroundColor(Color.appAmber)
-                    Text("Showing first 40 steps. Reduce `Trace.step` calls to see more.")
+                    Text("Showing first 40 steps or truncated data. Reduce `Trace.step` calls or input size to see more.")
                         .font(.system(size: isEmbedded ? 8 : 9, weight: .medium))
                         .foregroundColor(Color.appAmber)
                 }
@@ -134,7 +134,7 @@ extension DataJourneyView {
                     Image(systemName: "exclamationmark.triangle.fill")
                         .font(.system(size: textSize, weight: .semibold))
                         .foregroundColor(Color.appAmber)
-                    Text("Showing first 40 steps. Reduce `Trace.step` calls to see more.")
+                    Text("Showing first 40 steps or truncated data. Reduce `Trace.step` calls or input size to see more.")
                         .font(.system(size: isEmbedded ? 8 : 9, weight: .medium))
                         .foregroundColor(Color.appAmber)
                 }
@@ -175,30 +175,32 @@ extension DataJourneyView {
         pickerWidth: CGFloat,
         isEmbedded: Bool
     ) -> some View {
-        HStack(spacing: spacing) {
-            Button(action: selectPrevious) {
-                Image(systemName: "backward.fill")
-                    .font(.system(size: iconSize, weight: .bold))
-            }
-            .buttonStyle(.plain)
-            .foregroundColor(currentPlaybackIndex == 0 ? Color.appGray600 : Color.appGray300)
-            .disabled(currentPlaybackIndex == 0)
+        HStack(alignment: .center, spacing: spacing) {
+            HStack(spacing: 12) {
+                Button(action: selectPrevious) {
+                    Image(systemName: "backward.fill")
+                        .font(.system(size: iconSize, weight: .bold))
+                }
+                .buttonStyle(.plain)
+                .foregroundColor(currentPlaybackIndex == 0 ? Color.appGray600 : Color.appGray300)
+                .disabled(currentPlaybackIndex == 0)
 
-            Button(action: togglePlayback) {
-                Image(systemName: isPlaying ? "pause.fill" : "play.fill")
-                    .font(.system(size: iconSize, weight: .bold))
-            }
-            .buttonStyle(.plain)
-            .foregroundColor(playbackEvents.count > 1 ? Color.appGray300 : Color.appGray600)
-            .disabled(playbackEvents.count <= 1)
+                Button(action: togglePlayback) {
+                    Image(systemName: isPlaying ? "pause.fill" : "play.fill")
+                        .font(.system(size: iconSize, weight: .bold))
+                }
+                .buttonStyle(.plain)
+                .foregroundColor(playbackEvents.count > 1 ? Color.appGray300 : Color.appGray600)
+                .disabled(playbackEvents.count <= 1)
 
-            Button(action: selectNext) {
-                Image(systemName: "forward.fill")
-                    .font(.system(size: iconSize, weight: .bold))
+                Button(action: selectNext) {
+                    Image(systemName: "forward.fill")
+                        .font(.system(size: iconSize, weight: .bold))
+                }
+                .buttonStyle(.plain)
+                .foregroundColor(currentPlaybackIndex >= playbackEvents.count - 1 ? Color.appGray600 : Color.appGray300)
+                .disabled(currentPlaybackIndex >= playbackEvents.count - 1)
             }
-            .buttonStyle(.plain)
-            .foregroundColor(currentPlaybackIndex >= playbackEvents.count - 1 ? Color.appGray600 : Color.appGray300)
-            .disabled(currentPlaybackIndex >= playbackEvents.count - 1)
 
             Text(stepLabel(for: playbackEvents[currentPlaybackIndex]))
                 .font(.system(size: textSize, weight: .semibold))
@@ -206,28 +208,33 @@ extension DataJourneyView {
 
             Spacer()
 
-            Picker("Speed", selection: $playbackSpeed) {
-                Text("0.5x").tag(0.5)
-                Text("1x").tag(1.0)
-                Text("1.5x").tag(1.5)
-                Text("2x").tag(2.0)
-            }
-            .pickerStyle(.segmented)
-            .frame(width: pickerWidth)
+            HStack(spacing: 8) {
+                Picker("Speed", selection: $playbackSpeed) {
+                    Text("0.5x").tag(0.5)
+                    Text("1x").tag(1.0)
+                    Text("1.5x").tag(1.5)
+                    Text("2x").tag(2.0)
+                }
+                .pickerStyle(.segmented)
+                .frame(width: pickerWidth)
 
-            if !isPlaying, currentPlaybackIndex >= playbackEvents.count - 1 {
-                Button(action: { selectIndex(0) }, label: {
-                    Text("Start Over")
-                        .font(.system(size: textSize, weight: .semibold))
-                        .foregroundColor(Color.appGray200)
-                        .padding(.horizontal, isEmbedded ? 8 : 10)
-                        .padding(.vertical, isEmbedded ? 4 : 6)
-                        .background(
-                            RoundedRectangle(cornerRadius: 6)
-                                .fill(Color.appGray800)
-                        )
-                })
-                .buttonStyle(.plain)
+                ZStack {
+                    Button(action: { selectIndex(0) }, label: {
+                        Text("Start Over")
+                            .font(.system(size: textSize, weight: .semibold))
+                            .foregroundColor(Color.appGray200)
+                            .padding(.horizontal, 12)
+                            .padding(.vertical, 4)
+                            .background(
+                                RoundedRectangle(cornerRadius: 6)
+                                    .fill(Color.appGray800.opacity(0.3))
+                            )
+                    })
+                    .buttonStyle(.plain)
+                    .opacity(!isPlaying && currentPlaybackIndex >= playbackEvents.count - 1 ? 1 : 0)
+                    .disabled(isPlaying || currentPlaybackIndex < playbackEvents.count - 1)
+                }
+                .offset(x: 16)
             }
         }
     }

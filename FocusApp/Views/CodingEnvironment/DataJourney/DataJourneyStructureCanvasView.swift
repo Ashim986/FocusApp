@@ -16,6 +16,13 @@ struct NamedTraceList: Identifiable {
     let list: TraceList
 }
 
+struct CombinedListViewModel {
+    let items: [TraceValue]
+    let pointers: [PointerMarker]
+    let isTruncated: Bool
+    let gapIndices: Set<Int>
+}
+
 struct ListArrayStructure {
     let heads: [TraceValue]
     let lists: [NamedTraceList]
@@ -25,7 +32,10 @@ struct DataJourneyStructureCanvasView: View {
     let inputEvent: DataJourneyEvent?
     let selectedEvent: DataJourneyEvent?
     let previousEvent: DataJourneyEvent?
+    let outputEvent: DataJourneyEvent?
     let structureOverride: TraceStructure?
+    let playbackIndex: Int
+    let beginsAtZero: Bool
     let header: AnyView?
     let footer: AnyView?
 
@@ -39,14 +49,20 @@ struct DataJourneyStructureCanvasView: View {
         inputEvent: DataJourneyEvent?,
         selectedEvent: DataJourneyEvent?,
         previousEvent: DataJourneyEvent? = nil,
+        outputEvent: DataJourneyEvent? = nil,
         structureOverride: TraceStructure? = nil,
+        playbackIndex: Int = 0,
+        beginsAtZero: Bool = false,
         header: AnyView? = nil,
         footer: AnyView? = nil
     ) {
         self.inputEvent = inputEvent
         self.selectedEvent = selectedEvent
         self.previousEvent = previousEvent
+        self.outputEvent = outputEvent
         self.structureOverride = structureOverride
+        self.playbackIndex = playbackIndex
+        self.beginsAtZero = beginsAtZero
         self.header = header
         self.footer = footer
     }
@@ -57,17 +73,18 @@ struct DataJourneyStructureCanvasView: View {
         }
         return AnyView(
             VStack(alignment: .leading, spacing: 6) {
-                HStack(spacing: 8) {
+                HStack(alignment: .center, spacing: 10) {
                     Text("Structure")
                         .font(.system(size: 10, weight: .semibold))
                         .foregroundColor(Color.appGray400)
 
-                    Spacer()
-
                     if let header {
                         header
                     }
+
+                    Spacer()
                 }
+                .padding(.top, -16)
 
                 switch structure {
                 case .list(let list):
@@ -80,14 +97,16 @@ struct DataJourneyStructureCanvasView: View {
                         isDoubly: list.isDoubly,
                         pointers: pointerMarkers(for: list),
                         pointerMotions: motions,
+                        bubbleStyle: .solid,
                         bubbleSize: structureBubbleSize,
                         pointerFontSize: structurePointerFontSize,
                         pointerHorizontalPadding: structurePointerHorizontalPadding,
                         pointerVerticalPadding: structurePointerVerticalPadding
                     )
                 case .listGroup(let lists):
-                    let combined = combinedList(for: lists)
+                    let combined = combinedListViewModel(for: lists)
                     let motions = combinedPointerMotions(from: previousEvent, to: selectedEvent, lists: lists)
+                    let finalLinks = outputSequenceLinks(for: lists)
                     VStack(alignment: .leading, spacing: 10) {
                         HStack(alignment: .center, spacing: 10) {
                             listLabel("combined", color: Color.appPurple, background: Color.appPurple.opacity(0.18))
@@ -101,6 +120,9 @@ struct DataJourneyStructureCanvasView: View {
                                 isDoubly: false,
                                 pointers: combined.pointers,
                                 pointerMotions: motions,
+                                sequenceLinks: finalLinks,
+                                gapIndices: combined.gapIndices,
+                                bubbleStyle: .solid,
                                 bubbleSize: structureBubbleSize,
                                 pointerFontSize: structurePointerFontSize,
                                 pointerHorizontalPadding: structurePointerHorizontalPadding,
@@ -130,6 +152,7 @@ struct DataJourneyStructureCanvasView: View {
                                     isTruncated: entry.list.isTruncated,
                                     isDoubly: entry.list.isDoubly,
                                     pointers: pointerMarkers(for: entry.list),
+                                    bubbleStyle: .solid,
                                     bubbleSize: structureBubbleSize,
                                     pointerFontSize: structurePointerFontSize,
                                     pointerHorizontalPadding: structurePointerHorizontalPadding,
@@ -139,8 +162,9 @@ struct DataJourneyStructureCanvasView: View {
                         }
                     }
                 case .listArray(let listArray):
-                    let combined = combinedList(for: listArray.lists)
+                    let combined = combinedListViewModel(for: listArray.lists)
                     let motions = combinedPointerMotions(from: previousEvent, to: selectedEvent, lists: listArray.lists)
+                    let finalLinks = outputSequenceLinks(for: listArray.lists)
                     VStack(alignment: .leading, spacing: 10) {
                         HStack(alignment: .center, spacing: 10) {
                             listLabel("combined", color: Color.appPurple, background: Color.appPurple.opacity(0.18))
@@ -154,6 +178,9 @@ struct DataJourneyStructureCanvasView: View {
                                 isDoubly: false,
                                 pointers: combined.pointers,
                                 pointerMotions: motions,
+                                sequenceLinks: finalLinks,
+                                gapIndices: combined.gapIndices,
+                                bubbleStyle: .solid,
                                 bubbleSize: structureBubbleSize,
                                 pointerFontSize: structurePointerFontSize,
                                 pointerHorizontalPadding: structurePointerHorizontalPadding,
@@ -172,6 +199,7 @@ struct DataJourneyStructureCanvasView: View {
                                 isTruncated: false,
                                 isDoubly: false,
                                 pointers: listArrayHeadPointers(for: listArray),
+                                bubbleStyle: .solid,
                                 bubbleSize: structureBubbleSize,
                                 pointerFontSize: structurePointerFontSize,
                                 pointerHorizontalPadding: structurePointerHorizontalPadding,
@@ -201,6 +229,7 @@ struct DataJourneyStructureCanvasView: View {
                                     isTruncated: entry.list.isTruncated,
                                     isDoubly: entry.list.isDoubly,
                                     pointers: pointerMarkers(for: entry.list),
+                                    bubbleStyle: .solid,
                                     bubbleSize: structureBubbleSize,
                                     pointerFontSize: structurePointerFontSize,
                                     pointerHorizontalPadding: structurePointerHorizontalPadding,
@@ -213,6 +242,7 @@ struct DataJourneyStructureCanvasView: View {
                     TreeGraphView(
                         tree: tree,
                         pointers: pointerMarkers,
+                        bubbleStyle: .solid,
                         nodeSize: structureBubbleSize,
                         pointerFontSize: structurePointerFontSize,
                         pointerHorizontalPadding: structurePointerHorizontalPadding,
@@ -226,6 +256,7 @@ struct DataJourneyStructureCanvasView: View {
                         isTruncated: false,
                         isDoubly: false,
                         pointers: pointerMarkers,
+                        bubbleStyle: .solid,
                         bubbleSize: structureBubbleSize,
                         pointerFontSize: structurePointerFontSize,
                         pointerHorizontalPadding: structurePointerHorizontalPadding,
@@ -235,6 +266,7 @@ struct DataJourneyStructureCanvasView: View {
                     GraphView(
                         adjacency: adjacency,
                         pointers: pointerMarkers,
+                        bubbleStyle: .solid,
                         nodeSize: structureBubbleSize,
                         pointerFontSize: structurePointerFontSize,
                         pointerHorizontalPadding: structurePointerHorizontalPadding,
@@ -244,6 +276,7 @@ struct DataJourneyStructureCanvasView: View {
                     DictionaryStructureRow(
                         entries: entries,
                         pointers: pointerMarkers,
+                        bubbleStyle: .solid,
                         bubbleSize: structureBubbleSize,
                         pointerFontSize: structurePointerFontSize,
                         pointerHorizontalPadding: structurePointerHorizontalPadding,
@@ -400,13 +433,14 @@ struct DataJourneyStructureCanvasView: View {
         }
     }
 
-    private func combinedList(for lists: [NamedTraceList]) -> (items: [TraceValue], pointers: [PointerMarker], isTruncated: Bool) {
+    private func combinedListViewModel(for lists: [NamedTraceList]) -> CombinedListViewModel {
         var items: [TraceValue] = []
         var pointers: [PointerMarker] = []
+        var gapIndices: Set<Int> = []
         var offset = 0
         var truncated = false
 
-        for entry in lists {
+        for (index, entry) in lists.enumerated() {
             let values = entry.list.nodes.map(\.value)
             if items.count + values.count > combinedMaxItems {
                 let remaining = max(combinedMaxItems - items.count, 0)
@@ -422,20 +456,216 @@ struct DataJourneyStructureCanvasView: View {
             if let selectedEvent {
                 let listMarkers = listPointers(in: selectedEvent, list: entry.list)
                 for marker in listMarkers {
-                    if let index = marker.index {
-                        pointers.append(PointerMarker(name: marker.name, index: index + offset))
+                    if let indexValue = marker.index {
+                        pointers.append(PointerMarker(name: marker.name, index: indexValue + offset))
                     }
                 }
             }
 
             offset += values.count
+
+            if !values.isEmpty, index < lists.count - 1 {
+                let hasFutureValues = lists[(index + 1)...].contains { !$0.list.nodes.isEmpty }
+                if hasFutureValues {
+                    gapIndices.insert(items.count - 1)
+                }
+            }
         }
 
         if lists.contains(where: { $0.list.isTruncated }) {
             truncated = true
         }
 
-        return (items, pointers.sorted { $0.name < $1.name }, truncated)
+        return CombinedListViewModel(
+            items: items,
+            pointers: pointers.sorted { $0.name < $1.name },
+            isTruncated: truncated,
+            gapIndices: gapIndices
+        )
+    }
+
+    private func listPointerMotions(
+        from previousEvent: DataJourneyEvent?,
+        to currentEvent: DataJourneyEvent?,
+        list: TraceList
+    ) -> [PointerMotion] {
+        guard let previousEvent, let currentEvent else { return [] }
+        let previous = listPointerIndices(in: previousEvent, list: list)
+        let current = listPointerIndices(in: currentEvent, list: list)
+        return pointerMotions(from: previous, to: current)
+    }
+
+    private func combinedPointerMotions(
+        from previousEvent: DataJourneyEvent?,
+        to currentEvent: DataJourneyEvent?,
+        lists: [NamedTraceList]
+    ) -> [PointerMotion] {
+        guard let previousEvent, let currentEvent else { return [] }
+        let previous = combinedPointerIndices(in: previousEvent, lists: lists)
+        let current = combinedPointerIndices(in: currentEvent, lists: lists)
+        return pointerMotions(from: previous, to: current)
+    }
+
+    private func pointerMotions(
+        from previous: [String: Int],
+        to current: [String: Int]
+    ) -> [PointerMotion] {
+        var motions: [PointerMotion] = []
+        for (name, toIndex) in current {
+            guard let fromIndex = previous[name], fromIndex != toIndex else { continue }
+            motions.append(PointerMotion(name: name, fromIndex: fromIndex, toIndex: toIndex))
+        }
+        return motions.sorted { $0.name.localizedCaseInsensitiveCompare($1.name) == .orderedAscending }
+    }
+
+    private func listPointerIndices(in event: DataJourneyEvent, list: TraceList) -> [String: Int] {
+        var idToIndex: [String: Int] = [:]
+        for (index, node) in list.nodes.enumerated() {
+            idToIndex[node.id] = index
+        }
+        var indices: [String: Int] = [:]
+        for candidate in pointerCandidates(in: event) {
+            guard case .listPointer(let id) = candidate.value,
+                  let index = idToIndex[id] else { continue }
+            indices[candidate.name] = index
+        }
+        return indices
+    }
+
+    private func combinedPointerIndices(in event: DataJourneyEvent, lists: [NamedTraceList]) -> [String: Int] {
+        let candidates = pointerCandidates(in: event)
+        var indices: [String: Int] = [:]
+        var offset = 0
+        for entry in lists {
+            var idToIndex: [String: Int] = [:]
+            for (index, node) in entry.list.nodes.enumerated() {
+                idToIndex[node.id] = index
+            }
+            for candidate in candidates {
+                guard case .listPointer(let id) = candidate.value,
+                      let index = idToIndex[id] else { continue }
+                indices[candidate.name] = index + offset
+            }
+            offset += entry.list.nodes.count
+        }
+        return indices
+    }
+
+    private func outputSequenceLinks(for lists: [NamedTraceList]) -> [SequenceLink] {
+        guard let outputList = outputList(from: outputEvent) else { return [] }
+        var idToIndex: [String: Int] = [:]
+        var offset = 0
+        for entry in lists {
+            for (index, node) in entry.list.nodes.enumerated() {
+                idToIndex[node.id] = index + offset
+            }
+            offset += entry.list.nodes.count
+        }
+        var indices: [Int] = []
+        for node in outputList.nodes {
+            if let index = idToIndex[node.id] {
+                indices.append(index)
+            }
+        }
+        guard indices.count > 1 else { return [] }
+        let palette: [Color] = [
+            Color.appGreen,
+            Color.appCyan,
+            Color.appAmber,
+            Color.appPurple
+        ]
+        var links: [SequenceLink] = []
+        for (index, pair) in zip(indices, indices.dropFirst()).enumerated() {
+            let color = palette[index % palette.count]
+            links.append(SequenceLink(fromIndex: pair.0, toIndex: pair.1, color: color))
+        }
+        return visibleSequenceLinks(
+            links,
+            outputList: outputList,
+            idToIndex: idToIndex
+        )
+    }
+
+    private func visibleSequenceLinks(
+        _ links: [SequenceLink],
+        outputList: TraceList,
+        idToIndex: [String: Int]
+    ) -> [SequenceLink] {
+        guard !links.isEmpty else { return links }
+        guard let selectedEvent else { return links }
+        if selectedEvent.kind == .output {
+            return links
+        }
+        if selectedEvent.kind == .input {
+            return []
+        }
+        if let maxPointerIndex = maxPointerIndex(
+            in: selectedEvent,
+            outputList: outputList,
+            idToIndex: idToIndex
+        ) {
+            let count = min(links.count, max(0, maxPointerIndex))
+            return Array(links.prefix(count))
+        }
+        let offset = beginsAtZero ? 0 : 1
+        let count = min(links.count, max(0, playbackIndex + offset))
+        return Array(links.prefix(count))
+    }
+
+    private func maxPointerIndex(
+        in event: DataJourneyEvent,
+        outputList: TraceList,
+        idToIndex: [String: Int]
+    ) -> Int? {
+        var maxIndex: Int?
+        let candidates = pointerCandidates(in: event)
+        for candidate in candidates {
+            guard case .listPointer(let id) = candidate.value,
+                  outputList.nodes.contains(where: { $0.id == id }),
+                  let index = idToIndex[id] else { continue }
+            maxIndex = max(maxIndex ?? -1, index)
+        }
+        return maxIndex
+    }
+
+    private func outputList(from event: DataJourneyEvent?) -> TraceList? {
+        guard let event else { return nil }
+        if let value = event.values["result"],
+           let list = firstList(in: value) {
+            return list
+        }
+        for key in event.values.keys.sorted() {
+            guard let value = event.values[key],
+                  let list = firstList(in: value) else { continue }
+            return list
+        }
+        return nil
+    }
+
+    private func firstList(in value: TraceValue) -> TraceList? {
+        switch value {
+        case .list(let list):
+            return list
+        case .typed(_, let inner):
+            return firstList(in: inner)
+        case .array(let items):
+            for item in items {
+                if let list = firstList(in: item) {
+                    return list
+                }
+            }
+            return nil
+        case .object(let map):
+            for key in map.keys.sorted() {
+                if let nested = map[key],
+                   let list = firstList(in: nested) {
+                    return list
+                }
+            }
+            return nil
+        default:
+            return nil
+        }
     }
 
     @ViewBuilder
@@ -582,6 +812,7 @@ struct DictionaryEntry: Identifiable {
 struct DictionaryStructureRow: View {
     let entries: [DictionaryEntry]
     let pointers: [PointerMarker]
+    let bubbleStyle: TraceBubble.Style
 
     let bubbleSize: CGFloat
     let pointerFontSize: CGFloat
@@ -595,6 +826,7 @@ struct DictionaryStructureRow: View {
     init(
         entries: [DictionaryEntry],
         pointers: [PointerMarker],
+        bubbleStyle: TraceBubble.Style = .solid,
         bubbleSize: CGFloat = 30,
         pointerFontSize: CGFloat = 8,
         pointerHorizontalPadding: CGFloat = 6,
@@ -602,6 +834,7 @@ struct DictionaryStructureRow: View {
     ) {
         self.entries = entries
         self.pointers = pointers
+        self.bubbleStyle = bubbleStyle
         self.bubbleSize = bubbleSize
         self.pointerFontSize = pointerFontSize
         self.pointerHorizontalPadding = pointerHorizontalPadding
@@ -613,15 +846,22 @@ struct DictionaryStructureRow: View {
             HStack(spacing: 12) {
                 ForEach(Array(entries.enumerated()), id: \.element.id) { index, entry in
                     let model = TraceBubbleModel.from(entry.value)
+                    let keyFill = Color.appGray700
+                    let valueFill = model.fill
                     let pointerStack = pointersByIndex[index] ?? []
                     VStack(spacing: 4) {
                         ZStack(alignment: .top) {
                             HStack(spacing: 6) {
-                                TraceBubble(text: entry.key, fill: Color.appGray700, size: bubbleSize)
+                                TraceBubble(
+                                    text: entry.key,
+                                    fill: keyFill,
+                                    size: bubbleSize,
+                                    style: bubbleStyle
+                                )
                                 Image(systemName: "arrow.right")
                                     .font(.system(size: arrowSize, weight: .semibold))
                                     .foregroundColor(Color.appPurple.opacity(0.8))
-                                TraceBubble(text: model.text, fill: model.fill, size: bubbleSize)
+                                TraceBubble(text: model.text, fill: valueFill, size: bubbleSize, style: bubbleStyle)
                             }
                             if !pointerStack.isEmpty {
                                 let stackHeight = CGFloat(pointerStack.count) * pointerHeight +

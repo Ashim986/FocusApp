@@ -64,17 +64,26 @@ final class SwiftExecutor: LanguageExecutor {
             ]
         )
         let compileResult = await compile(sourceFile: sourceFile, outputFile: executableFile)
-        if compileResult.exitCode != 0 || compileResult.timedOut || compileResult.wasCancelled {
+        if compileResult.timedOut {
+            logResult(title: "Swift compile timed out", result: compileResult)
+            return compileResult
+        }
+        if compileResult.wasCancelled {
+            logResult(title: "Swift compile cancelled", result: compileResult)
+            return compileResult
+        }
+        if compileResult.exitCode != 0 {
             logResult(title: "Swift compile failed", result: compileResult)
             return compileResult
         }
-        if !compileResult.error.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+        let filteredWarning = filterTraceWarnings(compileResult.error)
+        if !filteredWarning.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
             log(
                 level: .warning,
                 title: "Swift compile warning",
                 message: "Compiler emitted warnings.",
                 metadata: [
-                    "warning": trimForLog(compileResult.error)
+                    "warning": trimForLog(filteredWarning)
                 ]
             )
             let sanitized = ExecutionResult(

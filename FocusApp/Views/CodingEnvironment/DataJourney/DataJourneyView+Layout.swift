@@ -4,16 +4,21 @@ extension DataJourneyView {
     var content: some View {
         let structure = resolvedStructure
         return VStack(alignment: .leading, spacing: 10) {
-            if let input = inputEvent {
-                valuesSection(title: "Input", event: input, style: .compact)
-            }
-
             if let structure {
+                let beginsAtZero = playbackEvents.first?.label?
+                    .lowercased()
+                    .contains("begin") == true
+                    || playbackEvents.first?.label?
+                        .lowercased()
+                        .contains("start") == true
                 DataJourneyStructureCanvasView(
                     inputEvent: inputEvent,
                     selectedEvent: selectedEvent,
                     previousEvent: previousPlaybackEvent,
+                    outputEvent: outputEvent,
                     structureOverride: structure,
+                    playbackIndex: currentPlaybackIndex,
+                    beginsAtZero: beginsAtZero,
                     header: playbackEvents.isEmpty ? nil : AnyView(stepControlsHeader(style: .embedded)),
                     footer: playbackEvents.isEmpty ? nil : AnyView(stepControlsTimeline(style: .embedded))
                 )

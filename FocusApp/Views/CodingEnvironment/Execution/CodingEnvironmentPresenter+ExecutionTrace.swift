@@ -16,15 +16,24 @@ extension CodingEnvironmentPresenter {
         let lines = output.split(omittingEmptySubsequences: false, whereSeparator: \.isNewline)
         var cleanLines: [String] = []
         var events: [DataJourneyEvent] = []
+        var sawTraceTruncation = false
 
         for rawLine in lines {
             let line = String(rawLine)
             if line.hasPrefix(prefix) {
                 let jsonString = String(line.dropFirst(prefix.count))
                 if let data = jsonString.data(using: String.Encoding.utf8),
-                   let json = try? JSONSerialization.jsonObject(with: data),
-                   let event = DataJourneyEvent.from(json: json) {
-                    events.append(event)
+                   var json = try? JSONSerialization.jsonObject(with: data) as? [String: Any] {
+                    if var values = json["values"] as? [String: Any] {
+                        if let truncated = values["__trace_truncated"] as? Bool, truncated {
+                            sawTraceTruncation = true
+                        }
+                        values.removeValue(forKey: "__trace_truncated")
+                        json["values"] = values
+                    }
+                    if let event = DataJourneyEvent.from(json: json) {
+                        events.append(event)
+                    }
                 }
             } else {
                 cleanLines.append(line)
@@ -33,7 +42,8 @@ extension CodingEnvironmentPresenter {
 
         let capped = capTraceEvents(events)
         let cleanOutput = cleanLines.joined(separator: "\n")
-        return TraceParseResult(events: capped.events, cleanOutput: cleanOutput, isTruncated: capped.isTruncated)
+        let isTruncated = capped.isTruncated || sawTraceTruncation
+        return TraceParseResult(events: capped.events, cleanOutput: cleanOutput, isTruncated: isTruncated)
     }
 
     func capTraceEvents(_ events: [DataJourneyEvent]) -> (events: [DataJourneyEvent], isTruncated: Bool) {

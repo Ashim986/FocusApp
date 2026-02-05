@@ -27,15 +27,24 @@ fi
 # Run SwiftLint
 cd "${SRCROOT}"
 
+# Keep SwiftLint caches and temp files inside the workspace to avoid permission issues.
+SWIFTLINT_HOME="${SRCROOT}/.swiftlint-home"
+SWIFTLINT_CACHE_DIR="${SWIFTLINT_HOME}/Library/Caches"
+SWIFTLINT_TMPDIR="${SRCROOT}/.swiftlint-tmp"
+mkdir -p "$SWIFTLINT_CACHE_DIR" "$SWIFTLINT_TMPDIR"
+export HOME="$SWIFTLINT_HOME"
+export XDG_CACHE_HOME="$SWIFTLINT_CACHE_DIR"
+export TMPDIR="$SWIFTLINT_TMPDIR"
+
 # Use --fix in debug builds for auto-correction (optional)
 if [ "$CONFIGURATION" = "Debug" ] && [ "$SWIFTLINT_AUTOFIX" = "1" ]; then
     echo "Running SwiftLint with auto-fix..."
-    "$SWIFTLINT_PATH" --fix --config .swiftlint.yml
+    "$SWIFTLINT_PATH" --fix --config .swiftlint.yml --cache-path "$SWIFTLINT_CACHE_DIR"
 fi
 
 # Always run lint check
 echo "Running SwiftLint..."
-"$SWIFTLINT_PATH" lint --config .swiftlint.yml
+"$SWIFTLINT_PATH" lint --config .swiftlint.yml --cache-path "$SWIFTLINT_CACHE_DIR"
 
 OUTPUT_FILE="${DERIVED_FILE_DIR}/swiftlint.stamp"
 touch "$OUTPUT_FILE"

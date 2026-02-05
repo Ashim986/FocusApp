@@ -650,8 +650,3 @@ private func waitFor(_ condition: @escaping () -> Bool, timeout: TimeInterval = 
     }
     return condition()
 }
-
-private func functionMetaJSON(name: String, params: [(String, String)], returnType: String) -> String {
-    let paramsJSON = params.map { "{\"name\":\"\($0.0)\",\"type\":\"\($0.1)\"}" }.joined(separator: ",")
-    return "{\"name\":\"\(name)\",\"params\":[\(paramsJSON)],\"return\":{\"type\":\"\(returnType)\"}}"
-}

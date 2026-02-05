@@ -24,39 +24,6 @@ protocol ProcessRunning {
     func cancelCurrent()
 }
 
-actor ProcessRunState {
-    private var currentCancel: (() -> Void)?
-    private var wasCancelled = false
-    private var didTimeout = false
-
-    func reset() {
-        currentCancel = nil
-        wasCancelled = false
-        didTimeout = false
-    }
-
-    func setCancelHandler(_ handler: @escaping () -> Void) {
-        currentCancel = handler
-    }
-
-    func cancel() {
-        wasCancelled = true
-        currentCancel?()
-    }
-
-    func markTimedOut() {
-        didTimeout = true
-    }
-
-    func clearCancelHandler() {
-        currentCancel = nil
-    }
-
-    func flags() -> (wasCancelled: Bool, didTimeout: Bool) {
-        (wasCancelled, didTimeout)
-    }
-}
-
 /// Runs system processes with timeout support
 final class ProcessRunner: ProcessRunning {
     private let maxOutputLength: Int
@@ -64,53 +31,6 @@ final class ProcessRunner: ProcessRunning {
 
     init(maxOutputLength: Int = 10 * 1024) {
         self.maxOutputLength = maxOutputLength
-    }
-
-    private final class OutputCollector {
-        private let maxOutputLength: Int
-        private let lock = NSLock()
-        private(set) var outputLimitExceeded = false
-        private(set) var errorLimitExceeded = false
-        private var outputData = Data()
-        private var errorData = Data()
-
-        init(maxOutputLength: Int) {
-            self.maxOutputLength = maxOutputLength
-        }
-
-        func appendOutput(_ data: Data) {
-            append(data, to: &outputData, limitExceeded: &outputLimitExceeded)
-        }
-
-        func appendError(_ data: Data) {
-            append(data, to: &errorData, limitExceeded: &errorLimitExceeded)
-        }
-
-        func outputString(truncate: (String) -> String) -> String {
-            truncate(String(data: outputData, encoding: .utf8) ?? "")
-        }
-
-        func errorString(truncate: (String) -> String) -> String {
-            truncate(String(data: errorData, encoding: .utf8) ?? "")
-        }
-
-        private func append(_ data: Data, to buffer: inout Data, limitExceeded: inout Bool) {
-            lock.lock()
-            defer { lock.unlock() }
-
-            guard !limitExceeded else { return }
-            if buffer.count >= maxOutputLength {
-                limitExceeded = true
-                return
-            }
-            let remaining = maxOutputLength - buffer.count
-            if data.count > remaining {
-                buffer.append(data.prefix(remaining))
-                limitExceeded = true
-            } else {
-                buffer.append(data)
-            }
-        }
     }
 
     func run(
@@ -168,7 +88,7 @@ final class ProcessRunner: ProcessRunning {
                 process.standardError = errorPipe
                 process.standardInput = inputPipe
 
-                let collector = OutputCollector(maxOutputLength: maxOutputLength)
+                let collector = ProcessOutputCollector(maxOutputLength: maxOutputLength)
 
                 let cancelHandler: () -> Void = {
                     if process.isRunning {

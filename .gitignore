@@ -12,3 +12,6 @@ xcuserdata/
 *.tmp
 *.orig
 *.rej
+.swiftlint-cache/
+.swiftlint-home/
+.swiftlint-tmp/

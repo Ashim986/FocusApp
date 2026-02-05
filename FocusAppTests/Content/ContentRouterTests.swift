@@ -20,13 +20,16 @@ final class ContentRouterTests: XCTestCase {
         let presenter = PlanPresenter(interactor: interactor)
 
         let router = ContentRouter(
-            makePlan: { PlanView(presenter: presenter) },
-            makeToday: { _ in fatalError("not under test") },
+            makePlan: { onSelectProblem in
+                PlanView(presenter: presenter, onSelectProblem: onSelectProblem)
+            },
+            makeToday: { _, _ in fatalError("not under test") },
             makeStats: { fatalError("not under test") },
-            makeCoding: { _ in fatalError("not under test") }
+            makeCoding: { _ in fatalError("not under test") },
+            selectProblem: { _, _, _ in }
         )
 
-        let view = router.makePlan()
+        let view = router.makePlan { _, _, _ in }
 
         XCTAssertNotNil(view)
     }
@@ -48,18 +51,19 @@ final class ContentRouterTests: XCTestCase {
         let presenter = TodayPresenter(interactor: interactor)
 
         let router = ContentRouter(
-            makePlan: { fatalError("not under test") },
-            makeToday: { showCode in
-                TodayView(presenter: presenter, showCodeEnvironment: showCode)
+            makePlan: { _ in fatalError("not under test") },
+            makeToday: { showCode, onSelectProblem in
+                TodayView(presenter: presenter, showCodeEnvironment: showCode, onSelectProblem: onSelectProblem)
             },
             makeStats: { fatalError("not under test") },
-            makeCoding: { _ in fatalError("not under test") }
+            makeCoding: { _ in fatalError("not under test") },
+            selectProblem: { _, _, _ in }
         )
 
         var showCode = false
         let codeBinding = Binding(get: { showCode }, set: { showCode = $0 })
 
-        let view = router.makeToday(codeBinding)
+        let view = router.makeToday(codeBinding) { _, _, _ in }
 
         XCTAssertNotNil(view)
     }
@@ -76,10 +80,11 @@ final class ContentRouterTests: XCTestCase {
         let presenter = StatsPresenter(interactor: interactor)
 
         let router = ContentRouter(
-            makePlan: { fatalError("not under test") },
-            makeToday: { _ in fatalError("not under test") },
+            makePlan: { _ in fatalError("not under test") },
+            makeToday: { _, _ in fatalError("not under test") },
             makeStats: { StatsView(presenter: presenter) },
-            makeCoding: { _ in fatalError("not under test") }
+            makeCoding: { _ in fatalError("not under test") },
+            selectProblem: { _, _, _ in }
         )
 
         let view = router.makeStats()
@@ -107,12 +112,17 @@ final class ContentRouterTests: XCTestCase {
         let presenter = CodingEnvironmentPresenter(interactor: interactor)
 
         let router = ContentRouter(
-            makePlan: { fatalError("not under test") },
-            makeToday: { _ in fatalError("not under test") },
+            makePlan: { _ in fatalError("not under test") },
+            makeToday: { _, _ in fatalError("not under test") },
             makeStats: { fatalError("not under test") },
             makeCoding: { isPresented in
-                CodingEnvironmentView(presenter: presenter, debugLogStore: DebugLogStore(), onBack: { isPresented.wrappedValue = false })
-            }
+                CodingEnvironmentView(
+                    presenter: presenter,
+                    debugLogStore: DebugLogStore(),
+                    onBack: { isPresented.wrappedValue = false }
+                )
+            },
+            selectProblem: { _, _, _ in }
         )
 
         var isPresented = false

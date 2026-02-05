@@ -5,10 +5,15 @@ extension LeetCodeExecutionWrapper {
         var traceValueLines: [String] = swiftRunnerTraceBaseLines
 
         if needsListNode {
-            traceValueLines.append(
-                "                if let node = value as? ListNode { return [\"__type\": \"list\", \"value\": "
-                    + "listNodeToArray(node)] }"
-            )
+            traceValueLines.append(contentsOf: [
+                "                if let node = value as? ListNode {",
+                "                    let payload = traceListNodePayload(node)",
+                "                    var result: [String: Any] = [\"__type\": \"list\", \"value\": payload.values]",
+                "                    if let cycleIndex = payload.cycleIndex { result[\"cycleIndex\"] = cycleIndex }",
+                "                    if payload.truncated { result[\"truncated\"] = true }",
+                "                    return result",
+                "                }"
+            ])
         }
         if needsTreeNode {
             traceValueLines.append(

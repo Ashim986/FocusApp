@@ -17,6 +17,8 @@ struct TraceValueView: View {
             arrayView(items)
         case .object(let map):
             objectView(map)
+        case .list(let items, let cycleIndex, let isTruncated):
+            listView(items, cycleIndex: cycleIndex, isTruncated: isTruncated)
         case .typed(let type, let inner):
             typedView(type: type, value: inner)
         }
@@ -66,6 +68,14 @@ struct TraceValueView: View {
         )
     }
 
+    private func listView(
+        _ items: [TraceValue],
+        cycleIndex: Int?,
+        isTruncated: Bool
+    ) -> some View {
+        sequenceView(items, showIndices: false, cycleIndex: cycleIndex, isTruncated: isTruncated)
+    }
+
     private func treeView(_ value: TraceValue) -> some View {
         guard case .array(let items) = value else {
             return AnyView(TraceValueView(value: value))
@@ -73,8 +83,18 @@ struct TraceValueView: View {
         return AnyView(TreeGraphView(items: items))
     }
 
-    private func sequenceView(_ items: [TraceValue], showIndices: Bool) -> some View {
-        SequenceBubbleRow(items: items, showIndices: showIndices)
+    private func sequenceView(
+        _ items: [TraceValue],
+        showIndices: Bool,
+        cycleIndex: Int? = nil,
+        isTruncated: Bool = false
+    ) -> some View {
+        SequenceBubbleRow(
+            items: items,
+            showIndices: showIndices,
+            cycleIndex: cycleIndex,
+            isTruncated: isTruncated
+        )
     }
 
     private func bubble(for value: TraceValue) -> some View {

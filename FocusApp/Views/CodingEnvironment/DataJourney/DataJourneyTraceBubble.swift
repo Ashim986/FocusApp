@@ -43,6 +43,9 @@ struct TraceBubbleModel {
         case .object(let map):
             let label = compact ? "\(map.count)" : "{\(map.count)}"
             return TraceBubbleModel(text: label, fill: Color.appGray700)
+        case .list(let items, _, _):
+            let label = compact ? "\(items.count)" : "[\(items.count)]"
+            return TraceBubbleModel(text: label, fill: Color.appGray700)
         case .typed(_, let inner):
             return from(inner, compact: compact)
         }

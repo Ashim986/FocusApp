@@ -4,7 +4,7 @@ extension LeetCodeExecutionWrapper {
     static func wrapSwift(code: String, meta: LeetCodeMetaData) -> String {
         let methodName = meta.name ?? "solve"
         let signature = swiftFunctionSignature(in: code, className: "Solution", methodName: methodName)
-        let params = signature?.params ?? meta.primaryParams
+        let params = resolvedSwiftParams(signature: signature, meta: meta)
         let returnType = LeetCodeValueType(raw: signature?.returnType ?? meta.returnType?.type ?? "void")
         let typesUsed = params.map { LeetCodeValueType(raw: $0.type) } + [returnType]
         let needsListNode = typesUsed.contains { $0.needsListNode }
@@ -72,6 +72,27 @@ extension LeetCodeExecutionWrapper {
         """
     }
 
+    private static func resolvedSwiftParams(
+        signature: SwiftFunctionSignature?,
+        meta: LeetCodeMetaData
+    ) -> [LeetCodeMetaParam] {
+        if let signature {
+            return signature.params
+        }
+        let params = meta.primaryParams
+        guard params.count > 1 else { return params }
+        guard let last = params.last,
+              last.name?.trimmingCharacters(in: .whitespacesAndNewlines).lowercased() == "pos" else {
+            return params
+        }
+        let hasListNode = params.contains { LeetCodeValueType(raw: $0.type) == .listNode }
+        let lastIsInt = LeetCodeValueType(raw: last.type) == .int
+        if hasListNode && lastIsInt {
+            return Array(params.dropLast())
+        }
+        return params
+    }
+
     private static func swiftParamNamesLiteral(_ params: [LeetCodeMetaParam]) -> String {
         params.enumerated().map { index, param in
             let name = param.name?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
@@ -82,6 +103,15 @@ extension LeetCodeExecutionWrapper {
     }
 
     private static func swiftListNodeHelpers(listNodeInit: String, listNodeZeroInit: String) -> String {
+        [
+            swiftListNodeBuilder(listNodeInit: listNodeInit, listNodeZeroInit: listNodeZeroInit),
+            swiftListNodePayloadHelper,
+            swiftListNodeToArrayHelper,
+            swiftTraceListNodePayloadHelper
+        ].joined(separator: "\n\n")
+    }
+
+    private static func swiftListNodeBuilder(listNodeInit: String, listNodeZeroInit: String) -> String {
         """
         func toListNode(_ value: Any, pos: Int? = nil) -> ListNode? {
             let payload = listNodePayload(from: value)
@@ -108,7 +138,10 @@ extension LeetCodeExecutionWrapper {
             }
             return dummy.next
         }
+        """
+    }
 
+    private static let swiftListNodePayloadHelper = """
         func listNodePayload(from value: Any) -> (values: [Any], pos: Int?) {
             if let dict = value as? [String: Any] {
                 let head = dict["head"] ?? dict["list"] ?? dict["values"]
@@ -125,18 +158,50 @@ extension LeetCodeExecutionWrapper {
             }
             return ([], nil)
         }
+        """
 
-        func listNodeToArray(_ node: ListNode?) -> [Int] {
+    private static let swiftListNodeToArrayHelper = """
+        func listNodeToArray(_ node: ListNode?, maxNodes: Int = 10_000) -> [Int] {
             var result: [Int] = []
             var current = node
-            while let node = current {
+            var visited = Set<ObjectIdentifier>()
+            var count = 0
+            while let node = current, count < maxNodes {
+                let id = ObjectIdentifier(node)
+                if visited.contains(id) { break }
+                visited.insert(id)
                 result.append(node.val)
                 current = node.next
+                count += 1
             }
             return result
         }
         """
-    }
+
+    private static let swiftTraceListNodePayloadHelper = """
+        func traceListNodePayload(_ node: ListNode?, maxNodes: Int = 40) -> (
+            values: [Any],
+            cycleIndex: Int?,
+            truncated: Bool
+        ) {
+            var values: [Any] = []
+            var current = node
+            var visited: [ObjectIdentifier: Int] = [:]
+            var index = 0
+            while let node = current, index < maxNodes {
+                let id = ObjectIdentifier(node)
+                if let cycleAt = visited[id] {
+                    return (values, cycleAt, false)
+                }
+                visited[id] = index
+                values.append(node.val)
+                current = node.next
+                index += 1
+            }
+            let truncated = current != nil
+            return (values, nil, truncated)
+        }
+        """
 
     private static func swiftTreeNodeHelpers(treeNodeInit: String) -> String {
         """

@@ -42,6 +42,7 @@ indirect enum TraceValue: Equatable {
     case string(String)
     case array([TraceValue])
     case object([String: TraceValue])
+    case list([TraceValue], cycleIndex: Int?, isTruncated: Bool)
     case typed(String, TraceValue)
 
     static func from(json: Any) -> TraceValue {
@@ -62,10 +63,30 @@ indirect enum TraceValue: Equatable {
         }
         if let dictValue = json as? [String: Any] {
             if let type = dictValue["__type"] as? String, let value = dictValue["value"] {
+                if type.lowercased() == "list" {
+                    let items = TraceValue.from(json: value).arrayValues
+                    let cycleIndex = TraceValue.intValue(from: dictValue["cycleIndex"])
+                    let isTruncated = (dictValue["truncated"] as? Bool) ?? false
+                    return .list(items, cycleIndex: cycleIndex, isTruncated: isTruncated)
+                }
                 return .typed(type, TraceValue.from(json: value))
             }
             return .object(dictValue.mapValues { TraceValue.from(json: $0) })
         }
         return .string(String(describing: json))
+    }
+}
+
+extension TraceValue {
+    fileprivate var arrayValues: [TraceValue] {
+        if case .array(let items) = self { return items }
+        return []
+    }
+
+    fileprivate static func intValue(from value: Any?) -> Int? {
+        if let intValue = value as? Int { return intValue }
+        if let number = value as? NSNumber { return number.intValue }
+        if let string = value as? String, let intValue = Int(string) { return intValue }
+        return nil
     }
 }

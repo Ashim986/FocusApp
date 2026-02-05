@@ -59,15 +59,19 @@ extension DataJourneyView {
                 }
             }
 
-            Slider(
-                value: Binding(
-                    get: { Double(currentPlaybackIndex) },
-                    set: { selectIndex(Int($0)) }
-                ),
-                in: 0...Double(max(playbackEvents.count - 1, 0)),
-                step: 1
+            let sliderBinding = Binding(
+                get: { Double(currentPlaybackIndex) },
+                set: { selectIndex(Int($0)) }
             )
-            .tint(Color.appPurple)
+            let sliderRange = 0...Double(max(playbackEvents.count - 1, 1))
+            if playbackEvents.count > 1 {
+                Slider(value: sliderBinding, in: sliderRange, step: 1)
+                    .tint(Color.appPurple)
+            } else {
+                Slider(value: sliderBinding, in: sliderRange)
+                    .tint(Color.appPurple)
+                    .disabled(true)
+            }
 
             if isTruncated {
                 HStack(spacing: 6) {

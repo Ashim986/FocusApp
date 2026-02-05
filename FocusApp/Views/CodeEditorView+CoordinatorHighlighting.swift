@@ -128,6 +128,7 @@ extension CodeEditorView.Coordinator {
 
         highlightKeywords(keywords, in: textStorage, text: text, color: colors.keyword)
         highlightKeywords(types, in: textStorage, text: text, color: colors.type)
+        highlightSwiftDeclarations(in: textStorage, text: text)
         highlightFunctions(in: textStorage, text: text)
         highlightStrings(
             pattern: "\"[^\"\\\\]*(?:\\\\.[^\"\\\\]*)*\"",
@@ -157,6 +158,7 @@ extension CodeEditorView.Coordinator {
 
         highlightKeywords(keywords, in: textStorage, text: text, color: colors.keyword)
         highlightKeywords(types, in: textStorage, text: text, color: colors.type)
+        highlightPythonDeclarations(in: textStorage, text: text)
         highlightPythonFunctions(in: textStorage, text: text)
         highlightStrings(
             pattern: "\"[^\"\\\\]*(?:\\\\.[^\"\\\\]*)*\"|'[^'\\\\]*(?:\\\\.[^'\\\\]*)*'",
@@ -257,6 +259,20 @@ extension CodeEditorView.Coordinator {
         for pattern in patterns {
             highlightPattern(pattern, in: textStorage, text: text, color: colors.comment, options: [.anchorsMatchLines])
         }
+    }
+
+    private func highlightSwiftDeclarations(in textStorage: NSTextStorage, text: String) {
+        highlightPattern("\\b(func|let|var|class|struct)\\b", in: textStorage, text: text, color: colors.declaration)
+        highlightPattern("(?<=\\bclass\\s)\\w+", in: textStorage, text: text, color: colors.declaration)
+        highlightPattern("(?<=\\bstruct\\s)\\w+", in: textStorage, text: text, color: colors.declaration)
+        highlightPattern("(?<=\\blet\\s)\\w+", in: textStorage, text: text, color: colors.declaration)
+        highlightPattern("(?<=\\bvar\\s)\\w+", in: textStorage, text: text, color: colors.declaration)
+    }
+
+    private func highlightPythonDeclarations(in textStorage: NSTextStorage, text: String) {
+        highlightPattern("\\b(def|class)\\b", in: textStorage, text: text, color: colors.declaration)
+        highlightPattern("(?<=\\bdef\\s)\\w+", in: textStorage, text: text, color: colors.declaration)
+        highlightPattern("(?<=\\bclass\\s)\\w+", in: textStorage, text: text, color: colors.declaration)
     }
 
     private func highlightDecorators(in textStorage: NSTextStorage, text: String) {

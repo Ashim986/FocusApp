@@ -28,7 +28,7 @@ struct CarryoverProblemRow: View {
                     NSWorkspace.shared.open(url)
                 }
             }, label: {
-                Text(problem.name)
+                Text(problem.displayName)
                     .font(.system(size: 10))
                     .foregroundColor(.orange.opacity(0.9))
                     .lineLimit(1)

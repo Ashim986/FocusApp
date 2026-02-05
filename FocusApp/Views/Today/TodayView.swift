@@ -3,6 +3,7 @@ import SwiftUI
 struct TodayView: View {
     @ObservedObject var presenter: TodayPresenter
     @Binding var showCodeEnvironment: Bool
+    let onSelectProblem: (_ problem: Problem, _ day: Int, _ index: Int) -> Void
 
     var body: some View {
         ScrollView {

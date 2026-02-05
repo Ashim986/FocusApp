@@ -48,7 +48,8 @@ extension CodeEditorView {
         struct SyntaxColors {
             let keyword = NSColor(Color.appPurple)
             let type = NSColor(red: 0.35, green: 0.78, blue: 0.98, alpha: 1.0)
-            let function = NSColor(red: 0.98, green: 0.78, blue: 0.35, alpha: 1.0)
+            let function = NSColor(red: 0.65, green: 0.14, blue: 0.2, alpha: 1.0)
+            let declaration = NSColor(red: 0.65, green: 0.14, blue: 0.2, alpha: 1.0)
             let string = NSColor(Color.appGreen)
             let number = NSColor(Color.appAmber)
             let comment = NSColor(Color.appGray500)

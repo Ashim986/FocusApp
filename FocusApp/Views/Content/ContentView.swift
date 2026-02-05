@@ -23,10 +23,14 @@ enum Tab: CaseIterable {
 }
 
 struct ContentRouter {
-    let makePlan: () -> PlanView
-    let makeToday: (_ showCodeEnvironment: Binding<Bool>) -> TodayView
+    let makePlan: (_ onSelectProblem: @escaping (Problem, Int, Int) -> Void) -> PlanView
+    let makeToday: (
+        _ showCodeEnvironment: Binding<Bool>,
+        _ onSelectProblem: @escaping (Problem, Int, Int) -> Void
+    ) -> TodayView
     let makeStats: () -> StatsView
     let makeCoding: (_ isPresented: Binding<Bool>) -> CodingEnvironmentView
+    let selectProblem: (_ problem: Problem, _ day: Int, _ index: Int) -> Void
 }
 
 struct ContentView: View {
@@ -43,9 +47,9 @@ struct ContentView: View {
                     Group {
                         switch presenter.selectedTab {
                         case .plan:
-                            router.makePlan()
+                            router.makePlan(openCodingEnvironment)
                         case .today:
-                            router.makeToday($showCodeEnvironment)
+                            router.makeToday($showCodeEnvironment, openCodingEnvironment)
                         case .stats:
                             router.makeStats()
                         }
@@ -62,6 +66,11 @@ struct ContentView: View {
             .animation(.easeInOut(duration: 0.3), value: showCodeEnvironment)
             .onAppear { presenter.onAppear() }
         }
+    }
+
+    private func openCodingEnvironment(_ problem: Problem, _ day: Int, _ index: Int) {
+        router.selectProblem(problem, day, index)
+        showCodeEnvironment = true
     }
 
     private var header: some View {

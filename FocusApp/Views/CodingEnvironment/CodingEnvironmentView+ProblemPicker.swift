@@ -9,7 +9,7 @@ extension CodingEnvironmentView {
                 if let problem = presenter.selectedProblem {
                     VStack(alignment: .leading, spacing: 2) {
                         HStack(spacing: 6) {
-                            Text(problem.name)
+                            Text(problem.displayName)
                                 .font(.system(size: 13, weight: .semibold))
                                 .foregroundColor(.white)
                                 .lineLimit(1)
@@ -157,7 +157,7 @@ extension CodingEnvironmentView {
                 }
 
                 VStack(alignment: .leading, spacing: 2) {
-                    Text(item.problem.name)
+                    Text(item.problem.displayName)
                         .font(.system(size: 12, weight: isSelected ? .semibold : .regular))
                         .foregroundColor(isSelected ? .white : Color.appGray300)
                         .lineLimit(1)

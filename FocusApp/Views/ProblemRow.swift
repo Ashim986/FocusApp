@@ -4,6 +4,7 @@ struct ProblemRow: View {
     let problem: Problem
     let isCompleted: Bool
     let onToggle: () -> Void
+    let onSelect: () -> Void
 
     var body: some View {
         HStack(spacing: 12) {
@@ -28,12 +29,8 @@ struct ProblemRow: View {
             .buttonStyle(.plain)
 
             // Problem name (clickable)
-            Button(action: {
-                if let url = URL(string: problem.url) {
-                    NSWorkspace.shared.open(url)
-                }
-            }, label: {
-                Text(problem.name)
+            Button(action: onSelect, label: {
+                Text(problem.displayName)
                     .font(.system(size: 14))
                     .foregroundColor(isCompleted ? Color.appGray400 : Color.appGray700)
                     .strikethrough(isCompleted, color: Color.appGray400)
@@ -72,12 +69,14 @@ struct ProblemRow_Previews: PreviewProvider {
             ProblemRow(
                 problem: Problem(name: "Two Sum", difficulty: .easy, url: "https://leetcode.com"),
                 isCompleted: false,
-                onToggle: {}
+                onToggle: {},
+                onSelect: {}
             )
             ProblemRow(
                 problem: Problem(name: "3Sum", difficulty: .medium, url: "https://leetcode.com"),
                 isCompleted: true,
-                onToggle: {}
+                onToggle: {},
+                onSelect: {}
             )
         }
         .padding()

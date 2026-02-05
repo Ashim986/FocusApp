@@ -3,6 +3,7 @@ import SwiftUI
 
 struct PlanView: View {
     @ObservedObject var presenter: PlanPresenter
+    let onSelectProblem: (_ problem: Problem, _ day: Int, _ index: Int) -> Void
 
     var body: some View {
         ScrollView {
@@ -15,6 +16,12 @@ struct PlanView: View {
                         viewModel: day,
                         onToggleProblem: { index in
                             presenter.toggleProblem(day: day.id, problemIndex: index)
+                        },
+                        onSelectProblem: { index in
+                            guard let problem = day.problems.first(where: { $0.index == index })?.problem else {
+                                return
+                            }
+                            onSelectProblem(problem, day.id, index)
                         }
                     )
                 }
@@ -211,7 +218,10 @@ struct PlanView_Previews: PreviewProvider {
                         leetCodeSync: leetCodeSync
                     )
                 )
-                PlanView(presenter: presenter)
+                PlanView(
+                    presenter: presenter,
+                    onSelectProblem: { _, _, _ in }
+                )
                     .frame(width: 600, height: 800)
             } else {
                 Text("Preview unavailable")

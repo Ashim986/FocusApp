@@ -60,8 +60,10 @@ final class CodingEnvironmentPresenter: ObservableObject {
 
     var problemSections: [CodingProblemSection] {
         let normalizedDay = max(1, min(currentDayNumber, dsaPlan.count))
+        let canPreviewTomorrow = canAccessTomorrow(from: normalizedDay)
+        let maxDay = min(normalizedDay + (canPreviewTomorrow ? 1 : 0), dsaPlan.count)
 
-        return dsaPlan.filter { $0.id <= normalizedDay }.compactMap { day in
+        return dsaPlan.filter { $0.id <= maxDay }.compactMap { day in
             let isToday = day.id == normalizedDay
             let totalCount = day.problems.count
             var completedCount = 0
@@ -98,6 +100,14 @@ final class CodingEnvironmentPresenter: ObservableObject {
             }
 
             return nil
+        }
+    }
+
+    private func canAccessTomorrow(from currentDay: Int) -> Bool {
+        guard currentDay < dsaPlan.count else { return false }
+        guard let dayData = dsaPlan.first(where: { $0.id == currentDay }) else { return false }
+        return dayData.problems.indices.allSatisfy { index in
+            interactor.isProblemCompleted(day: currentDay, problemIndex: index)
         }
     }
 

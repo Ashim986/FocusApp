@@ -3,6 +3,7 @@ import SwiftUI
 struct DayCard: View {
     let viewModel: PlanDayViewModel
     let onToggleProblem: (Int) -> Void
+    let onSelectProblem: (Int) -> Void
     @State private var isExpanded = false
 
     var body: some View {
@@ -69,6 +70,9 @@ struct DayCard: View {
                             isCompleted: problem.isCompleted,
                             onToggle: {
                                 onToggleProblem(problem.index)
+                            },
+                            onSelect: {
+                                onSelectProblem(problem.index)
                             }
                         )
 
@@ -106,7 +110,11 @@ struct DayCard_Previews: PreviewProvider {
             },
             completedCount: 1
         )
-        return DayCard(viewModel: viewModel, onToggleProblem: { _ in })
+        return DayCard(
+            viewModel: viewModel,
+            onToggleProblem: { _ in },
+            onSelectProblem: { _ in }
+        )
             .padding()
             .frame(width: 500)
             .background(Color.appGray100)

@@ -13,27 +13,32 @@
         {
           "name": "Reverse Linked List",
           "difficulty": "Easy",
-          "url": "https://leetcode.com/problems/reverse-linked-list/"
+          "url": "https://leetcode.com/problems/reverse-linked-list/",
+          "leetcodeNumber": 206
         },
         {
           "name": "Merge Two Sorted Lists",
           "difficulty": "Easy",
-          "url": "https://leetcode.com/problems/merge-two-sorted-lists/"
+          "url": "https://leetcode.com/problems/merge-two-sorted-lists/",
+          "leetcodeNumber": 21
         },
         {
           "name": "Reorder List",
           "difficulty": "Medium",
-          "url": "https://leetcode.com/problems/reorder-list/"
+          "url": "https://leetcode.com/problems/reorder-list/",
+          "leetcodeNumber": 143
         },
         {
           "name": "Remove Nth Node From End of List",
           "difficulty": "Medium",
-          "url": "https://leetcode.com/problems/remove-nth-node-from-end-of-list/"
+          "url": "https://leetcode.com/problems/remove-nth-node-from-end-of-list/",
+          "leetcodeNumber": 19
         },
         {
           "name": "Linked List Cycle",
           "difficulty": "Easy",
-          "url": "https://leetcode.com/problems/linked-list-cycle/"
+          "url": "https://leetcode.com/problems/linked-list-cycle/",
+          "leetcodeNumber": 141
         }
       ]
     },
@@ -45,27 +50,32 @@
         {
           "name": "Merge K Sorted Lists",
           "difficulty": "Medium",
-          "url": "https://leetcode.com/problems/merge-k-sorted-lists/"
+          "url": "https://leetcode.com/problems/merge-k-sorted-lists/",
+          "leetcodeNumber": 23
         },
         {
           "name": "Copy List with Random Pointer",
           "difficulty": "Medium",
-          "url": "https://leetcode.com/problems/copy-list-with-random-pointer/"
+          "url": "https://leetcode.com/problems/copy-list-with-random-pointer/",
+          "leetcodeNumber": 138
         },
         {
           "name": "Add Two Numbers",
           "difficulty": "Medium",
-          "url": "https://leetcode.com/problems/add-two-numbers/"
+          "url": "https://leetcode.com/problems/add-two-numbers/",
+          "leetcodeNumber": 2
         },
         {
           "name": "Find the Duplicate Number",
           "difficulty": "Medium",
-          "url": "https://leetcode.com/problems/find-the-duplicate-number/"
+          "url": "https://leetcode.com/problems/find-the-duplicate-number/",
+          "leetcodeNumber": 287
         },
         {
           "name": "LRU Cache",
           "difficulty": "Medium",
-          "url": "https://leetcode.com/problems/lru-cache/"
+          "url": "https://leetcode.com/problems/lru-cache/",
+          "leetcodeNumber": 146
         }
       ]
     },
@@ -77,27 +87,32 @@
         {
           "name": "Invert Binary Tree",
           "difficulty": "Easy",
-          "url": "https://leetcode.com/problems/invert-binary-tree/"
+          "url": "https://leetcode.com/problems/invert-binary-tree/",
+          "leetcodeNumber": 226
         },
         {
           "name": "Maximum Depth of Binary Tree",
           "difficulty": "Easy",
-          "url": "https://leetcode.com/problems/maximum-depth-of-binary-tree/"
+          "url": "https://leetcode.com/problems/maximum-depth-of-binary-tree/",
+          "leetcodeNumber": 104
         },
         {
           "name": "Same Tree",
           "difficulty": "Easy",
-          "url": "https://leetcode.com/problems/same-tree/"
+          "url": "https://leetcode.com/problems/same-tree/",
+          "leetcodeNumber": 100
         },
         {
           "name": "Subtree of Another Tree",
           "difficulty": "Easy",
-          "url": "https://leetcode.com/problems/subtree-of-another-tree/"
+          "url": "https://leetcode.com/problems/subtree-of-another-tree/",
+          "leetcodeNumber": 572
         },
         {
           "name": "Lowest Common Ancestor of BST",
           "difficulty": "Medium",
-          "url": "https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-search-tree/"
+          "url": "https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-search-tree/",
+          "leetcodeNumber": 235
         }
       ]
     },
@@ -109,27 +124,32 @@
         {
           "name": "Binary Tree Level Order Traversal",
           "difficulty": "Medium",
-          "url": "https://leetcode.com/problems/binary-tree-level-order-traversal/"
+          "url": "https://leetcode.com/problems/binary-tree-level-order-traversal/",
+          "leetcodeNumber": 102
         },
         {
           "name": "Validate Binary Search Tree",
           "difficulty": "Medium",
-          "url": "https://leetcode.com/problems/validate-binary-search-tree/"
+          "url": "https://leetcode.com/problems/validate-binary-search-tree/",
+          "leetcodeNumber": 98
         },
         {
           "name": "Kth Smallest Element in BST",
           "difficulty": "Medium",
-          "url": "https://leetcode.com/problems/kth-smallest-element-in-a-bst/"
+          "url": "https://leetcode.com/problems/kth-smallest-element-in-a-bst/",
+          "leetcodeNumber": 230
         },
         {
           "name": "Construct Binary Tree from Preorder and Inorder",
           "difficulty": "Medium",
-          "url": "https://leetcode.com/problems/construct-binary-tree-from-preorder-and-inorder-traversal/"
+          "url": "https://leetcode.com/problems/construct-binary-tree-from-preorder-and-inorder-traversal/",
+          "leetcodeNumber": 105
         },
         {
           "name": "Binary Tree Maximum Path Sum",
           "difficulty": "Medium",
-          "url": "https://leetcode.com/problems/binary-tree-maximum-path-sum/"
+          "url": "https://leetcode.com/problems/binary-tree-maximum-path-sum/",
+          "leetcodeNumber": 124
         }
       ]
     },
@@ -141,27 +161,32 @@
         {
           "name": "Implement Trie (Prefix Tree)",
           "difficulty": "Medium",
-          "url": "https://leetcode.com/problems/implement-trie-prefix-tree/"
+          "url": "https://leetcode.com/problems/implement-trie-prefix-tree/",
+          "leetcodeNumber": 208
         },
         {
           "name": "Design Add and Search Words Data Structure",
           "difficulty": "Medium",
-          "url": "https://leetcode.com/problems/design-add-and-search-words-data-structure/"
+          "url": "https://leetcode.com/problems/design-add-and-search-words-data-structure/",
+          "leetcodeNumber": 211
         },
         {
           "name": "Word Search II",
           "difficulty": "Medium",
-          "url": "https://leetcode.com/problems/word-search-ii/"
+          "url": "https://leetcode.com/problems/word-search-ii/",
+          "leetcodeNumber": 212
         },
         {
           "name": "Count Good Nodes in Binary Tree",
           "difficulty": "Medium",
-          "url": "https://leetcode.com/problems/count-good-nodes-in-binary-tree/"
+          "url": "https://leetcode.com/problems/count-good-nodes-in-binary-tree/",
+          "leetcodeNumber": 1448
         },
         {
           "name": "Serialize and Deserialize Binary Tree",
           "difficulty": "Medium",
-          "url": "https://leetcode.com/problems/serialize-and-deserialize-binary-tree/"
+          "url": "https://leetcode.com/problems/serialize-and-deserialize-binary-tree/",
+          "leetcodeNumber": 297
         }
       ]
     },
@@ -173,27 +198,32 @@
         {
           "name": "Kth Largest Element in a Stream",
           "difficulty": "Easy",
-          "url": "https://leetcode.com/problems/kth-largest-element-in-a-stream/"
+          "url": "https://leetcode.com/problems/kth-largest-element-in-a-stream/",
+          "leetcodeNumber": 703
         },
         {
           "name": "Last Stone Weight",
           "difficulty": "Easy",
-          "url": "https://leetcode.com/problems/last-stone-weight/"
+          "url": "https://leetcode.com/problems/last-stone-weight/",
+          "leetcodeNumber": 1046
         },
         {
           "name": "K Closest Points to Origin",
           "difficulty": "Medium",
-          "url": "https://leetcode.com/problems/k-closest-points-to-origin/"
+          "url": "https://leetcode.com/problems/k-closest-points-to-origin/",
+          "leetcodeNumber": 973
         },
         {
           "name": "Task Scheduler",
           "difficulty": "Medium",
-          "url": "https://leetcode.com/problems/task-scheduler/"
+          "url": "https://leetcode.com/problems/task-scheduler/",
+          "leetcodeNumber": 621
         },
         {
           "name": "Design Twitter",
           "difficulty": "Medium",
-          "url": "https://leetcode.com/problems/design-twitter/"
+          "url": "https://leetcode.com/problems/design-twitter/",
+          "leetcodeNumber": 355
         }
       ]
     },
@@ -205,27 +235,32 @@
         {
           "name": "Find Median from Data Stream",
           "difficulty": "Medium",
-          "url": "https://leetcode.com/problems/find-median-from-data-stream/"
+          "url": "https://leetcode.com/problems/find-median-from-data-stream/",
+          "leetcodeNumber": 295
         },
         {
           "name": "Subsets",
           "difficulty": "Medium",
-          "url": "https://leetcode.com/problems/subsets/"
+          "url": "https://leetcode.com/problems/subsets/",
+          "leetcodeNumber": 78
         },
         {
           "name": "Combination Sum",
           "difficulty": "Medium",
-          "url": "https://leetcode.com/problems/combination-sum/"
+          "url": "https://leetcode.com/problems/combination-sum/",
+          "leetcodeNumber": 39
         },
         {
           "name": "Permutations",
           "difficulty": "Medium",
-          "url": "https://leetcode.com/problems/permutations/"
+          "url": "https://leetcode.com/problems/permutations/",
+          "leetcodeNumber": 46
         },
         {
           "name": "Subsets II",
           "difficulty": "Medium",
-          "url": "https://leetcode.com/problems/subsets-ii/"
+          "url": "https://leetcode.com/problems/subsets-ii/",
+          "leetcodeNumber": 90
         }
       ]
     },
@@ -237,27 +272,32 @@
         {
           "name": "Combination Sum II",
           "difficulty": "Medium",
-          "url": "https://leetcode.com/problems/combination-sum-ii/"
+          "url": "https://leetcode.com/problems/combination-sum-ii/",
+          "leetcodeNumber": 40
         },
         {
           "name": "Word Search",
           "difficulty": "Medium",
-          "url": "https://leetcode.com/problems/word-search/"
+          "url": "https://leetcode.com/problems/word-search/",
+          "leetcodeNumber": 79
         },
         {
           "name": "Palindrome Partitioning",
           "difficulty": "Medium",
-          "url": "https://leetcode.com/problems/palindrome-partitioning/"
+          "url": "https://leetcode.com/problems/palindrome-partitioning/",
+          "leetcodeNumber": 131
         },
         {
           "name": "Letter Combinations of Phone Number",
           "difficulty": "Medium",
-          "url": "https://leetcode.com/problems/letter-combinations-of-a-phone-number/"
+          "url": "https://leetcode.com/problems/letter-combinations-of-a-phone-number/",
+          "leetcodeNumber": 17
         },
         {
           "name": "N-Queens",
           "difficulty": "Medium",
-          "url": "https://leetcode.com/problems/n-queens/"
+          "url": "https://leetcode.com/problems/n-queens/",
+          "leetcodeNumber": 51
         }
       ]
     },
@@ -269,27 +309,32 @@
         {
           "name": "Number of Islands",
           "difficulty": "Medium",
-          "url": "https://leetcode.com/problems/number-of-islands/"
+          "url": "https://leetcode.com/problems/number-of-islands/",
+          "leetcodeNumber": 200
         },
         {
           "name": "Clone Graph",
           "difficulty": "Medium",
-          "url": "https://leetcode.com/problems/clone-graph/"
+          "url": "https://leetcode.com/problems/clone-graph/",
+          "leetcodeNumber": 133
         },
         {
           "name": "Max Area of Island",
           "difficulty": "Medium",
-          "url": "https://leetcode.com/problems/max-area-of-island/"
+          "url": "https://leetcode.com/problems/max-area-of-island/",
+          "leetcodeNumber": 695
         },
         {
           "name": "Pacific Atlantic Water Flow",
           "difficulty": "Medium",
-          "url": "https://leetcode.com/problems/pacific-atlantic-water-flow/"
+          "url": "https://leetcode.com/problems/pacific-atlantic-water-flow/",
+          "leetcodeNumber": 417
         },
         {
           "name": "Surrounded Regions",
           "difficulty": "Medium",
-          "url": "https://leetcode.com/problems/surrounded-regions/"
+          "url": "https://leetcode.com/problems/surrounded-regions/",
+          "leetcodeNumber": 130
         }
       ]
     },
@@ -301,27 +346,32 @@
         {
           "name": "Rotting Oranges",
           "difficulty": "Medium",
-          "url": "https://leetcode.com/problems/rotting-oranges/"
+          "url": "https://leetcode.com/problems/rotting-oranges/",
+          "leetcodeNumber": 994
         },
         {
           "name": "Course Schedule",
           "difficulty": "Medium",
-          "url": "https://leetcode.com/problems/course-schedule/"
+          "url": "https://leetcode.com/problems/course-schedule/",
+          "leetcodeNumber": 207
         },
         {
           "name": "Course Schedule II",
           "difficulty": "Medium",
-          "url": "https://leetcode.com/problems/course-schedule-ii/"
+          "url": "https://leetcode.com/problems/course-schedule-ii/",
+          "leetcodeNumber": 210
         },
         {
           "name": "Graph Valid Tree",
           "difficulty": "Medium",
-          "url": "https://leetcode.com/problems/graph-valid-tree/"
+          "url": "https://leetcode.com/problems/graph-valid-tree/",
+          "leetcodeNumber": 261
         },
         {
           "name": "Number of Connected Components in Graph",
           "difficulty": "Medium",
-          "url": "https://leetcode.com/problems/number-of-connected-components-in-an-undirected-graph/"
+          "url": "https://leetcode.com/problems/number-of-connected-components-in-an-undirected-graph/",
+          "leetcodeNumber": 323
         }
       ]
     },
@@ -333,27 +383,32 @@
         {
           "name": "Redundant Connection",
           "difficulty": "Medium",
-          "url": "https://leetcode.com/problems/redundant-connection/"
+          "url": "https://leetcode.com/problems/redundant-connection/",
+          "leetcodeNumber": 684
         },
         {
           "name": "Word Ladder",
           "difficulty": "Medium",
-          "url": "https://leetcode.com/problems/word-ladder/"
+          "url": "https://leetcode.com/problems/word-ladder/",
+          "leetcodeNumber": 127
         },
         {
           "name": "Alien Dictionary",
           "difficulty": "Medium",
-          "url": "https://leetcode.com/problems/alien-dictionary/"
+          "url": "https://leetcode.com/problems/alien-dictionary/",
+          "leetcodeNumber": 269
         },
         {
           "name": "Min Cost to Connect All Points",
           "difficulty": "Medium",
-          "url": "https://leetcode.com/problems/min-cost-to-connect-all-points/"
+          "url": "https://leetcode.com/problems/min-cost-to-connect-all-points/",
+          "leetcodeNumber": 1584
         },
         {
           "name": "Network Delay Time",
           "difficulty": "Medium",
-          "url": "https://leetcode.com/problems/network-delay-time/"
+          "url": "https://leetcode.com/problems/network-delay-time/",
+          "leetcodeNumber": 743
         }
       ]
     },
@@ -365,27 +420,32 @@
         {
           "name": "Climbing Stairs",
           "difficulty": "Easy",
-          "url": "https://leetcode.com/problems/climbing-stairs/"
+          "url": "https://leetcode.com/problems/climbing-stairs/",
+          "leetcodeNumber": 70
         },
         {
           "name": "House Robber",
           "difficulty": "Medium",
-          "url": "https://leetcode.com/problems/house-robber/"
+          "url": "https://leetcode.com/problems/house-robber/",
+          "leetcodeNumber": 198
         },
         {
           "name": "House Robber II",
           "difficulty": "Medium",
-          "url": "https://leetcode.com/problems/house-robber-ii/"
+          "url": "https://leetcode.com/problems/house-robber-ii/",
+          "leetcodeNumber": 213
         },
         {
           "name": "Longest Palindromic Substring",
           "difficulty": "Medium",
-          "url": "https://leetcode.com/problems/longest-palindromic-substring/"
+          "url": "https://leetcode.com/problems/longest-palindromic-substring/",
+          "leetcodeNumber": 5
         },
         {
           "name": "Palindromic Substrings",
           "difficulty": "Medium",
-          "url": "https://leetcode.com/problems/palindromic-substrings/"
+          "url": "https://leetcode.com/problems/palindromic-substrings/",
+          "leetcodeNumber": 647
         }
       ]
     },
@@ -397,27 +457,32 @@
         {
           "name": "Decode Ways",
           "difficulty": "Medium",
-          "url": "https://leetcode.com/problems/decode-ways/"
+          "url": "https://leetcode.com/problems/decode-ways/",
+          "leetcodeNumber": 91
         },
         {
           "name": "Coin Change",
           "difficulty": "Medium",
-          "url": "https://leetcode.com/problems/coin-change/"
+          "url": "https://leetcode.com/problems/coin-change/",
+          "leetcodeNumber": 322
         },
         {
           "name": "Maximum Product Subarray",
           "difficulty": "Medium",
-          "url": "https://leetcode.com/problems/maximum-product-subarray/"
+          "url": "https://leetcode.com/problems/maximum-product-subarray/",
+          "leetcodeNumber": 152
         },
         {
           "name": "Word Break",
           "difficulty": "Medium",
-          "url": "https://leetcode.com/problems/word-break/"
+          "url": "https://leetcode.com/problems/word-break/",
+          "leetcodeNumber": 139
         },
         {
           "name": "Longest Increasing Subsequence",
           "difficulty": "Medium",
-          "url": "https://leetcode.com/problems/longest-increasing-subsequence/"
+          "url": "https://leetcode.com/problems/longest-increasing-subsequence/",
+          "leetcodeNumber": 300
         }
       ]
     }

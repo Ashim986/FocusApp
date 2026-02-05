@@ -19,7 +19,7 @@ struct ProblemRowWidget: View {
                     NSWorkspace.shared.open(url)
                 }
             }, label: {
-                Text(problem.name)
+                Text(problem.displayName)
                     .font(.system(size: 11))
                     .foregroundColor(isCompleted ? .gray : .white.opacity(0.9))
                     .strikethrough(isCompleted, color: .gray)

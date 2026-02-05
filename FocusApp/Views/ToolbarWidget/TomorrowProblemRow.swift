@@ -17,7 +17,7 @@ struct TomorrowProblemRow: View {
                     NSWorkspace.shared.open(url)
                 }
             }, label: {
-                Text(problem.name)
+                Text(problem.displayName)
                     .font(.system(size: 10))
                     .foregroundColor(.white.opacity(0.6))
                     .lineLimit(1)

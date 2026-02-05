@@ -29,13 +29,17 @@ final class AppContainer {
         let codingEnvironmentPresenter = self.codingEnvironmentPresenter
 
         return ContentRouter(
-            makePlan: {
-                PlanView(presenter: planPresenter)
+            makePlan: { onSelectProblem in
+                PlanView(
+                    presenter: planPresenter,
+                    onSelectProblem: onSelectProblem
+                )
             },
-            makeToday: { codeBinding in
+            makeToday: { codeBinding, onSelectProblem in
                 TodayView(
                     presenter: todayPresenter,
-                    showCodeEnvironment: codeBinding
+                    showCodeEnvironment: codeBinding,
+                    onSelectProblem: onSelectProblem
                 )
             },
             makeStats: {
@@ -47,6 +51,9 @@ final class AppContainer {
                     debugLogStore: self.debugLogStore,
                     onBack: { binding.wrappedValue = false }
                 )
+            },
+            selectProblem: { problem, day, index in
+                codingEnvironmentPresenter.selectProblem(problem, at: index, day: day)
             }
         )
     }()

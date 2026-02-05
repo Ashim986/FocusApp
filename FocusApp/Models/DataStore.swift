@@ -45,9 +45,16 @@ final class AppStateStore: ObservableObject {
     }
 
     func toggleProblem(day: Int, problemIndex: Int) {
+        let currentDay = currentDayNumber()
         let key = "\(day)-\(problemIndex)"
         let wasCompleted = data.progress[key] ?? false
+        if !wasCompleted && day > currentDay {
+            guard canCompleteFutureDay(day, currentDay: currentDay) else { return }
+        }
         data.progress[key] = !wasCompleted
+        if !wasCompleted {
+            advanceOffsetIfAhead()
+        }
         save()
     }
 
@@ -161,11 +168,39 @@ final class AppStateStore: ObservableObject {
             }
         }
 
-        if syncedCount > 0 {
+        let didAdvance = advanceOffsetIfAhead()
+        if syncedCount > 0 || didAdvance {
             save()
         }
 
         return (syncedCount, totalMatched)
+    }
+
+    private func canCompleteFutureDay(_ day: Int, currentDay: Int) -> Bool {
+        guard day == currentDay + 1 else { return false }
+        return isDayCompleted(currentDay)
+    }
+
+    private func isDayCompleted(_ day: Int) -> Bool {
+        guard let dayData = dsaPlan.first(where: { $0.id == day }) else { return false }
+        let completedCount = data.completedProblemsCount(day: day, totalProblems: dayData.problems.count)
+        return completedCount == dayData.problems.count
+    }
+
+    @discardableResult
+    private func advanceOffsetIfAhead() -> Bool {
+        var didAdvance = false
+        var currentDay = currentDayNumber()
+        while currentDay < dsaPlan.count {
+            guard isDayCompleted(currentDay) else { break }
+            let nextDay = currentDay + 1
+            guard nextDay <= dsaPlan.count else { break }
+            guard isDayCompleted(nextDay) else { break }
+            data.dayOffset += 1
+            currentDay += 1
+            didAdvance = true
+        }
+        return didAdvance
     }
 
     private func normalizeCode(_ code: String, language: ProgrammingLanguage) -> String {

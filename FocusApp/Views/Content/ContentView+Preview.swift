@@ -22,7 +22,7 @@ struct ContentView_Previews: PreviewProvider {
                 )
                 let presenter = ContentPresenter(interactor: ContentInteractor(appStore: appStore))
                 let router = ContentRouter(
-                    makePlan: {
+                    makePlan: { onSelectProblem in
                         let planPresenter = PlanPresenter(
                             interactor: PlanInteractor(
                                 appStore: appStore,
@@ -33,9 +33,12 @@ struct ContentView_Previews: PreviewProvider {
                                 leetCodeSync: syncInteractor
                             )
                         )
-                        return PlanView(presenter: planPresenter)
+                        return PlanView(
+                            presenter: planPresenter,
+                            onSelectProblem: onSelectProblem
+                        )
                     },
-                    makeToday: { codeBinding in
+                    makeToday: { codeBinding, onSelectProblem in
                         let todayPresenter = TodayPresenter(
                             interactor: TodayInteractor(
                                 appStore: appStore,
@@ -48,7 +51,8 @@ struct ContentView_Previews: PreviewProvider {
                         )
                         return TodayView(
                             presenter: todayPresenter,
-                            showCodeEnvironment: codeBinding
+                            showCodeEnvironment: codeBinding,
+                            onSelectProblem: onSelectProblem
                         )
                     },
                     makeStats: {
@@ -61,6 +65,9 @@ struct ContentView_Previews: PreviewProvider {
                             debugLogStore: debugLogStore,
                             onBack: { binding.wrappedValue = false }
                         )
+                    },
+                    selectProblem: { problem, day, index in
+                        codingPresenter.selectProblem(problem, at: index, day: day)
                     }
                 )
 

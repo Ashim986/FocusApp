@@ -175,6 +175,9 @@ extension TodayView {
                         isCompleted: problem.isCompleted,
                         onToggle: {
                             presenter.toggleProblem(day: day.id, problemIndex: problem.index)
+                        },
+                        onSelect: {
+                            onSelectProblem(problem.problem, day.id, problem.index)
                         }
                     )
 

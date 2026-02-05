@@ -21,7 +21,8 @@ struct TodayView_Previews: PreviewProvider {
                 )
                 TodayView(
                     presenter: presenter,
-                    showCodeEnvironment: .constant(false)
+                    showCodeEnvironment: .constant(false),
+                    onSelectProblem: { _, _, _ in }
                 )
                     .frame(width: 600, height: 800)
             } else {

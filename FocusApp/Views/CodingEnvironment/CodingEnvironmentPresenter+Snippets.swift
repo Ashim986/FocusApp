@@ -407,13 +407,15 @@ struct LeetCodeExecutionWrapper {
                             needsTreeNodeSupport ? LeetCodeValueType.treeNode : nil].compactMap { $0 }
         let support = supportTypes.isEmpty ? "" : LeetCodeTemplateBuilder.swiftSupportClasses(typesUsed: supportTypes)
 
+        let listNodeInit = listNodeInitExpression(in: code, valueExpr: "toInt(item)", nextExpr: "nil")
+        let listNodeZeroInit = listNodeInitExpression(in: code, valueExpr: "0", nextExpr: "nil")
         let listNodeHelpers = needsListNode ? """
         func toListNode(_ value: Any) -> ListNode? {
             guard let array = value as? [Any] else { return nil }
-            let dummy = ListNode(0)
+            let dummy = \(listNodeZeroInit)
             var current: ListNode? = dummy
             for item in array {
-                let node = ListNode(toInt(item))
+                let node = \(listNodeInit)
                 current?.next = node
                 current = node
             }
@@ -431,12 +433,13 @@ struct LeetCodeExecutionWrapper {
         }
         """ : ""
 
+        let treeNodeInit = treeNodeInitExpression(in: code, valueExpr: "toInt(item)", leftExpr: "nil", rightExpr: "nil")
         let treeNodeHelpers = needsTreeNode ? """
         func toTreeNode(_ value: Any) -> TreeNode? {
             guard let array = value as? [Any], !array.isEmpty else { return nil }
             var nodes: [TreeNode?] = array.map { item in
                 if item is NSNull { return nil }
-                return TreeNode(toInt(item))
+                return \(treeNodeInit)
             }
             var index = 0
             var childIndex = 1
@@ -931,6 +934,144 @@ struct LeetCodeExecutionWrapper {
         default:
             return "result"
         }
+    }
+
+    private struct TypeDefinitionInfo {
+        let kind: String
+        let body: String
+    }
+
+    private static func listNodeInitExpression(in code: String, valueExpr: String, nextExpr: String) -> String {
+        guard let info = typeDefinition(named: "ListNode", in: code) else {
+            return "ListNode(\(valueExpr))"
+        }
+
+        let body = info.body
+        let hasAnyInit = hasPattern("\\binit\\s*\\(", in: body)
+        let hasInitUnderscoreMultiple = hasPattern(
+            "\\binit\\s*\\(\\s*_\\s*\\w+\\s*:[^\\)]*,\\s*_\\s*\\w+\\s*:",
+            in: body
+        )
+        let hasInitUnderscoreSingle = hasPattern(
+            "\\binit\\s*\\(\\s*_\\s*\\w+\\s*:[^,\\)]*\\)",
+            in: body
+        )
+        let hasInitLabeledValNext = hasPattern(
+            "\\binit\\s*\\(\\s*val\\s*:[^\\)]*,\\s*next\\s*:",
+            in: body
+        )
+        let hasInitEmpty = hasPattern("\\binit\\s*\\(\\s*\\)", in: body)
+        let hasVarVal = hasPattern("\\bvar\\s+val\\b", in: body)
+        let hasVarNext = hasPattern("\\bvar\\s+next\\b", in: body)
+
+        if hasInitUnderscoreSingle {
+            return "ListNode(\(valueExpr))"
+        }
+        if hasInitUnderscoreMultiple {
+            return "ListNode(\(valueExpr), \(nextExpr))"
+        }
+        if hasInitLabeledValNext {
+            return "ListNode(val: \(valueExpr), next: \(nextExpr))"
+        }
+        if info.kind == "struct", !hasAnyInit, hasVarVal, hasVarNext {
+            return "ListNode(val: \(valueExpr), next: \(nextExpr))"
+        }
+        if hasInitEmpty, hasVarVal {
+            let nextAssignment = hasVarNext ? "node.next = \(nextExpr); " : ""
+            return "{ let node = ListNode(); node.val = \(valueExpr); \(nextAssignment)return node }()"
+        }
+        return "ListNode(\(valueExpr))"
+    }
+
+    private static func treeNodeInitExpression(
+        in code: String,
+        valueExpr: String,
+        leftExpr: String,
+        rightExpr: String
+    ) -> String {
+        guard let info = typeDefinition(named: "TreeNode", in: code) else {
+            return "TreeNode(\(valueExpr))"
+        }
+
+        let body = info.body
+        let hasAnyInit = hasPattern("\\binit\\s*\\(", in: body)
+        let hasInitUnderscoreMultiple = hasPattern(
+            "\\binit\\s*\\(\\s*_\\s*\\w+\\s*:[^\\)]*,\\s*_\\s*\\w+\\s*:",
+            in: body
+        )
+        let hasInitUnderscoreSingle = hasPattern(
+            "\\binit\\s*\\(\\s*_\\s*\\w+\\s*:[^,\\)]*\\)",
+            in: body
+        )
+        let hasInitLabeledValChildren = hasPattern(
+            "\\binit\\s*\\(\\s*val\\s*:[^\\)]*,\\s*left\\s*:[^\\)]*,\\s*right\\s*:",
+            in: body
+        )
+        let hasInitEmpty = hasPattern("\\binit\\s*\\(\\s*\\)", in: body)
+        let hasVarVal = hasPattern("\\bvar\\s+val\\b", in: body)
+        let hasVarLeft = hasPattern("\\bvar\\s+left\\b", in: body)
+        let hasVarRight = hasPattern("\\bvar\\s+right\\b", in: body)
+
+        if hasInitUnderscoreSingle {
+            return "TreeNode(\(valueExpr))"
+        }
+        if hasInitUnderscoreMultiple {
+            return "TreeNode(\(valueExpr), \(leftExpr), \(rightExpr))"
+        }
+        if hasInitLabeledValChildren {
+            return "TreeNode(val: \(valueExpr), left: \(leftExpr), right: \(rightExpr))"
+        }
+        if info.kind == "struct", !hasAnyInit, hasVarVal, hasVarLeft, hasVarRight {
+            return "TreeNode(val: \(valueExpr), left: \(leftExpr), right: \(rightExpr))"
+        }
+        if hasInitEmpty, hasVarVal {
+            let leftAssignment = hasVarLeft ? "node.left = \(leftExpr); " : ""
+            let rightAssignment = hasVarRight ? "node.right = \(rightExpr); " : ""
+            return "{ let node = TreeNode(); node.val = \(valueExpr); \(leftAssignment)\(rightAssignment)return node }()"
+        }
+        return "TreeNode(\(valueExpr))"
+    }
+
+    private static func typeDefinition(named name: String, in code: String) -> TypeDefinitionInfo? {
+        let stripped = stripCommentsAndStrings(from: code)
+        let pattern = "\\b(class|struct)\\s+\(NSRegularExpression.escapedPattern(for: name))\\b"
+        guard let regex = try? NSRegularExpression(pattern: pattern, options: []) else { return nil }
+        let range = NSRange(location: 0, length: (stripped as NSString).length)
+        guard let match = regex.firstMatch(in: stripped, options: [], range: range) else { return nil }
+        guard match.numberOfRanges >= 2 else { return nil }
+
+        let kind = (stripped as NSString).substring(with: match.range(at: 1))
+        let matchEnd = match.range.location + match.range.length
+        guard let braceStart = stripped[stripIndex(stripped, offset: matchEnd)...].firstIndex(of: "{") else {
+            return nil
+        }
+        var depth = 0
+        var index = braceStart
+        while index < stripped.endIndex {
+            let char = stripped[index]
+            if char == "{" {
+                depth += 1
+            } else if char == "}" {
+                depth -= 1
+                if depth == 0 {
+                    let bodyStart = stripped.index(after: braceStart)
+                    let body = String(stripped[bodyStart..<index])
+                    return TypeDefinitionInfo(kind: kind, body: body)
+                }
+            }
+            index = stripped.index(after: index)
+        }
+        return nil
+    }
+
+    private static func stripIndex(_ value: String, offset: Int) -> String.Index {
+        value.index(value.startIndex, offsetBy: min(max(offset, 0), value.count))
+    }
+
+    private static func hasPattern(_ pattern: String, in text: String) -> Bool {
+        guard let regex = try? NSRegularExpression(pattern: pattern, options: []) else { return false }
+        let range = NSRange(location: 0, length: (text as NSString).length)
+        return regex.firstMatch(in: text, options: [], range: range) != nil
     }
 
     private static func containsTypeDefinition(in code: String, typeName: String) -> Bool {

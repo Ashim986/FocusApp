@@ -98,7 +98,7 @@ struct ProblemSelectionView: View {
                 }
 
                 VStack(alignment: .leading, spacing: 4) {
-                    Text(item.problem.name)
+                    Text(item.problem.displayName)
                         .font(.system(size: 14, weight: .medium))
                         .foregroundColor(.white)
                         .lineLimit(1)

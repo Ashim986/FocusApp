@@ -8,9 +8,16 @@ final class CodeEditorLineNumberRulerView: NSRulerView {
     private let dividerColor = NSColor(Color.appGray700)
     private let gutterPadding: CGFloat = 6
     private let markerColor = NSColor(Color.appRed)
+    private let executionColor = NSColor(Color.appPurple)
     private var toolTipMessages: [NSView.ToolTipTag: String] = [:]
 
     var diagnostics: [CodeEditorDiagnostic] = [] {
+        didSet {
+            needsDisplay = true
+        }
+    }
+
+    var executionLine: Int? {
         didSet {
             needsDisplay = true
         }
@@ -44,6 +51,7 @@ final class CodeEditorLineNumberRulerView: NSRulerView {
         let fullRange = NSRange(location: 0, length: text.length)
         let relativePoint = convert(NSPoint.zero, from: textView)
         let diagnosticsByLine = Dictionary(grouping: diagnostics, by: { $0.line })
+        let currentExecutionLine = executionLine
 
         var lineNumber = 1
         var index = 0
@@ -66,7 +74,7 @@ final class CodeEditorLineNumberRulerView: NSRulerView {
                 let lineNumberString = "\(lineNumber)" as NSString
                 let attributes: [NSAttributedString.Key: Any] = [
                     .font: font,
-                    .foregroundColor: textColor
+                    .foregroundColor: lineNumber == currentExecutionLine ? executionColor : textColor
                 ]
                 let size = lineNumberString.size(withAttributes: attributes)
                 let x = ruleThickness - size.width - gutterPadding

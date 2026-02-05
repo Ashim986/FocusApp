@@ -3,6 +3,7 @@ import Foundation
 extension CodingEnvironmentPresenter {
     func runCode() {
         guard !isRunning else { return }
+        clearJourney()
         if testCases.isEmpty {
             runSingle()
         } else {
@@ -51,6 +52,7 @@ extension CodingEnvironmentPresenter {
             )
 
             guard !Task.isCancelled else { return }
+            let parsed = parseTraceOutput(result.output)
             await MainActor.run {
                 if result.wasCancelled {
                     self.errorOutput = "Execution stopped by user."
@@ -59,13 +61,16 @@ extension CodingEnvironmentPresenter {
                 } else if !result.error.isEmpty {
                     self.errorOutput = result.error
                 } else {
-                    self.compilationOutput = result.output
+                    self.compilationOutput = parsed.cleanOutput
                 }
                 self.errorDiagnostics = self.extractDiagnostics(
                     from: result.error,
                     language: self.language,
                     code: self.code
                 )
+                if result.isSuccess, !parsed.events.isEmpty {
+                    self.updateJourney(parsed.events)
+                }
                 self.isRunning = false
             }
         }
@@ -74,6 +79,7 @@ extension CodingEnvironmentPresenter {
     // swiftlint:disable cyclomatic_complexity function_body_length
     private func executeTests(saveSubmission: Bool) {
         guard !isRunning else { return }
+        clearJourney()
         isRunning = true
         compilationOutput = ""
         errorOutput = ""
@@ -102,6 +108,7 @@ extension CodingEnvironmentPresenter {
                 )
 
                 if Task.isCancelled { break }
+                let parsed = parseTraceOutput(result.output)
                 await MainActor.run {
                     if result.wasCancelled {
                         updatedTestCases[index].actualOutput = "Stopped"
@@ -116,7 +123,7 @@ extension CodingEnvironmentPresenter {
                         let normalizedExpected = testCase.expectedOutput
                             .trimmingCharacters(in: .whitespacesAndNewlines)
                         let normalizedActual = self.normalizeOutputForComparison(
-                            result.output,
+                            parsed.cleanOutput,
                             expected: normalizedExpected
                         )
                         updatedTestCases[index].actualOutput = normalizedActual
@@ -126,10 +133,13 @@ extension CodingEnvironmentPresenter {
                         allPassed = false
                     }
                     self.testCases = updatedTestCases
+                    if index == 0, result.isSuccess, !parsed.events.isEmpty {
+                        self.updateJourney(parsed.events)
+                    }
                 }
 
-                if !result.output.isEmpty {
-                    consoleLogs.append("Test \(index + 1):\n\(result.output)")
+                if !parsed.cleanOutput.isEmpty {
+                    consoleLogs.append("Test \(index + 1):\n\(parsed.cleanOutput)")
                 }
 
                 if !result.error.isEmpty {
@@ -254,6 +264,39 @@ extension CodingEnvironmentPresenter {
             let finalMessage = message ?? fallbackMessage ?? "Error"
             collector.add(line: lineNumber, column: column, message: finalMessage, offset: 0)
         }
+    }
+
+    private struct TraceParseResult {
+        let events: [DataJourneyEvent]
+        let cleanOutput: String
+    }
+
+    private func parseTraceOutput(_ output: String) -> TraceParseResult {
+        let prefix = "__focus_trace__"
+        guard output.contains(prefix) else {
+            return TraceParseResult(events: [], cleanOutput: output)
+        }
+
+        let lines = output.split(omittingEmptySubsequences: false, whereSeparator: \.isNewline)
+        var cleanLines: [String] = []
+        var events: [DataJourneyEvent] = []
+
+        for rawLine in lines {
+            let line = String(rawLine)
+            if line.hasPrefix(prefix) {
+                let jsonString = String(line.dropFirst(prefix.count))
+                if let data = jsonString.data(using: String.Encoding.utf8),
+                   let json = try? JSONSerialization.jsonObject(with: data),
+                   let event = DataJourneyEvent.from(json: json) {
+                    events.append(event)
+                }
+            } else {
+                cleanLines.append(line)
+            }
+        }
+
+        let cleanOutput = cleanLines.joined(separator: "\n")
+        return TraceParseResult(events: events, cleanOutput: cleanOutput)
     }
 
     private func extractPythonFallbackMessage(from lines: [Substring]) -> String? {

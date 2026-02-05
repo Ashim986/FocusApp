@@ -30,6 +30,9 @@
     "%lld%%" : {
 
     },
+    "Add `Trace.step(\"label\", [\"key\": value])` inside loops to visualize iterations." : {
+
+    },
     "Close" : {
 
     },
@@ -1619,6 +1622,9 @@
     "No logs match your filters" : {
 
     },
+    "No values captured for this step." : {
+
+    },
     "notification.habits_complete.body" : {
       "extractionState" : "stale",
       "localizations" : {
@@ -1998,6 +2004,9 @@
 
     },
     "Reset filters" : {
+
+    },
+    "Run with input to see the data journey." : {
 
     },
     "Save" : {

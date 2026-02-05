@@ -623,6 +623,65 @@ struct LeetCodeExecutionWrapper {
         \(listNodeHelpers)
         \(treeNodeHelpers)
 
+        struct Trace {
+            private static let prefix = "__focus_trace__"
+
+            static func step(_ label: String, _ values: [String: Any] = [:], line: Int = #line) {
+                emit(kind: "step", line: line, label: label, values: values)
+            }
+
+            static func input(paramNames: [String], args: [Any]) {
+                guard !args.isEmpty else { return }
+                var values: [String: Any] = [:]
+                for (index, name) in paramNames.enumerated() {
+                    let value = index < args.count ? args[index] : NSNull()
+                    values[name] = traceValue(value)
+                }
+                emit(kind: "input", values: values)
+            }
+
+            static func output(_ value: Any) {
+                emit(kind: "output", values: ["result": traceValue(value)])
+            }
+
+            private static func traceValue(_ value: Any) -> Any {
+                if value is NSNull { return NSNull() }
+                if let boolValue = value as? Bool { return boolValue }
+                \(needsListNode ? "if let node = value as? ListNode { return [\"__type\": \"list\", \"value\": listNodeToArray(node)] }" : "")
+                \(needsTreeNode ? "if let node = value as? TreeNode { return [\"__type\": \"tree\", \"value\": treeNodeToArray(node)] }" : "")
+                if let array = value as? [Any] {
+                    return array.map { traceValue($0) }
+                }
+                if let dict = value as? [String: Any] {
+                    var mapped: [String: Any] = [:]
+                    for (key, val) in dict {
+                        mapped[key] = traceValue(val)
+                    }
+                    return mapped
+                }
+                if let numberValue = value as? NSNumber { return numberValue }
+                if let stringValue = value as? String { return stringValue }
+                return String(describing: value)
+            }
+
+            private static func emit(kind: String, line: Int? = nil, label: String? = nil, values: [String: Any]) {
+                var mapped: [String: Any] = [:]
+                for (key, val) in values {
+                    mapped[key] = traceValue(val)
+                }
+                var payload: [String: Any] = [
+                    "kind": kind,
+                    "values": mapped
+                ]
+                if let line { payload["line"] = line }
+                if let label { payload["label"] = label }
+                guard JSONSerialization.isValidJSONObject(payload),
+                      let data = try? JSONSerialization.data(withJSONObject: payload),
+                      let json = String(data: data, encoding: .utf8) else { return }
+                print(prefix + json)
+            }
+        }
+
         func jsonString(from value: Any) -> String {
             if value is NSNull {
                 return "null"
@@ -646,10 +705,17 @@ struct LeetCodeExecutionWrapper {
         let inputData = FileHandle.standardInput.readDataToEndOfFile()
         let input = String(data: inputData, encoding: .utf8) ?? ""
         let args = parseArgs(from: input, expectedCount: \(params.count))
+        let hasInput = !args.isEmpty
         let solution = Solution()
+        if hasInput {
+            Trace.input(paramNames: paramNames, args: args)
+        }
         \(arguments.joined(separator: "\n"))
         \(callLine)
         let output: Any = \(outputExpression)
+        if hasInput {
+            Trace.output(output)
+        }
         print(jsonString(from: output))
         """
 

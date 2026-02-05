@@ -10,6 +10,7 @@ extension CodeEditorView {
         var isInsertingMatchingBracket = false
         let indentUnit = "    "
         var diagnostics: [CodeEditorDiagnostic] = []
+        var executionLine: Int?
 
         let colors = SyntaxColors()
 
@@ -54,6 +55,7 @@ extension CodeEditorView {
             let number = NSColor(Color.appAmber)
             let comment = NSColor(Color.appGray500)
             let `default` = NSColor.white
+            let executionHighlight = NSColor(Color.appPurple).withAlphaComponent(0.18)
         }
 
         init(_ parent: CodeEditorView) {

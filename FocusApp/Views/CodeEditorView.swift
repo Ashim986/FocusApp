@@ -11,6 +11,7 @@ struct CodeEditorView: NSViewRepresentable {
     @Binding var code: String
     let language: ProgrammingLanguage
     let diagnostics: [CodeEditorDiagnostic]
+    let executionLine: Int?
     let isEditable: Bool
     let showsLineNumbers: Bool
 
@@ -18,12 +19,14 @@ struct CodeEditorView: NSViewRepresentable {
         code: Binding<String>,
         language: ProgrammingLanguage,
         diagnostics: [CodeEditorDiagnostic] = [],
+        executionLine: Int? = nil,
         isEditable: Bool = true,
         showsLineNumbers: Bool = true
     ) {
         self._code = code
         self.language = language
         self.diagnostics = diagnostics
+        self.executionLine = executionLine
         self.isEditable = isEditable
         self.showsLineNumbers = showsLineNumbers
     }
@@ -64,10 +67,12 @@ struct CodeEditorView: NSViewRepresentable {
         context.coordinator.textView = textView
         context.coordinator.language = language
         context.coordinator.diagnostics = diagnostics
+        context.coordinator.executionLine = executionLine
 
         if showsLineNumbers {
             let ruler = CodeEditorLineNumberRulerView(textView: textView)
             ruler.diagnostics = diagnostics
+            ruler.executionLine = executionLine
             scrollView.hasVerticalRuler = true
             scrollView.rulersVisible = true
             scrollView.verticalRulerView = ruler
@@ -96,10 +101,12 @@ struct CodeEditorView: NSViewRepresentable {
         }
 
         context.coordinator.diagnostics = diagnostics
+        context.coordinator.executionLine = executionLine
         context.coordinator.applyErrorHighlights()
         if showsLineNumbers {
             if let ruler = nsView.verticalRulerView as? CodeEditorLineNumberRulerView {
                 ruler.diagnostics = diagnostics
+                ruler.executionLine = executionLine
             } else {
                 nsView.verticalRulerView?.needsDisplay = true
             }

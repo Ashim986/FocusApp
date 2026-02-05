@@ -28,6 +28,9 @@ final class CodingEnvironmentPresenter: ObservableObject {
     @Published var submissionTagInput: String = ""
     @Published var errorDiagnostics: [CodeEditorDiagnostic] = []
     @Published var currentSolution: ProblemSolution?
+    @Published private(set) var dataJourney: [DataJourneyEvent] = []
+    @Published var selectedJourneyEventID: UUID?
+    @Published var highlightedExecutionLine: Int?
 
     let interactor: CodingEnvironmentInteractor
     let logger: DebugLogRecording?
@@ -126,6 +129,7 @@ final class CodingEnvironmentPresenter: ObservableObject {
 
     func selectProblem(_ problem: Problem, at index: Int, day: Int) {
         persistCurrentCode()
+        clearJourney()
 
         selectedProblem = problem
         selectedProblemIndex = index
@@ -146,6 +150,31 @@ final class CodingEnvironmentPresenter: ObservableObject {
 
     func loadSolution(for problem: Problem) {
         currentSolution = interactor.solution(for: problem)
+    }
+
+    func clearJourney() {
+        dataJourney = []
+        selectedJourneyEventID = nil
+        highlightedExecutionLine = nil
+    }
+
+    func updateJourney(_ events: [DataJourneyEvent]) {
+        dataJourney = events
+        if let step = events.first(where: { $0.kind == .step }) {
+            selectJourneyEvent(step)
+        } else if let input = events.first(where: { $0.kind == .input }) {
+            selectJourneyEvent(input)
+        } else if let output = events.first(where: { $0.kind == .output }) {
+            selectJourneyEvent(output)
+        } else {
+            selectedJourneyEventID = nil
+            highlightedExecutionLine = nil
+        }
+    }
+
+    func selectJourneyEvent(_ event: DataJourneyEvent) {
+        selectedJourneyEventID = event.id
+        highlightedExecutionLine = event.line
     }
 
     func ensureProblemSelection() {

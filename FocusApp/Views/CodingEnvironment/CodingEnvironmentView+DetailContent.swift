@@ -83,8 +83,13 @@ extension CodingEnvironmentView {
             }
 
             solutionSection(title: L10n.Coding.editorialVisualTitle) {
-                Text(L10n.Coding.editorialVisualPlaceholder)
-                    .font(.system(size: 11, design: .monospaced))
+                DataJourneyView(
+                    events: presenter.dataJourney,
+                    selectedEventID: $presenter.selectedJourneyEventID,
+                    onSelectEvent: { event in
+                        presenter.selectJourneyEvent(event)
+                    }
+                )
             }
 
             solutionSection(title: L10n.Coding.editorialWalkthroughTitle) {

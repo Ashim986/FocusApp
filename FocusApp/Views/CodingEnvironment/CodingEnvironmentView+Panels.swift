@@ -29,7 +29,8 @@ extension CodingEnvironmentView {
             CodeEditorView(
                 code: $presenter.code,
                 language: presenter.language,
-                diagnostics: presenter.errorDiagnostics
+                diagnostics: presenter.errorDiagnostics,
+                executionLine: presenter.highlightedExecutionLine
             )
         }
     }

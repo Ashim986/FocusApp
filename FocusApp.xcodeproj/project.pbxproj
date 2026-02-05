@@ -129,6 +129,8 @@
 		A1B2C3D4E5F6A7B8C9D0E1A3 /* SolutionTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D4E5F6A7B8C9D0E3A1 /* SolutionTabView.swift */; };
 		A1B2C3D4E5F6A7B8C9D0E1B4 /* SolutionApproachView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D4E5F6A7B8C9D0E3B2 /* SolutionApproachView.swift */; };
 		B1D2C3D4E5F6A7B8C9D0E1F3 /* CodingEnvironmentView+DetailContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1D2C3D4E5F6A7B8C9D0E1F2 /* CodingEnvironmentView+DetailContent.swift */; };
+		B1D2C3D4E5F6A7B8C9D0E1F7 /* DataJourneyModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1D2C3D4E5F6A7B8C9D0E1F9 /* DataJourneyModels.swift */; };
+		B1D2C3D4E5F6A7B8C9D0E1F8 /* DataJourneyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1D2C3D4E5F6A7B8C9D0E1FA /* DataJourneyView.swift */; };
 		B2C3D4E5F6A7B8C9D0E1F4F6 /* LeetCodeSyncScheduler.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2C3D4E5F6A7B8C9D0E1F4F5 /* LeetCodeSyncScheduler.swift */; };
 		C2978C5869F84459BDC98091 /* AppState/SharedDataStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A111678A69A8452C97563307 /* AppState/SharedDataStoreTests.swift */; };
 		C7D8E9F0A1B2C3D4E5F60709 /* LeetCode/LeetCodeSyncSchedulerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7D8E9F0A1B2C3D4E5F60708 /* LeetCode/LeetCodeSyncSchedulerTests.swift */; };
@@ -309,6 +311,8 @@
 		C7D8E9F0A1B2C3D4E5F60708 /* LeetCode/LeetCodeSyncSchedulerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeetCode/LeetCodeSyncSchedulerTests.swift; sourceTree = "<group>"; };
 		C981502C4EC54673BA39B39A /* LeetCode/LeetCodeRestClientTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeetCode/LeetCodeRestClientTests.swift; sourceTree = "<group>"; };
 		D6EA4BEC926540C884CA828B /* CodingEnvironmentProblemModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodingEnvironmentProblemModels.swift; sourceTree = "<group>"; };
+		B1D2C3D4E5F6A7B8C9D0E1F9 /* DataJourneyModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataJourneyModels.swift; sourceTree = "<group>"; };
+		B1D2C3D4E5F6A7B8C9D0E1FA /* DataJourneyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataJourneyView.swift; sourceTree = "<group>"; };
 		DSAT002001 /* Plan/DSAPlanTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Plan/DSAPlanTests.swift; sourceTree = "<group>"; };
 		DSAT002002 /* LeetCode/LeetCodeErrorsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeetCode/LeetCodeErrorsTests.swift; sourceTree = "<group>"; };
 		DSAT002003 /* CodingEnvironment/ExecutionConfigTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodingEnvironment/ExecutionConfigTests.swift; sourceTree = "<group>"; };
@@ -575,6 +579,8 @@
 				A10002065 /* CodingEnvironmentView+Panels.swift */,
 				A1000207C /* CodingEnvironmentView+ProblemPicker.swift */,
 				D6EA4BEC926540C884CA828B /* CodingEnvironmentProblemModels.swift */,
+				B1D2C3D4E5F6A7B8C9D0E1F9 /* DataJourneyModels.swift */,
+				B1D2C3D4E5F6A7B8C9D0E1FA /* DataJourneyView.swift */,
 				A1B2C3D4E5F6A7B8C9D0E3A1 /* SolutionTabView.swift */,
 				A1B2C3D4E5F6A7B8C9D0E3B2 /* SolutionApproachView.swift */,
 				8A4E0753FE4C4032A9C53AAA /* CodingEnvironmentView+Sidebar.swift */,
@@ -962,6 +968,8 @@
 				A1000107A /* CodeEditorView+CoordinatorBrackets.swift in Sources */,
 				A1000107B /* CodingEnvironmentView+ProblemPicker.swift in Sources */,
 				CB0805C549E94B40B1CE6960 /* CodingEnvironmentProblemModels.swift in Sources */,
+				B1D2C3D4E5F6A7B8C9D0E1F7 /* DataJourneyModels.swift in Sources */,
+				B1D2C3D4E5F6A7B8C9D0E1F8 /* DataJourneyView.swift in Sources */,
 				653A1BCD45DC478A8FA88001 /* CodingEnvironmentView+Sidebar.swift in Sources */,
 				B1D2C3D4E5F6A7B8C9D0E1F3 /* CodingEnvironmentView+DetailContent.swift in Sources */,
 				A1000107C /* FocusOverlay+TimerView.swift in Sources */,

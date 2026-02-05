@@ -43,8 +43,6 @@ extension CodeEditorView.Coordinator {
         textStorage.removeAttribute(.underlineStyle, range: fullRange)
         textStorage.removeAttribute(.underlineColor, range: fullRange)
 
-        guard !diagnostics.isEmpty else { return }
-
         var lineNumber = 1
         var index = 0
         var lineRanges: [Int: NSRange] = [:]
@@ -54,6 +52,16 @@ extension CodeEditorView.Coordinator {
             index = NSMaxRange(lineRange)
             lineNumber += 1
         }
+
+        if let executionLine, let lineRange = lineRanges[executionLine] {
+            textStorage.addAttribute(
+                .backgroundColor,
+                value: colors.executionHighlight,
+                range: lineRange
+            )
+        }
+
+        guard !diagnostics.isEmpty else { return }
 
         let underlineColor = NSColor(Color.appRed)
         let lineBackground = NSColor(Color.appRed).withAlphaComponent(0.12)
@@ -126,8 +134,17 @@ extension CodeEditorView.Coordinator {
             "CGFloat", "CGPoint", "CGSize", "CGRect", "NSRange"
         ]
 
+        let keywordSet = Set(keywords)
+        let typeSet = Set(types)
+
         highlightKeywords(keywords, in: textStorage, text: text, color: colors.keyword)
         highlightKeywords(types, in: textStorage, text: text, color: colors.type)
+        highlightSwiftTypeAnnotations(
+            in: textStorage,
+            text: text,
+            keywords: keywordSet,
+            builtinTypes: typeSet
+        )
         highlightSwiftDeclarations(in: textStorage, text: text)
         highlightFunctions(in: textStorage, text: text)
         highlightStrings(
@@ -262,11 +279,85 @@ extension CodeEditorView.Coordinator {
     }
 
     private func highlightSwiftDeclarations(in textStorage: NSTextStorage, text: String) {
-        highlightPattern("\\b(func|let|var|class|struct)\\b", in: textStorage, text: text, color: colors.declaration)
+        highlightPattern(
+            "\\b(func|let|var|class|struct|enum|protocol|actor|extension|typealias|associatedtype)\\b",
+            in: textStorage,
+            text: text,
+            color: colors.declaration
+        )
         highlightPattern("(?<=\\bclass\\s)\\w+", in: textStorage, text: text, color: colors.declaration)
         highlightPattern("(?<=\\bstruct\\s)\\w+", in: textStorage, text: text, color: colors.declaration)
+        highlightPattern("(?<=\\benum\\s)\\w+", in: textStorage, text: text, color: colors.declaration)
+        highlightPattern("(?<=\\bprotocol\\s)\\w+", in: textStorage, text: text, color: colors.declaration)
+        highlightPattern("(?<=\\bactor\\s)\\w+", in: textStorage, text: text, color: colors.declaration)
+        highlightPattern("(?<=\\bextension\\s)\\w+", in: textStorage, text: text, color: colors.declaration)
+        highlightPattern("(?<=\\btypealias\\s)\\w+", in: textStorage, text: text, color: colors.declaration)
+        highlightPattern("(?<=\\bassociatedtype\\s)\\w+", in: textStorage, text: text, color: colors.declaration)
         highlightPattern("(?<=\\blet\\s)\\w+", in: textStorage, text: text, color: colors.declaration)
         highlightPattern("(?<=\\bvar\\s)\\w+", in: textStorage, text: text, color: colors.declaration)
+    }
+
+    private func highlightSwiftTypeAnnotations(
+        in textStorage: NSTextStorage,
+        text: String,
+        keywords: Set<String>,
+        builtinTypes: Set<String>
+    ) {
+        let patterns: [(pattern: String, group: Int)] = [
+            ("\\b(let|var)\\s+\\w+\\s*:\\s*([^=\\n]+)", 2),
+            ("\\bfunc\\s+\\w+\\s*\\(([^\\)]*)\\)", 1),
+            ("->\\s*([^\\{\\n]+)", 1),
+            ("\\btypealias\\s+\\w+\\s*=\\s*([^\\n]+)", 1)
+        ]
+
+        for entry in patterns {
+            guard let regex = try? NSRegularExpression(pattern: entry.pattern, options: []) else { continue }
+            let range = NSRange(location: 0, length: (text as NSString).length)
+            let matches = regex.matches(in: text, options: [], range: range)
+            for match in matches {
+                guard match.numberOfRanges > entry.group else { continue }
+                let typeRange = match.range(at: entry.group)
+                guard typeRange.length > 0 else { continue }
+                highlightTypeIdentifiers(
+                    in: textStorage,
+                    text: text,
+                    range: typeRange,
+                    keywords: keywords,
+                    builtinTypes: builtinTypes
+                )
+            }
+        }
+    }
+
+    private func highlightTypeIdentifiers(
+        in textStorage: NSTextStorage,
+        text: String,
+        range: NSRange,
+        keywords: Set<String>,
+        builtinTypes: Set<String>
+    ) {
+        guard let regex = try? NSRegularExpression(pattern: "\\b[A-Za-z_][A-Za-z0-9_]*\\b", options: []) else {
+            return
+        }
+
+        let substring = (text as NSString).substring(with: range)
+        let matches = regex.matches(
+            in: substring,
+            options: [],
+            range: NSRange(location: 0, length: (substring as NSString).length)
+        )
+
+        for match in matches {
+            let token = (substring as NSString).substring(with: match.range)
+            if keywords.contains(token) { continue }
+
+            let isBuiltin = builtinTypes.contains(token)
+            let isUppercase = token.unicodeScalars.first?.properties.isUppercase == true
+            if token == "Self" || isBuiltin || isUppercase {
+                let globalRange = NSRange(location: range.location + match.range.location, length: match.range.length)
+                textStorage.addAttribute(.foregroundColor, value: colors.type, range: globalRange)
+            }
+        }
     }
 
     private func highlightPythonDeclarations(in textStorage: NSTextStorage, text: String) {

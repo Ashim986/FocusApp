@@ -7,19 +7,34 @@ extension LeetCodeExecutionWrapper {
         if needsListNode {
             traceValueLines.append(contentsOf: [
                 "                if let node = value as? ListNode {",
-                "                    let payload = traceListNodePayload(node)",
-                "                    var result: [String: Any] = [\"__type\": \"list\", \"value\": payload.values]",
-                "                    if let cycleIndex = payload.cycleIndex { result[\"cycleIndex\"] = cycleIndex }",
-                "                    if payload.truncated { result[\"truncated\"] = true }",
-                "                    return result",
+                "                    if structured {",
+                "                        let payload = traceListNodeStructure(node)",
+                "                        var result: [String: Any] = [\"__type\": \"list\", \"nodes\": payload.nodes]",
+                "                        if let cycleIndex = payload.cycleIndex {",
+                "                            result[\"cycleIndex\"] = cycleIndex",
+                "                        }",
+                "                        if payload.truncated { result[\"truncated\"] = true }",
+                "                        return result",
+                "                    }",
+                "                    return listPointerPayload(node)",
                 "                }"
             ])
         }
         if needsTreeNode {
-            traceValueLines.append(
-                "                if let node = value as? TreeNode { return [\"__type\": \"tree\", \"value\": "
-                    + "treeNodeToArray(node)] }"
-            )
+            traceValueLines.append(contentsOf: [
+                "                if let node = value as? TreeNode {",
+                "                    if structured {",
+                "                        let payload = traceTreeStructure(node)",
+                "                        var result: [String: Any] = [\"__type\": \"tree\", \"nodes\": payload.nodes]",
+                "                        if let rootId = payload.rootId {",
+                "                            result[\"rootId\"] = rootId",
+                "                        }",
+                "                        if payload.truncated { result[\"truncated\"] = true }",
+                "                        return result",
+                "                    }",
+                "                    return treePointerPayload(node)",
+                "                }"
+            ])
         }
 
         traceValueLines.append(contentsOf: swiftRunnerTraceTailLines)
@@ -33,13 +48,14 @@ extension LeetCodeExecutionWrapper {
         "                let mirror = Mirror(reflecting: value)",
         "                if mirror.displayStyle == .optional {",
         "                    if let child = mirror.children.first {",
-        "                        return traceValue(child.value)",
+        "                        return traceValue(child.value, structured: structured)",
         "                    }",
         "                    return NSNull()",
         "                }",
         "                if value is NSNull { return NSNull() }",
         "                if let numberValue = value as? NSNumber {",
-        "                    if CFGetTypeID(numberValue) == CFBooleanGetTypeID() {",
+        "                    let objCType = String(cString: numberValue.objCType)",
+        "                    if objCType == \"c\" || objCType == \"B\" {",
         "                        return numberValue.boolValue",
         "                    }",
         "                    return numberValue",
@@ -49,12 +65,12 @@ extension LeetCodeExecutionWrapper {
 
     private static let swiftRunnerTraceTailLines: [String] = [
         "                if let array = value as? [Any] {",
-        "                    return array.map { traceValue($0) }",
+        "                    return array.map { traceValue($0, structured: structured) }",
         "                }",
         "                if let dict = value as? [String: Any] {",
         "                    var mapped: [String: Any] = [:]",
         "                    for (key, val) in dict {",
-        "                        mapped[key] = traceValue(val)",
+        "                        mapped[key] = traceValue(val, structured: structured)",
         "                    }",
         "                    return mapped",
         "                }",
@@ -68,7 +84,7 @@ extension LeetCodeExecutionWrapper {
             private static let prefix = "__focus_trace__"
 
             static func step(_ label: String, _ values: [String: Any?] = [:], line: Int = #line) {
-                emit(kind: "step", line: line, label: label, values: values)
+                emit(kind: "step", line: line, label: label, values: values, structured: false)
             }
 
             static func input(paramNames: [String], args: [Any]) {
@@ -76,27 +92,33 @@ extension LeetCodeExecutionWrapper {
                 var values: [String: Any?] = [:]
                 for (index, name) in paramNames.enumerated() {
                     let value = index < args.count ? args[index] : NSNull()
-                    values[name] = traceValue(value)
+                    values[name] = traceValue(value, structured: true)
                 }
-                emit(kind: "input", values: values)
+                emit(kind: "input", values: values, structured: true)
             }
 
             static func output(_ value: Any) {
-                emit(kind: "output", values: ["result": traceValue(value)])
+                emit(kind: "output", values: ["result": traceValue(value, structured: true)], structured: true)
             }
 
-            private static func traceValue(_ value: Any) -> Any {
+            private static func traceValue(_ value: Any, structured: Bool) -> Any {
         """
 
     private static let swiftRunnerTraceTemplateEnd = """
 
             }
 
-            private static func emit(kind: String, line: Int? = nil, label: String? = nil, values: [String: Any?]) {
+            private static func emit(
+                kind: String,
+                line: Int? = nil,
+                label: String? = nil,
+                values: [String: Any?],
+                structured: Bool
+            ) {
                 var mapped: [String: Any] = [:]
                 for (key, val) in values {
                     if let val {
-                        mapped[key] = traceValue(val)
+                        mapped[key] = traceValue(val, structured: structured)
                     } else {
                         mapped[key] = NSNull()
                     }

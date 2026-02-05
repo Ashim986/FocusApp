@@ -137,6 +137,8 @@
 		B1D2C3D4E5F6A7B8C9D0E1F3 /* CodingEnvironmentView+DetailContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1D2C3D4E5F6A7B8C9D0E1F2 /* CodingEnvironmentView+DetailContent.swift */; };
 		B1D2C3D4E5F6A7B8C9D0E1F7 /* DataJourneyModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1D2C3D4E5F6A7B8C9D0E1F9 /* DataJourneyModels.swift */; };
 		B1D2C3D4E5F6A7B8C9D0E1F8 /* DataJourneyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1D2C3D4E5F6A7B8C9D0E1FA /* DataJourneyView.swift */; };
+		D6C8B7E1F0A44B2F9C11A1D2 /* DataJourneyPointerModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6C8B7E1F0A44B2F9C11A1D1 /* DataJourneyPointerModels.swift */; };
+		D6C8B7E1F0A44B2F9C11A1D4 /* DataJourneyStructureCanvasView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6C8B7E1F0A44B2F9C11A1D3 /* DataJourneyStructureCanvasView.swift */; };
 		B2C3D4E5F6A7B8C9D0E1F4F6 /* LeetCodeSyncScheduler.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2C3D4E5F6A7B8C9D0E1F4F5 /* LeetCodeSyncScheduler.swift */; };
 		111A709F246047A6AB319D04 /* CodingEnvironmentPresenter+ExecutionDiagnostics.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB829ACA59D542A1BAFB7E98 /* CodingEnvironmentPresenter+ExecutionDiagnostics.swift */; };
 		7A54FF72EBC246CE8251C431 /* CodingEnvironmentPresenter+ExecutionOutput.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9046CC2CE464F6CAA10E00D /* CodingEnvironmentPresenter+ExecutionOutput.swift */; };
@@ -371,6 +373,8 @@
 		D6EA4BEC926540C884CA828B /* CodingEnvironmentProblemModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodingEnvironmentProblemModels.swift; sourceTree = "<group>"; };
 		B1D2C3D4E5F6A7B8C9D0E1F9 /* DataJourneyModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataJourneyModels.swift; sourceTree = "<group>"; };
 		B1D2C3D4E5F6A7B8C9D0E1FA /* DataJourneyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataJourneyView.swift; sourceTree = "<group>"; };
+		D6C8B7E1F0A44B2F9C11A1D1 /* DataJourneyPointerModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DataJourneyPointerModels.swift"; sourceTree = "<group>"; };
+		D6C8B7E1F0A44B2F9C11A1D3 /* DataJourneyStructureCanvasView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DataJourneyStructureCanvasView.swift"; sourceTree = "<group>"; };
 		DSAT002001 /* Plan/DSAPlanTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DSAPlanTests.swift; sourceTree = "<group>"; };
 		DSAT002002 /* LeetCode/LeetCodeErrorsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeetCodeErrorsTests.swift; sourceTree = "<group>"; };
 		DSAT002003 /* CodingEnvironment/ExecutionConfigTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExecutionConfigTests.swift; sourceTree = "<group>"; };
@@ -897,10 +901,12 @@
 				577B7342AFEB4588BF7030CB /* DataJourneyView+Playback.swift */,
 				4209C8FF6FF7461BBDC6412C /* DataJourneyView+Selection.swift */,
 				B1D2C3D4E5F6A7B8C9D0E1F9 /* DataJourneyModels.swift */,
+				D6C8B7E1F0A44B2F9C11A1D1 /* DataJourneyPointerModels.swift */,
 				F16BF57E1EEC4D76BA0E66B2 /* DataJourneyTraceValueView.swift */,
 				1F87412C2357454BB94E8138 /* DataJourneySequenceBubbleRow.swift */,
 				8963F787148943C99BBFB5D8 /* DataJourneyTraceBubble.swift */,
 				0587D0FFC3444B3BAF623ED6 /* DataJourneyTreeGraphView.swift */,
+				D6C8B7E1F0A44B2F9C11A1D3 /* DataJourneyStructureCanvasView.swift */,
 				CC393A6615DF41B0AA863A6E /* DataJourneyGraphView.swift */,
 			);
 			path = DataJourney;
@@ -1178,6 +1184,8 @@
 				CB0805C549E94B40B1CE6960 /* CodingEnvironmentProblemModels.swift in Sources */,
 				B1D2C3D4E5F6A7B8C9D0E1F7 /* DataJourneyModels.swift in Sources */,
 				B1D2C3D4E5F6A7B8C9D0E1F8 /* DataJourneyView.swift in Sources */,
+				D6C8B7E1F0A44B2F9C11A1D2 /* DataJourneyPointerModels.swift in Sources */,
+				D6C8B7E1F0A44B2F9C11A1D4 /* DataJourneyStructureCanvasView.swift in Sources */,
 				653A1BCD45DC478A8FA88001 /* CodingEnvironmentView+Sidebar.swift in Sources */,
 				B1D2C3D4E5F6A7B8C9D0E1F3 /* CodingEnvironmentView+DetailContent.swift in Sources */,
 				A1000107C /* FocusOverlay+TimerView.swift in Sources */,

@@ -11,6 +11,11 @@ extension DataJourneyView {
                 stepControls
             }
 
+            DataJourneyStructureCanvasView(
+                inputEvent: inputEvent,
+                selectedEvent: selectedEvent
+            )
+
             if let selected = selectedEvent {
                 valuesSection(title: selectedTitle(for: selected), event: selected)
             }

@@ -5,6 +5,7 @@ struct SequenceBubbleRow: View {
     let showIndices: Bool
     let cycleIndex: Int?
     let isTruncated: Bool
+    let pointers: [PointerMarker]
 
     private let bubbleSize: CGFloat = 30
     private let centerSpacing: CGFloat = 58
@@ -13,23 +14,29 @@ struct SequenceBubbleRow: View {
     private let arrowGap: CGFloat = 6
     private let arrowLineWidth: CGFloat = 2
     private let arrowHeadSize: CGFloat = 8
-    private let arrowColor = Color.appCyan.opacity(0.8)
+    private let arrowColor = Color.appPurple.opacity(0.8)
     private let loopArrowHeight: CGFloat = 18
-    private let loopArrowColor = Color.appCyan.opacity(0.95)
+    private let loopArrowColor = Color.appPurple.opacity(0.95)
+    private let pointerSpacing: CGFloat = 2
+    private let pointerHeight: CGFloat = 14
 
     var body: some View {
         let bubbleItems = bubbleItems(for: renderItems)
         let cycleTarget = resolvedCycleIndex
         let loopInset = cycleTarget == nil ? 0 : loopArrowHeight
+        let maxPointerCount = pointersByIndex.values.map(\.count).max() ?? 0
+        let pointerInset = maxPointerCount == 0
+            ? 0
+            : CGFloat(maxPointerCount) * (pointerHeight + pointerSpacing) + 4
         let groupHeight = bubbleSize + (showIndices ? (labelHeight + labelSpacing) : 0)
-        let rowHeight = groupHeight + loopInset
+        let rowHeight = groupHeight + loopInset + pointerInset
         let totalWidth = bubbleSize + CGFloat(max(renderItems.count - 1, 0)) * centerSpacing
 
         return ScrollView(.horizontal, showsIndicators: false) {
             ZStack(alignment: .topLeading) {
                 Canvas { context, _ in
                     guard renderItems.count > 1 else { return }
-                    let y = loopInset + bubbleSize / 2
+                    let y = loopInset + pointerInset + bubbleSize / 2
                     let bubbleRadius = bubbleSize / 2
                     for index in 0..<(renderItems.count - 1) {
                         let start = CGPoint(
@@ -66,23 +73,35 @@ struct SequenceBubbleRow: View {
 
                 ForEach(Array(bubbleItems.enumerated()), id: \.element.id) { index, item in
                     let model = TraceBubbleModel.from(item.value)
-                    VStack(spacing: showIndices ? labelSpacing : 0) {
-                        TraceBubble(text: model.text, fill: model.fill)
-                        if showIndices {
-                            Text("\(index)")
-                                .font(.system(size: 8, weight: .semibold))
-                                .foregroundColor(Color.appGray500)
-                                .frame(height: labelHeight)
+                    ZStack(alignment: .top) {
+                        VStack(spacing: showIndices ? labelSpacing : 0) {
+                            TraceBubble(text: model.text, fill: model.fill)
+                            if showIndices {
+                                Text("\(index)")
+                                    .font(.system(size: 8, weight: .semibold))
+                                    .foregroundColor(Color.appGray500)
+                                    .frame(height: labelHeight)
+                            }
+                        }
+                        if let pointerStack = pointersByIndex[index] {
+                            VStack(spacing: pointerSpacing) {
+                                ForEach(pointerStack) { pointer in
+                                    PointerBadge(text: pointer.name, color: pointer.color)
+                                        .frame(height: pointerHeight)
+                                }
+                            }
+                            .offset(y: -pointerInset)
                         }
                     }
                     .frame(width: bubbleSize, height: groupHeight, alignment: .top)
-                    .position(x: xPosition(for: index), y: loopInset + groupHeight / 2)
+                    .position(x: xPosition(for: index), y: loopInset + pointerInset + groupHeight / 2)
                 }
             }
             .frame(width: totalWidth, height: rowHeight)
             .padding(.vertical, 2)
         }
         .animation(.spring(response: 0.35, dampingFraction: 0.82), value: renderItems)
+        .animation(.spring(response: 0.35, dampingFraction: 0.82), value: pointers.map(\.id))
     }
 
     private func xPosition(for index: Int) -> CGFloat {
@@ -131,7 +150,9 @@ struct SequenceBubbleRow: View {
             drawArrowHead(context: &context, from: tangentPoint, to: endPoint, color: loopArrowColor)
             return
         }
-        let controlY = max(2, y - bubbleRadius - loopInset)
+        let span = abs(start.x - end.x)
+        let additionalLift = min(36, max(12, span * 0.2))
+        let controlY = max(2, y - bubbleRadius - loopInset - additionalLift)
         let control = CGPoint(x: (start.x + end.x) / 2, y: controlY)
         var path = Path()
         path.move(to: start)
@@ -172,8 +193,12 @@ struct SequenceBubbleRow: View {
             return "a\(items.count)"
         case .object(let map):
             return "o\(map.count)"
-        case .list(let items, let cycleIndex, let isTruncated):
-            return "l\(items.count)-\(cycleIndex ?? -1)-\(isTruncated)"
+        case .list(let list):
+            return "l\(list.nodes.count)-\(list.cycleIndex ?? -1)-\(list.isTruncated)"
+        case .tree(let tree):
+            return "t\(tree.nodes.count)-\(tree.rootId ?? "nil")"
+        case .listPointer(let id), .treePointer(let id):
+            return "p\(id)"
         case .typed(let type, let inner):
             return "t\(type)-\(identityKey(for: inner))"
         }
@@ -189,6 +214,15 @@ struct SequenceBubbleRow: View {
     private var resolvedCycleIndex: Int? {
         guard let cycleIndex else { return nil }
         return (0..<items.count).contains(cycleIndex) ? cycleIndex : nil
+    }
+
+    private var pointersByIndex: [Int: [PointerMarker]] {
+        var grouped: [Int: [PointerMarker]] = [:]
+        for pointer in pointers {
+            guard let index = pointer.index else { continue }
+            grouped[index, default: []].append(pointer)
+        }
+        return grouped
     }
 }
 

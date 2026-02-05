@@ -179,31 +179,53 @@ extension LeetCodeExecutionWrapper {
         """
 
     private static let swiftTraceListNodePayloadHelper = """
-        func traceListNodePayload(_ node: ListNode?, maxNodes: Int = 40) -> (
-            values: [Any],
+        func listPointerPayload(_ node: ListNode?) -> Any {
+            guard let node else { return NSNull() }
+            return ["__type": "listPointer", "id": listNodeIdentifier(node)]
+        }
+
+        func listNodeIdentifier(_ node: ListNode) -> String {
+            String(ObjectIdentifier(node).hashValue)
+        }
+
+        func traceListNodeStructure(_ node: ListNode?, maxNodes: Int = 40) -> (
+            nodes: [Any],
             cycleIndex: Int?,
             truncated: Bool
         ) {
-            var values: [Any] = []
-            var current = node
+            guard let node else { return ([], nil, false) }
+            var nodes: [Any] = []
+            var current: ListNode? = node
             var visited: [ObjectIdentifier: Int] = [:]
             var index = 0
-            while let node = current, index < maxNodes {
-                let id = ObjectIdentifier(node)
+            while let current, index < maxNodes {
+                let id = ObjectIdentifier(current)
                 if let cycleAt = visited[id] {
-                    return (values, cycleAt, false)
+                    return (nodes, cycleAt, false)
                 }
                 visited[id] = index
-                values.append(node.val)
-                current = node.next
+                let nodePayload: [String: Any] = [
+                    "id": listNodeIdentifier(current),
+                    "value": current.val
+                ]
+                nodes.append(nodePayload)
+                current = current.next
                 index += 1
             }
             let truncated = current != nil
-            return (values, nil, truncated)
+            return (nodes, nil, truncated)
         }
         """
 
     private static func swiftTreeNodeHelpers(treeNodeInit: String) -> String {
+        [
+            swiftTreeNodeBuilder(treeNodeInit: treeNodeInit),
+            swiftTreeNodeToArrayHelper,
+            swiftTraceTreePayloadHelper
+        ].joined(separator: "\n\n")
+    }
+
+    private static func swiftTreeNodeBuilder(treeNodeInit: String) -> String {
         """
         func toTreeNode(_ value: Any) -> TreeNode? {
             guard let array = value as? [Any], !array.isEmpty else { return nil }
@@ -228,7 +250,10 @@ extension LeetCodeExecutionWrapper {
             }
             return nodes.first ?? nil
         }
+        """
+    }
 
+    private static let swiftTreeNodeToArrayHelper = """
         func treeNodeToArray(_ root: TreeNode?) -> [Any] {
             guard let root else { return [] }
             var result: [Any] = []
@@ -249,7 +274,51 @@ extension LeetCodeExecutionWrapper {
             return result
         }
         """
-    }
+
+    private static let swiftTraceTreePayloadHelper = """
+        func treePointerPayload(_ node: TreeNode?) -> Any {
+            guard let node else { return NSNull() }
+            return ["__type": "treePointer", "id": treeNodeIdentifier(node)]
+        }
+
+        func treeNodeIdentifier(_ node: TreeNode) -> String {
+            String(ObjectIdentifier(node).hashValue)
+        }
+
+        func traceTreeStructure(_ root: TreeNode?, maxNodes: Int = 40) -> (
+            nodes: [Any],
+            rootId: String?,
+            truncated: Bool
+        ) {
+            guard let root else { return ([], nil, false) }
+            var nodes: [Any] = []
+            var queue: [TreeNode] = [root]
+            var visited = Set<ObjectIdentifier>()
+            var count = 0
+            while !queue.isEmpty, count < maxNodes {
+                let node = queue.removeFirst()
+                let id = ObjectIdentifier(node)
+                if visited.contains(id) { continue }
+                visited.insert(id)
+                var payload: [String: Any] = [
+                    "id": treeNodeIdentifier(node),
+                    "value": node.val
+                ]
+                if let left = node.left {
+                    payload["left"] = treeNodeIdentifier(left)
+                    queue.append(left)
+                }
+                if let right = node.right {
+                    payload["right"] = treeNodeIdentifier(right)
+                    queue.append(right)
+                }
+                nodes.append(payload)
+                count += 1
+            }
+            let truncated = !queue.isEmpty
+            return (nodes, treeNodeIdentifier(root), truncated)
+        }
+        """
 
     static func swiftConversionExpression(_ type: LeetCodeValueType, valueExpr: String) -> String {
         switch type {

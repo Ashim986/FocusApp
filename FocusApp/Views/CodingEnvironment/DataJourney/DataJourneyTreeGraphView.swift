@@ -1,13 +1,21 @@
 import SwiftUI
 
 struct TreeGraphView: View {
-    let items: [TraceValue]
+    let tree: TraceTree
+    let pointers: [PointerMarker]
     private let nodeSize: CGFloat = 30
     private let levelSpacing: CGFloat = 50
+    private let pointerSpacing: CGFloat = 2
 
     var body: some View {
         GeometryReader { proxy in
-            let layout = TreeLayout(items: items, size: proxy.size, nodeSize: nodeSize, levelSpacing: levelSpacing)
+            let layout = TraceTreeLayout(
+                tree: tree,
+                size: proxy.size,
+                nodeSize: nodeSize,
+                levelSpacing: levelSpacing
+            )
+            let pointersById = groupedPointers
             ZStack {
                 Canvas { context, _ in
                     for edge in layout.edges {
@@ -19,13 +27,32 @@ struct TreeGraphView: View {
                 }
 
                 ForEach(layout.nodes) { node in
-                    TraceValueNode(value: node.value)
-                        .position(node.position)
+                    ZStack(alignment: .top) {
+                        TraceValueNode(value: node.value)
+                        if let pointerStack = pointersById[node.id] {
+                            VStack(spacing: pointerSpacing) {
+                                ForEach(pointerStack) { pointer in
+                                    PointerBadge(text: pointer.name, color: pointer.color)
+                                }
+                            }
+                            .offset(y: -(nodeSize * 0.8))
+                        }
+                    }
+                    .position(node.position)
                 }
             }
             .frame(height: layout.height)
         }
         .frame(minHeight: nodeSize + levelSpacing)
+    }
+
+    private var groupedPointers: [String: [PointerMarker]] {
+        var grouped: [String: [PointerMarker]] = [:]
+        for pointer in pointers {
+            guard let nodeId = pointer.nodeId else { continue }
+            grouped[nodeId, default: []].append(pointer)
+        }
+        return grouped
     }
 }
 
@@ -38,10 +65,9 @@ struct TraceValueNode: View {
     }
 }
 
-struct TreeLayout {
+struct TraceTreeLayout {
     struct Node: Identifiable {
-        let id = UUID()
-        let index: Int
+        let id: String
         let value: TraceValue
         let position: CGPoint
     }
@@ -52,54 +78,76 @@ struct TreeLayout {
         let to: CGPoint
     }
 
+    private struct QueueEntry {
+        let id: String
+        let level: Int
+        let heapIndex: Int
+    }
+
     let nodes: [Node]
     let edges: [Edge]
     let height: CGFloat
 
-    init(items: [TraceValue], size: CGSize, nodeSize: CGFloat, levelSpacing: CGFloat) {
-        var nodes: [Node] = []
-        var positions: [Int: CGPoint] = [:]
-        var maxLevel = 0
+    init(tree: TraceTree, size: CGSize, nodeSize: CGFloat, levelSpacing: CGFloat) {
+        guard let rootId = tree.rootId else {
+            self.nodes = []
+            self.edges = []
+            self.height = nodeSize
+            return
+        }
+        var nodeMap: [String: TraceTreeNode] = [:]
+        tree.nodes.forEach { nodeMap[$0.id] = $0 }
 
-        for (index, value) in items.enumerated() {
-            let level = TreeLayout.level(for: index)
-            maxLevel = max(maxLevel, level)
-            let indexInLevel = index - (1 << level) + 1
-            let countAtLevel = 1 << level
+        var nodes: [Node] = []
+        var positions: [String: CGPoint] = [:]
+        var edges: [Edge] = []
+        var maxLevel = 0
+        var queue: [QueueEntry] = [QueueEntry(id: rootId, level: 0, heapIndex: 1)]
+        var visited = Set<String>()
+
+        while !queue.isEmpty {
+            let entry = queue.removeFirst()
+            guard let node = nodeMap[entry.id], !visited.contains(entry.id) else { continue }
+            visited.insert(entry.id)
+            maxLevel = max(maxLevel, entry.level)
+            let countAtLevel = 1 << entry.level
+            let indexInLevel = entry.heapIndex - (1 << entry.level)
             let x = CGFloat(indexInLevel + 1) * size.width / CGFloat(countAtLevel + 1)
-            let y = CGFloat(level) * levelSpacing + nodeSize / 2
+            let y = CGFloat(entry.level) * levelSpacing + nodeSize / 2
             let position = CGPoint(x: x, y: y)
-            nodes.append(Node(index: index, value: value, position: position))
-            positions[index] = position
+            nodes.append(Node(id: node.id, value: node.value, position: position))
+            positions[node.id] = position
+
+            if let leftId = node.left {
+                queue.append(QueueEntry(id: leftId, level: entry.level + 1, heapIndex: entry.heapIndex * 2))
+            }
+            if let rightId = node.right {
+                queue.append(QueueEntry(id: rightId, level: entry.level + 1, heapIndex: entry.heapIndex * 2 + 1))
+            }
         }
 
-        var edges: [Edge] = []
-        for node in nodes {
-            guard node.index > 0 else { continue }
-            let parentIndex = (node.index - 1) / 2
-            if parentIndex < items.count, items[parentIndex] == .null {
-                continue
+        for node in tree.nodes {
+            guard let parentPosition = positions[node.id] else { continue }
+            if let leftId = node.left, let leftPosition = positions[leftId] {
+                edges.append(
+                    Edge(
+                        from: CGPoint(x: parentPosition.x, y: parentPosition.y + nodeSize / 2),
+                        to: CGPoint(x: leftPosition.x, y: leftPosition.y - nodeSize / 2)
+                    )
+                )
             }
-            guard let parentPosition = positions[parentIndex] else { continue }
-            let from = CGPoint(x: parentPosition.x, y: parentPosition.y + nodeSize / 2)
-            let to = CGPoint(x: node.position.x, y: node.position.y - nodeSize / 2)
-            edges.append(Edge(from: from, to: to))
+            if let rightId = node.right, let rightPosition = positions[rightId] {
+                edges.append(
+                    Edge(
+                        from: CGPoint(x: parentPosition.x, y: parentPosition.y + nodeSize / 2),
+                        to: CGPoint(x: rightPosition.x, y: rightPosition.y - nodeSize / 2)
+                    )
+                )
+            }
         }
 
         self.nodes = nodes
         self.edges = edges
         self.height = CGFloat(maxLevel + 1) * levelSpacing + nodeSize
-    }
-
-    private static func level(for index: Int) -> Int {
-        var level = 0
-        var maxIndexAtLevel = 0
-        var nodesAtLevel = 1
-        while index > maxIndexAtLevel {
-            level += 1
-            nodesAtLevel *= 2
-            maxIndexAtLevel += nodesAtLevel
-        }
-        return level
     }
 }

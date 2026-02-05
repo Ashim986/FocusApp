@@ -17,8 +17,14 @@ struct TraceValueView: View {
             arrayView(items)
         case .object(let map):
             objectView(map)
-        case .list(let items, let cycleIndex, let isTruncated):
-            listView(items, cycleIndex: cycleIndex, isTruncated: isTruncated)
+        case .list(let list):
+            listView(list)
+        case .listPointer:
+            bubble(for: .string("ptr"))
+        case .tree(let tree):
+            treeView(tree)
+        case .treePointer:
+            bubble(for: .string("ptr"))
         case .typed(let type, let inner):
             typedView(type: type, value: inner)
         }
@@ -68,19 +74,26 @@ struct TraceValueView: View {
         )
     }
 
-    private func listView(
-        _ items: [TraceValue],
-        cycleIndex: Int?,
-        isTruncated: Bool
-    ) -> some View {
-        sequenceView(items, showIndices: false, cycleIndex: cycleIndex, isTruncated: isTruncated)
+    private func listView(_ list: TraceList) -> some View {
+        let items = list.nodes.map(\.value)
+        return sequenceView(
+            items,
+            showIndices: false,
+            cycleIndex: list.cycleIndex,
+            isTruncated: list.isTruncated
+        )
     }
 
     private func treeView(_ value: TraceValue) -> some View {
         guard case .array(let items) = value else {
             return AnyView(TraceValueView(value: value))
         }
-        return AnyView(TreeGraphView(items: items))
+        let legacyTree = TraceTree.fromLevelOrder(items)
+        return AnyView(TreeGraphView(tree: legacyTree, pointers: []))
+    }
+
+    private func treeView(_ tree: TraceTree) -> some View {
+        AnyView(TreeGraphView(tree: tree, pointers: []))
     }
 
     private func sequenceView(
@@ -93,7 +106,8 @@ struct TraceValueView: View {
             items: items,
             showIndices: showIndices,
             cycleIndex: cycleIndex,
-            isTruncated: isTruncated
+            isTruncated: isTruncated,
+            pointers: []
         )
     }
 

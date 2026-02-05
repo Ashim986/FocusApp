@@ -26,6 +26,33 @@ extension CodingEnvironmentView {
                 alignment: .bottom
             )
 
+            if let notice = presenter.codeResetNotice {
+                HStack(spacing: 8) {
+                    Image(systemName: "exclamationmark.triangle.fill")
+                        .font(.system(size: 12, weight: .semibold))
+                        .foregroundColor(Color.appAmber)
+                    Text(notice)
+                        .font(.system(size: 11, weight: .medium))
+                        .foregroundColor(Color.appGray200)
+                    Spacer()
+                    Button(action: { presenter.codeResetNotice = nil }) {
+                        Image(systemName: "xmark.circle.fill")
+                            .font(.system(size: 12))
+                            .foregroundColor(Color.appGray500)
+                    }
+                    .buttonStyle(.plain)
+                }
+                .padding(.horizontal, 12)
+                .padding(.vertical, 6)
+                .background(Color.appAmber.opacity(0.12))
+                .overlay(
+                    Rectangle()
+                        .fill(Color.appGray700)
+                        .frame(height: 1),
+                    alignment: .bottom
+                )
+            }
+
             CodeEditorView(
                 code: $presenter.code,
                 language: presenter.language,

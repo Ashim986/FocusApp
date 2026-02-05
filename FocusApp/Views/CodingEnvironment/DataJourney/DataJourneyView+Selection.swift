@@ -41,6 +41,12 @@ extension DataJourneyView {
         return 0
     }
 
+    var previousPlaybackEvent: DataJourneyEvent? {
+        let index = currentPlaybackIndex
+        guard index > 0, playbackEvents.indices.contains(index - 1) else { return nil }
+        return playbackEvents[index - 1]
+    }
+
     func stepLabel(for event: DataJourneyEvent) -> String {
         if let label = event.label, !label.isEmpty {
             return label

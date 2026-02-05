@@ -12,6 +12,7 @@ extension DataJourneyView {
                 DataJourneyStructureCanvasView(
                     inputEvent: inputEvent,
                     selectedEvent: selectedEvent,
+                    previousEvent: previousPlaybackEvent,
                     structureOverride: structure,
                     header: playbackEvents.isEmpty ? nil : AnyView(stepControlsHeader(style: .embedded)),
                     footer: playbackEvents.isEmpty ? nil : AnyView(stepControlsTimeline(style: .embedded))
@@ -52,7 +53,7 @@ extension DataJourneyView {
         event: DataJourneyEvent,
         style: ValuesSectionStyle = .standard
     ) -> some View {
-        let listContext = resolvedListContext()
+        let listContexts = resolvedListContexts()
         let isCompact = style == .compact
         let verticalPadding: CGFloat = isCompact ? 8 : 10
         let rowSpacing: CGFloat = isCompact ? 6 : 10
@@ -78,7 +79,7 @@ extension DataJourneyView {
                                     .foregroundColor(Color.appGray300)
                                     .frame(width: keyWidth, alignment: .leading)
 
-                                valueView(for: value, listContext: listContext)
+                                valueView(for: value, listContexts: listContexts)
                             }
                         }
                     }
@@ -98,12 +99,12 @@ extension DataJourneyView {
     }
 
     @ViewBuilder
-    private func valueView(for value: TraceValue, listContext: TraceList?) -> some View {
+    private func valueView(for value: TraceValue, listContexts: [TraceList]) -> some View {
         if case .listPointer(let id) = value,
-           let listContext,
+           let listContext = listContextContaining(nodeId: id, in: listContexts),
            let list = traceList(from: listContext, startingAt: id) {
             SequenceBubbleRow(
-                items: list.nodes.map(\.value),
+                items: list.nodes.isEmpty ? [.null] : list.nodes.map(\.value),
                 showIndices: false,
                 cycleIndex: list.cycleIndex,
                 isTruncated: list.isTruncated,
@@ -115,20 +116,41 @@ extension DataJourneyView {
         }
     }
 
-    private func resolvedListContext() -> TraceList? {
-        if let list = listStructure(in: inputEvent) { return list }
-        if let list = listStructure(in: selectedEvent) { return list }
-        return nil
+    private func resolvedListContexts() -> [TraceList] {
+        if let lists = listStructures(in: inputEvent), !lists.isEmpty { return lists }
+        if let lists = listStructures(in: selectedEvent), !lists.isEmpty { return lists }
+        return []
     }
 
-    private func listStructure(in event: DataJourneyEvent?) -> TraceList? {
+    private func listStructures(in event: DataJourneyEvent?) -> [TraceList]? {
         guard let event else { return nil }
+        var lists: [TraceList] = []
         for key in event.values.keys.sorted() {
-            if case .list(let list) = event.values[key] {
-                return list
-            }
+            guard let value = event.values[key] else { continue }
+            collectLists(from: value, into: &lists)
         }
-        return nil
+        return lists.isEmpty ? nil : lists
+    }
+
+    private func listContextContaining(nodeId: String, in lists: [TraceList]) -> TraceList? {
+        lists.first { list in
+            list.nodes.contains { $0.id == nodeId }
+        }
+    }
+
+    private func collectLists(from value: TraceValue, into lists: inout [TraceList]) {
+        switch value {
+        case .list(let list):
+            lists.append(list)
+        case .array(let items):
+            for item in items {
+                collectLists(from: item, into: &lists)
+            }
+        case .typed(_, let inner):
+            collectLists(from: inner, into: &lists)
+        default:
+            break
+        }
     }
 
     private func traceList(from list: TraceList, startingAt nodeId: String, maxNodes: Int = 40) -> TraceList? {

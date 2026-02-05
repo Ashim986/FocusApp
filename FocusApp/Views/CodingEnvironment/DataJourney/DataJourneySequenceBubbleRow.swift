@@ -283,6 +283,9 @@ struct SequenceBubbleRow: View {
             guard let index = pointer.index else { continue }
             grouped[index, default: []].append(pointer)
         }
+        for key in grouped.keys {
+            grouped[key]?.sort { $0.name.localizedCaseInsensitiveCompare($1.name) == .orderedAscending }
+        }
         return grouped
     }
 }

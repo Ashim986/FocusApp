@@ -2,15 +2,29 @@ import SwiftUI
 
 enum TraceStructure {
     case list(TraceList)
+    case listGroup([NamedTraceList])
+    case listArray(ListArrayStructure)
     case tree(TraceTree)
     case array([TraceValue])
     case graph([[Int]])
     case dictionary([DictionaryEntry])
 }
 
+struct NamedTraceList: Identifiable {
+    let id = UUID()
+    let name: String
+    let list: TraceList
+}
+
+struct ListArrayStructure {
+    let heads: [TraceValue]
+    let lists: [NamedTraceList]
+}
+
 struct DataJourneyStructureCanvasView: View {
     let inputEvent: DataJourneyEvent?
     let selectedEvent: DataJourneyEvent?
+    let previousEvent: DataJourneyEvent?
     let structureOverride: TraceStructure?
     let header: AnyView?
     let footer: AnyView?
@@ -19,16 +33,19 @@ struct DataJourneyStructureCanvasView: View {
     private let structurePointerFontSize: CGFloat = 10
     private let structurePointerHorizontalPadding: CGFloat = 9
     private let structurePointerVerticalPadding: CGFloat = 3
+    private let combinedMaxItems = 40
 
     init(
         inputEvent: DataJourneyEvent?,
         selectedEvent: DataJourneyEvent?,
+        previousEvent: DataJourneyEvent? = nil,
         structureOverride: TraceStructure? = nil,
         header: AnyView? = nil,
         footer: AnyView? = nil
     ) {
         self.inputEvent = inputEvent
         self.selectedEvent = selectedEvent
+        self.previousEvent = previousEvent
         self.structureOverride = structureOverride
         self.header = header
         self.footer = footer
@@ -54,18 +71,144 @@ struct DataJourneyStructureCanvasView: View {
 
                 switch structure {
                 case .list(let list):
+                    let motions = listPointerMotions(from: previousEvent, to: selectedEvent, list: list)
                     SequenceBubbleRow(
-                        items: list.nodes.map(\.value),
+                        items: list.nodes.isEmpty ? [.null] : list.nodes.map(\.value),
                         showIndices: false,
                         cycleIndex: list.cycleIndex,
                         isTruncated: list.isTruncated,
                         isDoubly: list.isDoubly,
-                        pointers: pointerMarkers,
+                        pointers: pointerMarkers(for: list),
+                        pointerMotions: motions,
                         bubbleSize: structureBubbleSize,
                         pointerFontSize: structurePointerFontSize,
                         pointerHorizontalPadding: structurePointerHorizontalPadding,
                         pointerVerticalPadding: structurePointerVerticalPadding
                     )
+                case .listGroup(let lists):
+                    let combined = combinedList(for: lists)
+                    let motions = combinedPointerMotions(from: previousEvent, to: selectedEvent, lists: lists)
+                    VStack(alignment: .leading, spacing: 10) {
+                        HStack(alignment: .center, spacing: 10) {
+                            listLabel("combined", color: Color.appPurple, background: Color.appPurple.opacity(0.18))
+                                .frame(width: 64, alignment: .leading)
+
+                            SequenceBubbleRow(
+                                items: combined.items,
+                                showIndices: false,
+                                cycleIndex: nil,
+                                isTruncated: combined.isTruncated,
+                                isDoubly: false,
+                                pointers: combined.pointers,
+                                pointerMotions: motions,
+                                bubbleSize: structureBubbleSize,
+                                pointerFontSize: structurePointerFontSize,
+                                pointerHorizontalPadding: structurePointerHorizontalPadding,
+                                pointerVerticalPadding: structurePointerVerticalPadding
+                            )
+                        }
+
+                        Rectangle()
+                            .fill(Color.appGray700.opacity(0.6))
+                            .frame(height: 1)
+                            .padding(.leading, 64)
+
+                        ForEach(lists) { entry in
+                            HStack(alignment: .center, spacing: 10) {
+                                let accent = PointerPalette.color(for: entry.name)
+                                listLabel(
+                                    entry.name,
+                                    color: accent,
+                                    background: accent.opacity(0.18)
+                                )
+                                .frame(width: 64, alignment: .leading)
+
+                                SequenceBubbleRow(
+                                    items: entry.list.nodes.isEmpty ? [.null] : entry.list.nodes.map(\.value),
+                                    showIndices: false,
+                                    cycleIndex: entry.list.cycleIndex,
+                                    isTruncated: entry.list.isTruncated,
+                                    isDoubly: entry.list.isDoubly,
+                                    pointers: pointerMarkers(for: entry.list),
+                                    bubbleSize: structureBubbleSize,
+                                    pointerFontSize: structurePointerFontSize,
+                                    pointerHorizontalPadding: structurePointerHorizontalPadding,
+                                    pointerVerticalPadding: structurePointerVerticalPadding
+                                )
+                            }
+                        }
+                    }
+                case .listArray(let listArray):
+                    let combined = combinedList(for: listArray.lists)
+                    let motions = combinedPointerMotions(from: previousEvent, to: selectedEvent, lists: listArray.lists)
+                    VStack(alignment: .leading, spacing: 10) {
+                        HStack(alignment: .center, spacing: 10) {
+                            listLabel("combined", color: Color.appPurple, background: Color.appPurple.opacity(0.18))
+                                .frame(width: 64, alignment: .leading)
+
+                            SequenceBubbleRow(
+                                items: combined.items,
+                                showIndices: false,
+                                cycleIndex: nil,
+                                isTruncated: combined.isTruncated,
+                                isDoubly: false,
+                                pointers: combined.pointers,
+                                pointerMotions: motions,
+                                bubbleSize: structureBubbleSize,
+                                pointerFontSize: structurePointerFontSize,
+                                pointerHorizontalPadding: structurePointerHorizontalPadding,
+                                pointerVerticalPadding: structurePointerVerticalPadding
+                            )
+                        }
+
+                        HStack(alignment: .center, spacing: 10) {
+                            listLabel("heads", color: Color.appCyan, background: Color.appCyan.opacity(0.18))
+                                .frame(width: 64, alignment: .leading)
+
+                            SequenceBubbleRow(
+                                items: listArray.heads.isEmpty ? [.null] : listArray.heads,
+                                showIndices: true,
+                                cycleIndex: nil,
+                                isTruncated: false,
+                                isDoubly: false,
+                                pointers: listArrayHeadPointers(for: listArray),
+                                bubbleSize: structureBubbleSize,
+                                pointerFontSize: structurePointerFontSize,
+                                pointerHorizontalPadding: structurePointerHorizontalPadding,
+                                pointerVerticalPadding: structurePointerVerticalPadding
+                            )
+                        }
+
+                        Rectangle()
+                            .fill(Color.appGray700.opacity(0.6))
+                            .frame(height: 1)
+                            .padding(.leading, 64)
+
+                        ForEach(listArray.lists) { entry in
+                            HStack(alignment: .center, spacing: 10) {
+                                let accent = PointerPalette.color(for: entry.name)
+                                listLabel(
+                                    entry.name,
+                                    color: accent,
+                                    background: accent.opacity(0.18)
+                                )
+                                .frame(width: 64, alignment: .leading)
+
+                                SequenceBubbleRow(
+                                    items: entry.list.nodes.isEmpty ? [.null] : entry.list.nodes.map(\.value),
+                                    showIndices: false,
+                                    cycleIndex: entry.list.cycleIndex,
+                                    isTruncated: entry.list.isTruncated,
+                                    isDoubly: entry.list.isDoubly,
+                                    pointers: pointerMarkers(for: entry.list),
+                                    bubbleSize: structureBubbleSize,
+                                    pointerFontSize: structurePointerFontSize,
+                                    pointerHorizontalPadding: structurePointerHorizontalPadding,
+                                    pointerVerticalPadding: structurePointerVerticalPadding
+                                )
+                            }
+                        }
+                    }
                 case .tree(let tree):
                     TreeGraphView(
                         tree: tree,
@@ -129,25 +272,40 @@ struct DataJourneyStructureCanvasView: View {
 
     static func structure(in event: DataJourneyEvent?) -> TraceStructure? {
         guard let event else { return nil }
-        for key in event.values.keys.sorted() {
+        let keys = event.values.keys.sorted()
+
+        var lists: [NamedTraceList] = []
+        var fallback: TraceStructure?
+        for key in keys {
             guard let value = event.values[key] else { continue }
             switch value {
             case .list(let list):
-                return .list(list)
-            case .tree(let tree):
-                return .tree(tree)
+                lists.append(NamedTraceList(name: key, list: list))
             case .array(let items):
-                if let adjacency = graphAdjacency(from: items) {
-                    return .graph(adjacency)
+                if let listArray = listArrayStructure(from: items) {
+                    return .listArray(listArray)
                 }
-                return .array(items)
+                if let adjacency = graphAdjacency(from: items) {
+                    fallback = fallback ?? .graph(adjacency)
+                } else {
+                    fallback = fallback ?? .array(items)
+                }
+            case .tree(let tree):
+                fallback = fallback ?? .tree(tree)
             case .object(let map):
-                return .dictionary(dictionaryEntries(from: map))
+                fallback = fallback ?? .dictionary(dictionaryEntries(from: map))
             default:
                 continue
             }
         }
-        return nil
+
+        if lists.count > 1 {
+            return .listGroup(lists)
+        }
+        if let list = lists.first {
+            return .list(list.list)
+        }
+        return fallback
     }
 
     private var pointerMarkers: [PointerMarker] {
@@ -155,6 +313,10 @@ struct DataJourneyStructureCanvasView: View {
         switch structure {
         case .list(let list):
             return listPointers(in: selectedEvent, list: list)
+        case .listGroup:
+            return []
+        case .listArray(let listArray):
+            return listArrayHeadPointers(for: listArray)
         case .tree:
             return treePointers(in: selectedEvent)
         case .array(let items):
@@ -166,25 +328,146 @@ struct DataJourneyStructureCanvasView: View {
         }
     }
 
+    private func pointerMarkers(for list: TraceList) -> [PointerMarker] {
+        guard let selectedEvent else { return [] }
+        return listPointers(in: selectedEvent, list: list)
+    }
+
+    private func arrayPointerMarkers(for items: [TraceValue]) -> [PointerMarker] {
+        guard let selectedEvent else { return [] }
+        return arrayPointers(in: selectedEvent, items: items)
+    }
+
+    private func listArrayHeadPointers(for listArray: ListArrayStructure) -> [PointerMarker] {
+        let indexMarkers = arrayPointerMarkers(for: listArray.heads)
+        let headMarkers = listHeadPointers(for: listArray)
+        return uniquePointerMarkers(indexMarkers + headMarkers)
+    }
+
+    private func listHeadPointers(for listArray: ListArrayStructure) -> [PointerMarker] {
+        guard let selectedEvent else { return [] }
+        var headIdToIndex: [String: Int] = [:]
+        for (index, entry) in listArray.lists.enumerated() {
+            if let headId = entry.list.nodes.first?.id {
+                headIdToIndex[headId] = index
+            }
+        }
+        return pointerCandidates(in: selectedEvent).compactMap { name, value in
+            guard case .listPointer(let id) = value,
+                  let index = headIdToIndex[id] else { return nil }
+            return PointerMarker(name: name, index: index)
+        }
+    }
+
+    private func uniquePointerMarkers(_ markers: [PointerMarker]) -> [PointerMarker] {
+        var seen: Set<String> = []
+        let unique = markers.filter { marker in
+            seen.insert(marker.id).inserted
+        }
+        return unique.sorted { $0.name.localizedCaseInsensitiveCompare($1.name) == .orderedAscending }
+    }
+
+    private func pointerCandidates(in event: DataJourneyEvent) -> [(name: String, value: TraceValue)] {
+        var result: [(name: String, value: TraceValue)] = []
+        for key in event.values.keys.sorted() {
+            guard let value = event.values[key] else { continue }
+            collectPointerCandidates(path: key, value: value, into: &result)
+        }
+        return result
+    }
+
+    private func collectPointerCandidates(
+        path: String,
+        value: TraceValue,
+        into result: inout [(name: String, value: TraceValue)]
+    ) {
+        switch value {
+        case .listPointer, .treePointer:
+            result.append((path, value))
+        case .object(let map):
+            for key in map.keys.sorted() {
+                guard let nested = map[key] else { continue }
+                collectPointerCandidates(path: "\(path).\(key)", value: nested, into: &result)
+            }
+        case .array(let items):
+            for (index, nested) in items.enumerated() {
+                collectPointerCandidates(path: "\(path)[\(index)]", value: nested, into: &result)
+            }
+        case .typed(_, let inner):
+            collectPointerCandidates(path: path, value: inner, into: &result)
+        default:
+            break
+        }
+    }
+
+    private func combinedList(for lists: [NamedTraceList]) -> (items: [TraceValue], pointers: [PointerMarker], isTruncated: Bool) {
+        var items: [TraceValue] = []
+        var pointers: [PointerMarker] = []
+        var offset = 0
+        var truncated = false
+
+        for entry in lists {
+            let values = entry.list.nodes.map(\.value)
+            if items.count + values.count > combinedMaxItems {
+                let remaining = max(combinedMaxItems - items.count, 0)
+                if remaining > 0 {
+                    items.append(contentsOf: values.prefix(remaining))
+                }
+                truncated = true
+                break
+            } else {
+                items.append(contentsOf: values)
+            }
+
+            if let selectedEvent {
+                let listMarkers = listPointers(in: selectedEvent, list: entry.list)
+                for marker in listMarkers {
+                    if let index = marker.index {
+                        pointers.append(PointerMarker(name: marker.name, index: index + offset))
+                    }
+                }
+            }
+
+            offset += values.count
+        }
+
+        if lists.contains(where: { $0.list.isTruncated }) {
+            truncated = true
+        }
+
+        return (items, pointers.sorted { $0.name < $1.name }, truncated)
+    }
+
+    @ViewBuilder
+    private func listLabel(_ title: String, color: Color, background: Color) -> some View {
+        Text(title)
+            .font(.system(size: 9, weight: .semibold))
+            .foregroundColor(color)
+            .padding(.horizontal, 8)
+            .padding(.vertical, 4)
+            .background(
+                Capsule()
+                    .fill(background)
+            )
+    }
+
     private func listPointers(in event: DataJourneyEvent, list: TraceList) -> [PointerMarker] {
         var idToIndex: [String: Int] = [:]
         for (index, node) in list.nodes.enumerated() {
             idToIndex[node.id] = index
         }
-        return event.values.compactMap { key, value in
+        return pointerCandidates(in: event).compactMap { name, value in
             guard case .listPointer(let id) = value,
                   let index = idToIndex[id] else { return nil }
-            return PointerMarker(name: key, index: index)
+            return PointerMarker(name: name, index: index)
         }
-        .sorted { $0.name < $1.name }
     }
 
     private func treePointers(in event: DataJourneyEvent) -> [PointerMarker] {
-        event.values.compactMap { key, value in
+        pointerCandidates(in: event).compactMap { name, value in
             guard case .treePointer(let id) = value else { return nil }
-            return PointerMarker(name: key, nodeId: id)
+            return PointerMarker(name: name, nodeId: id)
         }
-        .sorted { $0.name < $1.name }
     }
 
     private func arrayPointers(in event: DataJourneyEvent, items: [TraceValue]) -> [PointerMarker] {
@@ -260,6 +543,26 @@ struct DataJourneyStructureCanvasView: View {
             return adjacency
         }
         return rows
+    }
+
+    private static func listArrayStructure(from items: [TraceValue]) -> ListArrayStructure? {
+        guard !items.isEmpty else { return nil }
+        var lists: [NamedTraceList] = []
+        var heads: [TraceValue] = []
+        for (index, item) in items.enumerated() {
+            switch item {
+            case .list(let list):
+                lists.append(NamedTraceList(name: "list[\(index)]", list: list))
+                heads.append(list.nodes.first?.value ?? .null)
+            case .null:
+                let emptyList = TraceList(nodes: [], cycleIndex: nil, isTruncated: false, isDoubly: false)
+                lists.append(NamedTraceList(name: "list[\(index)]", list: emptyList))
+                heads.append(.null)
+            default:
+                return nil
+            }
+        }
+        return ListArrayStructure(heads: heads, lists: lists)
     }
 
     private static func dictionaryEntries(from map: [String: TraceValue]) -> [DictionaryEntry] {

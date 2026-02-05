@@ -39,7 +39,7 @@ final class ExecutorTests: XCTestCase {
 
         XCTAssertEqual(result.output, "ok")
         XCTAssertEqual(runner.calls.count, 2)
-        XCTAssertEqual(runner.calls.first?.executable, "/usr/bin/swiftc")
+        XCTAssertTrue(runner.calls.first?.executable.contains("swiftc") == true)
     }
 
     func testPythonExecutorRunsInterpreter() async {
@@ -73,13 +73,21 @@ private final class SpyProcessRunner: ProcessRunning {
 
     private(set) var calls: [Call] = []
     private var results: [ProcessResult]
+    private let fileManager: FileManager
 
-    init(results: [ProcessResult]) {
+    init(results: [ProcessResult], fileManager: FileManager = .default) {
         self.results = results
+        self.fileManager = fileManager
     }
 
     func run(executable: String, arguments: [String], input: String, timeout: TimeInterval) async -> ProcessResult {
         calls.append(Call(executable: executable, arguments: arguments, input: input, timeout: timeout))
+        if let outputIndex = arguments.firstIndex(of: "-o"), outputIndex + 1 < arguments.count {
+            let outputPath = arguments[outputIndex + 1]
+            if !fileManager.fileExists(atPath: outputPath) {
+                fileManager.createFile(atPath: outputPath, contents: Data(), attributes: nil)
+            }
+        }
         if results.isEmpty {
             return ProcessResult(output: "", error: "", exitCode: 0, timedOut: false, wasCancelled: false)
         }

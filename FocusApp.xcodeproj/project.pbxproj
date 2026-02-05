@@ -7,17 +7,17 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		074E2BCBD6F74E9B99BF53E4 /* CodingEnvironmentPresenterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29FB46B09F3E414695FCE546 /* CodingEnvironmentPresenterTests.swift */; };
-		0A1BA9D5346842E6BF0C6DBB /* ProgrammingLanguageTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72999C0BC3F3402687B3BB9E /* ProgrammingLanguageTests.swift */; };
-		1C9332DFB01F4B57805EC9A6 /* ExecutorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2C29BF0F588499DBE85FD5D /* ExecutorTests.swift */; };
-		1FDAC8DA41B44813A6128FF4 /* LeetCodeModelsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84B888743F7248DBA5F3A94F /* LeetCodeModelsTests.swift */; };
-		416DC1D624AC4D8C83D0820A /* LeetCodeNetworkingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AF2BC50D7A04A59A72BD4CC /* LeetCodeNetworkingTests.swift */; };
-		55C3B4ADCD3C450593E4212C /* NotificationManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65251E426E5243F79306F201 /* NotificationManagerTests.swift */; };
-		5B9ADEFB983A4EF5AF6A67D2 /* ProcessRunnerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 085FEBCD150F43019CE9B529 /* ProcessRunnerTests.swift */; };
+		074E2BCBD6F74E9B99BF53E4 /* Presenters/CodingEnvironmentPresenterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29FB46B09F3E414695FCE546 /* Presenters/CodingEnvironmentPresenterTests.swift */; };
+		0A1BA9D5346842E6BF0C6DBB /* Models/ProgrammingLanguageTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72999C0BC3F3402687B3BB9E /* Models/ProgrammingLanguageTests.swift */; };
+		1C9332DFB01F4B57805EC9A6 /* Services/ExecutorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2C29BF0F588499DBE85FD5D /* Services/ExecutorTests.swift */; };
+		1FDAC8DA41B44813A6128FF4 /* Models/LeetCodeModelsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84B888743F7248DBA5F3A94F /* Models/LeetCodeModelsTests.swift */; };
+		416DC1D624AC4D8C83D0820A /* Services/LeetCodeNetworkingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AF2BC50D7A04A59A72BD4CC /* Services/LeetCodeNetworkingTests.swift */; };
+		55C3B4ADCD3C450593E4212C /* Services/NotificationManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65251E426E5243F79306F201 /* Services/NotificationManagerTests.swift */; };
+		5B9ADEFB983A4EF5AF6A67D2 /* Services/ProcessRunnerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 085FEBCD150F43019CE9B529 /* Services/ProcessRunnerTests.swift */; };
 		653A1BCD45DC478A8FA88001 /* CodingEnvironmentView+Sidebar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A4E0753FE4C4032A9C53AAA /* CodingEnvironmentView+Sidebar.swift */; };
-		76E45EE927B7400B8F88BED1 /* LeetCodeSyncInteractorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6568D60DBB854206882E1ECE /* LeetCodeSyncInteractorTests.swift */; };
-		81CB68C852BA4D08900D8C64 /* PlanCalendarTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F4280AC0DB14B018B8F3B43 /* PlanCalendarTests.swift */; };
-		865EEC6EABBD4E7AB00F78AA /* CodeExecutionServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09B826590C1C4423B22A0B64 /* CodeExecutionServiceTests.swift */; };
+		76E45EE927B7400B8F88BED1 /* Interactors/LeetCodeSyncInteractorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6568D60DBB854206882E1ECE /* Interactors/LeetCodeSyncInteractorTests.swift */; };
+		81CB68C852BA4D08900D8C64 /* Stores/PlanCalendarTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F4280AC0DB14B018B8F3B43 /* Stores/PlanCalendarTests.swift */; };
+		865EEC6EABBD4E7AB00F78AA /* Services/CodeExecutionServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09B826590C1C4423B22A0B64 /* Services/CodeExecutionServiceTests.swift */; };
 		A10001001 /* FocusApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002001 /* FocusApp.swift */; };
 		A10001002 /* DSAPlan.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002002 /* DSAPlan.swift */; };
 		A10001003 /* AppData.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002003 /* AppData.swift */; };
@@ -130,33 +130,33 @@
 		A1B2C3D4E5F6A7B8C9D0E1B4 /* SolutionApproachView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D4E5F6A7B8C9D0E3B2 /* SolutionApproachView.swift */; };
 		B1D2C3D4E5F6A7B8C9D0E1F3 /* CodingEnvironmentView+DetailContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1D2C3D4E5F6A7B8C9D0E1F2 /* CodingEnvironmentView+DetailContent.swift */; };
 		B2C3D4E5F6A7B8C9D0E1F4F6 /* LeetCodeSyncScheduler.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2C3D4E5F6A7B8C9D0E1F4F5 /* LeetCodeSyncScheduler.swift */; };
-		C2978C5869F84459BDC98091 /* SharedDataStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A111678A69A8452C97563307 /* SharedDataStoreTests.swift */; };
-		C7D8E9F0A1B2C3D4E5F60709 /* LeetCodeSyncSchedulerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7D8E9F0A1B2C3D4E5F60708 /* LeetCodeSyncSchedulerTests.swift */; };
-		C9EA7A4E9DEF427EA4E50A21 /* Fixtures.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D6F90158D1A49A4B723EC53 /* Fixtures.swift */; };
+		C2978C5869F84459BDC98091 /* Stores/SharedDataStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A111678A69A8452C97563307 /* Stores/SharedDataStoreTests.swift */; };
+		C7D8E9F0A1B2C3D4E5F60709 /* Services/LeetCodeSyncSchedulerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7D8E9F0A1B2C3D4E5F60708 /* Services/LeetCodeSyncSchedulerTests.swift */; };
+		C9EA7A4E9DEF427EA4E50A21 /* Support/Fixtures.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D6F90158D1A49A4B723EC53 /* Support/Fixtures.swift */; };
 		CB0805C549E94B40B1CE6960 /* CodingEnvironmentProblemModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6EA4BEC926540C884CA828B /* CodingEnvironmentProblemModels.swift */; };
-		D2EC195B48254E0B914D8A01 /* LeetCodeRestClientTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C981502C4EC54673BA39B39A /* LeetCodeRestClientTests.swift */; };
-		DSAT001001 /* DSAPlanTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DSAT002001 /* DSAPlanTests.swift */; };
-		DSAT001002 /* LeetCodeErrorsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DSAT002002 /* LeetCodeErrorsTests.swift */; };
-		DSAT001003 /* ExecutionConfigTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DSAT002003 /* ExecutionConfigTests.swift */; };
-		DSAT001004 /* LeetCodeConstantsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DSAT002004 /* LeetCodeConstantsTests.swift */; };
-		E325663DD9574C9390341D12 /* AppDataTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D26C0ABCC3347D490B3E48B /* AppDataTests.swift */; };
-		F16E69D9C175439EA2255A91 /* AppStateStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A1DED48D1ED467BB0BF7B84 /* AppStateStoreTests.swift */; };
-		F9A2DABABABF4C3ABE903F0B /* LeetCodeSlugExtractorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCC76528BB9347DA886CDFBD /* LeetCodeSlugExtractorTests.swift */; };
-		IT001001 /* ContentInteractorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = IT002001 /* ContentInteractorTests.swift */; };
-		IT001002 /* PlanInteractorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = IT002002 /* PlanInteractorTests.swift */; };
-		IT001003 /* TodayInteractorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = IT002003 /* TodayInteractorTests.swift */; };
-		IT001004 /* StatsInteractorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = IT002004 /* StatsInteractorTests.swift */; };
-		IT001005 /* SettingsInteractorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = IT002005 /* SettingsInteractorTests.swift */; };
-		IT001006 /* ToolbarWidgetInteractorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = IT002006 /* ToolbarWidgetInteractorTests.swift */; };
-		IT001007 /* CodingEnvironmentInteractorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = IT002007 /* CodingEnvironmentInteractorTests.swift */; };
-		PT001001 /* FocusPresenterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = PT002001 /* FocusPresenterTests.swift */; };
-		PT001002 /* ContentPresenterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = PT002002 /* ContentPresenterTests.swift */; };
-		PT001003 /* PlanPresenterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = PT002003 /* PlanPresenterTests.swift */; };
-		PT001004 /* TodayPresenterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = PT002004 /* TodayPresenterTests.swift */; };
-		PT001005 /* StatsPresenterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = PT002005 /* StatsPresenterTests.swift */; };
-		PT001006 /* SettingsPresenterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = PT002006 /* SettingsPresenterTests.swift */; };
-		PT001007 /* ToolbarWidgetPresenterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = PT002007 /* ToolbarWidgetPresenterTests.swift */; };
-		RT001001 /* ContentRouterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = RT002001 /* ContentRouterTests.swift */; };
+		D2EC195B48254E0B914D8A01 /* Services/LeetCodeRestClientTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C981502C4EC54673BA39B39A /* Services/LeetCodeRestClientTests.swift */; };
+		DSAT001001 /* Models/DSAPlanTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DSAT002001 /* Models/DSAPlanTests.swift */; };
+		DSAT001002 /* Models/LeetCodeErrorsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DSAT002002 /* Models/LeetCodeErrorsTests.swift */; };
+		DSAT001003 /* Models/ExecutionConfigTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DSAT002003 /* Models/ExecutionConfigTests.swift */; };
+		DSAT001004 /* Models/LeetCodeConstantsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DSAT002004 /* Models/LeetCodeConstantsTests.swift */; };
+		E325663DD9574C9390341D12 /* Models/AppDataTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D26C0ABCC3347D490B3E48B /* Models/AppDataTests.swift */; };
+		F16E69D9C175439EA2255A91 /* Stores/AppStateStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A1DED48D1ED467BB0BF7B84 /* Stores/AppStateStoreTests.swift */; };
+		F9A2DABABABF4C3ABE903F0B /* Services/LeetCodeSlugExtractorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCC76528BB9347DA886CDFBD /* Services/LeetCodeSlugExtractorTests.swift */; };
+		IT001001 /* Interactors/ContentInteractorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = IT002001 /* Interactors/ContentInteractorTests.swift */; };
+		IT001002 /* Interactors/PlanInteractorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = IT002002 /* Interactors/PlanInteractorTests.swift */; };
+		IT001003 /* Interactors/TodayInteractorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = IT002003 /* Interactors/TodayInteractorTests.swift */; };
+		IT001004 /* Interactors/StatsInteractorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = IT002004 /* Interactors/StatsInteractorTests.swift */; };
+		IT001005 /* Interactors/SettingsInteractorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = IT002005 /* Interactors/SettingsInteractorTests.swift */; };
+		IT001006 /* Interactors/ToolbarWidgetInteractorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = IT002006 /* Interactors/ToolbarWidgetInteractorTests.swift */; };
+		IT001007 /* Interactors/CodingEnvironmentInteractorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = IT002007 /* Interactors/CodingEnvironmentInteractorTests.swift */; };
+		PT001001 /* Presenters/FocusPresenterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = PT002001 /* Presenters/FocusPresenterTests.swift */; };
+		PT001002 /* Presenters/ContentPresenterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = PT002002 /* Presenters/ContentPresenterTests.swift */; };
+		PT001003 /* Presenters/PlanPresenterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = PT002003 /* Presenters/PlanPresenterTests.swift */; };
+		PT001004 /* Presenters/TodayPresenterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = PT002004 /* Presenters/TodayPresenterTests.swift */; };
+		PT001005 /* Presenters/StatsPresenterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = PT002005 /* Presenters/StatsPresenterTests.swift */; };
+		PT001006 /* Presenters/SettingsPresenterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = PT002006 /* Presenters/SettingsPresenterTests.swift */; };
+		PT001007 /* Presenters/ToolbarWidgetPresenterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = PT002007 /* Presenters/ToolbarWidgetPresenterTests.swift */; };
+		RT001001 /* Routers/ContentRouterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = RT002001 /* Routers/ContentRouterTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -170,20 +170,20 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		085FEBCD150F43019CE9B529 /* ProcessRunnerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Services/ProcessRunnerTests.swift; sourceTree = "<group>"; };
-		09B826590C1C4423B22A0B64 /* CodeExecutionServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Services/CodeExecutionServiceTests.swift; sourceTree = "<group>"; };
-		29FB46B09F3E414695FCE546 /* CodingEnvironmentPresenterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Presenters/CodingEnvironmentPresenterTests.swift; sourceTree = "<group>"; };
-		3D6F90158D1A49A4B723EC53 /* Fixtures.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Support/Fixtures.swift; sourceTree = "<group>"; };
+		085FEBCD150F43019CE9B529 /* Services/ProcessRunnerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Services/ProcessRunnerTests.swift; sourceTree = "<group>"; };
+		09B826590C1C4423B22A0B64 /* Services/CodeExecutionServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Services/CodeExecutionServiceTests.swift; sourceTree = "<group>"; };
+		29FB46B09F3E414695FCE546 /* Presenters/CodingEnvironmentPresenterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Presenters/CodingEnvironmentPresenterTests.swift; sourceTree = "<group>"; };
+		3D6F90158D1A49A4B723EC53 /* Support/Fixtures.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Support/Fixtures.swift; sourceTree = "<group>"; };
 		58471227E33B481BB4F4357B /* FocusAppTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FocusAppTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		65251E426E5243F79306F201 /* NotificationManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Services/NotificationManagerTests.swift; sourceTree = "<group>"; };
-		6568D60DBB854206882E1ECE /* LeetCodeSyncInteractorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Interactors/LeetCodeSyncInteractorTests.swift; sourceTree = "<group>"; };
-		6A1DED48D1ED467BB0BF7B84 /* AppStateStoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Stores/AppStateStoreTests.swift; sourceTree = "<group>"; };
-		72999C0BC3F3402687B3BB9E /* ProgrammingLanguageTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Models/ProgrammingLanguageTests.swift; sourceTree = "<group>"; };
-		84B888743F7248DBA5F3A94F /* LeetCodeModelsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Models/LeetCodeModelsTests.swift; sourceTree = "<group>"; };
+		65251E426E5243F79306F201 /* Services/NotificationManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Services/NotificationManagerTests.swift; sourceTree = "<group>"; };
+		6568D60DBB854206882E1ECE /* Interactors/LeetCodeSyncInteractorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Interactors/LeetCodeSyncInteractorTests.swift; sourceTree = "<group>"; };
+		6A1DED48D1ED467BB0BF7B84 /* Stores/AppStateStoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Stores/AppStateStoreTests.swift; sourceTree = "<group>"; };
+		72999C0BC3F3402687B3BB9E /* Models/ProgrammingLanguageTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Models/ProgrammingLanguageTests.swift; sourceTree = "<group>"; };
+		84B888743F7248DBA5F3A94F /* Models/LeetCodeModelsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Models/LeetCodeModelsTests.swift; sourceTree = "<group>"; };
 		8A4E0753FE4C4032A9C53AAA /* CodingEnvironmentView+Sidebar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CodingEnvironmentView+Sidebar.swift"; sourceTree = "<group>"; };
-		9AF2BC50D7A04A59A72BD4CC /* LeetCodeNetworkingTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Services/LeetCodeNetworkingTests.swift; sourceTree = "<group>"; };
-		9D26C0ABCC3347D490B3E48B /* AppDataTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Models/AppDataTests.swift; sourceTree = "<group>"; };
-		9F4280AC0DB14B018B8F3B43 /* PlanCalendarTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Stores/PlanCalendarTests.swift; sourceTree = "<group>"; };
+		9AF2BC50D7A04A59A72BD4CC /* Services/LeetCodeNetworkingTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Services/LeetCodeNetworkingTests.swift; sourceTree = "<group>"; };
+		9D26C0ABCC3347D490B3E48B /* Models/AppDataTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Models/AppDataTests.swift; sourceTree = "<group>"; };
+		9F4280AC0DB14B018B8F3B43 /* Stores/PlanCalendarTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Stores/PlanCalendarTests.swift; sourceTree = "<group>"; };
 		A10002001 /* FocusApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FocusApp.swift; sourceTree = "<group>"; };
 		A10002002 /* DSAPlan.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DSAPlan.swift; sourceTree = "<group>"; };
 		A10002003 /* AppData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppData.swift; sourceTree = "<group>"; };
@@ -292,37 +292,37 @@
 		A10002098 /* AppMessages.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppMessages.swift; sourceTree = "<group>"; };
 		A10002099 /* Solutions.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = Solutions.json; sourceTree = "<group>"; };
 		A10003001 /* FocusApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FocusApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		A111678A69A8452C97563307 /* SharedDataStoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Stores/SharedDataStoreTests.swift; sourceTree = "<group>"; };
+		A111678A69A8452C97563307 /* Stores/SharedDataStoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Stores/SharedDataStoreTests.swift; sourceTree = "<group>"; };
 		A1B2C3D4E5F6A7B8C9D0E2A1 /* SolutionModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SolutionModels.swift; sourceTree = "<group>"; };
 		A1B2C3D4E5F6A7B8C9D0E2A2 /* SolutionStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SolutionStore.swift; sourceTree = "<group>"; };
 		A1B2C3D4E5F6A7B8C9D0E3A1 /* SolutionTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SolutionTabView.swift; sourceTree = "<group>"; };
 		A1B2C3D4E5F6A7B8C9D0E3B2 /* SolutionApproachView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SolutionApproachView.swift; sourceTree = "<group>"; };
-		A2C29BF0F588499DBE85FD5D /* ExecutorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Services/ExecutorTests.swift; sourceTree = "<group>"; };
+		A2C29BF0F588499DBE85FD5D /* Services/ExecutorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Services/ExecutorTests.swift; sourceTree = "<group>"; };
 		B1D2C3D4E5F6A7B8C9D0E1F2 /* CodingEnvironmentView+DetailContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CodingEnvironmentView+DetailContent.swift"; sourceTree = "<group>"; };
 		B2C3D4E5F6A7B8C9D0E1F4F5 /* LeetCodeSyncScheduler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeetCodeSyncScheduler.swift; sourceTree = "<group>"; };
-		BCC76528BB9347DA886CDFBD /* LeetCodeSlugExtractorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Services/LeetCodeSlugExtractorTests.swift; sourceTree = "<group>"; };
-		C7D8E9F0A1B2C3D4E5F60708 /* LeetCodeSyncSchedulerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Services/LeetCodeSyncSchedulerTests.swift; sourceTree = "<group>"; };
-		C981502C4EC54673BA39B39A /* LeetCodeRestClientTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Services/LeetCodeRestClientTests.swift; sourceTree = "<group>"; };
+		BCC76528BB9347DA886CDFBD /* Services/LeetCodeSlugExtractorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Services/LeetCodeSlugExtractorTests.swift; sourceTree = "<group>"; };
+		C7D8E9F0A1B2C3D4E5F60708 /* Services/LeetCodeSyncSchedulerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Services/LeetCodeSyncSchedulerTests.swift; sourceTree = "<group>"; };
+		C981502C4EC54673BA39B39A /* Services/LeetCodeRestClientTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Services/LeetCodeRestClientTests.swift; sourceTree = "<group>"; };
 		D6EA4BEC926540C884CA828B /* CodingEnvironmentProblemModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodingEnvironmentProblemModels.swift; sourceTree = "<group>"; };
-		DSAT002001 /* DSAPlanTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Models/DSAPlanTests.swift; sourceTree = "<group>"; };
-		DSAT002002 /* LeetCodeErrorsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Models/LeetCodeErrorsTests.swift; sourceTree = "<group>"; };
-		DSAT002003 /* ExecutionConfigTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Models/ExecutionConfigTests.swift; sourceTree = "<group>"; };
-		DSAT002004 /* LeetCodeConstantsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Models/LeetCodeConstantsTests.swift; sourceTree = "<group>"; };
-		IT002001 /* ContentInteractorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Interactors/ContentInteractorTests.swift; sourceTree = "<group>"; };
-		IT002002 /* PlanInteractorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Interactors/PlanInteractorTests.swift; sourceTree = "<group>"; };
-		IT002003 /* TodayInteractorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Interactors/TodayInteractorTests.swift; sourceTree = "<group>"; };
-		IT002004 /* StatsInteractorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Interactors/StatsInteractorTests.swift; sourceTree = "<group>"; };
-		IT002005 /* SettingsInteractorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Interactors/SettingsInteractorTests.swift; sourceTree = "<group>"; };
-		IT002006 /* ToolbarWidgetInteractorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Interactors/ToolbarWidgetInteractorTests.swift; sourceTree = "<group>"; };
-		IT002007 /* CodingEnvironmentInteractorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Interactors/CodingEnvironmentInteractorTests.swift; sourceTree = "<group>"; };
-		PT002001 /* FocusPresenterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Presenters/FocusPresenterTests.swift; sourceTree = "<group>"; };
-		PT002002 /* ContentPresenterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Presenters/ContentPresenterTests.swift; sourceTree = "<group>"; };
-		PT002003 /* PlanPresenterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Presenters/PlanPresenterTests.swift; sourceTree = "<group>"; };
-		PT002004 /* TodayPresenterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Presenters/TodayPresenterTests.swift; sourceTree = "<group>"; };
-		PT002005 /* StatsPresenterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Presenters/StatsPresenterTests.swift; sourceTree = "<group>"; };
-		PT002006 /* SettingsPresenterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Presenters/SettingsPresenterTests.swift; sourceTree = "<group>"; };
-		PT002007 /* ToolbarWidgetPresenterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Presenters/ToolbarWidgetPresenterTests.swift; sourceTree = "<group>"; };
-		RT002001 /* ContentRouterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Routers/ContentRouterTests.swift; sourceTree = "<group>"; };
+		DSAT002001 /* Models/DSAPlanTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Models/DSAPlanTests.swift; sourceTree = "<group>"; };
+		DSAT002002 /* Models/LeetCodeErrorsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Models/LeetCodeErrorsTests.swift; sourceTree = "<group>"; };
+		DSAT002003 /* Models/ExecutionConfigTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Models/ExecutionConfigTests.swift; sourceTree = "<group>"; };
+		DSAT002004 /* Models/LeetCodeConstantsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Models/LeetCodeConstantsTests.swift; sourceTree = "<group>"; };
+		IT002001 /* Interactors/ContentInteractorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Interactors/ContentInteractorTests.swift; sourceTree = "<group>"; };
+		IT002002 /* Interactors/PlanInteractorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Interactors/PlanInteractorTests.swift; sourceTree = "<group>"; };
+		IT002003 /* Interactors/TodayInteractorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Interactors/TodayInteractorTests.swift; sourceTree = "<group>"; };
+		IT002004 /* Interactors/StatsInteractorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Interactors/StatsInteractorTests.swift; sourceTree = "<group>"; };
+		IT002005 /* Interactors/SettingsInteractorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Interactors/SettingsInteractorTests.swift; sourceTree = "<group>"; };
+		IT002006 /* Interactors/ToolbarWidgetInteractorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Interactors/ToolbarWidgetInteractorTests.swift; sourceTree = "<group>"; };
+		IT002007 /* Interactors/CodingEnvironmentInteractorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Interactors/CodingEnvironmentInteractorTests.swift; sourceTree = "<group>"; };
+		PT002001 /* Presenters/FocusPresenterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Presenters/FocusPresenterTests.swift; sourceTree = "<group>"; };
+		PT002002 /* Presenters/ContentPresenterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Presenters/ContentPresenterTests.swift; sourceTree = "<group>"; };
+		PT002003 /* Presenters/PlanPresenterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Presenters/PlanPresenterTests.swift; sourceTree = "<group>"; };
+		PT002004 /* Presenters/TodayPresenterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Presenters/TodayPresenterTests.swift; sourceTree = "<group>"; };
+		PT002005 /* Presenters/StatsPresenterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Presenters/StatsPresenterTests.swift; sourceTree = "<group>"; };
+		PT002006 /* Presenters/SettingsPresenterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Presenters/SettingsPresenterTests.swift; sourceTree = "<group>"; };
+		PT002007 /* Presenters/ToolbarWidgetPresenterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Presenters/ToolbarWidgetPresenterTests.swift; sourceTree = "<group>"; };
+		RT002001 /* Routers/ContentRouterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Routers/ContentRouterTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -590,42 +590,42 @@
 		E3BDFC6AC2C94292AEFE137B /* FocusAppTests */ = {
 			isa = PBXGroup;
 			children = (
-				3D6F90158D1A49A4B723EC53 /* Fixtures.swift */,
-				9D26C0ABCC3347D490B3E48B /* AppDataTests.swift */,
-				9F4280AC0DB14B018B8F3B43 /* PlanCalendarTests.swift */,
-				6A1DED48D1ED467BB0BF7B84 /* AppStateStoreTests.swift */,
-				BCC76528BB9347DA886CDFBD /* LeetCodeSlugExtractorTests.swift */,
-				72999C0BC3F3402687B3BB9E /* ProgrammingLanguageTests.swift */,
-				6568D60DBB854206882E1ECE /* LeetCodeSyncInteractorTests.swift */,
-				65251E426E5243F79306F201 /* NotificationManagerTests.swift */,
-				09B826590C1C4423B22A0B64 /* CodeExecutionServiceTests.swift */,
-				29FB46B09F3E414695FCE546 /* CodingEnvironmentPresenterTests.swift */,
-				C7D8E9F0A1B2C3D4E5F60708 /* LeetCodeSyncSchedulerTests.swift */,
-				84B888743F7248DBA5F3A94F /* LeetCodeModelsTests.swift */,
-				C981502C4EC54673BA39B39A /* LeetCodeRestClientTests.swift */,
-				9AF2BC50D7A04A59A72BD4CC /* LeetCodeNetworkingTests.swift */,
-				085FEBCD150F43019CE9B529 /* ProcessRunnerTests.swift */,
-				A2C29BF0F588499DBE85FD5D /* ExecutorTests.swift */,
-				A111678A69A8452C97563307 /* SharedDataStoreTests.swift */,
-				DSAT002001 /* DSAPlanTests.swift */,
-				DSAT002002 /* LeetCodeErrorsTests.swift */,
-				DSAT002003 /* ExecutionConfigTests.swift */,
-				DSAT002004 /* LeetCodeConstantsTests.swift */,
-				PT002001 /* FocusPresenterTests.swift */,
-				PT002002 /* ContentPresenterTests.swift */,
-				PT002003 /* PlanPresenterTests.swift */,
-				PT002004 /* TodayPresenterTests.swift */,
-				PT002005 /* StatsPresenterTests.swift */,
-				PT002006 /* SettingsPresenterTests.swift */,
-				PT002007 /* ToolbarWidgetPresenterTests.swift */,
-				IT002001 /* ContentInteractorTests.swift */,
-				IT002002 /* PlanInteractorTests.swift */,
-				IT002003 /* TodayInteractorTests.swift */,
-				IT002004 /* StatsInteractorTests.swift */,
-				IT002005 /* SettingsInteractorTests.swift */,
-				IT002006 /* ToolbarWidgetInteractorTests.swift */,
-				IT002007 /* CodingEnvironmentInteractorTests.swift */,
-				RT002001 /* ContentRouterTests.swift */,
+				3D6F90158D1A49A4B723EC53 /* Support/Fixtures.swift */,
+				9D26C0ABCC3347D490B3E48B /* Models/AppDataTests.swift */,
+				9F4280AC0DB14B018B8F3B43 /* Stores/PlanCalendarTests.swift */,
+				6A1DED48D1ED467BB0BF7B84 /* Stores/AppStateStoreTests.swift */,
+				BCC76528BB9347DA886CDFBD /* Services/LeetCodeSlugExtractorTests.swift */,
+				72999C0BC3F3402687B3BB9E /* Models/ProgrammingLanguageTests.swift */,
+				6568D60DBB854206882E1ECE /* Interactors/LeetCodeSyncInteractorTests.swift */,
+				65251E426E5243F79306F201 /* Services/NotificationManagerTests.swift */,
+				09B826590C1C4423B22A0B64 /* Services/CodeExecutionServiceTests.swift */,
+				29FB46B09F3E414695FCE546 /* Presenters/CodingEnvironmentPresenterTests.swift */,
+				C7D8E9F0A1B2C3D4E5F60708 /* Services/LeetCodeSyncSchedulerTests.swift */,
+				84B888743F7248DBA5F3A94F /* Models/LeetCodeModelsTests.swift */,
+				C981502C4EC54673BA39B39A /* Services/LeetCodeRestClientTests.swift */,
+				9AF2BC50D7A04A59A72BD4CC /* Services/LeetCodeNetworkingTests.swift */,
+				085FEBCD150F43019CE9B529 /* Services/ProcessRunnerTests.swift */,
+				A2C29BF0F588499DBE85FD5D /* Services/ExecutorTests.swift */,
+				A111678A69A8452C97563307 /* Stores/SharedDataStoreTests.swift */,
+				DSAT002001 /* Models/DSAPlanTests.swift */,
+				DSAT002002 /* Models/LeetCodeErrorsTests.swift */,
+				DSAT002003 /* Models/ExecutionConfigTests.swift */,
+				DSAT002004 /* Models/LeetCodeConstantsTests.swift */,
+				PT002001 /* Presenters/FocusPresenterTests.swift */,
+				PT002002 /* Presenters/ContentPresenterTests.swift */,
+				PT002003 /* Presenters/PlanPresenterTests.swift */,
+				PT002004 /* Presenters/TodayPresenterTests.swift */,
+				PT002005 /* Presenters/StatsPresenterTests.swift */,
+				PT002006 /* Presenters/SettingsPresenterTests.swift */,
+				PT002007 /* Presenters/ToolbarWidgetPresenterTests.swift */,
+				IT002001 /* Interactors/ContentInteractorTests.swift */,
+				IT002002 /* Interactors/PlanInteractorTests.swift */,
+				IT002003 /* Interactors/TodayInteractorTests.swift */,
+				IT002004 /* Interactors/StatsInteractorTests.swift */,
+				IT002005 /* Interactors/SettingsInteractorTests.swift */,
+				IT002006 /* Interactors/ToolbarWidgetInteractorTests.swift */,
+				IT002007 /* Interactors/CodingEnvironmentInteractorTests.swift */,
+				RT002001 /* Routers/ContentRouterTests.swift */,
 			);
 			path = FocusAppTests;
 			sourceTree = "<group>";
@@ -871,42 +871,42 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C9EA7A4E9DEF427EA4E50A21 /* Fixtures.swift in Sources */,
-				1FDAC8DA41B44813A6128FF4 /* LeetCodeModelsTests.swift in Sources */,
-				D2EC195B48254E0B914D8A01 /* LeetCodeRestClientTests.swift in Sources */,
-				416DC1D624AC4D8C83D0820A /* LeetCodeNetworkingTests.swift in Sources */,
-				5B9ADEFB983A4EF5AF6A67D2 /* ProcessRunnerTests.swift in Sources */,
-				1C9332DFB01F4B57805EC9A6 /* ExecutorTests.swift in Sources */,
-				C2978C5869F84459BDC98091 /* SharedDataStoreTests.swift in Sources */,
-				E325663DD9574C9390341D12 /* AppDataTests.swift in Sources */,
-				81CB68C852BA4D08900D8C64 /* PlanCalendarTests.swift in Sources */,
-				F16E69D9C175439EA2255A91 /* AppStateStoreTests.swift in Sources */,
-				F9A2DABABABF4C3ABE903F0B /* LeetCodeSlugExtractorTests.swift in Sources */,
-				0A1BA9D5346842E6BF0C6DBB /* ProgrammingLanguageTests.swift in Sources */,
-				76E45EE927B7400B8F88BED1 /* LeetCodeSyncInteractorTests.swift in Sources */,
-				55C3B4ADCD3C450593E4212C /* NotificationManagerTests.swift in Sources */,
-				865EEC6EABBD4E7AB00F78AA /* CodeExecutionServiceTests.swift in Sources */,
-				074E2BCBD6F74E9B99BF53E4 /* CodingEnvironmentPresenterTests.swift in Sources */,
-				C7D8E9F0A1B2C3D4E5F60709 /* LeetCodeSyncSchedulerTests.swift in Sources */,
-				DSAT001001 /* DSAPlanTests.swift in Sources */,
-				DSAT001002 /* LeetCodeErrorsTests.swift in Sources */,
-				DSAT001003 /* ExecutionConfigTests.swift in Sources */,
-				DSAT001004 /* LeetCodeConstantsTests.swift in Sources */,
-				PT001001 /* FocusPresenterTests.swift in Sources */,
-				PT001002 /* ContentPresenterTests.swift in Sources */,
-				PT001003 /* PlanPresenterTests.swift in Sources */,
-				PT001004 /* TodayPresenterTests.swift in Sources */,
-				PT001005 /* StatsPresenterTests.swift in Sources */,
-				PT001006 /* SettingsPresenterTests.swift in Sources */,
-				PT001007 /* ToolbarWidgetPresenterTests.swift in Sources */,
-				IT001001 /* ContentInteractorTests.swift in Sources */,
-				IT001002 /* PlanInteractorTests.swift in Sources */,
-				IT001003 /* TodayInteractorTests.swift in Sources */,
-				IT001004 /* StatsInteractorTests.swift in Sources */,
-				IT001005 /* SettingsInteractorTests.swift in Sources */,
-				IT001006 /* ToolbarWidgetInteractorTests.swift in Sources */,
-				IT001007 /* CodingEnvironmentInteractorTests.swift in Sources */,
-				RT001001 /* ContentRouterTests.swift in Sources */,
+				C9EA7A4E9DEF427EA4E50A21 /* Support/Fixtures.swift in Sources */,
+				1FDAC8DA41B44813A6128FF4 /* Models/LeetCodeModelsTests.swift in Sources */,
+				D2EC195B48254E0B914D8A01 /* Services/LeetCodeRestClientTests.swift in Sources */,
+				416DC1D624AC4D8C83D0820A /* Services/LeetCodeNetworkingTests.swift in Sources */,
+				5B9ADEFB983A4EF5AF6A67D2 /* Services/ProcessRunnerTests.swift in Sources */,
+				1C9332DFB01F4B57805EC9A6 /* Services/ExecutorTests.swift in Sources */,
+				C2978C5869F84459BDC98091 /* Stores/SharedDataStoreTests.swift in Sources */,
+				E325663DD9574C9390341D12 /* Models/AppDataTests.swift in Sources */,
+				81CB68C852BA4D08900D8C64 /* Stores/PlanCalendarTests.swift in Sources */,
+				F16E69D9C175439EA2255A91 /* Stores/AppStateStoreTests.swift in Sources */,
+				F9A2DABABABF4C3ABE903F0B /* Services/LeetCodeSlugExtractorTests.swift in Sources */,
+				0A1BA9D5346842E6BF0C6DBB /* Models/ProgrammingLanguageTests.swift in Sources */,
+				76E45EE927B7400B8F88BED1 /* Interactors/LeetCodeSyncInteractorTests.swift in Sources */,
+				55C3B4ADCD3C450593E4212C /* Services/NotificationManagerTests.swift in Sources */,
+				865EEC6EABBD4E7AB00F78AA /* Services/CodeExecutionServiceTests.swift in Sources */,
+				074E2BCBD6F74E9B99BF53E4 /* Presenters/CodingEnvironmentPresenterTests.swift in Sources */,
+				C7D8E9F0A1B2C3D4E5F60709 /* Services/LeetCodeSyncSchedulerTests.swift in Sources */,
+				DSAT001001 /* Models/DSAPlanTests.swift in Sources */,
+				DSAT001002 /* Models/LeetCodeErrorsTests.swift in Sources */,
+				DSAT001003 /* Models/ExecutionConfigTests.swift in Sources */,
+				DSAT001004 /* Models/LeetCodeConstantsTests.swift in Sources */,
+				PT001001 /* Presenters/FocusPresenterTests.swift in Sources */,
+				PT001002 /* Presenters/ContentPresenterTests.swift in Sources */,
+				PT001003 /* Presenters/PlanPresenterTests.swift in Sources */,
+				PT001004 /* Presenters/TodayPresenterTests.swift in Sources */,
+				PT001005 /* Presenters/StatsPresenterTests.swift in Sources */,
+				PT001006 /* Presenters/SettingsPresenterTests.swift in Sources */,
+				PT001007 /* Presenters/ToolbarWidgetPresenterTests.swift in Sources */,
+				IT001001 /* Interactors/ContentInteractorTests.swift in Sources */,
+				IT001002 /* Interactors/PlanInteractorTests.swift in Sources */,
+				IT001003 /* Interactors/TodayInteractorTests.swift in Sources */,
+				IT001004 /* Interactors/StatsInteractorTests.swift in Sources */,
+				IT001005 /* Interactors/SettingsInteractorTests.swift in Sources */,
+				IT001006 /* Interactors/ToolbarWidgetInteractorTests.swift in Sources */,
+				IT001007 /* Interactors/CodingEnvironmentInteractorTests.swift in Sources */,
+				RT001001 /* Routers/ContentRouterTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

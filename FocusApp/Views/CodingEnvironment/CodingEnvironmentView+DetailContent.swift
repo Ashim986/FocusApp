@@ -5,6 +5,7 @@ enum ProblemDetailTab: CaseIterable {
     case editorial
     case solution
     case submissions
+    case debug
 
     var icon: String {
         switch self {
@@ -16,6 +17,8 @@ enum ProblemDetailTab: CaseIterable {
             return "checkmark.seal"
         case .submissions:
             return "clock.arrow.circlepath"
+        case .debug:
+            return "ladybug"
         }
     }
 
@@ -29,6 +32,8 @@ enum ProblemDetailTab: CaseIterable {
             return L10n.Coding.tabSolution
         case .submissions:
             return L10n.Coding.tabSubmissions
+        case .debug:
+            return L10n.Coding.tabDebug
         }
     }
 }

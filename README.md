@@ -3,13 +3,15 @@
 FocusApp is a native macOS study companion for Data Structures & Algorithms preparation. It tracks a 13-day study plan with 65 LeetCode problems, daily habits, focus tools, and a built-in coding environment. The app syncs solved problems from LeetCode to keep progress accurate.
 
 ## Features
-- LeetCode-driven progress sync (REST API)
+- LeetCode-driven progress sync (REST with GraphQL fallback)
 - Automatic refresh on username change, hourly, and at day start
 - Split-view coding workspace with problem list, details, and output panel
-- Swift + Python editors with test case execution
+- Swift + Python editors with test case execution and submissions tracking
+- Problem detail tabs: Description, Editorial, Solution, Submissions, Debug
+- Debug logs for network, sync, and execution (Settings + editor)
 - Floating always-on-top widget
 - Daily habits and progress tracking
-- Focus mode timer overlay
+- Focus timer indicator in the editor header
 - Tomorrow preview and auto-carryover for unsolved problems
 
 ## Requirements
@@ -34,9 +36,13 @@ FocusApp is a native macOS study companion for Data Structures & Algorithms prep
 ## Configuration
 - Default username can be edited in `FocusApp/Models/AppData.swift`.
 - Saved code is stored per problem and language.
+- Bundled solution content lives in `FocusApp/Resources/Solutions.json`.
 
 ## Data Storage
 Progress is stored locally in a SwiftData persistent store (default location under Application Support).
+
+## Code Execution & Sandbox
+The app uses `Process` to compile/run code. App Sandbox is disabled for the macOS target to allow execution of compiled binaries. If you re-enable sandboxing, you will need a helper tool or XPC service to run code safely.
 
 ## Project Structure
 ```

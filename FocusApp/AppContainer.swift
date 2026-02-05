@@ -44,6 +44,7 @@ final class AppContainer {
             makeCoding: { binding in
                 CodingEnvironmentView(
                     presenter: codingEnvironmentPresenter,
+                    debugLogStore: self.debugLogStore,
                     onBack: { binding.wrappedValue = false }
                 )
             }
@@ -90,7 +91,7 @@ final class AppContainer {
         leetCodeScheduler.start()
         self.leetCodeScheduler = leetCodeScheduler
 
-        let codeExecutionService = CodeExecutionService()
+        let codeExecutionService = CodeExecutionService(logger: debugLogStore)
         self.codeExecutionService = codeExecutionService
 
         let solutionStore = BundledSolutionStore()

@@ -40,7 +40,7 @@ extension CodingEnvironmentView {
 
             Spacer()
 
-            HStack(spacing: 8) {
+            HStack(spacing: 10) {
                 if let problem = presenter.selectedProblem, let url = URL(string: problem.url) {
                     Link(destination: url) {
                         HStack(spacing: 4) {
@@ -107,6 +107,17 @@ extension CodingEnvironmentView {
                     .disabled(presenter.testCases.isEmpty)
                     .opacity(presenter.testCases.isEmpty ? 0.5 : 1)
                     .keyboardShortcut(KeyEquivalent.return, modifiers: [.command, .shift])
+
+                    Button(action: { isShowingDebugLogs = true }, label: {
+                        Image(systemName: "gearshape")
+                            .font(.system(size: 11, weight: .semibold))
+                            .foregroundColor(Color.appGray300)
+                            .frame(width: 32, height: 32)
+                            .background(Color.appGray800)
+                            .clipShape(RoundedRectangle(cornerRadius: 6))
+                    })
+                    .buttonStyle(.plain)
+                    .help(L10n.Debug.logsTitle)
                 }
             }
             .padding(.trailing, 12)

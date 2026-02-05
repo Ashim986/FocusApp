@@ -20,10 +20,10 @@ struct SolutionTabView: View {
                 .font(.system(size: 28))
                 .foregroundColor(Color.appGray600)
             Text(L10n.Coding.Solution.empty)
-                .font(.system(size: 13))
+                .font(.system(size: 15))
                 .foregroundColor(Color.appGray500)
             Text(L10n.Coding.Solution.emptyHint)
-                .font(.system(size: 11))
+                .font(.system(size: 13))
                 .foregroundColor(Color.appGray600)
                 .multilineTextAlignment(.center)
         }
@@ -53,15 +53,15 @@ struct SolutionTabView: View {
         VStack(alignment: .leading, spacing: 8) {
             HStack {
                 Image(systemName: "lightbulb.fill")
-                    .font(.system(size: 12))
+                    .font(.system(size: 14))
                     .foregroundColor(Color.appAmber)
                 Text(L10n.Coding.Solution.summaryTitle)
-                    .font(.system(size: 12, weight: .semibold))
+                    .font(.system(size: 14, weight: .semibold))
                     .foregroundColor(.white)
             }
 
             Text(summary)
-                .font(.system(size: 12))
+                .font(.system(size: 14))
                 .foregroundColor(Color.appGray300)
                 .lineSpacing(3)
         }
@@ -102,7 +102,7 @@ struct SolutionTabView: View {
         Button(action: action) {
             HStack(spacing: 6) {
                 Text(approach.name)
-                    .font(.system(size: 11, weight: isSelected ? .semibold : .medium))
+                    .font(.system(size: 13, weight: isSelected ? .semibold : .medium))
 
                 complexityBadge(approach.complexity.time)
             }
@@ -126,7 +126,7 @@ struct SolutionTabView: View {
 
     private func complexityBadge(_ complexity: String) -> some View {
         Text(complexity)
-            .font(.system(size: 9, weight: .medium, design: .monospaced))
+            .font(.system(size: 11, weight: .medium, design: .monospaced))
             .foregroundColor(Color.appGreen)
             .padding(.horizontal, 6)
             .padding(.vertical, 2)

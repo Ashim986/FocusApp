@@ -836,6 +836,17 @@
         }
       }
     },
+    "coding.tab_debug" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Debug"
+          }
+        }
+      }
+    },
     "coding.tab_description" : {
       "extractionState" : "stale",
       "localizations" : {
@@ -1172,7 +1183,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Run a sync or open a problem to populate logs."
+            "value" : "Run code, sync LeetCode, or open a problem to capture logs."
           }
         }
       }
@@ -1599,6 +1610,12 @@
         }
       }
     },
+    "Last %@" : {
+
+    },
+    "No logs match your filters" : {
+
+    },
     "notification.habits_complete.body" : {
       "extractionState" : "stale",
       "localizations" : {
@@ -1975,6 +1992,9 @@
       }
     },
     "Quit FocusApp" : {
+
+    },
+    "Reset filters" : {
 
     },
     "Save" : {
@@ -2607,6 +2627,9 @@
       }
     },
     "Toggle Floating Widget" : {
+
+    },
+    "Try clearing the filters to view recent entries." : {
 
     },
     "widget.checking" : {

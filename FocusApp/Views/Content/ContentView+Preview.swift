@@ -10,13 +10,15 @@ struct ContentView_Previews: PreviewProvider {
                 let client = PreviewLeetCodeClient()
                 let syncInteractor = LeetCodeSyncInteractor(appStore: appStore, client: client)
                 let codeExecutionService = CodeExecutionService()
+                let debugLogStore = DebugLogStore()
                 let codingPresenter = CodingEnvironmentPresenter(
                     interactor: CodingEnvironmentInteractor(
                         appStore: appStore,
                         leetCodeClient: client,
                         executionService: codeExecutionService,
                         solutionStore: InMemorySolutionStore()
-                    )
+                    ),
+                    logger: debugLogStore
                 )
                 let presenter = ContentPresenter(interactor: ContentInteractor(appStore: appStore))
                 let router = ContentRouter(
@@ -56,6 +58,7 @@ struct ContentView_Previews: PreviewProvider {
                     makeCoding: { binding in
                         CodingEnvironmentView(
                             presenter: codingPresenter,
+                            debugLogStore: debugLogStore,
                             onBack: { binding.wrappedValue = false }
                         )
                     }

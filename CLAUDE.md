@@ -71,7 +71,9 @@ FocusApp/
 │   │   ├── ProcessRunner.swift      # Low-level process execution with timeout
 │   │   ├── LanguageExecutor.swift   # Protocol and config for language executors
 │   │   ├── SwiftExecutor.swift      # Swift compilation and execution
-│   │   └── PythonExecutor.swift     # Python interpreter execution
+│   │   ├── PythonExecutor.swift     # Python interpreter execution
+│   │   ├── SolutionModels.swift     # Bundled solution data models
+│   │   └── SolutionStore.swift      # Solution loader (Solutions.json)
 │   ├── Views/
 │   │   ├── Content/
 │   │   │   ├── ContentView.swift        # Main tabbed interface
@@ -140,6 +142,8 @@ FocusApp/
 │   │   │   ├── CodingEnvironmentView+ProblemPicker.swift
 │   │   │   ├── CodingEnvironmentView+Sidebar.swift
 │   │   │   ├── CodingEnvironmentView+DetailContent.swift
+│   │   │   ├── SolutionTabView.swift
+│   │   │   ├── SolutionApproachView.swift
 │   │   │   ├── ModernTestCaseView.swift
 │   │   │   ├── ModernOutputView.swift
 │   │   │   ├── ModernOutputView+Sections.swift
@@ -161,7 +165,8 @@ FocusApp/
 │   │   ├── Colors.swift             # Color definitions
 │   │   └── AppStrings.swift         # Localized string helpers
 │   ├── Resources/
-│   │   └── Localizable.xcstrings    # Localization strings catalog
+│   │   ├── Localizable.xcstrings    # Localization strings catalog
+│   │   └── Solutions.json           # Bundled solutions content
 │   └── Shared/
 │       ├── SharedDataStore.swift    # PlanCalendar, AppConstants, legacy FileAppStorage
 │       └── SwiftDataStorage.swift   # SwiftData persistence (AppDataRecord, SwiftDataAppStorage)
@@ -198,6 +203,16 @@ xcodebuild test -project FocusApp.xcodeproj -scheme FocusApp -destination 'platf
 ```
 
 Tests cover all Presenters, Interactors, and core business logic. See `FocusAppTests/` for the full test suite.
+
+## Debug Logs
+
+- `DebugLogStore` and entry models live in `FocusApp/Models/LeetCodeNetworking.swift`.
+- Logs are emitted for network, sync, and execution (compile/run).
+- Debug log UI is embedded in the code editor and available in Settings.
+
+## Code Execution & Sandbox
+
+The app uses `Process` to compile/run code. App Sandbox is disabled for the macOS target to allow execution of compiled binaries. If you re-enable sandboxing, you will need a helper tool or XPC service to run code safely.
 
 ## Code Quality & Linting
 

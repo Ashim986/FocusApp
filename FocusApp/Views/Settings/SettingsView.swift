@@ -190,13 +190,18 @@ struct SettingsView: View {
             presenter.onAppear()
         }
         .sheet(isPresented: $isShowingLogs) {
-            DebugLogView(store: debugLogStore)
+            DebugLogView(
+                store: debugLogStore,
+                onClose: { isShowingLogs = false }
+            )
         }
     }
 }
 
-private struct DebugLogView: View {
+struct DebugLogView: View {
     @ObservedObject var store: DebugLogStore
+    var isEmbedded: Bool = false
+    var onClose: (() -> Void)? = nil
     @State private var selectedLevel: DebugLogLevelFilter = .all
     @State private var selectedCategory: DebugLogCategoryFilter = .all
     @State private var searchText: String = ""
@@ -204,18 +209,50 @@ private struct DebugLogView: View {
     var body: some View {
         VStack(spacing: 0) {
             header
+            summary
             filters
             Divider()
             content
         }
-        .frame(minWidth: 640, minHeight: 480)
+        .frame(minWidth: isEmbedded ? 0 : 640, minHeight: isEmbedded ? 0 : 480)
+        .background(debugBackground)
     }
 
     private var header: some View {
         HStack {
-            Text(L10n.Debug.logsTitle)
-                .font(.title3.weight(.semibold))
+            VStack(alignment: .leading, spacing: 4) {
+                Text(L10n.Debug.logsTitle)
+                    .font(.title3.weight(.semibold))
+
+                HStack(spacing: 8) {
+                    statusChip(title: "Live", color: Color.appGreen)
+                    Text("Last \(lastEntryTimestamp)")
+                        .font(.system(size: 11))
+                        .foregroundColor(Color.appGray400)
+                }
+            }
             Spacer()
+            Text("\(store.entries.count)")
+                .font(.system(size: 12, weight: .semibold, design: .monospaced))
+                .foregroundColor(.white)
+                .padding(.horizontal, 10)
+                .padding(.vertical, 6)
+                .background(
+                    RoundedRectangle(cornerRadius: 8)
+                        .fill(Color.appGray800.opacity(0.8))
+                )
+            if let onClose {
+                Button(action: onClose, label: {
+                    Image(systemName: "xmark")
+                        .font(.system(size: 11, weight: .semibold))
+                        .foregroundColor(Color.appGray300)
+                        .frame(width: 28, height: 28)
+                        .background(Color.appGray800)
+                        .clipShape(RoundedRectangle(cornerRadius: 6))
+                })
+                .buttonStyle(.plain)
+                .help("Close")
+            }
             Button(L10n.Debug.copyLogs) {
                 copyLogs()
             }
@@ -226,32 +263,118 @@ private struct DebugLogView: View {
             .buttonStyle(.borderedProminent)
         }
         .padding(16)
-        .background(Color.appGray900)
+        .background(headerBackground)
     }
 
     private var filters: some View {
         VStack(spacing: 12) {
-            HStack(spacing: 12) {
-                Picker(L10n.Debug.levelLabel, selection: $selectedLevel) {
-                    ForEach(DebugLogLevelFilter.allCases, id: \.self) { filter in
-                        Text(filter.title).tag(filter)
-                    }
+            ViewThatFits(in: .horizontal) {
+                HStack(spacing: 12) {
+                    levelSegmentedPicker
+                    categorySegmentedPicker
                 }
-                .pickerStyle(.segmented)
 
-                Picker(L10n.Debug.categoryLabel, selection: $selectedCategory) {
-                    ForEach(DebugLogCategoryFilter.allCases, id: \.self) { filter in
-                        Text(filter.title).tag(filter)
+                VStack(spacing: 10) {
+                    HStack(spacing: 10) {
+                        levelMenuPicker
+                        categoryMenuPicker
                     }
                 }
-                .pickerStyle(.segmented)
             }
 
-            TextField(L10n.Debug.searchPlaceholder, text: $searchText)
-                .textFieldStyle(.roundedBorder)
+            HStack(spacing: 10) {
+                Image(systemName: "magnifyingglass")
+                    .foregroundColor(Color.appGray400)
+                TextField(L10n.Debug.searchPlaceholder, text: $searchText)
+                    .textFieldStyle(.plain)
+            }
+            .padding(.horizontal, 12)
+            .padding(.vertical, 8)
+            .background(
+                RoundedRectangle(cornerRadius: 8)
+                    .fill(Color.appGray900)
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 8)
+                            .stroke(Color.appGray700, lineWidth: 1)
+                    )
+            )
         }
         .padding(16)
         .background(Color.appGray800)
+    }
+
+    private var summary: some View {
+        let counts = entryCounts
+        return HStack(spacing: 10) {
+            summaryPill(
+                title: L10n.Debug.levelAll,
+                count: counts.total,
+                color: Color.appGray500,
+                isSelected: selectedLevel == .all
+            ) {
+                selectedLevel = .all
+            }
+            summaryPill(
+                title: DebugLogLevel.error.rawValue,
+                count: counts.error,
+                color: Color.appRed,
+                isSelected: selectedLevel == .error
+            ) {
+                selectedLevel = .error
+            }
+            summaryPill(
+                title: DebugLogLevel.warning.rawValue,
+                count: counts.warning,
+                color: Color.appAmber,
+                isSelected: selectedLevel == .warning
+            ) {
+                selectedLevel = .warning
+            }
+            summaryPill(
+                title: DebugLogLevel.info.rawValue,
+                count: counts.info,
+                color: Color.appCyan,
+                isSelected: selectedLevel == .info
+            ) {
+                selectedLevel = .info
+            }
+            Spacer()
+        }
+        .padding(.horizontal, 16)
+        .padding(.top, 12)
+        .padding(.bottom, 4)
+        .background(Color.appGray800)
+    }
+
+    private func summaryPill(
+        title: String,
+        count: Int,
+        color: Color,
+        isSelected: Bool,
+        action: @escaping () -> Void
+    ) -> some View {
+        Button(action: action, label: {
+            HStack(spacing: 6) {
+                Circle()
+                    .fill(color)
+                    .frame(width: 8, height: 8)
+                Text(title)
+                    .font(.system(size: 11, weight: .semibold))
+                Text("\(count)")
+                    .font(.system(size: 11, weight: .semibold, design: .monospaced))
+            }
+            .padding(.horizontal, 10)
+            .padding(.vertical, 6)
+            .background(
+                RoundedRectangle(cornerRadius: 8)
+                    .fill(isSelected ? Color.appGray700 : Color.appGray900)
+            )
+            .overlay(
+                RoundedRectangle(cornerRadius: 8)
+                    .stroke(isSelected ? color.opacity(0.7) : Color.appGray700, lineWidth: 1)
+            )
+        })
+        .buttonStyle(.plain)
     }
 
     private var content: some View {
@@ -262,12 +385,27 @@ private struct DebugLogView: View {
                     Image(systemName: "doc.text.magnifyingglass")
                         .font(.system(size: 32))
                         .foregroundColor(Color.appGray500)
-                    Text(L10n.Debug.emptyTitle)
-                        .font(.system(size: 14, weight: .semibold))
-                        .foregroundColor(.white)
-                    Text(L10n.Debug.emptyBody)
-                        .font(.system(size: 12))
-                        .foregroundColor(Color.appGray500)
+                    if store.entries.isEmpty {
+                        Text(L10n.Debug.emptyTitle)
+                            .font(.system(size: 14, weight: .semibold))
+                            .foregroundColor(.white)
+                        Text(L10n.Debug.emptyBody)
+                            .font(.system(size: 12))
+                            .foregroundColor(Color.appGray500)
+                    } else {
+                        Text("No logs match your filters")
+                            .font(.system(size: 14, weight: .semibold))
+                            .foregroundColor(.white)
+                        Text("Try clearing the filters to view recent entries.")
+                            .font(.system(size: 12))
+                            .foregroundColor(Color.appGray500)
+
+                        Button("Reset filters") {
+                            resetFilters()
+                        }
+                        .buttonStyle(.borderedProminent)
+                        .padding(.top, 6)
+                    }
                 }
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
                 .background(Color.appGray900)
@@ -275,7 +413,7 @@ private struct DebugLogView: View {
                 List {
                     ForEach(filtered) { entry in
                         DebugLogRow(entry: entry)
-                            .listRowBackground(Color.appGray900)
+                            .listRowBackground(Color.clear)
                     }
                 }
                 .listStyle(.plain)
@@ -302,6 +440,28 @@ private struct DebugLogView: View {
         }
     }
 
+    private var entryCounts: DebugLogCounts {
+        var infoCount = 0
+        var warningCount = 0
+        var errorCount = 0
+        for entry in store.entries {
+            switch entry.level {
+            case .info:
+                infoCount += 1
+            case .warning:
+                warningCount += 1
+            case .error:
+                errorCount += 1
+            }
+        }
+        return DebugLogCounts(
+            total: store.entries.count,
+            info: infoCount,
+            warning: warningCount,
+            error: errorCount
+        )
+    }
+
     private func copyLogs() {
         let lines = filteredEntries.map { entry in
             let time = Self.timestampFormatter.string(from: entry.timestamp)
@@ -324,6 +484,104 @@ private struct DebugLogView: View {
         formatter.dateFormat = "HH:mm:ss"
         return formatter
     }()
+
+    private var lastEntryTimestamp: String {
+        guard let entry = store.entries.first else {
+            return "—"
+        }
+        return Self.timestampFormatter.string(from: entry.timestamp)
+    }
+
+    private func resetFilters() {
+        selectedLevel = .all
+        selectedCategory = .all
+        searchText = ""
+    }
+
+    private var levelSegmentedPicker: some View {
+        Picker(L10n.Debug.levelLabel, selection: $selectedLevel) {
+            ForEach(DebugLogLevelFilter.allCases, id: \.self) { filter in
+                Text(filter.title).tag(filter)
+            }
+        }
+        .pickerStyle(.segmented)
+        .controlSize(.small)
+    }
+
+    private var categorySegmentedPicker: some View {
+        Picker(L10n.Debug.categoryLabel, selection: $selectedCategory) {
+            ForEach(DebugLogCategoryFilter.allCases, id: \.self) { filter in
+                Text(filter.title).tag(filter)
+            }
+        }
+        .pickerStyle(.segmented)
+        .controlSize(.small)
+    }
+
+    private var levelMenuPicker: some View {
+        Picker(L10n.Debug.levelLabel, selection: $selectedLevel) {
+            ForEach(DebugLogLevelFilter.allCases, id: \.self) { filter in
+                Text(filter.title).tag(filter)
+            }
+        }
+        .pickerStyle(.menu)
+        .frame(maxWidth: .infinity)
+    }
+
+    private var categoryMenuPicker: some View {
+        Picker(L10n.Debug.categoryLabel, selection: $selectedCategory) {
+            ForEach(DebugLogCategoryFilter.allCases, id: \.self) { filter in
+                Text(filter.title).tag(filter)
+            }
+        }
+        .pickerStyle(.menu)
+        .frame(maxWidth: .infinity)
+    }
+
+    private var headerBackground: some View {
+        LinearGradient(
+            colors: [
+                Color.appGray900,
+                Color.appGray800.opacity(0.9),
+                Color.appGreen.opacity(0.08)
+            ],
+            startPoint: .topLeading,
+            endPoint: .bottomTrailing
+        )
+    }
+
+    private var debugBackground: some View {
+        LinearGradient(
+            colors: [
+                Color.appGray900,
+                Color.appGray800,
+                Color.appGray900
+            ],
+            startPoint: .topLeading,
+            endPoint: .bottomTrailing
+        )
+    }
+
+    private func statusChip(title: String, color: Color) -> some View {
+        HStack(spacing: 6) {
+            Circle()
+                .fill(color)
+                .frame(width: 6, height: 6)
+            Text(title)
+                .font(.system(size: 10, weight: .semibold))
+                .foregroundColor(.white)
+        }
+        .padding(.horizontal, 8)
+        .padding(.vertical, 4)
+        .background(
+            RoundedRectangle(cornerRadius: 8)
+                .fill(color.opacity(0.18))
+        )
+        .overlay(
+            RoundedRectangle(cornerRadius: 8)
+                .stroke(color.opacity(0.5), lineWidth: 1)
+        )
+    }
 }
 
 private struct DebugLogRow: View {
@@ -380,7 +638,11 @@ private struct DebugLogRow: View {
         .padding(10)
         .background(
             RoundedRectangle(cornerRadius: 10)
-                .fill(Color.appGray800)
+                .fill(levelBackground)
+        )
+        .overlay(
+            RoundedRectangle(cornerRadius: 10)
+                .stroke(levelBorder, lineWidth: 1)
         )
         .listRowSeparator(.hidden)
     }
@@ -393,6 +655,28 @@ private struct DebugLogRow: View {
             return Color.appAmber
         case .error:
             return Color.appRed
+        }
+    }
+
+    private var levelBackground: Color {
+        switch entry.level {
+        case .info:
+            return Color.appGreenLight.opacity(0.12)
+        case .warning:
+            return Color.appAmberLight.opacity(0.18)
+        case .error:
+            return Color.appRedLight.opacity(0.2)
+        }
+    }
+
+    private var levelBorder: Color {
+        switch entry.level {
+        case .info:
+            return Color.appGreen.opacity(0.5)
+        case .warning:
+            return Color.appAmber.opacity(0.6)
+        case .error:
+            return Color.appRed.opacity(0.6)
         }
     }
 
@@ -454,4 +738,11 @@ private enum DebugLogCategoryFilter: CaseIterable {
         case .app: return .app
         }
     }
+}
+
+private struct DebugLogCounts {
+    let total: Int
+    let info: Int
+    let warning: Int
+    let error: Int
 }

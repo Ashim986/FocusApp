@@ -2,11 +2,13 @@ import SwiftUI
 
 struct CodingEnvironmentView: View {
     @ObservedObject var presenter: CodingEnvironmentPresenter
+    @ObservedObject var debugLogStore: DebugLogStore
     let onBack: () -> Void
     @State var showProblemPicker = false
     @State var showProblemSidebar = false
     @State var detailTab: ProblemDetailTab = .description
     @State var isBottomPanelCollapsed = false
+    @State var isShowingDebugLogs = false
     @StateObject var focusPresenter = FocusPresenter()
 
     private let focusTimer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
@@ -42,6 +44,12 @@ struct CodingEnvironmentView: View {
         .background(Color.appGray900)
         .sheet(isPresented: $presenter.showSubmissionTagPrompt) {
             submissionTagSheet
+        }
+        .sheet(isPresented: $isShowingDebugLogs) {
+            DebugLogView(
+                store: debugLogStore,
+                onClose: { isShowingDebugLogs = false }
+            )
         }
         .onAppear {
             presenter.ensureProblemSelection()

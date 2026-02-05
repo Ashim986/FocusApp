@@ -23,7 +23,7 @@ struct SolutionApproachView: View {
                 section: .intuition
             ) {
                 Text(approach.intuition)
-                    .font(.system(size: 12))
+                    .font(.system(size: 14))
                     .foregroundColor(Color.appGray300)
                     .lineSpacing(3)
             }
@@ -34,7 +34,7 @@ struct SolutionApproachView: View {
                 section: .approach
             ) {
                 Text(approach.approach)
-                    .font(.system(size: 12))
+                    .font(.system(size: 14))
                     .foregroundColor(Color.appGray300)
                     .lineSpacing(3)
             }
@@ -53,7 +53,7 @@ struct SolutionApproachView: View {
                 section: .explanation
             ) {
                 Text(approach.explanation)
-                    .font(.system(size: 12))
+                    .font(.system(size: 14))
                     .foregroundColor(Color.appGray300)
                     .lineSpacing(3)
             }
@@ -98,18 +98,18 @@ struct SolutionApproachView: View {
             } label: {
                 HStack {
                     Image(systemName: icon)
-                        .font(.system(size: 11))
+                        .font(.system(size: 13))
                         .foregroundColor(Color.appPurple)
                         .frame(width: 16)
 
                     Text(title)
-                        .font(.system(size: 12, weight: .semibold))
+                        .font(.system(size: 14, weight: .semibold))
                         .foregroundColor(.white)
 
                     Spacer()
 
                     Image(systemName: expandedSections.contains(section) ? "chevron.up" : "chevron.down")
-                        .font(.system(size: 10, weight: .semibold))
+                        .font(.system(size: 12, weight: .semibold))
                         .foregroundColor(Color.appGray500)
                 }
                 .padding(10)
@@ -136,7 +136,7 @@ struct SolutionApproachView: View {
         VStack(alignment: .leading, spacing: 8) {
             HStack {
                 Text("Swift")
-                    .font(.system(size: 10, weight: .semibold))
+                    .font(.system(size: 12, weight: .semibold))
                     .foregroundColor(Color.appGray400)
 
                 Spacer()
@@ -147,9 +147,9 @@ struct SolutionApproachView: View {
                 } label: {
                     HStack(spacing: 4) {
                         Image(systemName: "doc.on.doc")
-                            .font(.system(size: 10))
+                            .font(.system(size: 12))
                         Text(L10n.Coding.Solution.copyCode)
-                            .font(.system(size: 10, weight: .medium))
+                            .font(.system(size: 12, weight: .medium))
                     }
                     .foregroundColor(Color.appGray400)
                     .padding(.horizontal, 8)
@@ -204,17 +204,17 @@ struct SolutionApproachView: View {
         VStack(alignment: .leading, spacing: 4) {
             HStack(spacing: 8) {
                 Text(title)
-                    .font(.system(size: 11, weight: .medium))
+                    .font(.system(size: 13, weight: .medium))
                     .foregroundColor(Color.appGray400)
 
                 Text(value)
-                    .font(.system(size: 12, weight: .semibold, design: .monospaced))
+                    .font(.system(size: 14, weight: .semibold, design: .monospaced))
                     .foregroundColor(color)
             }
 
             if let explanation = explanation, !explanation.isEmpty {
                 Text(explanation)
-                    .font(.system(size: 11))
+                    .font(.system(size: 13))
                     .foregroundColor(Color.appGray500)
             }
         }
@@ -233,32 +233,32 @@ struct SolutionApproachView: View {
     private func testCaseRow(_ testCase: SolutionTestCase, index: Int) -> some View {
         VStack(alignment: .leading, spacing: 6) {
             Text(L10n.Coding.Solution.testCaseLabel(index + 1))
-                .font(.system(size: 10, weight: .semibold))
+                .font(.system(size: 12, weight: .semibold))
                 .foregroundColor(Color.appGray400)
 
             HStack(spacing: 12) {
                 VStack(alignment: .leading, spacing: 2) {
                     Text(L10n.Coding.Solution.inputLabel)
-                        .font(.system(size: 9, weight: .medium))
+                        .font(.system(size: 11, weight: .medium))
                         .foregroundColor(Color.appAmber)
                     Text(testCase.input)
-                        .font(.system(size: 11, design: .monospaced))
+                        .font(.system(size: 13, design: .monospaced))
                         .foregroundColor(Color.appGray200)
                 }
 
                 VStack(alignment: .leading, spacing: 2) {
                     Text(L10n.Coding.Solution.outputLabel)
-                        .font(.system(size: 9, weight: .medium))
+                        .font(.system(size: 11, weight: .medium))
                         .foregroundColor(Color.appGreen)
                     Text(testCase.expectedOutput)
-                        .font(.system(size: 11, design: .monospaced))
+                        .font(.system(size: 13, design: .monospaced))
                         .foregroundColor(Color.appGray200)
                 }
             }
 
             if let explanation = testCase.explanation, !explanation.isEmpty {
                 Text(explanation)
-                    .font(.system(size: 11))
+                    .font(.system(size: 13))
                     .foregroundColor(Color.appGray500)
                     .padding(.top, 4)
             }

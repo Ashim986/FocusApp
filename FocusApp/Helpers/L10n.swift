@@ -143,6 +143,9 @@ enum L10n {
         static var tabSubmissions: String {
             tr("coding.tab_submissions")
         }
+        static var tabDebug: String {
+            tr("coding.tab_debug")
+        }
 
         enum Solution {
             static var approachTitle: String {

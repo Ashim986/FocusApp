@@ -212,6 +212,8 @@ extension CodingEnvironmentView {
             SolutionTabView(solution: presenter.currentSolution)
         case .submissions:
             pastSubmissionsContent
+        case .debug:
+            DebugLogView(store: debugLogStore, isEmbedded: true)
         }
     }
 

@@ -71,20 +71,18 @@ final class LeetCodeRestClient: LeetCodeClientProtocol {
             }
         }
 
-        if let recentFallback = try? await fetchSolvedSlugsGraphQLRecent(
-            username: username,
-            limit: min(cappedLimit, 200)
-        ) {
-            slugs.formUnion(recentFallback)
-        }
+        guard slugs.isEmpty else { return slugs }
 
         if limit >= LeetCodeConstants.manualSubmissionsLimit {
             if let fallback = try? await fetchSolvedSlugsGraphQLAll(username: username, limit: cappedLimit) {
-                slugs.formUnion(fallback)
+                return fallback
             }
         }
 
-        return slugs
+        return (try? await fetchSolvedSlugsGraphQLRecent(
+            username: username,
+            limit: min(cappedLimit, 200)
+        )) ?? []
     }
 
     func fetchProblemContent(slug: String) async throws -> QuestionContent? {

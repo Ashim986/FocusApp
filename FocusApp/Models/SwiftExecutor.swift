@@ -8,17 +8,25 @@ final class SwiftExecutor: LanguageExecutor {
     private let fileManager: FileManager
     private let config: ExecutionConfig
     private let compilerPath: String
+    private let sdkPath: String?
+    private let logger: DebugLogRecording?
 
     init(
         processRunner: ProcessRunning,
         fileManager: FileManager = .default,
         config: ExecutionConfig = .default,
-        compilerPath: String = "/usr/bin/swiftc"
+        compilerPath: String? = nil,
+        logger: DebugLogRecording? = nil
     ) {
         self.processRunner = processRunner
         self.fileManager = fileManager
         self.config = config
-        self.compilerPath = compilerPath
+        let resolved = Self.resolveToolchain(fileManager: fileManager)
+        self.compilerPath = compilerPath ?? resolved.compilerPath
+        self.sdkPath = compilerPath == nil
+            ? resolved.sdkPath
+            : Self.resolveSDKPath(forCompilerPath: compilerPath, fileManager: fileManager) ?? resolved.sdkPath
+        self.logger = logger
     }
 
     func execute(code: String, input: String) async -> ExecutionResult {
@@ -36,23 +44,78 @@ final class SwiftExecutor: LanguageExecutor {
         do {
             try code.write(to: sourceFile, atomically: true, encoding: .utf8)
         } catch {
+            log(
+                level: .error,
+                title: "Swift write failed",
+                message: error.localizedDescription,
+                metadata: ["file": sourceFile.path]
+            )
             return .failure(AppUserMessage.failedToWriteSource(error.localizedDescription).text)
         }
 
         // Compile
+        log(
+            level: .info,
+            title: "Swift compile",
+            message: "Compiling \(sourceFile.lastPathComponent)",
+            metadata: [
+                "compiler": compilerPath,
+                "sdk": sdkPath ?? "default"
+            ]
+        )
         let compileResult = await compile(sourceFile: sourceFile, outputFile: executableFile)
         if !compileResult.isSuccess {
+            logResult(title: "Swift compile failed", result: compileResult)
             return compileResult
+        }
+        logResult(title: "Swift compile finished", result: compileResult)
+
+        var isDirectory: ObjCBool = false
+        let exists = fileManager.fileExists(atPath: executableFile.path, isDirectory: &isDirectory)
+        if !exists || isDirectory.boolValue {
+            log(
+                level: .error,
+                title: "Executable missing",
+                message: "Swift compiler did not produce output binary.",
+                metadata: [
+                    "output": executableFile.path
+                ]
+            )
+            return .failure(AppUserMessage.failedToRunProcess("Compiled executable is missing.").text)
+        }
+        if !fileManager.isExecutableFile(atPath: executableFile.path) {
+            log(
+                level: .warning,
+                title: "Executable not marked",
+                message: "Output binary is not marked executable.",
+                metadata: [
+                    "output": executableFile.path
+                ]
+            )
         }
 
         // Run
-        return await run(executableFile: executableFile, input: input)
+        log(
+            level: .info,
+            title: "Swift run",
+            message: "Running \(executableFile.lastPathComponent)",
+            metadata: ["input_bytes": "\(input.utf8.count)"]
+        )
+        let runResult = await run(executableFile: executableFile, input: input)
+        logResult(title: "Swift run finished", result: runResult)
+        return runResult
     }
 
     private func compile(sourceFile: URL, outputFile: URL) async -> ExecutionResult {
+        var arguments: [String] = []
+        if let sdkPath {
+            arguments.append(contentsOf: ["-sdk", sdkPath])
+        }
+        arguments.append(contentsOf: ["-o", outputFile.path, sourceFile.path])
+
         let result = await processRunner.run(
             executable: compilerPath,
-            arguments: ["-o", outputFile.path, sourceFile.path],
+            arguments: arguments,
             input: "",
             timeout: config.timeout
         )
@@ -99,5 +162,104 @@ final class SwiftExecutor: LanguageExecutor {
             timedOut: result.timedOut,
             wasCancelled: result.wasCancelled
         )
+    }
+
+    private static func resolveToolchain(fileManager: FileManager) -> (compilerPath: String, sdkPath: String?) {
+        let developerDir = ProcessInfo.processInfo.environment["DEVELOPER_DIR"]?
+            .trimmingCharacters(in: .whitespacesAndNewlines)
+        let developerRoots: [String] = [
+            developerDir,
+            "/Applications/Xcode_26.app/Contents/Developer",
+            "/Applications/Xcode.app/Contents/Developer"
+        ].compactMap { $0?.isEmpty == false ? $0 : nil }
+
+        for root in developerRoots {
+            let compiler = "\(root)/Toolchains/XcodeDefault.xctoolchain/usr/bin/swiftc"
+            if fileManager.isExecutableFile(atPath: compiler) {
+                let sdk = resolveSDKPath(in: root, fileManager: fileManager)
+                return (compiler, sdk)
+            }
+        }
+
+        let cltCompiler = "/Library/Developer/CommandLineTools/usr/bin/swiftc"
+        if fileManager.isExecutableFile(atPath: cltCompiler) {
+            let sdk = resolveSDKPath(in: "/Library/Developer/CommandLineTools", fileManager: fileManager)
+            return (cltCompiler, sdk)
+        }
+
+        return ("/usr/bin/swiftc", nil)
+    }
+
+    private static func resolveSDKPath(
+        forCompilerPath compilerPath: String?,
+        fileManager: FileManager
+    ) -> String? {
+        guard let compilerPath else { return nil }
+        if compilerPath.contains("/CommandLineTools/") {
+            return resolveSDKPath(in: "/Library/Developer/CommandLineTools", fileManager: fileManager)
+        }
+        if let range = compilerPath.range(of: "/Toolchains/") {
+            let prefix = String(compilerPath[..<range.lowerBound])
+            return resolveSDKPath(in: prefix, fileManager: fileManager)
+        }
+        return nil
+    }
+
+    private static func resolveSDKPath(in root: String, fileManager: FileManager) -> String? {
+        let sdkRoots = [
+            "\(root)/Platforms/MacOSX.platform/Developer/SDKs",
+            "\(root)/SDKs"
+        ]
+
+        for sdkRoot in sdkRoots {
+            guard let entries = try? fileManager.contentsOfDirectory(atPath: sdkRoot) else { continue }
+            let sdkCandidates = entries
+                .filter { $0.hasPrefix("MacOSX") && $0.hasSuffix(".sdk") }
+                .sorted()
+                .reversed()
+            if let sdk = sdkCandidates.first {
+                return "\(sdkRoot)/\(sdk)"
+            }
+        }
+
+        return nil
+    }
+
+    private func log(level: DebugLogLevel, title: String, message: String, metadata: [String: String] = [:]) {
+        logger?.recordAsync(
+            DebugLogEntry(
+                level: level,
+                category: .execution,
+                title: title,
+                message: message,
+                metadata: metadata
+            )
+        )
+    }
+
+    private func logResult(title: String, result: ExecutionResult) {
+        let trimmedError = result.error.isEmpty ? "" : trimForLog(result.error)
+        let trimmedOutput = result.output.isEmpty ? "" : trimForLog(result.output)
+        var metadata: [String: String] = [
+            "timed_out": "\(result.timedOut)",
+            "cancelled": "\(result.wasCancelled)"
+        ]
+        if !trimmedError.isEmpty {
+            metadata["error"] = trimmedError
+        }
+        if !trimmedOutput.isEmpty {
+            metadata["output"] = trimmedOutput
+        }
+        log(
+            level: result.exitCode == 0 ? .info : .error,
+            title: title,
+            message: "Exit \(result.exitCode)",
+            metadata: metadata
+        )
+    }
+
+    private func trimForLog(_ value: String, limit: Int = 240) -> String {
+        guard value.count > limit else { return value }
+        return String(value.prefix(limit)) + "…"
     }
 }

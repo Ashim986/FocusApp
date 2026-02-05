@@ -54,12 +54,33 @@ FocusApp/
     Views/
     Helpers/
     Shared/
+  FocusAppTests/
+    Interactors/
+    Models/
+    Presenters/
+    Routers/
+    Services/
+    Stores/
+    Support/
 ```
 
 ## Known Limitations
 - macOS only
 - Uses a third-party LeetCode REST API (may have rate limits/downtime)
 - LeetCode profile must be public for syncing
+
+## Test Coverage
+Non-view code coverage (Presenters, Interactors, Routers, Stores, Services, Models) should stay above 95%.
+
+Run tests with coverage:
+```bash
+xcodebuild test -project FocusApp.xcodeproj -scheme FocusApp -destination 'platform=macOS' -enableCodeCoverage YES
+```
+
+Inspect coverage:
+```bash
+xcrun xccov view --report path/to/Test-FocusApp.xcresult
+```
 
 ## License
 This project is for personal use. Add a license file if you intend to distribute it.

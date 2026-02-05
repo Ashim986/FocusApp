@@ -9,13 +9,17 @@ FocusApp is a native macOS study companion app for Data Structures & Algorithms 
 ```
 FocusApp/
 ├── FocusApp.xcodeproj/              # Xcode project
-├── FocusAppTests/                   # Unit tests (non-view logic)
-│   ├── Interactors/
-│   ├── Models/
-│   ├── Presenters/
-│   ├── Routers/
-│   ├── Services/
-│   ├── Stores/
+├── FocusAppTests/                   # Unit tests (grouped by feature)
+│   ├── AppState/
+│   ├── CodingEnvironment/
+│   ├── Content/
+│   ├── Focus/
+│   ├── LeetCode/
+│   ├── Plan/
+│   ├── Settings/
+│   ├── Stats/
+│   ├── Today/
+│   ├── ToolbarWidget/
 │   └── Support/
 ├── FocusApp/                        # Main app source
 │   ├── FocusApp.swift               # App entry point, MenuBarExtra, FloatingWidgetController

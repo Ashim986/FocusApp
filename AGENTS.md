@@ -9,18 +9,18 @@ FocusApp/
 ├── .claude/                         # Tooling metadata (local)
 ├── .git/                            # Git metadata
 ├── DerivedData/                     # Build artifacts (generated)
-├── FocusAppTests/                   # Unit tests (non-view logic)
-│   ├── Fixtures.swift
-│   ├── AppDataTests.swift
-│   ├── PlanCalendarTests.swift
-│   ├── AppStateStoreTests.swift
-│   ├── LeetCodeSlugExtractorTests.swift
-│   ├── ProgrammingLanguageTests.swift
-│   ├── LeetCodeSyncInteractorTests.swift
-│   ├── NotificationManagerTests.swift
-│   ├── CodeExecutionServiceTests.swift
-│   ├── CodingEnvironmentPresenterTests.swift
-│   └── LeetCodeSyncSchedulerTests.swift
+├── FocusAppTests/                   # Unit tests (grouped by feature)
+│   ├── AppState/
+│   ├── CodingEnvironment/
+│   ├── Content/
+│   ├── Focus/
+│   ├── LeetCode/
+│   ├── Plan/
+│   ├── Settings/
+│   ├── Stats/
+│   ├── Today/
+│   ├── ToolbarWidget/
+│   └── Support/
 ├── FocusApp.xcodeproj/              # Xcode project
 ├── FocusApp/                        # Main app source
 │   ├── FocusApp.swift               # App entry point, MenuBarExtra, FloatingWidgetController

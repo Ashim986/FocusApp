@@ -37,4 +37,7 @@ fi
 echo "Running SwiftLint..."
 "$SWIFTLINT_PATH" lint --config .swiftlint.yml
 
+OUTPUT_FILE="${DERIVED_FILE_DIR}/swiftlint.stamp"
+touch "$OUTPUT_FILE"
+
 exit $?

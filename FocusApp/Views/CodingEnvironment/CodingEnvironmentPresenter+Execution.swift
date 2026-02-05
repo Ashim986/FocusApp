@@ -236,7 +236,7 @@ extension CodingEnvironmentPresenter {
         let fallbackMessage = extractPythonFallbackMessage(from: lines)
 
         guard let fileRegex = try? NSRegularExpression(
-            pattern: "File \\\"([^\\\"]+)\\\", line (\\\\d+)",
+            pattern: "File \\\"([^\\\"]+)\\\", line (\\d+)",
             options: []
         ) else {
             return

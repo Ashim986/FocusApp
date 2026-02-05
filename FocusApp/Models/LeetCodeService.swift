@@ -97,8 +97,15 @@ final class LeetCodeRestClient: LeetCodeClientProtocol {
             )
             let data = try await executor.execute(request)
             let response = try decoder.decode(LeetCodeRestProblemResponse.self, from: data)
-            let snippets = Dictionary(uniqueKeysWithValues: response.codeSnippets.map { ($0.langSlug, $0.code) })
-            let title = response.title.isEmpty ? slug.replacingOccurrences(of: "-", with: " ").capitalized : response.title
+            let snippets = Dictionary(
+                uniqueKeysWithValues: response.codeSnippets.map { ($0.langSlug, $0.code) }
+            )
+            let title: String
+            if response.title.isEmpty {
+                title = slug.replacingOccurrences(of: "-", with: " ").capitalized
+            } else {
+                title = response.title
+            }
 
             restContent = QuestionContent(
                 title: title,

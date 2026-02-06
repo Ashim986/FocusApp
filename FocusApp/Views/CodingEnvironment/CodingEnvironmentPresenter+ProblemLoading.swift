@@ -2,6 +2,13 @@ import Foundation
 
 extension CodingEnvironmentPresenter {
     func loadProblemContent(for problem: Problem) async {
+        let requestID = UUID()
+        activeContentRequestID = requestID
+        activeProblemSlug = LeetCodeSlugExtractor.extractSlug(from: problem.url)
+        await loadProblemContent(for: problem, requestID: requestID)
+    }
+
+    func loadProblemContent(for problem: Problem, requestID: UUID) async {
         guard let slug = LeetCodeSlugExtractor.extractSlug(from: problem.url) else {
             logger?.recordAsync(
                 DebugLogEntry(
@@ -17,14 +24,17 @@ extension CodingEnvironmentPresenter {
 
         if let cached = problemContentCache[slug] {
             await MainActor.run {
+                guard shouldApplyContent(slug: slug, requestID: requestID) else { return }
                 self.problemContent = cached
                 self.parseTestCases(from: cached)
                 self.applySnippetIfNeeded(from: cached)
+                self.isLoadingProblem = false
             }
             return
         }
 
         await MainActor.run {
+            guard shouldApplyContent(slug: slug, requestID: requestID) else { return }
             isLoadingProblem = true
         }
 
@@ -44,6 +54,7 @@ extension CodingEnvironmentPresenter {
                 )
             }
             await MainActor.run {
+                guard shouldApplyContent(slug: slug, requestID: requestID) else { return }
                 self.problemContent = content
                 if let content {
                     self.parseTestCases(from: content)
@@ -65,6 +76,7 @@ extension CodingEnvironmentPresenter {
                 )
             )
             await MainActor.run {
+                guard shouldApplyContent(slug: slug, requestID: requestID) else { return }
                 self.isLoadingProblem = false
             }
         }
@@ -129,5 +141,14 @@ extension CodingEnvironmentPresenter {
         }
 
         return outputs
+    }
+
+    private func shouldApplyContent(slug: String, requestID: UUID) -> Bool {
+        guard requestID == activeContentRequestID else { return false }
+        guard activeProblemSlug == slug else { return false }
+        if let selected = selectedProblem {
+            return LeetCodeSlugExtractor.extractSlug(from: selected.url) == slug
+        }
+        return true
     }
 }

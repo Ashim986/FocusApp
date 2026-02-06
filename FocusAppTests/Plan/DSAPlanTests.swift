@@ -7,8 +7,8 @@ final class DSAPlanTests: XCTestCase {
     }
 
     func testSprintAndCoreProblemCounts() {
-        XCTAssertEqual(dsaPlan.first?.problems.count, 9)
-        XCTAssertEqual(dsaPlan.dropFirst().first?.problems.count, 16)
+        XCTAssertEqual(dsaPlan.first?.problems.count, 11)
+        XCTAssertEqual(dsaPlan.dropFirst().first?.problems.count, 14)
         let remainingCounts = dsaPlan.dropFirst(2).map { $0.problems.count }
         XCTAssertEqual(remainingCounts.filter { $0 == 3 }.count, 3)
         XCTAssertTrue(remainingCounts.allSatisfy { $0 == 5 || $0 == 3 })

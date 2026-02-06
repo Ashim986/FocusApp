@@ -135,12 +135,12 @@ final class TodayInteractorTests: XCTestCase {
         )
 
         // Complete all but one problem in day 1
-        for i in 0..<8 {
+        for i in 0..<10 {
             store.toggleProblem(day: 1, problemIndex: i)
         }
 
         // Complete the last problem
-        interactor.toggleProblem(day: 1, problemIndex: 8)
+        interactor.toggleProblem(day: 1, problemIndex: 10)
 
         try? await Task.sleep(nanoseconds: 200_000_000)
 

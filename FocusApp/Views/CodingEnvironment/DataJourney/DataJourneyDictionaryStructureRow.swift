@@ -42,7 +42,7 @@ struct DictionaryStructureRow: View {
         ScrollView(.horizontal, showsIndicators: false) {
             HStack(spacing: 12) {
                 ForEach(Array(entries.enumerated()), id: \.element.id) { index, entry in
-                    let model = TraceBubbleModel.from(entry.value)
+                    let model = dictionaryValueModel(for: entry.value)
                     let keyFill = Color.appGray700
                     let valueFill = model.fill
                     let pointerStack = pointersByIndex[index] ?? []
@@ -97,5 +97,24 @@ struct DictionaryStructureRow: View {
             grouped[index, default: []].append(pointer)
         }
         return grouped
+    }
+
+    private func dictionaryValueModel(for value: TraceValue) -> TraceBubbleModel {
+        switch value {
+        case .array(let items):
+            if let last = items.last {
+                return TraceBubbleModel.from(last)
+            }
+            return TraceBubbleModel(text: "empty", fill: Color.appGray700)
+        case .list(let list):
+            if let last = list.nodes.last?.value {
+                return TraceBubbleModel.from(last)
+            }
+            return TraceBubbleModel(text: "empty", fill: Color.appGray700)
+        case .typed(_, let inner):
+            return dictionaryValueModel(for: inner)
+        default:
+            return TraceBubbleModel.from(value, compact: true)
+        }
     }
 }

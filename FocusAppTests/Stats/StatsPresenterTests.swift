@@ -72,8 +72,8 @@ final class StatsPresenterTests: XCTestCase {
 
         XCTAssertEqual(presenter.viewModel.completedTopics, 0)
 
-        // Complete all problems in day 1 (sprint = 9 problems)
-        for i in 0..<9 {
+        // Complete all problems in day 1 (sprint = 11 problems)
+        for i in 0..<11 {
             store.toggleProblem(day: 1, problemIndex: i)
         }
 

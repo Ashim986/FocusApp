@@ -190,7 +190,7 @@ final class TodayPresenterTests: XCTestCase {
         )
 
         // Complete all problems in day 1
-        for i in 0..<9 {
+        for i in 0..<11 {
             store.toggleProblem(day: 1, problemIndex: i)
         }
 

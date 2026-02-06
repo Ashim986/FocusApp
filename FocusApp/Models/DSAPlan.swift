@@ -99,10 +99,11 @@ private let fallbackPlanData = PlanData(
         Problem(name: "Search in Rotated Sorted Array", difficulty: .medium, url: "https://leetcode.com/problems/search-in-rotated-sorted-array/", leetcodeNumber: 33),
         Problem(name: "Spiral Matrix", difficulty: .medium, url: "https://leetcode.com/problems/spiral-matrix/", leetcodeNumber: 54),
         Problem(name: "Reverse Linked List II", difficulty: .medium, url: "https://leetcode.com/problems/reverse-linked-list-ii/", leetcodeNumber: 92),
-        Problem(name: "Coin Change", difficulty: .medium, url: "https://leetcode.com/problems/coin-change/", leetcodeNumber: 322)
+        Problem(name: "Coin Change", difficulty: .medium, url: "https://leetcode.com/problems/coin-change/", leetcodeNumber: 322),
+        Problem(name: "Merge Two Sorted Lists", difficulty: .easy, url: "https://leetcode.com/problems/merge-two-sorted-lists/", leetcodeNumber: 21),
+        Problem(name: "Group Anagrams", difficulty: .medium, url: "https://leetcode.com/problems/group-anagrams/", leetcodeNumber: 49)
     ]),
     Day(id: 2, date: "Feb 7", topic: "Priority Sprint II", problems: [
-        Problem(name: "Merge Two Sorted Lists", difficulty: .easy, url: "https://leetcode.com/problems/merge-two-sorted-lists/", leetcodeNumber: 21),
         Problem(name: "Linked List Cycle", difficulty: .easy, url: "https://leetcode.com/problems/linked-list-cycle/", leetcodeNumber: 141),
         Problem(name: "Contains Duplicate", difficulty: .easy, url: "https://leetcode.com/problems/contains-duplicate/", leetcodeNumber: 217),
         Problem(name: "Best Time to Buy and Sell Stock", difficulty: .easy, url: "https://leetcode.com/problems/best-time-to-buy-and-sell-stock/", leetcodeNumber: 121),
@@ -110,7 +111,6 @@ private let fallbackPlanData = PlanData(
         Problem(name: "Ransom Note", difficulty: .easy, url: "https://leetcode.com/problems/ransom-note/", leetcodeNumber: 383),
         Problem(name: "Binary Search", difficulty: .easy, url: "https://leetcode.com/problems/binary-search/", leetcodeNumber: 704),
         Problem(name: "Climbing Stairs", difficulty: .easy, url: "https://leetcode.com/problems/climbing-stairs/", leetcodeNumber: 70),
-        Problem(name: "Group Anagrams", difficulty: .medium, url: "https://leetcode.com/problems/group-anagrams/", leetcodeNumber: 49),
         Problem(name: "Product of Array Except Self", difficulty: .medium, url: "https://leetcode.com/problems/product-of-array-except-self/", leetcodeNumber: 238),
         Problem(name: "Subarray Sum Equals K", difficulty: .medium, url: "https://leetcode.com/problems/subarray-sum-equals-k/", leetcodeNumber: 560),
         Problem(name: "Permutation in String", difficulty: .medium, url: "https://leetcode.com/problems/permutation-in-string/", leetcodeNumber: 567),

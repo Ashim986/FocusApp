@@ -225,6 +225,8 @@
 		C22BC59965C2413F860C4D4E /* DebugLogFilters.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8464C02CEE2D484AB8DADC22 /* DebugLogFilters.swift */; };
 		665139E8C51F498995BE1303 /* LeetCodeExecutionWrapper+SignatureParsing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11B1220325C143EAA1510779 /* LeetCodeExecutionWrapper+SignatureParsing.swift */; };
 		377053C695BA483995EC3E8C /* AppState/SolutionStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1E5AADCE4CF46FC8ECEDAC1 /* AppState/SolutionStoreTests.swift */; };
+		832362F2072543DFB6BF8B0B /* CodingEnvironment/CodingEnvironmentProblemBindingIntegrationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D937F9BF79A4C84B9BA128A /* CodingEnvironment/CodingEnvironmentProblemBindingIntegrationTests.swift */; };
+		0D21E50514854C87A3369D72 /* Support/PageObjects/CodingEnvironmentPages.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0097B6043D24A8BBA0E5495 /* Support/PageObjects/CodingEnvironmentPages.swift */; };
 		345ABF38D5A6403F98251750 /* DebugLogView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 442A3E5BF10148F0B6B191C1 /* DebugLogView.swift */; };
 /* End PBXBuildFile section */
 
@@ -242,6 +244,7 @@
 		085FEBCD150F43019CE9B529 /* CodingEnvironment/ProcessRunnerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProcessRunnerTests.swift; sourceTree = "<group>"; };
 		09B826590C1C4423B22A0B64 /* CodingEnvironment/CodeExecutionServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodeExecutionServiceTests.swift; sourceTree = "<group>"; };
 		29FB46B09F3E414695FCE546 /* CodingEnvironment/CodingEnvironmentPresenterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodingEnvironmentPresenterTests.swift; sourceTree = "<group>"; };
+		4D937F9BF79A4C84B9BA128A /* CodingEnvironment/CodingEnvironmentProblemBindingIntegrationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodingEnvironmentProblemBindingIntegrationTests.swift; sourceTree = "<group>"; };
 		D92D1385DE9ECF6085B0EFAC /* CodingEnvironment/CodingEnvironmentSnippetSelectionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodingEnvironmentSnippetSelectionTests.swift; sourceTree = "<group>"; };
 		6D88CF0FA93F63C2D827B118 /* CodingEnvironment/CodingEnvironmentTestSupport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodingEnvironmentTestSupport.swift; sourceTree = "<group>"; };
 		73DD0E92E41BEC71C5DC5CBE /* CodingEnvironment/CodingEnvironmentTraceParsingTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodingEnvironmentTraceParsingTests.swift; sourceTree = "<group>"; };
@@ -252,6 +255,7 @@
 		00747953C3ED4D3784EA4B98 /* CodingEnvironment/LeetCodeExecutionWrapperTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeetCodeExecutionWrapperTests.swift; sourceTree = "<group>"; };
 		7771295A59E81FAD37E80A4E /* CodingEnvironment/LeetCodeTemplateBuilderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeetCodeTemplateBuilderTests.swift; sourceTree = "<group>"; };
 		3D6F90158D1A49A4B723EC53 /* Support/Fixtures.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Fixtures.swift; sourceTree = "<group>"; };
+		D0097B6043D24A8BBA0E5495 /* Support/PageObjects/CodingEnvironmentPages.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodingEnvironmentPages.swift; sourceTree = "<group>"; };
 		58471227E33B481BB4F4357B /* FocusAppTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FocusAppTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		65251E426E5243F79306F201 /* Settings/NotificationManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationManagerTests.swift; sourceTree = "<group>"; };
 		6568D60DBB854206882E1ECE /* LeetCode/LeetCodeSyncInteractorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeetCodeSyncInteractorTests.swift; sourceTree = "<group>"; };
@@ -773,6 +777,7 @@
 			children = (
 				IT002007 /* CodingEnvironment/CodingEnvironmentInteractorTests.swift */,
 				29FB46B09F3E414695FCE546 /* CodingEnvironment/CodingEnvironmentPresenterTests.swift */,
+				4D937F9BF79A4C84B9BA128A /* CodingEnvironment/CodingEnvironmentProblemBindingIntegrationTests.swift */,
 				D92D1385DE9ECF6085B0EFAC /* CodingEnvironment/CodingEnvironmentSnippetSelectionTests.swift */,
 				6D88CF0FA93F63C2D827B118 /* CodingEnvironment/CodingEnvironmentTestSupport.swift */,
 				73DD0E92E41BEC71C5DC5CBE /* CodingEnvironment/CodingEnvironmentTraceParsingTests.swift */,
@@ -872,9 +877,18 @@
 			path = ToolbarWidget;
 			sourceTree = "<group>";
 		};
+		5CD9D2EB26164E11844132CF /* PageObjects */ = {
+			isa = PBXGroup;
+			children = (
+				D0097B6043D24A8BBA0E5495 /* Support/PageObjects/CodingEnvironmentPages.swift */,
+			);
+			path = PageObjects;
+			sourceTree = "<group>";
+		};
 		50F172123351462DA7C6FA81 /* Support */ = {
 			isa = PBXGroup;
 			children = (
+				5CD9D2EB26164E11844132CF /* PageObjects */,
 				3D6F90158D1A49A4B723EC53 /* Support/Fixtures.swift */,
 			);
 			path = Support;
@@ -1258,6 +1272,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C9EA7A4E9DEF427EA4E50A21 /* Support/Fixtures.swift in Sources */,
+				0D21E50514854C87A3369D72 /* Support/PageObjects/CodingEnvironmentPages.swift in Sources */,
 				1FDAC8DA41B44813A6128FF4 /* LeetCode/LeetCodeModelsTests.swift in Sources */,
 				D2EC195B48254E0B914D8A01 /* LeetCode/LeetCodeRestClientTests.swift in Sources */,
 				416DC1D624AC4D8C83D0820A /* LeetCode/LeetCodeNetworkingTests.swift in Sources */,
@@ -1273,6 +1288,7 @@
 				55C3B4ADCD3C450593E4212C /* Settings/NotificationManagerTests.swift in Sources */,
 				865EEC6EABBD4E7AB00F78AA /* CodingEnvironment/CodeExecutionServiceTests.swift in Sources */,
 				074E2BCBD6F74E9B99BF53E4 /* CodingEnvironment/CodingEnvironmentPresenterTests.swift in Sources */,
+				832362F2072543DFB6BF8B0B /* CodingEnvironment/CodingEnvironmentProblemBindingIntegrationTests.swift in Sources */,
 				1D29FED19302FE41B27B05C0 /* CodingEnvironment/CodingEnvironmentSnippetSelectionTests.swift in Sources */,
 				4FD27FB3E21589771E1216D2 /* CodingEnvironment/CodingEnvironmentTestSupport.swift in Sources */,
 				A30AF7E21FB62F3F28515335 /* CodingEnvironment/CodingEnvironmentTraceParsingTests.swift in Sources */,

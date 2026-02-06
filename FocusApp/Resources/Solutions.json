@@ -25,13 +25,13 @@
               "id": "550e8400-e29b-41d4-a716-446655440201",
               "input": "[1,2,3,4,5]",
               "expectedOutput": "[5,4,3,2,1]",
-              "explanation": "Each arrow reverses: 1→2→3→4→5 becomes 5→4→3→2→1"
+              "explanation": "Each arrow reverses: 1\u21922\u21923\u21924\u21925 becomes 5\u21924\u21923\u21922\u21921"
             },
             {
               "id": "550e8400-e29b-41d4-a716-446655440202",
               "input": "[1,2]",
               "expectedOutput": "[2,1]",
-              "explanation": "Simple case: 1→2 becomes 2→1"
+              "explanation": "Simple case: 1\u21922 becomes 2\u21921"
             }
           ]
         },
@@ -82,7 +82,7 @@
               "id": "550e8400-e29b-41d4-a716-446655440203",
               "input": "list1 = [1,2,4], list2 = [1,3,4]",
               "expectedOutput": "[1,1,2,3,4,4]",
-              "explanation": "Compare 1≤1, take l1. Compare 2>1, take l2. Continue..."
+              "explanation": "Compare 1\u22641, take l1. Compare 2>1, take l2. Continue..."
             }
           ]
         },
@@ -169,7 +169,7 @@
     {
       "id": "550e8400-e29b-41d4-a716-446655440004",
       "problemSlug": "reorder-list",
-      "summary": "Reorder list from L0→L1→...→Ln to L0→Ln→L1→Ln-1→... by finding middle, reversing second half, then merging alternately.",
+      "summary": "Reorder list from L0\u2192L1\u2192...\u2192Ln to L0\u2192Ln\u2192L1\u2192Ln-1\u2192... by finding middle, reversing second half, then merging alternately.",
       "approaches": [
         {
           "id": "550e8400-e29b-41d4-a716-446655440107",
@@ -177,7 +177,7 @@
           "order": 1,
           "intuition": "The reordered list alternates between taking from the start and end. We can achieve this by:\n1. Split the list into two halves\n2. Reverse the second half\n3. Merge both halves by alternating nodes",
           "approach": "1. Find the middle using slow/fast pointers\n2. Split the list at the middle\n3. Reverse the second half\n4. Merge by alternating: take from first, then second, repeat",
-          "explanation": "This approach transforms the problem into three simpler sub-problems we already know how to solve:\n\n- Finding middle: slow/fast pointer technique (slow moves 1 step, fast moves 2)\n- Reversing: standard iterative reversal with prev/curr/next pointers\n- Merging: similar to merge two lists, but we alternate instead of comparing\n\nKey insight: after reversing the second half, both halves are the same length (±1), so we can interleave them directly.",
+          "explanation": "This approach transforms the problem into three simpler sub-problems we already know how to solve:\n\n- Finding middle: slow/fast pointer technique (slow moves 1 step, fast moves 2)\n- Reversing: standard iterative reversal with prev/curr/next pointers\n- Merging: similar to merge two lists, but we alternate instead of comparing\n\nKey insight: after reversing the second half, both halves are the same length (\u00b11), so we can interleave them directly.",
           "code": "func reorderList(_ head: ListNode?) {\n    guard let head = head, head.next != nil else { return }\n    \n    // Step 1: Find middle\n    var slow = head\n    var fast = head\n    while fast.next != nil && fast.next?.next != nil {\n        slow = slow.next!\n        fast = fast.next!.next!\n    }\n    \n    // Step 2: Split and reverse second half\n    var second = slow.next\n    slow.next = nil  // Cut the list\n    second = reverseList(second)\n    \n    // Step 3: Merge alternately\n    var first: ListNode? = head\n    while second != nil {\n        let tmp1 = first?.next\n        let tmp2 = second?.next\n        first?.next = second\n        second?.next = tmp1\n        first = tmp1\n        second = tmp2\n    }\n}\n\nprivate func reverseList(_ head: ListNode?) -> ListNode? {\n    var prev: ListNode? = nil\n    var curr = head\n    while curr != nil {\n        let next = curr?.next\n        curr?.next = prev\n        prev = curr\n        curr = next\n    }\n    return prev\n}",
           "complexity": {
             "time": "O(n)",
@@ -190,13 +190,13 @@
               "id": "550e8400-e29b-41d4-a716-446655440206",
               "input": "[1,2,3,4]",
               "expectedOutput": "[1,4,2,3]",
-              "explanation": "Split: [1,2] and [3,4]. Reverse second: [4,3]. Merge: 1→4→2→3"
+              "explanation": "Split: [1,2] and [3,4]. Reverse second: [4,3]. Merge: 1\u21924\u21922\u21923"
             },
             {
               "id": "550e8400-e29b-41d4-a716-446655440207",
               "input": "[1,2,3,4,5]",
               "expectedOutput": "[1,5,2,4,3]",
-              "explanation": "Split: [1,2,3] and [4,5]. Reverse second: [5,4]. Merge: 1→5→2→4→3"
+              "explanation": "Split: [1,2,3] and [4,5]. Reverse second: [5,4]. Merge: 1\u21925\u21922\u21924\u21923"
             }
           ]
         },
@@ -326,7 +326,7 @@
           "order": 2,
           "intuition": "Pair up the k lists and merge each pair. After one round, we have k/2 lists. Repeat until one list remains.\n\nThis is like merge sort's merge step, applied to lists instead of arrays.",
           "approach": "1. If lists is empty, return nil\n2. While we have more than one list:\n   - Pair up lists and merge each pair\n   - Replace lists with merged results\n3. Return the single remaining list",
-          "explanation": "Each 'round' halves the number of lists: k → k/2 → k/4 → ... → 1.\n\nThere are O(log k) rounds, and each round processes all N nodes once (spread across the merges). Total: O(N log k).\n\nThis approach reuses our merge-two-lists solution and is often easier to implement correctly than a heap.",
+          "explanation": "Each 'round' halves the number of lists: k \u2192 k/2 \u2192 k/4 \u2192 ... \u2192 1.\n\nThere are O(log k) rounds, and each round processes all N nodes once (spread across the merges). Total: O(N log k).\n\nThis approach reuses our merge-two-lists solution and is often easier to implement correctly than a heap.",
           "code": "func mergeKLists(_ lists: [ListNode?]) -> ListNode? {\n    var lists = lists.compactMap { $0 }  // Remove nils\n    if lists.isEmpty { return nil }\n    \n    while lists.count > 1 {\n        var merged: [ListNode] = []\n        for i in stride(from: 0, to: lists.count, by: 2) {\n            let l1 = lists[i]\n            let l2 = i + 1 < lists.count ? lists[i + 1] : nil\n            if let m = mergeTwoLists(l1, l2) {\n                merged.append(m)\n            }\n        }\n        lists = merged\n    }\n    \n    return lists.first\n}\n\nprivate func mergeTwoLists(_ l1: ListNode?, _ l2: ListNode?) -> ListNode? {\n    let dummy = ListNode(0)\n    var tail = dummy\n    var l1 = l1, l2 = l2\n    \n    while let n1 = l1, let n2 = l2 {\n        if n1.val <= n2.val {\n            tail.next = n1\n            l1 = n1.next\n        } else {\n            tail.next = n2\n            l2 = n2.next\n        }\n        tail = tail.next!\n    }\n    tail.next = l1 ?? l2\n    return dummy.next\n}",
           "complexity": {
             "time": "O(N log k)",
@@ -353,7 +353,7 @@
           "name": "Hash Map (Two Pass)",
           "order": 1,
           "intuition": "The challenge is that random pointers can point to nodes we haven't created yet. Solution: first create all nodes, then wire up the pointers.\n\nA hash map lets us find the copy of any original node in O(1).",
-          "approach": "1. First pass: create a copy of each node, store original→copy mapping\n2. Second pass: for each original node:\n   - Set copy.next = map[original.next]\n   - Set copy.random = map[original.random]\n3. Return map[head]",
+          "approach": "1. First pass: create a copy of each node, store original\u2192copy mapping\n2. Second pass: for each original node:\n   - Set copy.next = map[original.next]\n   - Set copy.random = map[original.random]\n3. Return map[head]",
           "explanation": "The hash map is the key insight. When we encounter original.random pointing to some node X, we need to find the copy of X. The map gives us this in O(1).\n\nFirst pass creates all nodes (values only). Second pass wires up both next and random pointers using the map.\n\nNote: we handle nil by checking before map lookup.",
           "code": "func copyRandomList(_ head: Node?) -> Node? {\n    guard let head = head else { return nil }\n    \n    var map: [ObjectIdentifier: Node] = [:]\n    \n    // First pass: create all nodes\n    var curr: Node? = head\n    while let node = curr {\n        map[ObjectIdentifier(node)] = Node(node.val)\n        curr = node.next\n    }\n    \n    // Second pass: wire up pointers\n    curr = head\n    while let node = curr {\n        let copy = map[ObjectIdentifier(node)]!\n        if let next = node.next {\n            copy.next = map[ObjectIdentifier(next)]\n        }\n        if let random = node.random {\n            copy.random = map[ObjectIdentifier(random)]\n        }\n        curr = node.next\n    }\n    \n    return map[ObjectIdentifier(head)]\n}",
           "complexity": {
@@ -375,8 +375,8 @@
           "id": "550e8400-e29b-41d4-a716-446655440114",
           "name": "Interleaving (O(1) Space)",
           "order": 2,
-          "intuition": "Avoid the hash map by interleaving copies with originals: A→A'→B→B'→C→C'. Now A'.random = A.random.next (the copy is right after the original).",
-          "approach": "1. Insert copy after each original: A→A'→B→B'→...\n2. Set random pointers: copy.random = original.random?.next\n3. Separate the two lists: restore original, extract copies",
+          "intuition": "Avoid the hash map by interleaving copies with originals: A\u2192A'\u2192B\u2192B'\u2192C\u2192C'. Now A'.random = A.random.next (the copy is right after the original).",
+          "approach": "1. Insert copy after each original: A\u2192A'\u2192B\u2192B'\u2192...\n2. Set random pointers: copy.random = original.random?.next\n3. Separate the two lists: restore original, extract copies",
           "explanation": "The interleaving trick embeds the 'map' in the list structure itself. Original.next always points to its copy.\n\nPhase 1: Create copies, insert after originals.\nPhase 2: Wire random pointers using the interleaved structure.\nPhase 3: Carefully unweave the two lists.\n\nThe separation step is tricky - we must restore the original list while extracting the copy list.",
           "code": "func copyRandomList(_ head: Node?) -> Node? {\n    guard head != nil else { return nil }\n    \n    // Phase 1: Insert copies after originals\n    var curr = head\n    while let node = curr {\n        let copy = Node(node.val)\n        copy.next = node.next\n        node.next = copy\n        curr = copy.next\n    }\n    \n    // Phase 2: Set random pointers\n    curr = head\n    while let node = curr {\n        let copy = node.next\n        copy?.random = node.random?.next  // Random's copy is right after random\n        curr = copy?.next\n    }\n    \n    // Phase 3: Separate lists\n    let dummy = Node(0)\n    var copyTail = dummy\n    curr = head\n    while let node = curr {\n        let copy = node.next!\n        let nextOrig = copy.next\n        \n        // Extract copy\n        copyTail.next = copy\n        copyTail = copy\n        \n        // Restore original\n        node.next = nextOrig\n        curr = nextOrig\n    }\n    \n    return dummy.next\n}",
           "complexity": {
@@ -459,13 +459,13 @@
               "id": "550e8400-e29b-41d4-a716-446655440216",
               "input": "[1,3,4,2,2]",
               "expectedOutput": "2",
-              "explanation": "Graph: 0→1→3→2→4→2 (cycle at 2). Duplicate is 2"
+              "explanation": "Graph: 0\u21921\u21923\u21922\u21924\u21922 (cycle at 2). Duplicate is 2"
             },
             {
               "id": "550e8400-e29b-41d4-a716-446655440217",
               "input": "[3,1,3,4,2]",
               "expectedOutput": "3",
-              "explanation": "Graph: 0→3→4→2→3 (cycle at 3). Duplicate is 3"
+              "explanation": "Graph: 0\u21923\u21924\u21922\u21923 (cycle at 3). Duplicate is 3"
             }
           ]
         },
@@ -473,9 +473,9 @@
           "id": "550e8400-e29b-41d4-a716-446655440117",
           "name": "Binary Search on Value Range",
           "order": 2,
-          "intuition": "Binary search on the answer space [1,n]. For a candidate mid, count numbers ≤ mid. If count > mid, duplicate is in [1,mid].",
-          "approach": "1. Set lo = 1, hi = n\n2. While lo < hi:\n   - mid = (lo + hi) / 2\n   - Count elements ≤ mid\n   - If count > mid: hi = mid (duplicate in lower half)\n   - Else: lo = mid + 1\n3. Return lo",
-          "explanation": "The pigeonhole principle: if we have more than mid numbers in [1,mid], at least one must be duplicated.\n\nThis doesn't find which number is duplicated directly - it narrows down the range until lo == hi, which is the duplicate.\n\nExample: [1,3,4,2,2]. Count ≤ 2 is 3 (elements 1,2,2). Since 3 > 2, duplicate is in [1,2]. Count ≤ 1 is 1. So duplicate is 2.",
+          "intuition": "Binary search on the answer space [1,n]. For a candidate mid, count numbers \u2264 mid. If count > mid, duplicate is in [1,mid].",
+          "approach": "1. Set lo = 1, hi = n\n2. While lo < hi:\n   - mid = (lo + hi) / 2\n   - Count elements \u2264 mid\n   - If count > mid: hi = mid (duplicate in lower half)\n   - Else: lo = mid + 1\n3. Return lo",
+          "explanation": "The pigeonhole principle: if we have more than mid numbers in [1,mid], at least one must be duplicated.\n\nThis doesn't find which number is duplicated directly - it narrows down the range until lo == hi, which is the duplicate.\n\nExample: [1,3,4,2,2]. Count \u2264 2 is 3 (elements 1,2,2). Since 3 > 2, duplicate is in [1,2]. Count \u2264 1 is 1. So duplicate is 2.",
           "code": "func findDuplicate(_ nums: [Int]) -> Int {\n    var lo = 1\n    var hi = nums.count - 1\n    \n    while lo < hi {\n        let mid = lo + (hi - lo) / 2\n        let count = nums.filter { $0 <= mid }.count\n        \n        if count > mid {\n            hi = mid  // Duplicate in lower half\n        } else {\n            lo = mid + 1  // Duplicate in upper half\n        }\n    }\n    \n    return lo\n}",
           "complexity": {
             "time": "O(n log n)",
@@ -501,8 +501,8 @@
           "id": "550e8400-e29b-41d4-a716-446655440118",
           "name": "Hash Map + Doubly Linked List",
           "order": 1,
-          "intuition": "We need two operations in O(1):\n1. Find a key → hash map\n2. Track/update recency → doubly linked list\n\nMost recently used at head, least recently used at tail. On access, move node to head.",
-          "approach": "1. Doubly linked list with dummy head/tail\n2. Hash map: key → node reference\n3. get(key): if exists, move to head, return value\n4. put(key, value):\n   - If exists: update value, move to head\n   - If new: create node, add to head, add to map\n   - If over capacity: remove tail node, remove from map",
+          "intuition": "We need two operations in O(1):\n1. Find a key \u2192 hash map\n2. Track/update recency \u2192 doubly linked list\n\nMost recently used at head, least recently used at tail. On access, move node to head.",
+          "approach": "1. Doubly linked list with dummy head/tail\n2. Hash map: key \u2192 node reference\n3. get(key): if exists, move to head, return value\n4. put(key, value):\n   - If exists: update value, move to head\n   - If new: create node, add to head, add to map\n   - If over capacity: remove tail node, remove from map",
           "explanation": "The doubly linked list maintains order by recency. The hash map provides O(1) access to any node.\n\nWhy doubly linked? We need to remove a node from the middle in O(1). With a doubly linked list, given a node reference, we can update prev.next and next.prev directly.\n\nDummy head and tail simplify edge cases (empty list, single element). The actual nodes are always between these dummies.",
           "code": "class LRUCache {\n    private class Node {\n        let key: Int\n        var value: Int\n        var prev: Node?\n        var next: Node?\n        \n        init(_ key: Int, _ value: Int) {\n            self.key = key\n            self.value = value\n        }\n    }\n    \n    private let capacity: Int\n    private var cache: [Int: Node] = [:]\n    private let head = Node(0, 0)  // Dummy head\n    private let tail = Node(0, 0)  // Dummy tail\n    \n    init(_ capacity: Int) {\n        self.capacity = capacity\n        head.next = tail\n        tail.prev = head\n    }\n    \n    func get(_ key: Int) -> Int {\n        guard let node = cache[key] else { return -1 }\n        moveToHead(node)\n        return node.value\n    }\n    \n    func put(_ key: Int, _ value: Int) {\n        if let node = cache[key] {\n            node.value = value\n            moveToHead(node)\n        } else {\n            let node = Node(key, value)\n            cache[key] = node\n            addToHead(node)\n            \n            if cache.count > capacity {\n                let removed = removeTail()\n                cache.removeValue(forKey: removed.key)\n            }\n        }\n    }\n    \n    private func addToHead(_ node: Node) {\n        node.prev = head\n        node.next = head.next\n        head.next?.prev = node\n        head.next = node\n    }\n    \n    private func removeNode(_ node: Node) {\n        node.prev?.next = node.next\n        node.next?.prev = node.prev\n    }\n    \n    private func moveToHead(_ node: Node) {\n        removeNode(node)\n        addToHead(node)\n    }\n    \n    private func removeTail() -> Node {\n        let node = tail.prev!\n        removeNode(node)\n        return node\n    }\n}",
           "complexity": {
@@ -608,13 +608,13 @@
               "id": "d8ea7529-25a9-46df-a1d5-ad66d281758e",
               "input": "root = [3,9,20,null,null,15,7]",
               "expectedOutput": "3",
-              "explanation": "Longest path is 3 nodes: 3 → 20 → 15 (or 7)."
+              "explanation": "Longest path is 3 nodes: 3 \u2192 20 \u2192 15 (or 7)."
             },
             {
               "id": "b57d4658-6b70-4a70-a4c2-e6cc4d34e311",
               "input": "root = [1,null,2]",
               "expectedOutput": "2",
-              "explanation": "Path length is 2 nodes: 1 → 2."
+              "explanation": "Path length is 2 nodes: 1 \u2192 2."
             }
           ]
         },
@@ -1250,6 +1250,968 @@
         "construct-binary-tree-from-preorder-and-inorder-traversal"
       ],
       "lastUpdated": "2026-02-04T00:00:00Z"
+    },
+    {
+      "id": "b6205791-50c7-4360-819a-607401b4f57a",
+      "problemSlug": "two-sum",
+      "summary": "Find two indices whose values add up to the target by tracking seen numbers in a hash map.",
+      "approaches": [
+        {
+          "id": "5609529b-e80d-4064-b4df-b5cda6084880",
+          "name": "Hash Map",
+          "order": 1,
+          "intuition": "As we scan the array, if we already saw a value equal to (target - current), we can return that index immediately.\nStoring value -> index lets us find the complement in O(1) time.",
+          "approach": "1. Create an empty dictionary valueToIndex.\n2. For each number in nums:\n   - Let complement = target - num.\n   - If complement exists in the dictionary, return [indexOfComplement, currentIndex].\n   - Otherwise store num -> currentIndex.\n3. If no pair found, return an empty array (not expected per constraints).",
+          "explanation": "The key is to decide in one pass whether the current number completes a previously seen pair.\nThis avoids the O(n^2) brute-force check and keeps time linear.",
+          "code": "func twoSum(_ nums: [Int], _ target: Int) -> [Int] {\n    var valueToIndex: [Int: Int] = [:]\n    for (i, num) in nums.enumerated() {\n        let complement = target - num\n        if let j = valueToIndex[complement] {\n            return [j, i]\n        }\n        valueToIndex[num] = i\n    }\n    return []\n}",
+          "complexity": {
+            "time": "O(n)",
+            "space": "O(n)",
+            "timeExplanation": "Each number is processed once with O(1) hash lookups.",
+            "spaceExplanation": "The hash map can store up to n elements."
+          },
+          "testCases": [
+            {
+              "id": "3d3717cb-c805-47a5-923f-5819a87a6b52",
+              "input": "nums = [2,7,11,15], target = 9",
+              "expectedOutput": "[0,1]",
+              "explanation": "2 + 7 = 9, so indices 0 and 1."
+            },
+            {
+              "id": "6c706226-e832-445c-8206-154a288fe2d9",
+              "input": "nums = [3,2,4], target = 6",
+              "expectedOutput": "[1,2]",
+              "explanation": "2 + 4 = 6."
+            },
+            {
+              "id": "0c8fd92c-84f2-4eb9-84b3-1206d534bc08",
+              "input": "nums = [3,3], target = 6",
+              "expectedOutput": "[0,1]",
+              "explanation": "Same value used twice at different indices."
+            }
+          ]
+        }
+      ],
+      "relatedProblems": [
+        "two-sum-ii-input-array-is-sorted",
+        "3sum"
+      ],
+      "lastUpdated": "2026-02-06T00:00:00Z"
+    },
+    {
+      "id": "4aacfe82-e270-4dce-9d65-712c0250a335",
+      "problemSlug": "valid-parentheses",
+      "summary": "Use a stack to match opening and closing brackets in the correct order.",
+      "approaches": [
+        {
+          "id": "a36e7d66-0c0d-4795-aa09-af72c4b1f241",
+          "name": "Stack",
+          "order": 1,
+          "intuition": "Every closing bracket must match the most recent unmatched opening bracket.\nA stack naturally models this last-in-first-out requirement.",
+          "approach": "1. Initialize an empty stack.\n2. For each character:\n   - If it's an opening bracket, push it.\n   - If it's a closing bracket, pop and ensure types match.\n3. The string is valid only if the stack is empty at the end.",
+          "explanation": "Any mismatch or premature closing bracket invalidates the string immediately.\nRemaining items in the stack after processing mean unmatched openings.",
+          "code": "func isValid(_ s: String) -> Bool {\n    var stack: [Character] = []\n    for ch in s {\n        switch ch {\n        case \"(\", \"{\", \"[\":\n            stack.append(ch)\n        case \")\":\n            if stack.popLast() != \"(\" { return false }\n        case \"}\":\n            if stack.popLast() != \"{\" { return false }\n        case \"]\":\n            if stack.popLast() != \"[\" { return false }\n        default:\n            break\n        }\n    }\n    return stack.isEmpty\n}",
+          "complexity": {
+            "time": "O(n)",
+            "space": "O(n)",
+            "timeExplanation": "Each character is processed once.",
+            "spaceExplanation": "The stack can hold up to n opening brackets."
+          },
+          "testCases": [
+            {
+              "id": "ba1346c7-9119-4061-b157-8f689e073a07",
+              "input": "s = \"()\"",
+              "expectedOutput": "true",
+              "explanation": "Simple matching pair."
+            },
+            {
+              "id": "809050df-90a2-4163-b33d-7ae30b99c763",
+              "input": "s = \"()[]{}\"",
+              "expectedOutput": "true",
+              "explanation": "All bracket types match in order."
+            },
+            {
+              "id": "236a46f7-4902-4e31-a0fe-37019eb89f6f",
+              "input": "s = \"(]\"",
+              "expectedOutput": "false",
+              "explanation": "Mismatched bracket types."
+            }
+          ]
+        }
+      ],
+      "relatedProblems": [
+        "minimum-remove-to-make-valid-parentheses",
+        "generate-parentheses"
+      ],
+      "lastUpdated": "2026-02-06T00:00:00Z"
+    },
+    {
+      "id": "23f4748b-97c7-48ee-b352-423fbcbfd2b2",
+      "problemSlug": "contains-duplicate",
+      "summary": "Track seen values in a set; a repeat indicates a duplicate.",
+      "approaches": [
+        {
+          "id": "6966b214-f4ce-4778-886f-94a0b3f47720",
+          "name": "Hash Set",
+          "order": 1,
+          "intuition": "If any number appears twice, it will already exist in the set when we see it again.",
+          "approach": "1. Create an empty set.\n2. For each number:\n   - If it is in the set, return true.\n   - Otherwise insert it.\n3. Return false if no duplicates are found.",
+          "explanation": "Sets provide O(1) average lookup/insert, making this linear time.",
+          "code": "func containsDuplicate(_ nums: [Int]) -> Bool {\n    var seen = Set<Int>()\n    for num in nums {\n        if seen.contains(num) { return true }\n        seen.insert(num)\n    }\n    return false\n}",
+          "complexity": {
+            "time": "O(n)",
+            "space": "O(n)",
+            "timeExplanation": "Single pass with O(1) set checks.",
+            "spaceExplanation": "The set can store all unique elements."
+          },
+          "testCases": [
+            {
+              "id": "fb1e2b00-0d16-47e1-853d-2eaefef9fa8a",
+              "input": "nums = [1,2,3,1]",
+              "expectedOutput": "true",
+              "explanation": "1 appears twice."
+            },
+            {
+              "id": "6f11889d-5920-43a0-8b23-d5d19a5d5770",
+              "input": "nums = [1,2,3,4]",
+              "expectedOutput": "false",
+              "explanation": "All elements are unique."
+            },
+            {
+              "id": "fa7882d8-0b93-4cab-931b-8029e5c5b4cb",
+              "input": "nums = [1,1,1,3,3,4,3,2,4,2]",
+              "expectedOutput": "true",
+              "explanation": "Multiple duplicates present."
+            }
+          ]
+        }
+      ],
+      "relatedProblems": [
+        "contains-duplicate-ii",
+        "contains-duplicate-iii"
+      ],
+      "lastUpdated": "2026-02-06T00:00:00Z"
+    },
+    {
+      "id": "22650355-1394-4a7f-8415-15cfe774ea97",
+      "problemSlug": "best-time-to-buy-and-sell-stock",
+      "summary": "Track the minimum price so far and update the max profit as you scan.",
+      "approaches": [
+        {
+          "id": "c9cfb94b-b023-477e-9e26-9c69c36ae2c1",
+          "name": "One Pass",
+          "order": 1,
+          "intuition": "The best profit ending today is today's price minus the minimum price seen before today.",
+          "approach": "1. Initialize minPrice to a large value and bestProfit = 0.\n2. For each price:\n   - Update minPrice = min(minPrice, price).\n   - Update bestProfit = max(bestProfit, price - minPrice).\n3. Return bestProfit.",
+          "explanation": "This ensures the buy happens before the sell because minPrice is computed from earlier elements.",
+          "code": "func maxProfit(_ prices: [Int]) -> Int {\n    var minPrice = Int.max\n    var best = 0\n    for price in prices {\n        minPrice = min(minPrice, price)\n        best = max(best, price - minPrice)\n    }\n    return best\n}",
+          "complexity": {
+            "time": "O(n)",
+            "space": "O(1)",
+            "timeExplanation": "Single pass through the prices.",
+            "spaceExplanation": "Only two tracking variables are used."
+          },
+          "testCases": [
+            {
+              "id": "5953fc34-b62c-4575-8b2a-b399f798db13",
+              "input": "prices = [7,1,5,3,6,4]",
+              "expectedOutput": "5",
+              "explanation": "Buy at 1, sell at 6."
+            },
+            {
+              "id": "2ad31b7a-6363-4ec5-b36c-a17bb1b55e57",
+              "input": "prices = [7,6,4,3,1]",
+              "expectedOutput": "0",
+              "explanation": "No profitable transaction."
+            }
+          ]
+        }
+      ],
+      "relatedProblems": [
+        "best-time-to-buy-and-sell-stock-ii",
+        "best-time-to-buy-and-sell-stock-with-cooldown"
+      ],
+      "lastUpdated": "2026-02-06T00:00:00Z"
+    },
+    {
+      "id": "d9518775-be8b-4eee-a812-7c426fa80106",
+      "problemSlug": "valid-anagram",
+      "summary": "Count characters in the first string and subtract counts using the second.",
+      "approaches": [
+        {
+          "id": "aa408334-2951-4317-85bb-dae695cb3ac7",
+          "name": "Frequency Map",
+          "order": 1,
+          "intuition": "Two strings are anagrams if every character appears the same number of times in both.",
+          "approach": "1. If lengths differ, return false.\n2. Count each character in s.\n3. Decrement for each character in t; if any count becomes negative, return false.\n4. If all counts are zero, return true.",
+          "explanation": "Using a dictionary keeps the solution clean and works for any character set.",
+          "code": "func isAnagram(_ s: String, _ t: String) -> Bool {\n    if s.count != t.count { return false }\n    var counts: [Character: Int] = [:]\n    for ch in s { counts[ch, default: 0] += 1 }\n    for ch in t {\n        let remaining = (counts[ch] ?? 0) - 1\n        if remaining < 0 { return false }\n        counts[ch] = remaining\n    }\n    return true\n}",
+          "complexity": {
+            "time": "O(n)",
+            "space": "O(n)",
+            "timeExplanation": "Each string is scanned once.",
+            "spaceExplanation": "The map stores counts for distinct characters."
+          },
+          "testCases": [
+            {
+              "id": "a82a4a86-78fe-4b64-ae62-2e098816859c",
+              "input": "s = \"anagram\", t = \"nagaram\"",
+              "expectedOutput": "true",
+              "explanation": "All letters match counts."
+            },
+            {
+              "id": "fce32cc3-1f00-4d32-b058-648e801addaf",
+              "input": "s = \"rat\", t = \"car\"",
+              "expectedOutput": "false",
+              "explanation": "Different letters."
+            }
+          ]
+        }
+      ],
+      "relatedProblems": [
+        "group-anagrams",
+        "find-all-anagrams-in-a-string"
+      ],
+      "lastUpdated": "2026-02-06T00:00:00Z"
+    },
+    {
+      "id": "751df843-f7df-4040-a033-b2fd1cfc0050",
+      "problemSlug": "ransom-note",
+      "summary": "Count available letters in the magazine and consume them for the ransom note.",
+      "approaches": [
+        {
+          "id": "8d6b33ea-7830-4e29-a0d6-56d6ea03ab6b",
+          "name": "Frequency Map",
+          "order": 1,
+          "intuition": "Each letter in the ransom note must be supplied by the magazine. If any count is insufficient, it fails.",
+          "approach": "1. Count each character in magazine.\n2. For each character in ransomNote, decrement its count.\n3. If any count goes negative, return false. Otherwise return true.",
+          "explanation": "This is a direct application of a frequency map: availability vs. demand.",
+          "code": "func canConstruct(_ ransomNote: String, _ magazine: String) -> Bool {\n    var counts: [Character: Int] = [:]\n    for ch in magazine { counts[ch, default: 0] += 1 }\n    for ch in ransomNote {\n        let remaining = (counts[ch] ?? 0) - 1\n        if remaining < 0 { return false }\n        counts[ch] = remaining\n    }\n    return true\n}",
+          "complexity": {
+            "time": "O(m + n)",
+            "space": "O(1)",
+            "timeExplanation": "Scan magazine and ransom note once.",
+            "spaceExplanation": "Character counts are bounded by alphabet size."
+          },
+          "testCases": [
+            {
+              "id": "aa950b65-3fb0-478f-8048-cb5ddc162234",
+              "input": "ransomNote = \"a\", magazine = \"b\"",
+              "expectedOutput": "false",
+              "explanation": "Missing letter a."
+            },
+            {
+              "id": "07eea518-2a35-467d-adaf-87edaf1b9eb2",
+              "input": "ransomNote = \"aa\", magazine = \"aab\"",
+              "expectedOutput": "true",
+              "explanation": "Magazine has enough a's."
+            }
+          ]
+        }
+      ],
+      "relatedProblems": [
+        "valid-anagram",
+        "first-unique-character-in-a-string"
+      ],
+      "lastUpdated": "2026-02-06T00:00:00Z"
+    },
+    {
+      "id": "77394785-c09e-47cc-b524-b42c90507419",
+      "problemSlug": "binary-search",
+      "summary": "Use classic binary search to find the target in a sorted array.",
+      "approaches": [
+        {
+          "id": "42f5fcff-d6d3-416c-811c-91910896d0c2",
+          "name": "Binary Search",
+          "order": 1,
+          "intuition": "The array is sorted, so we can eliminate half the search space each step.",
+          "approach": "1. Set left = 0 and right = n - 1.\n2. While left <= right:\n   - mid = (left + right) / 2\n   - If nums[mid] == target, return mid.\n   - If nums[mid] < target, search the right half; else search the left half.\n3. Return -1 if not found.",
+          "explanation": "Binary search guarantees O(log n) time by halving the range each iteration.",
+          "code": "func search(_ nums: [Int], _ target: Int) -> Int {\n    var left = 0\n    var right = nums.count - 1\n    while left <= right {\n        let mid = left + (right - left) / 2\n        if nums[mid] == target {\n            return mid\n        } else if nums[mid] < target {\n            left = mid + 1\n        } else {\n            right = mid - 1\n        }\n    }\n    return -1\n}",
+          "complexity": {
+            "time": "O(log n)",
+            "space": "O(1)",
+            "timeExplanation": "The search range halves each step.",
+            "spaceExplanation": "Only constant extra space is used."
+          },
+          "testCases": [
+            {
+              "id": "d4c9f72b-8f48-43d1-971d-2b39cdc33656",
+              "input": "nums = [-1,0,3,5,9,12], target = 9",
+              "expectedOutput": "4",
+              "explanation": "9 is at index 4."
+            },
+            {
+              "id": "0fc7cc73-24c8-4531-814c-542ecdb498c2",
+              "input": "nums = [-1,0,3,5,9,12], target = 2",
+              "expectedOutput": "-1",
+              "explanation": "2 is not in the array."
+            }
+          ]
+        }
+      ],
+      "relatedProblems": [
+        "search-in-rotated-sorted-array",
+        "first-bad-version"
+      ],
+      "lastUpdated": "2026-02-06T00:00:00Z"
+    },
+    {
+      "id": "e3586dfa-a556-4688-8b3e-7c988f871267",
+      "problemSlug": "climbing-stairs",
+      "summary": "Each step can be reached from the previous two steps; this forms a Fibonacci sequence.",
+      "approaches": [
+        {
+          "id": "718a7245-392c-498d-82a2-cc018254ba43",
+          "name": "DP (Fibonacci)",
+          "order": 1,
+          "intuition": "The number of ways to reach step i equals ways(i-1) + ways(i-2).",
+          "approach": "1. Handle small n (1 or 2) directly.\n2. Iterate from 3 to n, keeping only the last two values.\n3. Return the final value.",
+          "explanation": "This is a classic DP problem that collapses to a constant-space Fibonacci computation.",
+          "code": "func climbStairs(_ n: Int) -> Int {\n    if n <= 2 { return n }\n    var a = 1\n    var b = 2\n    for _ in 3...n {\n        let c = a + b\n        a = b\n        b = c\n    }\n    return b\n}",
+          "complexity": {
+            "time": "O(n)",
+            "space": "O(1)",
+            "timeExplanation": "We compute each step once.",
+            "spaceExplanation": "Only two integers are stored."
+          },
+          "testCases": [
+            {
+              "id": "f9a175ed-00a1-4238-a6cd-94f239da68e7",
+              "input": "n = 2",
+              "expectedOutput": "2",
+              "explanation": "(1+1), (2)."
+            },
+            {
+              "id": "3f2247d4-81b4-488b-9f66-e2db963edaf6",
+              "input": "n = 3",
+              "expectedOutput": "3",
+              "explanation": "(1+1+1), (1+2), (2+1)."
+            },
+            {
+              "id": "f33c3263-9025-4305-81f6-7e0c92dd5514",
+              "input": "n = 5",
+              "expectedOutput": "8",
+              "explanation": "Fibonacci growth."
+            }
+          ]
+        }
+      ],
+      "relatedProblems": [
+        "min-cost-climbing-stairs",
+        "house-robber"
+      ],
+      "lastUpdated": "2026-02-06T00:00:00Z"
+    },
+    {
+      "id": "5c11fa1e-3d2c-48ba-b657-8147f2306374",
+      "problemSlug": "longest-substring-without-repeating-characters",
+      "summary": "Use a moving window and last-seen indices to keep all characters unique.",
+      "approaches": [
+        {
+          "id": "27c88a35-bf8d-4b65-932f-ef95acdc2481",
+          "name": "Sliding Window",
+          "order": 1,
+          "intuition": "When a repeat appears, move the left boundary just past the previous occurrence.",
+          "approach": "1. Convert the string to an array of characters for indexing.\n2. Track last seen index of each character in a dictionary.\n3. Maintain a left pointer for the start of the current window.\n4. Update the best window length as you iterate.",
+          "explanation": "The left pointer only moves forward, so each character is processed at most twice.",
+          "code": "func lengthOfLongestSubstring(_ s: String) -> Int {\n    let chars = Array(s)\n    var lastIndex: [Character: Int] = [:]\n    var left = 0\n    var best = 0\n    for (right, ch) in chars.enumerated() {\n        if let prev = lastIndex[ch], prev >= left {\n            left = prev + 1\n        }\n        lastIndex[ch] = right\n        best = max(best, right - left + 1)\n    }\n    return best\n}",
+          "complexity": {
+            "time": "O(n)",
+            "space": "O(min(n, k))",
+            "timeExplanation": "Each index moves forward at most once.",
+            "spaceExplanation": "Map stores last index per distinct character."
+          },
+          "testCases": [
+            {
+              "id": "857fc085-7360-4555-9c7d-d324eb1a4c03",
+              "input": "s = \"abcabcbb\"",
+              "expectedOutput": "3",
+              "explanation": "Longest substring is \"abc\"."
+            },
+            {
+              "id": "d75e0eb2-181f-4052-92f3-16d6d6f774fa",
+              "input": "s = \"bbbbb\"",
+              "expectedOutput": "1",
+              "explanation": "Only one unique character."
+            },
+            {
+              "id": "0460080e-0b23-4245-ab89-72bdc20b8121",
+              "input": "s = \"pwwkew\"",
+              "expectedOutput": "3",
+              "explanation": "Longest substring is \"wke\"."
+            }
+          ]
+        }
+      ],
+      "relatedProblems": [
+        "minimum-window-substring",
+        "longest-substring-with-at-most-k-distinct-characters"
+      ],
+      "lastUpdated": "2026-02-06T00:00:00Z"
+    },
+    {
+      "id": "8003a7c4-b302-40f5-a143-6e9006052256",
+      "problemSlug": "group-anagrams",
+      "summary": "Group strings by their sorted characters (anagram signature).",
+      "approaches": [
+        {
+          "id": "01f071e5-54c6-44da-86f1-bad42a893aa6",
+          "name": "Hash by Sorted Key",
+          "order": 1,
+          "intuition": "Anagrams share the same multiset of letters, so sorting makes identical keys for the group.",
+          "approach": "1. For each string, sort its characters to form a key.\n2. Append the string to the bucket for that key.\n3. Return all buckets.",
+          "explanation": "Sorting each word is the dominant cost, but it keeps the implementation simple and reliable.",
+          "code": "func groupAnagrams(_ strs: [String]) -> [[String]] {\n    var groups: [String: [String]] = [:]\n    for s in strs {\n        let key = String(s.sorted())\n        groups[key, default: []].append(s)\n    }\n    return Array(groups.values)\n}",
+          "complexity": {
+            "time": "O(n * k log k)",
+            "space": "O(n * k)",
+            "timeExplanation": "Sorting each of n strings of length k dominates.",
+            "spaceExplanation": "All strings are stored in grouped buckets."
+          },
+          "testCases": [
+            {
+              "id": "cf59af36-fcff-4d7c-b446-f32138d0f4e9",
+              "input": "strs = [\"eat\",\"tea\",\"tan\",\"ate\",\"nat\",\"bat\"]",
+              "expectedOutput": "[[\"eat\",\"tea\",\"ate\"],[\"tan\",\"nat\"],[\"bat\"]]",
+              "explanation": "Strings with the same sorted key are grouped (order may vary)."
+            },
+            {
+              "id": "ff99e033-fb51-4eb3-972b-18a4a8c5acef",
+              "input": "strs = [\"\"]",
+              "expectedOutput": "[[\"\"]]",
+              "explanation": "Single empty string forms one group."
+            },
+            {
+              "id": "a4399698-b4e5-43f4-99f5-223620ca26be",
+              "input": "strs = [\"a\"]",
+              "expectedOutput": "[[\"a\"]]",
+              "explanation": "Single string forms one group."
+            }
+          ]
+        }
+      ],
+      "relatedProblems": [
+        "valid-anagram",
+        "find-all-anagrams-in-a-string"
+      ],
+      "lastUpdated": "2026-02-06T00:00:00Z"
+    },
+    {
+      "id": "51f4815d-a558-4057-b255-58209dea4db8",
+      "problemSlug": "top-k-frequent-elements",
+      "summary": "Count frequencies and collect elements from high to low frequency buckets.",
+      "approaches": [
+        {
+          "id": "2e212fcc-957a-4b1d-a01d-2694e9b90bd9",
+          "name": "Bucket Sort",
+          "order": 1,
+          "intuition": "If we bucket elements by frequency, we can gather the k most frequent without full sorting.",
+          "approach": "1. Count occurrences of each number in a dictionary.\n2. Create buckets where index = frequency.\n3. Iterate buckets from high to low, collecting elements until k are gathered.",
+          "explanation": "This avoids O(n log n) sorting and stays linear on average.",
+          "code": "func topKFrequent(_ nums: [Int], _ k: Int) -> [Int] {\n    var counts: [Int: Int] = [:]\n    for num in nums { counts[num, default: 0] += 1 }\n    var buckets = Array(repeating: [Int](), count: nums.count + 1)\n    for (num, count) in counts {\n        buckets[count].append(num)\n    }\n    var result: [Int] = []\n    for freq in stride(from: buckets.count - 1, through: 1, by: -1) {\n        for num in buckets[freq] {\n            result.append(num)\n            if result.count == k { return result }\n        }\n    }\n    return result\n}",
+          "complexity": {
+            "time": "O(n)",
+            "space": "O(n)",
+            "timeExplanation": "Counting plus bucket traversal is linear.",
+            "spaceExplanation": "Buckets and map store up to n items."
+          },
+          "testCases": [
+            {
+              "id": "25771fef-0ab3-4b28-a731-fa97a89188d5",
+              "input": "nums = [1,1,1,2,2,3], k = 2",
+              "expectedOutput": "[1,2]",
+              "explanation": "1 appears 3 times, 2 appears 2 times."
+            },
+            {
+              "id": "0779a404-ce3f-4756-916f-5d20b5106742",
+              "input": "nums = [1], k = 1",
+              "expectedOutput": "[1]",
+              "explanation": "Single element is the answer."
+            }
+          ]
+        }
+      ],
+      "relatedProblems": [
+        "top-k-frequent-words",
+        "kth-largest-element-in-an-array"
+      ],
+      "lastUpdated": "2026-02-06T00:00:00Z"
+    },
+    {
+      "id": "ce775cc2-53fd-4963-bb91-9c8f6b5dcb4c",
+      "problemSlug": "product-of-array-except-self",
+      "summary": "Compute prefix products and suffix products to avoid division.",
+      "approaches": [
+        {
+          "id": "cad14ea0-646e-49fd-bc22-69e4b5e08203",
+          "name": "Prefix/Suffix",
+          "order": 1,
+          "intuition": "The product for index i is (product of all elements before i) * (product of all elements after i).",
+          "approach": "1. Build result where result[i] is the product of all elements before i.\n2. Traverse from right, maintaining a suffix product and multiply into result[i].",
+          "explanation": "This keeps O(1) extra space besides the output array and handles zeros correctly.",
+          "code": "func productExceptSelf(_ nums: [Int]) -> [Int] {\n    var result = Array(repeating: 1, count: nums.count)\n    var prefix = 1\n    for i in 0..<nums.count {\n        result[i] = prefix\n        prefix *= nums[i]\n    }\n    var suffix = 1\n    for i in stride(from: nums.count - 1, through: 0, by: -1) {\n        result[i] *= suffix\n        suffix *= nums[i]\n    }\n    return result\n}",
+          "complexity": {
+            "time": "O(n)",
+            "space": "O(1)",
+            "timeExplanation": "Two linear passes.",
+            "spaceExplanation": "Only constant extra space besides the output."
+          },
+          "testCases": [
+            {
+              "id": "ea2462d9-4c77-4f66-a78a-0882e8eeed6c",
+              "input": "nums = [1,2,3,4]",
+              "expectedOutput": "[24,12,8,6]",
+              "explanation": "Products excluding each index."
+            },
+            {
+              "id": "c2ddebb8-39b4-494d-9b47-e5c6da74e2bc",
+              "input": "nums = [-1,1,0,-3,3]",
+              "expectedOutput": "[0,0,9,0,0]",
+              "explanation": "Handles zeros correctly."
+            }
+          ]
+        }
+      ],
+      "relatedProblems": [
+        "maximum-product-subarray",
+        "subarray-product-less-than-k"
+      ],
+      "lastUpdated": "2026-02-06T00:00:00Z"
+    },
+    {
+      "id": "09218b74-9f9a-490a-ae70-c1ac4dec5ca8",
+      "problemSlug": "subarray-sum-equals-k",
+      "summary": "Count how often each prefix sum appears to find subarrays summing to k.",
+      "approaches": [
+        {
+          "id": "8fdde843-fc09-448d-bf2e-00ec0b0885c5",
+          "name": "Prefix Sum + Map",
+          "order": 1,
+          "intuition": "If currentSum - k has been seen before, each occurrence defines a subarray ending here with sum k.",
+          "approach": "1. Keep a dictionary of prefixSum -> count (start with 0 -> 1).\n2. Iterate nums, updating currentSum.\n3. Add counts of (currentSum - k) to the answer.\n4. Increment the count for currentSum.",
+          "explanation": "This avoids O(n^2) enumeration by using prefix sums and frequencies.",
+          "code": "func subarraySum(_ nums: [Int], _ k: Int) -> Int {\n    var count = 0\n    var sum = 0\n    var freq: [Int: Int] = [0: 1]\n    for num in nums {\n        sum += num\n        if let c = freq[sum - k] { count += c }\n        freq[sum, default: 0] += 1\n    }\n    return count\n}",
+          "complexity": {
+            "time": "O(n)",
+            "space": "O(n)",
+            "timeExplanation": "Single pass with O(1) hash operations.",
+            "spaceExplanation": "Prefix sums stored in the map."
+          },
+          "testCases": [
+            {
+              "id": "36b9d5fd-4a58-46fb-ae4f-6fb5cfb8a641",
+              "input": "nums = [1,1,1], k = 2",
+              "expectedOutput": "2",
+              "explanation": "Subarrays [1,1] at indices (0,1) and (1,2)."
+            },
+            {
+              "id": "b9c9fbd2-7155-46a9-8270-792727582b7c",
+              "input": "nums = [1,2,3], k = 3",
+              "expectedOutput": "2",
+              "explanation": "Subarrays [1,2] and [3]."
+            }
+          ]
+        }
+      ],
+      "relatedProblems": [
+        "minimum-size-subarray-sum",
+        "continuous-subarray-sum"
+      ],
+      "lastUpdated": "2026-02-06T00:00:00Z"
+    },
+    {
+      "id": "f94dfe99-f818-417f-b555-81d2d78b2212",
+      "problemSlug": "permutation-in-string",
+      "summary": "Use a fixed-size sliding window and compare character counts to detect a permutation.",
+      "approaches": [
+        {
+          "id": "82f82071-c8e4-4992-8de8-e36f7d88d1d8",
+          "name": "Sliding Window",
+          "order": 1,
+          "intuition": "Any permutation of s1 has the same character counts, so we just need a window in s2 with matching counts.",
+          "approach": "1. Build a frequency array for s1 and for the first window in s2.\n2. Track how many of the 26 counts match.\n3. Slide the window, updating counts and matches.\n4. If all 26 counts match, return true.",
+          "explanation": "The matching-counts trick avoids comparing full arrays on each step.",
+          "code": "func checkInclusion(_ s1: String, _ s2: String) -> Bool {\n    let a = Array(s1)\n    let b = Array(s2)\n    if a.count > b.count { return false }\n\n    var count1 = Array(repeating: 0, count: 26)\n    var count2 = Array(repeating: 0, count: 26)\n\n    for ch in a {\n        let idx = Int(ch.asciiValue! - 97)\n        count1[idx] += 1\n    }\n    for i in 0..<a.count {\n        let idx = Int(b[i].asciiValue! - 97)\n        count2[idx] += 1\n    }\n\n    var matches = 0\n    for i in 0..<26 {\n        if count1[i] == count2[i] { matches += 1 }\n    }\n\n    var left = 0\n    for right in a.count..<b.count {\n        if matches == 26 { return true }\n\n        let rIndex = Int(b[right].asciiValue! - 97)\n        count2[rIndex] += 1\n        if count2[rIndex] == count1[rIndex] { matches += 1 }\n        else if count2[rIndex] == count1[rIndex] + 1 { matches -= 1 }\n\n        let lIndex = Int(b[left].asciiValue! - 97)\n        count2[lIndex] -= 1\n        if count2[lIndex] == count1[lIndex] { matches += 1 }\n        else if count2[lIndex] == count1[lIndex] - 1 { matches -= 1 }\n\n        left += 1\n    }\n\n    return matches == 26\n}",
+          "complexity": {
+            "time": "O(n)",
+            "space": "O(1)",
+            "timeExplanation": "Each index is processed once in the sliding window.",
+            "spaceExplanation": "Two fixed-size arrays of length 26."
+          },
+          "testCases": [
+            {
+              "id": "2708a68f-d53b-49fe-9227-b4884fd084ce",
+              "input": "s1 = \"ab\", s2 = \"eidbaooo\"",
+              "expectedOutput": "true",
+              "explanation": "Substring \"ba\" is a permutation of \"ab\"."
+            },
+            {
+              "id": "7e0e6c56-3a13-4d0c-a138-83d2f21fe73d",
+              "input": "s1 = \"ab\", s2 = \"eidboaoo\"",
+              "expectedOutput": "false",
+              "explanation": "No permutation appears in s2."
+            }
+          ]
+        }
+      ],
+      "relatedProblems": [
+        "find-all-anagrams-in-a-string",
+        "check-if-a-string-contains-all-binary-codes-of-size-k"
+      ],
+      "lastUpdated": "2026-02-06T00:00:00Z"
+    },
+    {
+      "id": "82ca8435-3b76-41f5-9985-8646f575a687",
+      "problemSlug": "3sum",
+      "summary": "Sort the array and fix one element, then use two pointers to find pairs that sum to the negative.",
+      "approaches": [
+        {
+          "id": "fa457d53-4a83-48c1-970e-eaf8ac79fa61",
+          "name": "Sort + Two Pointers",
+          "order": 1,
+          "intuition": "Sorting allows us to skip duplicates and adjust pointers based on the sum.",
+          "approach": "1. Sort the array.\n2. For each index i, use two pointers (l, r) to find pairs where nums[i] + nums[l] + nums[r] == 0.\n3. Skip duplicate values for i, l, and r.",
+          "explanation": "Sorting enables a linear scan for each fixed i, resulting in O(n^2) time.",
+          "code": "func threeSum(_ nums: [Int]) -> [[Int]] {\n    let nums = nums.sorted()\n    var result: [[Int]] = []\n    if nums.count < 3 { return result }\n\n    for i in 0..<(nums.count - 2) {\n        if i > 0 && nums[i] == nums[i - 1] { continue }\n        var left = i + 1\n        var right = nums.count - 1\n        while left < right {\n            let sum = nums[i] + nums[left] + nums[right]\n            if sum == 0 {\n                result.append([nums[i], nums[left], nums[right]])\n                left += 1\n                right -= 1\n                while left < right && nums[left] == nums[left - 1] { left += 1 }\n                while left < right && nums[right] == nums[right + 1] { right -= 1 }\n            } else if sum < 0 {\n                left += 1\n            } else {\n                right -= 1\n            }\n        }\n    }\n    return result\n}",
+          "complexity": {
+            "time": "O(n^2)",
+            "space": "O(1)",
+            "timeExplanation": "For each i, two pointers scan the rest of the array.",
+            "spaceExplanation": "Sorting is in-place; extra space is constant (excluding output)."
+          },
+          "testCases": [
+            {
+              "id": "6952a73f-5e39-4a3c-b7e4-212d9d10d643",
+              "input": "nums = [-1,0,1,2,-1,-4]",
+              "expectedOutput": "[[-1,-1,2],[-1,0,1]]",
+              "explanation": "Two unique triplets sum to 0."
+            },
+            {
+              "id": "e88c71f1-6f39-4502-a988-d62d817a8e42",
+              "input": "nums = [0,1,1]",
+              "expectedOutput": "[]",
+              "explanation": "No triplet sums to 0."
+            },
+            {
+              "id": "1caf588c-d8b4-4469-9a6d-a8f0c0dcc42b",
+              "input": "nums = [0,0,0]",
+              "expectedOutput": "[[0,0,0]]",
+              "explanation": "Single unique triplet."
+            }
+          ]
+        }
+      ],
+      "relatedProblems": [
+        "two-sum",
+        "4sum"
+      ],
+      "lastUpdated": "2026-02-06T00:00:00Z"
+    },
+    {
+      "id": "f4aa35fd-22bb-466c-8dae-e6567cb0141a",
+      "problemSlug": "search-in-rotated-sorted-array",
+      "summary": "Binary search while determining which half is sorted at each step.",
+      "approaches": [
+        {
+          "id": "43e27307-58c2-4a0e-a8b9-75238275fb4a",
+          "name": "Modified Binary Search",
+          "order": 1,
+          "intuition": "In a rotated array, at least one half of the current range is sorted. We can use that to decide where the target may lie.",
+          "approach": "1. Use left and right pointers.\n2. Find mid; if it's the target, return it.\n3. Determine which half is sorted and adjust the search range accordingly.",
+          "explanation": "This preserves O(log n) time because each step discards half the range.",
+          "code": "func search(_ nums: [Int], _ target: Int) -> Int {\n    var left = 0\n    var right = nums.count - 1\n    while left <= right {\n        let mid = (left + right) / 2\n        if nums[mid] == target { return mid }\n        if nums[left] <= nums[mid] {\n            if nums[left] <= target && target < nums[mid] {\n                right = mid - 1\n            } else {\n                left = mid + 1\n            }\n        } else {\n            if nums[mid] < target && target <= nums[right] {\n                left = mid + 1\n            } else {\n                right = mid - 1\n            }\n        }\n    }\n    return -1\n}",
+          "complexity": {
+            "time": "O(log n)",
+            "space": "O(1)",
+            "timeExplanation": "Binary search halves the range each step.",
+            "spaceExplanation": "Constant extra space."
+          },
+          "testCases": [
+            {
+              "id": "3399773a-ab67-467e-8fe0-059e42126ffe",
+              "input": "nums = [4,5,6,7,0,1,2], target = 0",
+              "expectedOutput": "4",
+              "explanation": "Target found at index 4."
+            },
+            {
+              "id": "800110ec-ac97-4755-971f-6d84cc314656",
+              "input": "nums = [4,5,6,7,0,1,2], target = 3",
+              "expectedOutput": "-1",
+              "explanation": "Target not present."
+            },
+            {
+              "id": "192471d2-017f-4ff5-8035-74cea4b4674a",
+              "input": "nums = [1], target = 0",
+              "expectedOutput": "-1",
+              "explanation": "Single element not equal to target."
+            }
+          ]
+        }
+      ],
+      "relatedProblems": [
+        "search-in-rotated-sorted-array-ii",
+        "find-minimum-in-rotated-sorted-array"
+      ],
+      "lastUpdated": "2026-02-06T00:00:00Z"
+    },
+    {
+      "id": "0562ba51-0891-44cc-8ef8-e9d3dd5be2e0",
+      "problemSlug": "merge-intervals",
+      "summary": "Sort intervals by start and merge overlapping ranges in one pass.",
+      "approaches": [
+        {
+          "id": "804d61a0-ef94-4021-a081-82fa69522244",
+          "name": "Sort + Merge",
+          "order": 1,
+          "intuition": "After sorting by start, any overlap can only occur with the most recent merged interval.",
+          "approach": "1. Sort intervals by start.\n2. Initialize result with the first interval.\n3. For each subsequent interval, either merge it into the last or append it.",
+          "explanation": "Sorting ensures overlaps are adjacent, so we only compare with the last merged interval.",
+          "code": "func merge(_ intervals: [[Int]]) -> [[Int]] {\n    if intervals.isEmpty { return [] }\n    let sorted = intervals.sorted { $0[0] < $1[0] }\n    var result: [[Int]] = [sorted[0]]\n    for interval in sorted.dropFirst() {\n        if interval[0] <= result[result.count - 1][1] {\n            result[result.count - 1][1] = max(result[result.count - 1][1], interval[1])\n        } else {\n            result.append(interval)\n        }\n    }\n    return result\n}",
+          "complexity": {
+            "time": "O(n log n)",
+            "space": "O(n)",
+            "timeExplanation": "Sorting dominates the time cost.",
+            "spaceExplanation": "Result list can store up to n intervals."
+          },
+          "testCases": [
+            {
+              "id": "e1a38ac4-6f16-43f9-8eae-772092c14f3b",
+              "input": "intervals = [[1,3],[2,6],[8,10],[15,18]]",
+              "expectedOutput": "[[1,6],[8,10],[15,18]]",
+              "explanation": "[1,3] and [2,6] merge into [1,6]."
+            },
+            {
+              "id": "f70a956c-ec5b-4b71-bf26-526b1ad92c3f",
+              "input": "intervals = [[1,4],[4,5]]",
+              "expectedOutput": "[[1,5]]",
+              "explanation": "Touching intervals also merge."
+            }
+          ]
+        }
+      ],
+      "relatedProblems": [
+        "insert-interval",
+        "meeting-rooms-ii"
+      ],
+      "lastUpdated": "2026-02-06T00:00:00Z"
+    },
+    {
+      "id": "3d011264-1955-48cf-99a3-28cb75d173a0",
+      "problemSlug": "spiral-matrix",
+      "summary": "Walk the matrix in layers by shrinking the top, bottom, left, and right boundaries.",
+      "approaches": [
+        {
+          "id": "3cc9ef2e-fea5-401a-aa0a-595369e016c9",
+          "name": "Boundary Traversal",
+          "order": 1,
+          "intuition": "Each spiral layer is a rectangle. After traversing its edges, we move the boundaries inward.",
+          "approach": "1. Initialize top, bottom, left, right bounds.\n2. Traverse right, down, left, and up while bounds are valid.\n3. Shrink bounds after each side.",
+          "explanation": "This orderly boundary scan avoids revisiting cells and handles non-square matrices.",
+          "code": "func spiralOrder(_ matrix: [[Int]]) -> [Int] {\n    guard !matrix.isEmpty else { return [] }\n    var top = 0\n    var bottom = matrix.count - 1\n    var left = 0\n    var right = matrix[0].count - 1\n    var result: [Int] = []\n\n    while top <= bottom && left <= right {\n        for col in left...right { result.append(matrix[top][col]) }\n        top += 1\n        if top > bottom { break }\n\n        for row in top...bottom { result.append(matrix[row][right]) }\n        right -= 1\n        if left > right { break }\n\n        for col in stride(from: right, through: left, by: -1) { result.append(matrix[bottom][col]) }\n        bottom -= 1\n        if top > bottom { break }\n\n        for row in stride(from: bottom, through: top, by: -1) { result.append(matrix[row][left]) }\n        left += 1\n    }\n\n    return result\n}",
+          "complexity": {
+            "time": "O(m * n)",
+            "space": "O(1)",
+            "timeExplanation": "Each cell is visited exactly once.",
+            "spaceExplanation": "No extra space besides the output array."
+          },
+          "testCases": [
+            {
+              "id": "40d28244-749c-499c-8684-5141ef7ad57b",
+              "input": "matrix = [[1,2,3],[4,5,6],[7,8,9]]",
+              "expectedOutput": "[1,2,3,6,9,8,7,4,5]",
+              "explanation": "Classic 3x3 spiral."
+            },
+            {
+              "id": "1794fb06-b57a-4d9a-ae73-8323c7c50b14",
+              "input": "matrix = [[1,2,3,4],[5,6,7,8],[9,10,11,12]]",
+              "expectedOutput": "[1,2,3,4,8,12,11,10,9,5,6,7]",
+              "explanation": "Spiral for rectangular matrix."
+            }
+          ]
+        }
+      ],
+      "relatedProblems": [
+        "spiral-matrix-ii",
+        "rotate-image"
+      ],
+      "lastUpdated": "2026-02-06T00:00:00Z"
+    },
+    {
+      "id": "6f18a7ea-1f71-41c6-ad8a-91f28173bbb2",
+      "problemSlug": "number-of-islands",
+      "summary": "Count islands by flooding each discovered land cell with DFS.",
+      "approaches": [
+        {
+          "id": "623b0613-cf2f-476d-b645-283a712a2085",
+          "name": "DFS Flood Fill",
+          "order": 1,
+          "intuition": "Each island is a connected component of '1's. Marking a component prevents double counting.",
+          "approach": "1. Iterate all cells.\n2. When you find land, increment count and DFS to mark the entire island as water.",
+          "explanation": "DFS visits all connected land cells, so each island is counted once.",
+          "code": "func numIslands(_ grid: [[Character]]) -> Int {\n    var grid = grid\n    let rows = grid.count\n    let cols = grid.first?.count ?? 0\n    var count = 0\n\n    func dfs(_ r: Int, _ c: Int) {\n        if r < 0 || r >= rows || c < 0 || c >= cols { return }\n        if grid[r][c] != \"1\" { return }\n        grid[r][c] = \"0\"\n        dfs(r + 1, c)\n        dfs(r - 1, c)\n        dfs(r, c + 1)\n        dfs(r, c - 1)\n    }\n\n    for r in 0..<rows {\n        for c in 0..<cols {\n            if grid[r][c] == \"1\" {\n                count += 1\n                dfs(r, c)\n            }\n        }\n    }\n    return count\n}",
+          "complexity": {
+            "time": "O(m * n)",
+            "space": "O(m * n)",
+            "timeExplanation": "Every cell is visited at most once.",
+            "spaceExplanation": "DFS recursion stack can reach all cells in the worst case."
+          },
+          "testCases": [
+            {
+              "id": "fa57d4ea-0dec-463a-8a3b-e5d06b3fb13e",
+              "input": "grid = [[\"1\",\"1\",\"1\",\"1\",\"0\"],[\"1\",\"1\",\"0\",\"1\",\"0\"],[\"1\",\"1\",\"0\",\"0\",\"0\"],[\"0\",\"0\",\"0\",\"0\",\"0\"]]",
+              "expectedOutput": "1",
+              "explanation": "All land is connected."
+            },
+            {
+              "id": "5164b72d-7171-48da-aa64-47e45e594562",
+              "input": "grid = [[\"1\",\"1\",\"0\",\"0\",\"0\"],[\"1\",\"1\",\"0\",\"0\",\"0\"],[\"0\",\"0\",\"1\",\"0\"],[\"0\",\"0\",\"0\",\"1\",\"1\"]]",
+              "expectedOutput": "3",
+              "explanation": "Three separate islands."
+            }
+          ]
+        }
+      ],
+      "relatedProblems": [
+        "max-area-of-island",
+        "surrounded-regions"
+      ],
+      "lastUpdated": "2026-02-06T00:00:00Z"
+    },
+    {
+      "id": "ad4417ac-7912-43ec-b99c-b98060877efe",
+      "problemSlug": "rotting-oranges",
+      "summary": "Use BFS from all rotten oranges to simulate minute-by-minute spread.",
+      "approaches": [
+        {
+          "id": "33f1b3ba-ac87-4e04-8610-23e61eb07e5d",
+          "name": "BFS Multi-Source",
+          "order": 1,
+          "intuition": "Each minute, all currently rotten oranges infect adjacent fresh ones. BFS levels model this time expansion.",
+          "approach": "1. Add all rotten oranges to a queue; count fresh oranges.\n2. Process the queue level by level, rotting adjacent fresh oranges.\n3. Increment minutes after each level.\n4. If fresh oranges remain, return -1; otherwise return minutes.",
+          "explanation": "BFS naturally tracks the minimum time to reach each orange because it expands in waves.",
+          "code": "func orangesRotting(_ grid: [[Int]]) -> Int {\n    var grid = grid\n    let rows = grid.count\n    let cols = grid.first?.count ?? 0\n    var queue: [(Int, Int)] = []\n    var fresh = 0\n\n    for r in 0..<rows {\n        for c in 0..<cols {\n            if grid[r][c] == 2 { queue.append((r, c)) }\n            else if grid[r][c] == 1 { fresh += 1 }\n        }\n    }\n\n    let directions = [(1,0),(-1,0),(0,1),(0,-1)]\n    var minutes = 0\n    var head = 0\n\n    while head < queue.count && fresh > 0 {\n        let levelCount = queue.count - head\n        for _ in 0..<levelCount {\n            let (r, c) = queue[head]\n            head += 1\n            for (dr, dc) in directions {\n                let nr = r + dr\n                let nc = c + dc\n                if nr >= 0 && nr < rows && nc >= 0 && nc < cols && grid[nr][nc] == 1 {\n                    grid[nr][nc] = 2\n                    fresh -= 1\n                    queue.append((nr, nc))\n                }\n            }\n        }\n        minutes += 1\n    }\n\n    return fresh == 0 ? minutes : -1\n}",
+          "complexity": {
+            "time": "O(m * n)",
+            "space": "O(m * n)",
+            "timeExplanation": "Each cell is processed at most once.",
+            "spaceExplanation": "Queue may hold all cells in the grid."
+          },
+          "testCases": [
+            {
+              "id": "963f04ce-46ca-4f77-84ee-f13640cb6a5a",
+              "input": "grid = [[2,1,1],[1,1,0],[0,1,1]]",
+              "expectedOutput": "4",
+              "explanation": "All oranges rot in 4 minutes."
+            },
+            {
+              "id": "8e19da01-63c9-42cb-a384-85cbb69562de",
+              "input": "grid = [[2,1,1],[0,1,1],[1,0,1]]",
+              "expectedOutput": "-1",
+              "explanation": "Some oranges are unreachable."
+            },
+            {
+              "id": "2efd6748-b2da-4ee7-aeac-9dbe9e4071a8",
+              "input": "grid = [[0,2]]",
+              "expectedOutput": "0",
+              "explanation": "No fresh oranges to rot."
+            }
+          ]
+        }
+      ],
+      "relatedProblems": [
+        "01-matrix",
+        "shortest-path-in-binary-matrix"
+      ],
+      "lastUpdated": "2026-02-06T00:00:00Z"
+    },
+    {
+      "id": "b5852c33-2b98-45c6-8c16-c292beb01185",
+      "problemSlug": "reverse-linked-list-ii",
+      "summary": "Reverse the nodes between two positions using head insertion within the sublist.",
+      "approaches": [
+        {
+          "id": "1b727499-28ed-4e69-ae36-0d335a4f4c55",
+          "name": "Sublist Reversal",
+          "order": 1,
+          "intuition": "If we fix the node before the sublist, we can repeatedly move the next node to the front of that sublist.",
+          "approach": "1. Use a dummy node and move `pre` to the node just before `left`.\n2. Let `start` be the first node in the sublist and `then` be start.next.\n3. For each step, move `then` to the front of the sublist.",
+          "explanation": "This reverses the sublist in-place without touching nodes outside the range.",
+          "code": "func reverseBetween(_ head: ListNode?, _ left: Int, _ right: Int) -> ListNode? {\n    if head == nil || left == right { return head }\n    let dummy = ListNode(0)\n    dummy.next = head\n    var pre: ListNode? = dummy\n\n    var pos = 1\n    while pos < left {\n        pre = pre?.next\n        pos += 1\n    }\n\n    let start = pre?.next\n    var then = start?.next\n    var i = 0\n    while i < right - left {\n        start?.next = then?.next\n        then?.next = pre?.next\n        pre?.next = then\n        then = start?.next\n        i += 1\n    }\n\n    return dummy.next\n}",
+          "complexity": {
+            "time": "O(n)",
+            "space": "O(1)",
+            "timeExplanation": "We traverse the list once and reverse the sublist in place.",
+            "spaceExplanation": "Only a few pointers are used."
+          },
+          "testCases": [
+            {
+              "id": "1272d27f-24bc-4442-bf9a-626f1fe6c565",
+              "input": "head = [1,2,3,4,5], left = 2, right = 4",
+              "expectedOutput": "[1,4,3,2,5]",
+              "explanation": "Sublist 2..4 is reversed."
+            },
+            {
+              "id": "e8309d6a-9f8f-49ce-b125-1afc3423b163",
+              "input": "head = [5], left = 1, right = 1",
+              "expectedOutput": "[5]",
+              "explanation": "Single node remains unchanged."
+            }
+          ]
+        }
+      ],
+      "relatedProblems": [
+        "reverse-linked-list",
+        "reorder-list"
+      ],
+      "lastUpdated": "2026-02-06T00:00:00Z"
+    },
+    {
+      "id": "c4d3ba80-256e-421e-a8cd-00902e73d355",
+      "problemSlug": "coin-change",
+      "summary": "Compute the minimum coins needed for every amount up to target.",
+      "approaches": [
+        {
+          "id": "b55a038f-25b6-43b9-a7b6-8b9c281971f8",
+          "name": "DP (Unbounded)",
+          "order": 1,
+          "intuition": "The optimal way to make amount A depends on the optimal way to make A - coin for each coin.",
+          "approach": "1. Initialize dp[0] = 0 and dp[i] = amount + 1 as infinity.\n2. For each amount from 1 to target, try each coin.\n3. If coin <= amount, dp[amount] = min(dp[amount], dp[amount - coin] + 1).\n4. Return dp[amount] if reachable, else -1.",
+          "explanation": "This is a classic unbounded knapsack: each coin can be used multiple times.",
+          "code": "func coinChange(_ coins: [Int], _ amount: Int) -> Int {\n    if amount == 0 { return 0 }\n    var dp = Array(repeating: amount + 1, count: amount + 1)\n    dp[0] = 0\n\n    if amount > 0 {\n        for a in 1...amount {\n            for coin in coins where coin <= a {\n                dp[a] = min(dp[a], dp[a - coin] + 1)\n            }\n        }\n    }\n\n    return dp[amount] > amount ? -1 : dp[amount]\n}",
+          "complexity": {
+            "time": "O(amount * coins)",
+            "space": "O(amount)",
+            "timeExplanation": "For each amount we test all coins.",
+            "spaceExplanation": "DP array of size amount + 1."
+          },
+          "testCases": [
+            {
+              "id": "02761a1e-687a-443d-ad55-42ec7bfee4be",
+              "input": "coins = [1,2,5], amount = 11",
+              "expectedOutput": "3",
+              "explanation": "11 = 5 + 5 + 1."
+            },
+            {
+              "id": "722491b7-e337-4740-b52c-143a5b9af547",
+              "input": "coins = [2], amount = 3",
+              "expectedOutput": "-1",
+              "explanation": "Cannot make 3 with only 2s."
+            },
+            {
+              "id": "f4c25e0b-fd8f-40bf-a433-ce41c17606e9",
+              "input": "coins = [1], amount = 0",
+              "expectedOutput": "0",
+              "explanation": "Zero amount needs zero coins."
+            }
+          ]
+        }
+      ],
+      "relatedProblems": [
+        "coin-change-2",
+        "minimum-cost-for-tickets"
+      ],
+      "lastUpdated": "2026-02-06T00:00:00Z"
     }
   ]
 }

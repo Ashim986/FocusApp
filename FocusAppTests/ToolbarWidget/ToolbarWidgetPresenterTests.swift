@@ -254,8 +254,8 @@ final class ToolbarWidgetPresenterTests: XCTestCase {
         let interactor = ToolbarWidgetInteractor(appStore: store, leetCodeSync: syncInteractor)
         let presenter = ToolbarWidgetPresenter(interactor: interactor)
 
-        // Initially all 9 problems should be carryover (incomplete)
-        XCTAssertEqual(presenter.carryoverProblems.count, 9)
+        // Initially all 11 problems should be carryover (incomplete)
+        XCTAssertEqual(presenter.carryoverProblems.count, 11)
 
         // Complete 2 problems
         store.toggleProblem(day: 1, problemIndex: 0)
@@ -263,7 +263,7 @@ final class ToolbarWidgetPresenterTests: XCTestCase {
 
         try? await Task.sleep(nanoseconds: 100_000_000)
 
-        // Should have 7 carryover problems
-        XCTAssertEqual(presenter.carryoverProblems.count, 7)
+        // Should have 9 carryover problems
+        XCTAssertEqual(presenter.carryoverProblems.count, 9)
     }
 }

@@ -40,6 +40,8 @@ final class CodingEnvironmentPresenter: ObservableObject {
     var codeSaveTask: Task<Void, Never>?
     var isApplyingExternalCode: Bool = false
     var runTask: Task<Void, Never>?
+    var activeProblemSlug: String?
+    var activeContentRequestID: UUID?
     struct PendingSubmission {
         let problem: Problem
         let code: String
@@ -131,7 +133,14 @@ final class CodingEnvironmentPresenter: ObservableObject {
 
     func selectProblem(_ problem: Problem, at index: Int, day: Int) {
         persistCurrentCode()
+        runTask?.cancel()
+        runTask = nil
+        isRunning = false
         clearJourney()
+
+        activeProblemSlug = LeetCodeSlugExtractor.extractSlug(from: problem.url)
+        let requestID = UUID()
+        activeContentRequestID = requestID
 
         selectedProblem = problem
         selectedProblemIndex = index
@@ -141,11 +150,13 @@ final class CodingEnvironmentPresenter: ObservableObject {
         compilationOutput = ""
         errorOutput = ""
         problemContent = nil
+        currentSolution = nil
+        isLoadingProblem = false
         viewState = .coding
 
         // Fetch problem content and solution
         Task {
-            await loadProblemContent(for: problem)
+            await loadProblemContent(for: problem, requestID: requestID)
         }
         loadSolution(for: problem)
     }

@@ -22,7 +22,7 @@ final class CodingEnvironmentInteractorTests: XCTestCase {
 
         let problems = interactor.todaysProblems()
 
-        XCTAssertEqual(problems.count, 9)
+        XCTAssertEqual(problems.count, 11)
         XCTAssertEqual(problems[0].name, "Two Sum")
     }
 

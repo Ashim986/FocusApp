@@ -6,7 +6,7 @@ final class CodingEnvironmentSnippetSelectionTests: XCTestCase {
     @MainActor
     func testInitialCodeUsesStoredCodeWhenNonDefault() {
         let presenter = makeCodingPresenter()
-        let problem = dsaPlan[0].problems[0]
+        let problem = problemWithSlug("reverse-linked-list")
         presenter.selectedProblem = problem
         let key = presenter.solutionKey(for: problem, language: .swift)
         presenter.interactor.saveSolution(code: "print(\"custom\")", for: key)
@@ -19,7 +19,7 @@ final class CodingEnvironmentSnippetSelectionTests: XCTestCase {
     @MainActor
     func testInitialCodeUsesSnippetFromCacheWhenStoredIsDefault() {
         let presenter = makeCodingPresenter()
-        let problem = dsaPlan[0].problems[0]
+        let problem = problemWithSlug("reverse-linked-list")
         presenter.selectedProblem = problem
         let key = presenter.solutionKey(for: problem, language: .swift)
         presenter.interactor.saveSolution(code: ProgrammingLanguage.swift.defaultTemplate, for: key)
@@ -69,7 +69,7 @@ final class CodingEnvironmentSnippetSelectionTests: XCTestCase {
     @MainActor
     func testApplySnippetIfNeededPrefersSnippet() {
         let presenter = makeCodingPresenter()
-        let problem = dsaPlan[0].problems[0]
+        let problem = problemWithSlug("reverse-linked-list")
         presenter.selectedProblem = problem
         presenter.setCode("")
 
@@ -91,7 +91,7 @@ final class CodingEnvironmentSnippetSelectionTests: XCTestCase {
     @MainActor
     func testApplySnippetIfNeededFallsBackToTemplate() {
         let presenter = makeCodingPresenter()
-        let problem = dsaPlan[0].problems[0]
+        let problem = problemWithSlug("reverse-linked-list")
         presenter.selectedProblem = problem
         presenter.setCode("")
         let meta = functionMetaJSON(

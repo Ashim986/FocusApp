@@ -179,6 +179,30 @@ extension DataJourneyStructureCanvasView {
         }
     }
 
+    func treePointerMotions(
+        from previousEvent: DataJourneyEvent?,
+        to currentEvent: DataJourneyEvent?
+    ) -> [TreePointerMotion] {
+        guard let previousEvent, let currentEvent else { return [] }
+        let previous = treePointerNodes(in: previousEvent)
+        let current = treePointerNodes(in: currentEvent)
+        var motions: [TreePointerMotion] = []
+        for (name, toId) in current {
+            guard let fromId = previous[name], fromId != toId else { continue }
+            motions.append(TreePointerMotion(name: name, fromId: fromId, toId: toId))
+        }
+        return motions.sorted { $0.name.localizedCaseInsensitiveCompare($1.name) == .orderedAscending }
+    }
+
+    func treePointerNodes(in event: DataJourneyEvent) -> [String: String] {
+        var mapping: [String: String] = [:]
+        for candidate in pointerCandidates(in: event) {
+            guard case .treePointer(let id) = candidate.value else { continue }
+            mapping[candidate.name] = id
+        }
+        return mapping
+    }
+
     func arrayPointers(in event: DataJourneyEvent, items: [TraceValue]) -> [PointerMarker] {
         event.values.compactMap { key, value in
             guard case .number(let number, let isInt) = value, isInt else { return nil }

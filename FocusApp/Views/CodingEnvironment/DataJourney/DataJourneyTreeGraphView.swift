@@ -3,6 +3,7 @@ import SwiftUI
 struct TreeGraphView: View {
     let tree: TraceTree
     let pointers: [PointerMarker]
+    let pointerMotions: [TreePointerMotion]
     let nodeSize: CGFloat
     let pointerFontSize: CGFloat
     let pointerHorizontalPadding: CGFloat
@@ -16,6 +17,7 @@ struct TreeGraphView: View {
     init(
         tree: TraceTree,
         pointers: [PointerMarker],
+        pointerMotions: [TreePointerMotion] = [],
         bubbleStyle: TraceBubble.Style = .solid,
         nodeSize: CGFloat = 30,
         pointerFontSize: CGFloat = 8,
@@ -24,6 +26,7 @@ struct TreeGraphView: View {
     ) {
         self.tree = tree
         self.pointers = pointers
+        self.pointerMotions = pointerMotions
         self.nodeSize = nodeSize
         self.pointerFontSize = pointerFontSize
         self.pointerHorizontalPadding = pointerHorizontalPadding
@@ -39,14 +42,38 @@ struct TreeGraphView: View {
                 nodeSize: nodeSize,
                 levelSpacing: levelSpacing
             )
+            let topPadding = pointerMotions.isEmpty ? 0 : nodeSize * 0.8
+            let bottomPadding = pointerMotions.count >= 3 ? nodeSize * 0.6 : 0
+            let yOffset = topPadding
             let pointersById = groupedPointers
+            let positions = Dictionary(uniqueKeysWithValues: layout.nodes.map {
+                ($0.id, CGPoint(x: $0.position.x, y: $0.position.y + yOffset))
+            })
             ZStack {
                 Canvas { context, _ in
                     for edge in layout.edges {
                         var path = Path()
-                        path.move(to: edge.from)
-                        path.addLine(to: edge.to)
+                        let from = CGPoint(x: edge.from.x, y: edge.from.y + yOffset)
+                        let to = CGPoint(x: edge.to.x, y: edge.to.y + yOffset)
+                        path.move(to: from)
+                        path.addLine(to: to)
                         context.stroke(path, with: .color(Color.appGray600.opacity(0.6)), lineWidth: 1)
+                    }
+
+                    for (index, motion) in pointerMotions.enumerated() {
+                        guard let from = positions[motion.fromId],
+                              let to = positions[motion.toId],
+                              from != to else { continue }
+                        let useBottom = index >= 2
+                        let laneIndex = max(0, useBottom ? index - 2 : index)
+                        drawPointerMotion(
+                            context: &context,
+                            from: from,
+                            to: to,
+                            color: motion.color,
+                            laneIndex: laneIndex,
+                            useBottom: useBottom
+                        )
                     }
                 }
 
@@ -70,12 +97,64 @@ struct TreeGraphView: View {
                             .offset(y: -(nodeSize / 2 + stackHeight))
                         }
                     }
-                    .position(node.position)
+                    .position(CGPoint(x: node.position.x, y: node.position.y + yOffset))
                 }
             }
-            .frame(height: layout.height)
+            .frame(height: layout.height + topPadding + bottomPadding)
         }
         .frame(minHeight: nodeSize + levelSpacing)
+    }
+
+    private func drawPointerMotion(
+        context: inout GraphicsContext,
+        from: CGPoint,
+        to: CGPoint,
+        color: Color,
+        laneIndex: Int,
+        useBottom: Bool
+    ) {
+        let direction: CGFloat = from.x <= to.x ? 1 : -1
+        let startYOffset = useBottom ? nodeSize * 0.45 : -nodeSize * 0.45
+        let endYOffset = useBottom ? nodeSize * 0.45 : -nodeSize * 0.45
+        let start = CGPoint(x: from.x + direction * nodeSize * 0.35, y: from.y + startYOffset)
+        let end = CGPoint(x: to.x - direction * nodeSize * 0.35, y: to.y + endYOffset)
+        let span = abs(end.x - start.x)
+        let baseLift = min(56, max(16, span * 0.25))
+        let lift = baseLift + CGFloat(laneIndex) * 12
+        let controlY = useBottom
+            ? max(start.y, end.y) + lift
+            : min(start.y, end.y) - lift
+        let control = CGPoint(x: (start.x + end.x) / 2, y: controlY)
+        var path = Path()
+        path.move(to: start)
+        path.addQuadCurve(to: end, control: control)
+        context.stroke(path, with: .color(color.opacity(0.85)), lineWidth: 1.6)
+        drawArrowHead(context: &context, from: control, to: end, color: color.opacity(0.95))
+    }
+
+    private func drawArrowHead(
+        context: inout GraphicsContext,
+        from: CGPoint,
+        to: CGPoint,
+        color: Color
+    ) {
+        let dx = to.x - from.x
+        let dy = to.y - from.y
+        let length = max(sqrt(dx * dx + dy * dy), 0.001)
+        let ux = dx / length
+        let uy = dy / length
+        let arrowSize: CGFloat = 6
+        let base = CGPoint(x: to.x - ux * arrowSize, y: to.y - uy * arrowSize)
+        let perp = CGPoint(x: -uy, y: ux)
+        let halfWidth = arrowSize * 0.6
+        let left = CGPoint(x: base.x + perp.x * halfWidth, y: base.y + perp.y * halfWidth)
+        let right = CGPoint(x: base.x - perp.x * halfWidth, y: base.y - perp.y * halfWidth)
+        var head = Path()
+        head.move(to: to)
+        head.addLine(to: left)
+        head.addLine(to: right)
+        head.closeSubpath()
+        context.fill(head, with: .color(color))
     }
 
     private var groupedPointers: [String: [PointerMarker]] {

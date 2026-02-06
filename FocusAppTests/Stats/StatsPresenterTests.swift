@@ -17,7 +17,7 @@ final class StatsPresenterTests: XCTestCase {
 
         XCTAssertEqual(presenter.viewModel.totalProblems, expectedTotal)
         XCTAssertEqual(presenter.viewModel.solvedProblems, 0)
-        XCTAssertEqual(presenter.viewModel.totalTopics, 13)
+        XCTAssertEqual(presenter.viewModel.totalTopics, dsaPlan.count)
         XCTAssertEqual(presenter.viewModel.completedTopics, 0)
     }
 
@@ -44,7 +44,7 @@ final class StatsPresenterTests: XCTestCase {
     }
 
     @MainActor
-    func testTopicBreakdownHas13Entries() {
+    func testTopicBreakdownMatchesPlan() {
         let start = makeDate(year: 2026, month: 2, day: 3)
         let store = AppStateStore(
             storage: InMemoryAppStorage(),
@@ -54,9 +54,9 @@ final class StatsPresenterTests: XCTestCase {
         let interactor = StatsInteractor(appStore: store)
         let presenter = StatsPresenter(interactor: interactor)
 
-        XCTAssertEqual(presenter.viewModel.topicBreakdown.count, 13)
-        XCTAssertEqual(presenter.viewModel.topicBreakdown[0].topic, "Linked List")
-        XCTAssertEqual(presenter.viewModel.topicBreakdown[12].topic, "1-D DP (cont.) + 2-D DP Intro")
+        XCTAssertEqual(presenter.viewModel.topicBreakdown.count, dsaPlan.count)
+        XCTAssertEqual(presenter.viewModel.topicBreakdown.first?.topic, "Priority Sprint I")
+        XCTAssertEqual(presenter.viewModel.topicBreakdown.last?.topic, "1-D DP (cont.) + 2-D DP Intro")
     }
 
     @MainActor
@@ -72,8 +72,8 @@ final class StatsPresenterTests: XCTestCase {
 
         XCTAssertEqual(presenter.viewModel.completedTopics, 0)
 
-        // Complete all problems in day 1 (5 problems)
-        for i in 0..<5 {
+        // Complete all problems in day 1 (sprint = 9 problems)
+        for i in 0..<9 {
             store.toggleProblem(day: 1, problemIndex: i)
         }
 

@@ -10,7 +10,7 @@ final class PlanCalendarTests: XCTestCase {
         XCTAssertEqual(calendar.baseDayNumber(today: before), 1)
 
         let after = makeDate(year: 2026, month: 3, day: 1)
-        XCTAssertEqual(calendar.baseDayNumber(today: after), 13)
+        XCTAssertEqual(calendar.baseDayNumber(today: after), dsaPlan.count)
     }
 
     func testCurrentDayNumberAppliesOffset() {
@@ -21,17 +21,21 @@ final class PlanCalendarTests: XCTestCase {
         XCTAssertEqual(calendar.currentDayNumber(today: start, offset: 2), 3)
     }
 
-    func testDSAPlanHasThirteenDaysAndFiveProblemsEach() {
-        XCTAssertEqual(dsaPlan.count, 13)
-        XCTAssertTrue(dsaPlan.allSatisfy { $0.problems.count == 5 })
-        XCTAssertEqual(dsaPlan.reduce(0) { $0 + $1.problems.count }, 65)
+    func testDSAPlanHasPrioritySprintAndCoreDays() {
+        XCTAssertEqual(dsaPlan.count, 15)
+        XCTAssertEqual(dsaPlan.first?.problems.count, 9)
+        XCTAssertEqual(dsaPlan.dropFirst().first?.problems.count, 16)
+        let remainingCounts = dsaPlan.dropFirst(2).map { $0.problems.count }
+        XCTAssertEqual(remainingCounts.filter { $0 == 3 }.count, 3)
+        XCTAssertTrue(remainingCounts.allSatisfy { $0 == 5 || $0 == 3 })
+        XCTAssertEqual(dsaPlan.reduce(0) { $0 + $1.problems.count }, 84)
     }
 
     func testDSAPlanIncludesPreCompletedTopics() {
         XCTAssertEqual(preCompletedTopics.count, 3)
         XCTAssertTrue(preCompletedTopics.contains("Arrays & Hashing"))
-        XCTAssertEqual(dsaPlan.first?.topic, "Linked List")
-        XCTAssertEqual(dsaPlan.first?.problems.first?.name, "Reverse Linked List")
+        XCTAssertEqual(dsaPlan.first?.topic, "Priority Sprint I")
+        XCTAssertEqual(dsaPlan.first?.problems.first?.name, "Two Sum")
     }
 
     func testProblemCodableRoundTrip() throws {

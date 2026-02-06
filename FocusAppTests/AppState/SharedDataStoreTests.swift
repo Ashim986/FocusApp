@@ -126,11 +126,11 @@ final class SharedDataStoreTests: XCTestCase {
         XCTAssertEqual(calendar.baseDayNumber(today: pastDate), 1)
     }
 
-    func testPlanCalendarBaseDayNumberClampsTo13() {
+    func testPlanCalendarBaseDayNumberClampsToPlanCount() {
         let calendar = PlanCalendar(startDate: makeDate(year: 2026, month: 2, day: 1))
         let futureDate = makeDate(year: 2026, month: 12, day: 31)
 
-        XCTAssertEqual(calendar.baseDayNumber(today: futureDate), 13)
+        XCTAssertEqual(calendar.baseDayNumber(today: futureDate), dsaPlan.count)
     }
 
     func testPlanCalendarCurrentDayNumberWithOffset() {
@@ -139,7 +139,7 @@ final class SharedDataStoreTests: XCTestCase {
 
         XCTAssertEqual(calendar.currentDayNumber(today: today, offset: 0), 1)
         XCTAssertEqual(calendar.currentDayNumber(today: today, offset: 5), 6)
-        XCTAssertEqual(calendar.currentDayNumber(today: today, offset: 100), 13)
+        XCTAssertEqual(calendar.currentDayNumber(today: today, offset: 100), dsaPlan.count)
     }
 
     func testFileAppStorageDefaultFileURL() {

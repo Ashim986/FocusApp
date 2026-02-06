@@ -22,8 +22,8 @@ final class CodingEnvironmentInteractorTests: XCTestCase {
 
         let problems = interactor.todaysProblems()
 
-        XCTAssertEqual(problems.count, 5)
-        XCTAssertEqual(problems[0].name, "Reverse Linked List")
+        XCTAssertEqual(problems.count, 9)
+        XCTAssertEqual(problems[0].name, "Two Sum")
     }
 
     @MainActor

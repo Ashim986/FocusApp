@@ -90,7 +90,7 @@ final class ToolbarWidgetInteractorTests: XCTestCase {
         let syncInteractor = LeetCodeSyncInteractor(appStore: store, client: client)
         let interactor = ToolbarWidgetInteractor(appStore: store, leetCodeSync: syncInteractor)
 
-        XCTAssertEqual(interactor.todaysTopic(), "Linked List")
+        XCTAssertEqual(interactor.todaysTopic(), "Priority Sprint I")
     }
 
     @MainActor
@@ -128,8 +128,18 @@ final class ToolbarWidgetInteractorTests: XCTestCase {
 
         _ = await interactor.validateAndSaveUsername("testuser")
 
-        // Verify sync was called by checking if problems were synced
-        XCTAssertTrue(store.isProblemCompleted(day: 1, problemIndex: 0))
+        // Verify sync was called by checking matching problems were synced
+        let expectedMatches = dsaPlan.flatMap { day in
+            day.problems.enumerated().compactMap { index, problem -> (Int, Int)? in
+                guard let slug = LeetCodeSlugExtractor.extractSlug(from: problem.url),
+                      slug == "reverse-linked-list" else { return nil }
+                return (day.id, index)
+            }
+        }
+        XCTAssertFalse(expectedMatches.isEmpty)
+        for match in expectedMatches {
+            XCTAssertTrue(store.isProblemCompleted(day: match.0, problemIndex: match.1))
+        }
     }
 
     @MainActor
@@ -147,6 +157,13 @@ final class ToolbarWidgetInteractorTests: XCTestCase {
 
         let result = await interactor.syncSolvedProblems(username: "testuser")
 
-        XCTAssertEqual(result.syncedCount, 1)
+        let expectedMatches = dsaPlan.flatMap { day in
+            day.problems.enumerated().compactMap { index, problem -> (Int, Int)? in
+                guard let slug = LeetCodeSlugExtractor.extractSlug(from: problem.url),
+                      slug == "reverse-linked-list" else { return nil }
+                return (day.id, index)
+            }
+        }
+        XCTAssertEqual(result.syncedCount, expectedMatches.count)
     }
 }

@@ -26,3 +26,40 @@ func functionMetaJSON(name: String, params: [(String, String)], returnType: Stri
     let paramsJSON = params.map { "{\"name\":\"\($0.0)\",\"type\":\"\($0.1)\"}" }.joined(separator: ",")
     return "{\"name\":\"\(name)\",\"params\":[\(paramsJSON)],\"return\":{\"type\":\"\(returnType)\"}}"
 }
+
+func problemWithSlug(
+    _ slug: String,
+    file: StaticString = #file,
+    line: UInt = #line
+) -> Problem {
+    for day in dsaPlan {
+        for problem in day.problems {
+            if LeetCodeSlugExtractor.extractSlug(from: problem.url) == slug {
+                return problem
+            }
+        }
+    }
+    XCTFail("Missing problem for slug \(slug)", file: file, line: line)
+    return dsaPlan.first?.problems.first ?? Problem(
+        name: slug,
+        difficulty: .easy,
+        url: "https://leetcode.com/problems/\(slug)/"
+    )
+}
+
+func problemLocation(
+    for slug: String,
+    file: StaticString = #file,
+    line: UInt = #line
+) -> (problem: Problem, dayId: Int, index: Int) {
+    for day in dsaPlan {
+        if let index = day.problems.firstIndex(
+            where: { LeetCodeSlugExtractor.extractSlug(from: $0.url) == slug }
+        ) {
+            return (day.problems[index], day.id, index)
+        }
+    }
+    XCTFail("Missing problem location for slug \(slug)", file: file, line: line)
+    let fallback = problemWithSlug(slug, file: file, line: line)
+    return (fallback, 1, 0)
+}

@@ -27,8 +27,8 @@ final class CodingEnvironmentPresenterTests: XCTestCase {
         let interactor = CodingEnvironmentInteractor(appStore: store, leetCodeClient: client, executionService: executor, solutionStore: solutionStore)
         let presenter = CodingEnvironmentPresenter(interactor: interactor)
 
-        let problem = dsaPlan[0].problems[0]
-        presenter.selectProblem(problem, at: 0, day: 1)
+        let location = problemLocation(for: "reverse-linked-list")
+        presenter.selectProblem(location.problem, at: location.index, day: location.dayId)
 
         try? await Task.sleep(nanoseconds: 200_000_000)
 
@@ -59,11 +59,12 @@ final class CodingEnvironmentPresenterTests: XCTestCase {
         let interactor = CodingEnvironmentInteractor(appStore: store, leetCodeClient: client, executionService: executor, solutionStore: solutionStore)
         let presenter = CodingEnvironmentPresenter(interactor: interactor)
 
-        let problem = dsaPlan[0].problems[0]
+        let location = problemLocation(for: "reverse-linked-list")
+        let problem = location.problem
         let key = presenter.solutionKey(for: problem, language: ProgrammingLanguage.swift)
         store.saveSolution(code: "print(\"hi\")", for: key)
 
-        presenter.selectProblem(problem, at: 0, day: 1)
+        presenter.selectProblem(problem, at: location.index, day: location.dayId)
 
         try? await Task.sleep(nanoseconds: 200_000_000)
 
@@ -77,7 +78,7 @@ final class CodingEnvironmentExecutionTests: XCTestCase {
         let harness = makeHarness()
         let presenter = harness.presenter
         let executor = harness.executor
-        let problem = dsaPlan[0].problems[0]
+        let problem = problemWithSlug("reverse-linked-list")
         presenter.selectedProblem = problem
 
         let meta = functionMetaJSON(
@@ -110,7 +111,7 @@ final class CodingEnvironmentExecutionTests: XCTestCase {
         let harness = makeHarness()
         let presenter = harness.presenter
         let executor = harness.executor
-        let problem = dsaPlan[0].problems[0]
+        let problem = problemWithSlug("reverse-linked-list")
         presenter.selectedProblem = problem
 
         let meta = functionMetaJSON(
@@ -150,7 +151,7 @@ final class CodingEnvironmentExecutionTests: XCTestCase {
         let harness = makeHarness()
         let presenter = harness.presenter
         let store = harness.store
-        let problem = dsaPlan[0].problems[0]
+        let problem = problemWithSlug("reverse-linked-list")
         presenter.selectedProblem = problem
         presenter.pendingSubmission = CodingEnvironmentPresenter.PendingSubmission(
             problem: problem,
@@ -281,7 +282,7 @@ final class CodingEnvironmentProblemLoadingTests: XCTestCase {
         let logger = DebugLogStore()
         let harness = makeHarness(logger: logger)
         let presenter = harness.presenter
-        let problem = dsaPlan[0].problems[0]
+        let problem = problemWithSlug("reverse-linked-list")
         presenter.selectedProblem = problem
 
         let cached = QuestionContent(
@@ -313,7 +314,7 @@ final class CodingEnvironmentProblemLoadingTests: XCTestCase {
         let client = FakeLeetCodeClient()
         let harness = makeHarness(client: client, logger: logger)
         let presenter = harness.presenter
-        let problem = dsaPlan[0].problems[0]
+        let problem = problemWithSlug("reverse-linked-list")
         presenter.selectedProblem = problem
 
         let content = QuestionContent(
@@ -354,7 +355,7 @@ final class CodingEnvironmentProblemLoadingTests: XCTestCase {
         let logger = DebugLogStore()
         let harness = makeHarness(logger: logger)
         let presenter = harness.presenter
-        let problem = dsaPlan[0].problems[0]
+        let problem = problemWithSlug("reverse-linked-list")
 
         await presenter.loadProblemContent(for: problem)
 
@@ -370,7 +371,7 @@ final class CodingEnvironmentProblemLoadingTests: XCTestCase {
         let client = ThrowingLeetCodeClient()
         let harness = makeHarness(client: client, logger: logger)
         let presenter = harness.presenter
-        let problem = dsaPlan[0].problems[0]
+        let problem = problemWithSlug("reverse-linked-list")
 
         await presenter.loadProblemContent(for: problem)
 
@@ -471,7 +472,7 @@ final class CodingEnvironmentPresenterStateTests: XCTestCase {
     func testChangeLanguageLoadsSnippetForProblem() {
         let harness = makeHarness()
         let presenter = harness.presenter
-        let problem = dsaPlan[0].problems[0]
+        let problem = problemWithSlug("reverse-linked-list")
         presenter.selectedProblem = problem
         presenter.problemContentCache["reverse-linked-list"] = QuestionContent(
             title: "Reverse Linked List",
@@ -494,7 +495,7 @@ final class CodingEnvironmentPresenterStateTests: XCTestCase {
     func testBackToProblemSelectionResetsState() {
         let harness = makeHarness()
         let presenter = harness.presenter
-        presenter.selectedProblem = dsaPlan[0].problems[0]
+        presenter.selectedProblem = problemWithSlug("reverse-linked-list")
         presenter.testCases = [TestCase(input: "1", expectedOutput: "1")]
         presenter.compilationOutput = "output"
         presenter.errorOutput = "error"
@@ -540,7 +541,7 @@ final class CodingEnvironmentPresenterStateTests: XCTestCase {
         let harness = makeHarness()
         let presenter = harness.presenter
         let store = harness.store
-        let problem = dsaPlan[0].problems[0]
+        let problem = problemWithSlug("reverse-linked-list")
         presenter.selectedProblem = problem
 
         presenter.code = "print(\"saved\")"

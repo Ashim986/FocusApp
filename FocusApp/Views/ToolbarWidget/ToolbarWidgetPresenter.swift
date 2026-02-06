@@ -51,7 +51,7 @@ final class ToolbarWidgetPresenter: ObservableObject {
     }
 
     var tomorrowDayNumber: Int {
-        min(currentDayNumber + 1, 13)
+        min(currentDayNumber + 1, dsaPlan.count)
     }
 
     var tomorrowsTopic: String {
@@ -71,7 +71,7 @@ final class ToolbarWidgetPresenter: ObservableObject {
     }
 
     var hasTomorrow: Bool {
-        currentDayNumber < 13
+        currentDayNumber < dsaPlan.count
     }
 
     var allTodaysSolved: Bool {

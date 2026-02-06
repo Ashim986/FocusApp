@@ -2,19 +2,21 @@
 import XCTest
 
 final class DSAPlanTests: XCTestCase {
-    func testPlanHas13Days() {
-        XCTAssertEqual(dsaPlan.count, 13)
+    func testPlanHas15Days() {
+        XCTAssertEqual(dsaPlan.count, 15)
     }
 
-    func testEachDayHas5Problems() {
-        for day in dsaPlan {
-            XCTAssertEqual(day.problems.count, 5, "Day \(day.id) should have 5 problems")
-        }
+    func testSprintAndCoreProblemCounts() {
+        XCTAssertEqual(dsaPlan.first?.problems.count, 9)
+        XCTAssertEqual(dsaPlan.dropFirst().first?.problems.count, 16)
+        let remainingCounts = dsaPlan.dropFirst(2).map { $0.problems.count }
+        XCTAssertEqual(remainingCounts.filter { $0 == 3 }.count, 3)
+        XCTAssertTrue(remainingCounts.allSatisfy { $0 == 5 || $0 == 3 })
     }
 
-    func testTotalProblemCountIs65() {
+    func testTotalProblemCountIs84() {
         let total = dsaPlan.reduce(0) { $0 + $1.problems.count }
-        XCTAssertEqual(total, 65)
+        XCTAssertEqual(total, 84)
     }
 
     func testAllProblemsHaveValidLeetCodeURLs() {
@@ -54,6 +56,6 @@ final class DSAPlanTests: XCTestCase {
 
     func testDayIdsAreSequential() {
         let ids = dsaPlan.map { $0.id }
-        XCTAssertEqual(ids, Array(1...13))
+        XCTAssertEqual(ids, Array(1...15))
     }
 }

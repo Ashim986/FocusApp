@@ -239,9 +239,11 @@ struct DataJourneyStructureCanvasView: View {
                         }
                     }
                 case .tree(let tree):
+                    let motions = treePointerMotions(from: previousEvent, to: selectedEvent)
                     TreeGraphView(
                         tree: tree,
                         pointers: pointerMarkers,
+                        pointerMotions: motions,
                         bubbleStyle: .solid,
                         nodeSize: structureBubbleSize,
                         pointerFontSize: structurePointerFontSize,

@@ -32,6 +32,22 @@ struct PointerMotion: Identifiable {
     }
 }
 
+struct TreePointerMotion: Identifiable {
+    let id: String
+    let name: String
+    let fromId: String
+    let toId: String
+    let color: Color
+
+    init(name: String, fromId: String, toId: String) {
+        self.id = "\(name)-\(fromId)-\(toId)"
+        self.name = name
+        self.fromId = fromId
+        self.toId = toId
+        self.color = PointerPalette.color(for: name)
+    }
+}
+
 struct SequenceLink: Identifiable {
     let id: String
     let fromIndex: Int

@@ -17,9 +17,20 @@ final class LeetCodeSyncInteractorTests: XCTestCase {
         let interactor = LeetCodeSyncInteractor(appStore: store, client: client)
         let result = await interactor.syncSolvedProblems(username: "user", limit: 50)
 
-        XCTAssertEqual(result.syncedCount, 1)
-        XCTAssertEqual(result.totalMatched, 1)
-        XCTAssertTrue(store.isProblemCompleted(day: 1, problemIndex: 0))
+        let expectedMatches = dsaPlan.flatMap { day in
+            day.problems.enumerated().compactMap { index, problem -> (Int, Int)? in
+                guard let slug = LeetCodeSlugExtractor.extractSlug(from: problem.url),
+                      slug == "reverse-linked-list" else { return nil }
+                return (day.id, index)
+            }
+        }
+
+        XCTAssertEqual(result.syncedCount, expectedMatches.count)
+        XCTAssertEqual(result.totalMatched, expectedMatches.count)
+        XCTAssertFalse(expectedMatches.isEmpty)
+        for match in expectedMatches {
+            XCTAssertTrue(store.isProblemCompleted(day: match.0, problemIndex: match.1))
+        }
     }
 
     @MainActor

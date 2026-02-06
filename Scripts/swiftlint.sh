@@ -25,12 +25,14 @@ else
 fi
 
 # Run SwiftLint
-cd "${SRCROOT}"
+ROOT_DIR="${SRCROOT:-$(pwd)}"
+DERIVED_DIR="${DERIVED_FILE_DIR:-${ROOT_DIR}/.swiftlint-derived}"
+cd "${ROOT_DIR}"
 
 # Keep SwiftLint caches and temp files inside the workspace to avoid permission issues.
-SWIFTLINT_HOME="${SRCROOT}/.swiftlint-home"
+SWIFTLINT_HOME="${ROOT_DIR}/.swiftlint-home"
 SWIFTLINT_CACHE_DIR="${SWIFTLINT_HOME}/Library/Caches"
-SWIFTLINT_TMPDIR="${SRCROOT}/.swiftlint-tmp"
+SWIFTLINT_TMPDIR="${ROOT_DIR}/.swiftlint-tmp"
 mkdir -p "$SWIFTLINT_CACHE_DIR" "$SWIFTLINT_TMPDIR"
 export HOME="$SWIFTLINT_HOME"
 export XDG_CACHE_HOME="$SWIFTLINT_CACHE_DIR"
@@ -46,7 +48,8 @@ fi
 echo "Running SwiftLint..."
 "$SWIFTLINT_PATH" lint --config .swiftlint.yml --cache-path "$SWIFTLINT_CACHE_DIR"
 
-OUTPUT_FILE="${DERIVED_FILE_DIR}/swiftlint.stamp"
+OUTPUT_FILE="${DERIVED_DIR}/swiftlint.stamp"
+mkdir -p "${DERIVED_DIR}"
 touch "$OUTPUT_FILE"
 
 exit $?

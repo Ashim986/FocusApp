@@ -59,12 +59,12 @@ struct PlanCalendar {
 
     func baseDayNumber(today: Date) -> Int {
         let daysDiff = calendar.dateComponents([.day], from: startDate, to: today).day ?? 0
-        return min(max(daysDiff + 1, 1), 13)
+        return min(max(daysDiff + 1, 1), dsaPlan.count)
     }
 
     func currentDayNumber(today: Date, offset: Int) -> Int {
         let baseDay = baseDayNumber(today: today)
-        return min(baseDay + offset, 13)
+        return min(baseDay + offset, dsaPlan.count)
     }
 }
 

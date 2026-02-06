@@ -2,7 +2,7 @@
 
 ## Project Overview
 
-FocusApp is a native macOS study companion app for Data Structures & Algorithms preparation. It helps track a 13-day study plan with 65 LeetCode problems, daily habits, and provides focus tools. The app automatically syncs with your LeetCode account to track solved problems.
+FocusApp is a native macOS study companion app for Data Structures & Algorithms preparation. It helps track a 13-day core plan plus a 2-day priority sprint (25 problems), daily habits, and provides focus tools. The app automatically syncs with your LeetCode account to track solved problems.
 
 ## Project Structure
 
@@ -29,7 +29,7 @@ FocusApp/
 │   ├── Models/
 │   │   ├── AppData.swift            # Data model for progress/habits
 │   │   ├── DataStore.swift          # AppStateStore for state management
-│   │   ├── DSAPlan.swift            # 13-day study plan definition
+│   │   ├── DSAPlan.swift            # Study plan definition (priority sprint + core plan)
 │   │   ├── NotificationManager.swift    # Notification entry point
 │   │   ├── NotificationSettings.swift
 │   │   ├── NotificationSettingsStore.swift

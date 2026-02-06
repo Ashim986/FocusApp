@@ -2365,9 +2365,6 @@
         }
       }
     },
-    "Showing first 40 steps or truncated data. Reduce `Trace.step` calls or input size to see more." : {
-
-    },
     "Skip" : {
 
     },

@@ -125,7 +125,7 @@ final class AppStateStore: ObservableObject {
 
     func advanceToNextDay() {
         let currentDay = currentDayNumber()
-        guard currentDay < 13 else { return }
+        guard currentDay < dsaPlan.count else { return }
         data.dayOffset += 1
         save()
     }

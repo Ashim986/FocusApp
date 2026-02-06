@@ -21,9 +21,10 @@ final class PlanPresenterTests: XCTestCase {
         // Allow binding to propagate
         try? await Task.sleep(nanoseconds: 100_000_000)
 
-        XCTAssertEqual(presenter.days.count, 13)
-        XCTAssertEqual(presenter.days[0].topic, "Linked List")
-        XCTAssertEqual(presenter.days[12].topic, "1-D DP (cont.) + 2-D DP Intro")
+        XCTAssertEqual(presenter.days.count, dsaPlan.count)
+        XCTAssertEqual(presenter.days[0].topic, "Priority Sprint I")
+        XCTAssertEqual(presenter.days[1].topic, "Priority Sprint II")
+        XCTAssertEqual(presenter.days.last?.topic, "1-D DP (cont.) + 2-D DP Intro")
     }
 
     @MainActor

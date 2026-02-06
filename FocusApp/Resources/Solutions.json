@@ -2212,6 +2212,1734 @@
         "minimum-cost-for-tickets"
       ],
       "lastUpdated": "2026-02-06T00:00:00Z"
+    },
+    {
+      "id": "550e8400-e29b-41d4-a716-446655440018",
+      "problemSlug": "find-median-from-data-stream",
+      "summary": "Maintain median using two heaps: max-heap for lower half, min-heap for upper half. Median is from top of heaps.",
+      "approaches": [
+        {
+          "id": "550e8400-e29b-41d4-a716-446655440129",
+          "name": "Two Heaps",
+          "order": 1,
+          "intuition": "Keep lower half in max-heap, upper half in min-heap. Balance sizes so median is accessible at heap tops.",
+          "approach": "1. Add to max-heap (lower), move max to min-heap (upper)\n2. If min-heap larger, move its min back to max-heap\n3. Median: if equal sizes, average of tops; else max-heap top",
+          "explanation": "Max-heap gives largest of smaller half, min-heap gives smallest of larger half. Keep sizes within 1.",
+          "code": "class MedianFinder {\n    private var lower: [Int] = []  // max-heap (negate values)\n    private var upper: [Int] = []  // min-heap\n    \n    func addNum(_ num: Int) {\n        // Add to lower (max-heap)\n        lower.append(-num)\n        lower.sort()\n        \n        // Move largest from lower to upper\n        upper.append(-lower.removeFirst())\n        upper.sort()\n        \n        // Balance: upper can't be larger\n        if upper.count > lower.count {\n            lower.append(-upper.removeFirst())\n            lower.sort()\n        }\n    }\n    \n    func findMedian() -> Double {\n        if lower.count > upper.count {\n            return Double(-lower.first!)\n        }\n        return Double(-lower.first! + upper.first!) / 2.0\n    }\n}",
+          "complexity": {
+            "time": "O(n log n)",
+            "space": "O(n)",
+            "timeExplanation": "Each add is O(n log n) with array sort (O(log n) with real heap)",
+            "spaceExplanation": "Store all n numbers"
+          },
+          "testCases": [
+            {
+              "id": "550e8400-e29b-41d4-a716-446655440235",
+              "input": "addNum(1), addNum(2), findMedian(), addNum(3), findMedian()",
+              "expectedOutput": "1.5, 2.0",
+              "explanation": "[1,2] median=1.5, [1,2,3] median=2"
+            }
+          ]
+        }
+      ],
+      "relatedProblems": [
+        "sliding-window-median"
+      ],
+      "lastUpdated": "2026-02-06T00:00:00Z"
+    },
+    {
+      "id": "550e8400-e29b-41d4-a716-446655440019",
+      "problemSlug": "subsets",
+      "summary": "Generate all subsets using backtracking or iterative bit manipulation. Each element is either included or not.",
+      "approaches": [
+        {
+          "id": "550e8400-e29b-41d4-a716-446655440130",
+          "name": "Backtracking",
+          "order": 1,
+          "intuition": "For each element, make two choices: include it or skip it. This creates a binary tree of decisions.",
+          "approach": "1. Start with empty subset\n2. At each index, branch: include nums[i] or not\n3. When index reaches end, add current subset to result",
+          "explanation": "Backtracking explores all 2^n combinations. Add element, recurse, remove (backtrack), recurse again.",
+          "code": "func subsets(_ nums: [Int]) -> [[Int]] {\n    var result: [[Int]] = []\n    var current: [Int] = []\n    \n    func backtrack(_ index: Int) {\n        if index == nums.count {\n            result.append(current)\n            return\n        }\n        // Include nums[index]\n        current.append(nums[index])\n        backtrack(index + 1)\n        current.removeLast()\n        // Exclude nums[index]\n        backtrack(index + 1)\n    }\n    \n    backtrack(0)\n    return result\n}",
+          "complexity": {
+            "time": "O(n * 2^n)",
+            "space": "O(n)",
+            "timeExplanation": "2^n subsets, O(n) to copy each",
+            "spaceExplanation": "Recursion depth n"
+          },
+          "testCases": [
+            {
+              "id": "550e8400-e29b-41d4-a716-446655440236",
+              "input": "[1,2,3]",
+              "expectedOutput": "[[],[1],[2],[1,2],[3],[1,3],[2,3],[1,2,3]]",
+              "explanation": "All 8 subsets of 3 elements"
+            }
+          ]
+        }
+      ],
+      "relatedProblems": [
+        "subsets-ii",
+        "combinations"
+      ],
+      "lastUpdated": "2026-02-06T00:00:00Z"
+    },
+    {
+      "id": "550e8400-e29b-41d4-a716-446655440020",
+      "problemSlug": "combination-sum",
+      "summary": "Find combinations that sum to target. Use backtracking, allowing same element multiple times.",
+      "approaches": [
+        {
+          "id": "550e8400-e29b-41d4-a716-446655440131",
+          "name": "Backtracking",
+          "order": 1,
+          "intuition": "Try adding each candidate repeatedly until sum >= target, then backtrack to try other candidates.",
+          "approach": "1. Sort candidates (optional, for pruning)\n2. Backtrack: if sum==target, save; if sum>target, return\n3. For each candidate from current index, add and recurse (same index for reuse)",
+          "explanation": "Key: pass same index to allow reuse of element. Advance index to avoid duplicate combinations.",
+          "code": "func combinationSum(_ candidates: [Int], _ target: Int) -> [[Int]] {\n    var result: [[Int]] = []\n    var current: [Int] = []\n    \n    func backtrack(_ index: Int, _ remaining: Int) {\n        if remaining == 0 {\n            result.append(current)\n            return\n        }\n        if remaining < 0 { return }\n        \n        for i in index..<candidates.count {\n            current.append(candidates[i])\n            backtrack(i, remaining - candidates[i])  // same i for reuse\n            current.removeLast()\n        }\n    }\n    \n    backtrack(0, target)\n    return result\n}",
+          "complexity": {
+            "time": "O(n^(T/M))",
+            "space": "O(T/M)",
+            "timeExplanation": "T=target, M=min candidate. Branching factor n, depth T/M",
+            "spaceExplanation": "Max recursion depth"
+          },
+          "testCases": [
+            {
+              "id": "550e8400-e29b-41d4-a716-446655440237",
+              "input": "candidates = [2,3,6,7], target = 7",
+              "expectedOutput": "[[2,2,3],[7]]",
+              "explanation": "2+2+3=7 and 7=7"
+            }
+          ]
+        }
+      ],
+      "relatedProblems": [
+        "combination-sum-ii",
+        "combination-sum-iii"
+      ],
+      "lastUpdated": "2026-02-06T00:00:00Z"
+    },
+    {
+      "id": "550e8400-e29b-41d4-a716-446655440021",
+      "problemSlug": "permutations",
+      "summary": "Generate all permutations using backtracking. Swap elements or track used indices.",
+      "approaches": [
+        {
+          "id": "550e8400-e29b-41d4-a716-446655440132",
+          "name": "Backtracking with Used Set",
+          "order": 1,
+          "intuition": "Build permutation one element at a time, skipping already-used elements.",
+          "approach": "1. Track used indices with boolean array\n2. At each position, try each unused element\n3. When length == n, save permutation",
+          "explanation": "For n elements, n! permutations. Each position has decreasing choices: n, n-1, ..., 1.",
+          "code": "func permute(_ nums: [Int]) -> [[Int]] {\n    var result: [[Int]] = []\n    var current: [Int] = []\n    var used = [Bool](repeating: false, count: nums.count)\n    \n    func backtrack() {\n        if current.count == nums.count {\n            result.append(current)\n            return\n        }\n        for i in 0..<nums.count {\n            if used[i] { continue }\n            used[i] = true\n            current.append(nums[i])\n            backtrack()\n            current.removeLast()\n            used[i] = false\n        }\n    }\n    \n    backtrack()\n    return result\n}",
+          "complexity": {
+            "time": "O(n * n!)",
+            "space": "O(n)",
+            "timeExplanation": "n! permutations, O(n) to copy each",
+            "spaceExplanation": "Recursion depth and used array"
+          },
+          "testCases": [
+            {
+              "id": "550e8400-e29b-41d4-a716-446655440238",
+              "input": "[1,2,3]",
+              "expectedOutput": "[[1,2,3],[1,3,2],[2,1,3],[2,3,1],[3,1,2],[3,2,1]]",
+              "explanation": "All 6 permutations"
+            }
+          ]
+        }
+      ],
+      "relatedProblems": [
+        "permutations-ii",
+        "next-permutation"
+      ],
+      "lastUpdated": "2026-02-06T00:00:00Z"
+    },
+    {
+      "id": "550e8400-e29b-41d4-a716-446655440022",
+      "problemSlug": "subsets-ii",
+      "summary": "Generate unique subsets from array with duplicates. Sort first, skip consecutive duplicates.",
+      "approaches": [
+        {
+          "id": "550e8400-e29b-41d4-a716-446655440133",
+          "name": "Backtracking with Duplicate Skip",
+          "order": 1,
+          "intuition": "Sort array so duplicates are adjacent. When iterating, skip if same as previous (at same level).",
+          "approach": "1. Sort nums\n2. Backtrack: add current subset, then try each remaining element\n3. Skip if nums[i] == nums[i-1] at same recursion level",
+          "explanation": "Sorting groups duplicates. Skip condition prevents same value being chosen twice for same position.",
+          "code": "func subsetsWithDup(_ nums: [Int]) -> [[Int]] {\n    var result: [[Int]] = []\n    var current: [Int] = []\n    let sorted = nums.sorted()\n    \n    func backtrack(_ start: Int) {\n        result.append(current)\n        for i in start..<sorted.count {\n            // Skip duplicates at same level\n            if i > start && sorted[i] == sorted[i-1] { continue }\n            current.append(sorted[i])\n            backtrack(i + 1)\n            current.removeLast()\n        }\n    }\n    \n    backtrack(0)\n    return result\n}",
+          "complexity": {
+            "time": "O(n * 2^n)",
+            "space": "O(n)",
+            "timeExplanation": "At most 2^n subsets",
+            "spaceExplanation": "Recursion depth"
+          },
+          "testCases": [
+            {
+              "id": "550e8400-e29b-41d4-a716-446655440239",
+              "input": "[1,2,2]",
+              "expectedOutput": "[[],[1],[1,2],[1,2,2],[2],[2,2]]",
+              "explanation": "No duplicate subsets like [2] appearing twice"
+            }
+          ]
+        }
+      ],
+      "relatedProblems": [
+        "subsets"
+      ],
+      "lastUpdated": "2026-02-06T00:00:00Z"
+    },
+    {
+      "id": "550e8400-e29b-41d4-a716-446655440023",
+      "problemSlug": "combination-sum-ii",
+      "summary": "Find unique combinations summing to target, each element used once. Sort and skip duplicates.",
+      "approaches": [
+        {
+          "id": "550e8400-e29b-41d4-a716-446655440134",
+          "name": "Backtracking",
+          "order": 1,
+          "intuition": "Like combination-sum but: 1) move to next index after use, 2) skip duplicate values at same level.",
+          "approach": "1. Sort candidates\n2. Backtrack from index, skip if same as previous at same level\n3. Move to i+1 after using element (no reuse)",
+          "explanation": "i > start ensures we only skip duplicates at same recursion level, not first occurrence.",
+          "code": "func combinationSum2(_ candidates: [Int], _ target: Int) -> [[Int]] {\n    var result: [[Int]] = []\n    var current: [Int] = []\n    let sorted = candidates.sorted()\n    \n    func backtrack(_ start: Int, _ remaining: Int) {\n        if remaining == 0 {\n            result.append(current)\n            return\n        }\n        for i in start..<sorted.count {\n            if sorted[i] > remaining { break }\n            if i > start && sorted[i] == sorted[i-1] { continue }\n            current.append(sorted[i])\n            backtrack(i + 1, remaining - sorted[i])\n            current.removeLast()\n        }\n    }\n    \n    backtrack(0, target)\n    return result\n}",
+          "complexity": {
+            "time": "O(2^n)",
+            "space": "O(n)",
+            "timeExplanation": "Each element included or not",
+            "spaceExplanation": "Recursion depth"
+          },
+          "testCases": [
+            {
+              "id": "550e8400-e29b-41d4-a716-446655440240",
+              "input": "candidates = [10,1,2,7,6,1,5], target = 8",
+              "expectedOutput": "[[1,1,6],[1,2,5],[1,7],[2,6]]",
+              "explanation": "Unique combinations, each element used at most once"
+            }
+          ]
+        }
+      ],
+      "relatedProblems": [
+        "combination-sum"
+      ],
+      "lastUpdated": "2026-02-06T00:00:00Z"
+    },
+    {
+      "id": "550e8400-e29b-41d4-a716-446655440024",
+      "problemSlug": "letter-combinations-of-a-phone-number",
+      "summary": "Generate all letter combinations for phone digits. Map digits to letters, backtrack through all combinations.",
+      "approaches": [
+        {
+          "id": "550e8400-e29b-41d4-a716-446655440135",
+          "name": "Backtracking",
+          "order": 1,
+          "intuition": "Each digit maps to 3-4 letters. For each digit, try each mapped letter and recurse to next digit.",
+          "approach": "1. Create digit-to-letters mapping\n2. Backtrack: at each digit position, try each letter\n3. When index == digits.length, add to result",
+          "explanation": "Branching factor is 3-4 per digit, total combinations is product of letter counts.",
+          "code": "func letterCombinations(_ digits: String) -> [String] {\n    guard !digits.isEmpty else { return [] }\n    \n    let map: [Character: String] = [\n        \"2\": \"abc\", \"3\": \"def\", \"4\": \"ghi\", \"5\": \"jkl\",\n        \"6\": \"mno\", \"7\": \"pqrs\", \"8\": \"tuv\", \"9\": \"wxyz\"\n    ]\n    let digitsArray = Array(digits)\n    var result: [String] = []\n    var current = \"\"\n    \n    func backtrack(_ index: Int) {\n        if index == digitsArray.count {\n            result.append(current)\n            return\n        }\n        let letters = map[digitsArray[index]]!\n        for letter in letters {\n            current.append(letter)\n            backtrack(index + 1)\n            current.removeLast()\n        }\n    }\n    \n    backtrack(0)\n    return result\n}",
+          "complexity": {
+            "time": "O(4^n)",
+            "space": "O(n)",
+            "timeExplanation": "At most 4 letters per digit, n digits",
+            "spaceExplanation": "Recursion depth n"
+          },
+          "testCases": [
+            {
+              "id": "550e8400-e29b-41d4-a716-446655440241",
+              "input": "\"23\"",
+              "expectedOutput": "[\"ad\",\"ae\",\"af\",\"bd\",\"be\",\"bf\",\"cd\",\"ce\",\"cf\"]",
+              "explanation": "2->abc, 3->def, 3*3=9 combinations"
+            }
+          ]
+        }
+      ],
+      "relatedProblems": [
+        "generate-parentheses",
+        "combination-sum"
+      ],
+      "lastUpdated": "2026-02-06T00:00:00Z"
+    },
+    {
+      "id": "550e8400-e29b-41d4-a716-446655440025",
+      "problemSlug": "palindrome-partitioning",
+      "summary": "Partition string into all palindromic substrings. Backtrack, checking if each prefix is palindrome.",
+      "approaches": [
+        {
+          "id": "550e8400-e29b-41d4-a716-446655440136",
+          "name": "Backtracking",
+          "order": 1,
+          "intuition": "At each position, try all possible prefixes. If prefix is palindrome, recurse on remainder.",
+          "approach": "1. At index i, try substrings s[i...j] for all j >= i\n2. If s[i...j] is palindrome, add to current, recurse from j+1\n3. When index reaches end, save partition",
+          "explanation": "Only extend partition if current substring is valid palindrome.",
+          "code": "func partition(_ s: String) -> [[String]] {\n    let chars = Array(s)\n    var result: [[String]] = []\n    var current: [String] = []\n    \n    func isPalindrome(_ start: Int, _ end: Int) -> Bool {\n        var l = start, r = end\n        while l < r {\n            if chars[l] != chars[r] { return false }\n            l += 1; r -= 1\n        }\n        return true\n    }\n    \n    func backtrack(_ start: Int) {\n        if start == chars.count {\n            result.append(current)\n            return\n        }\n        for end in start..<chars.count {\n            if isPalindrome(start, end) {\n                current.append(String(chars[start...end]))\n                backtrack(end + 1)\n                current.removeLast()\n            }\n        }\n    }\n    \n    backtrack(0)\n    return result\n}",
+          "complexity": {
+            "time": "O(n * 2^n)",
+            "space": "O(n)",
+            "timeExplanation": "2^n partitions possible, O(n) palindrome check",
+            "spaceExplanation": "Recursion depth"
+          },
+          "testCases": [
+            {
+              "id": "550e8400-e29b-41d4-a716-446655440242",
+              "input": "\"aab\"",
+              "expectedOutput": "[[\"a\",\"a\",\"b\"],[\"aa\",\"b\"]]",
+              "explanation": "Two valid palindromic partitions"
+            }
+          ]
+        }
+      ],
+      "relatedProblems": [
+        "palindrome-partitioning-ii"
+      ],
+      "lastUpdated": "2026-02-06T00:00:00Z"
+    },
+    {
+      "id": "550e8400-e29b-41d4-a716-446655440026",
+      "problemSlug": "n-queens",
+      "summary": "Place n queens on n\u00d7n board. Backtrack row by row, checking column/diagonal conflicts.",
+      "approaches": [
+        {
+          "id": "550e8400-e29b-41d4-a716-446655440137",
+          "name": "Backtracking",
+          "order": 1,
+          "intuition": "Place one queen per row. Track attacked columns and diagonals. Backtrack if no valid position.",
+          "approach": "1. Track used columns, diagonals (row-col), anti-diagonals (row+col)\n2. For each row, try each column if not attacked\n3. When row == n, save board configuration",
+          "explanation": "Diagonals identified by row-col (same for all cells), anti-diagonals by row+col.",
+          "code": "func solveNQueens(_ n: Int) -> [[String]] {\n    var result: [[String]] = []\n    var board = [[Character]](repeating: [Character](repeating: \".\", count: n), count: n)\n    var cols = Set<Int>()\n    var diags = Set<Int>()  // row - col\n    var antiDiags = Set<Int>()  // row + col\n    \n    func backtrack(_ row: Int) {\n        if row == n {\n            result.append(board.map { String($0) })\n            return\n        }\n        for col in 0..<n {\n            let diag = row - col, antiDiag = row + col\n            if cols.contains(col) || diags.contains(diag) || antiDiags.contains(antiDiag) {\n                continue\n            }\n            board[row][col] = \"Q\"\n            cols.insert(col); diags.insert(diag); antiDiags.insert(antiDiag)\n            backtrack(row + 1)\n            board[row][col] = \".\"\n            cols.remove(col); diags.remove(diag); antiDiags.remove(antiDiag)\n        }\n    }\n    \n    backtrack(0)\n    return result\n}",
+          "complexity": {
+            "time": "O(n!)",
+            "space": "O(n\u00b2)",
+            "timeExplanation": "~n! valid placements to explore",
+            "spaceExplanation": "Board storage"
+          },
+          "testCases": [
+            {
+              "id": "550e8400-e29b-41d4-a716-446655440243",
+              "input": "n = 4",
+              "expectedOutput": "[[\".Q..\",\"...Q\",\"Q...\",\"..Q.\"],[\"..Q.\",\"Q...\",\"...Q\",\".Q..\"]]",
+              "explanation": "Two distinct solutions for 4-queens"
+            }
+          ]
+        }
+      ],
+      "relatedProblems": [
+        "n-queens-ii"
+      ],
+      "lastUpdated": "2026-02-06T00:00:00Z"
+    },
+    {
+      "id": "550e8400-e29b-41d4-a716-446655440027",
+      "problemSlug": "course-schedule",
+      "summary": "Detect if courses can be completed (no cycle in prerequisite graph). Use DFS with visited states or topological sort.",
+      "approaches": [
+        {
+          "id": "550e8400-e29b-41d4-a716-446655440138",
+          "name": "DFS Cycle Detection",
+          "order": 1,
+          "intuition": "Build graph of prerequisites. Detect cycle using DFS with three states: unvisited, visiting, visited.",
+          "approach": "1. Build adjacency list from prerequisites\n2. DFS from each node, mark as 'visiting'\n3. If encounter 'visiting' node, cycle found\n4. Mark 'visited' when done with all neighbors",
+          "explanation": "'Visiting' means in current DFS path. If we see it again, we've found a back edge (cycle).",
+          "code": "func canFinish(_ numCourses: Int, _ prerequisites: [[Int]]) -> Bool {\n    var graph = [[Int]](repeating: [], count: numCourses)\n    for pre in prerequisites {\n        graph[pre[1]].append(pre[0])\n    }\n    \n    var state = [Int](repeating: 0, count: numCourses)  // 0=unvisited, 1=visiting, 2=visited\n    \n    func hasCycle(_ node: Int) -> Bool {\n        if state[node] == 1 { return true }  // Cycle\n        if state[node] == 2 { return false }  // Already done\n        \n        state[node] = 1\n        for neighbor in graph[node] {\n            if hasCycle(neighbor) { return true }\n        }\n        state[node] = 2\n        return false\n    }\n    \n    for i in 0..<numCourses {\n        if hasCycle(i) { return false }\n    }\n    return true\n}",
+          "complexity": {
+            "time": "O(V + E)",
+            "space": "O(V + E)",
+            "timeExplanation": "Visit each node and edge once",
+            "spaceExplanation": "Graph storage and recursion"
+          },
+          "testCases": [
+            {
+              "id": "550e8400-e29b-41d4-a716-446655440244",
+              "input": "numCourses = 2, prerequisites = [[1,0]]",
+              "expectedOutput": "true",
+              "explanation": "Take course 0, then course 1"
+            }
+          ]
+        }
+      ],
+      "relatedProblems": [
+        "course-schedule-ii"
+      ],
+      "lastUpdated": "2026-02-06T00:00:00Z"
+    },
+    {
+      "id": "550e8400-e29b-41d4-a716-446655440028",
+      "problemSlug": "course-schedule-ii",
+      "summary": "Return course order (topological sort). Use Kahn's algorithm (BFS) or DFS with post-order.",
+      "approaches": [
+        {
+          "id": "550e8400-e29b-41d4-a716-446655440139",
+          "name": "Kahn's Algorithm (BFS)",
+          "order": 1,
+          "intuition": "Start with courses having no prerequisites (in-degree 0). Process them, reduce neighbors' in-degrees, repeat.",
+          "approach": "1. Build graph and in-degree array\n2. Add all nodes with in-degree 0 to queue\n3. Process queue: add to result, decrement neighbors' in-degrees\n4. If result size != numCourses, cycle exists",
+          "explanation": "Topological sort using BFS. In-degree 0 means all prerequisites satisfied.",
+          "code": "func findOrder(_ numCourses: Int, _ prerequisites: [[Int]]) -> [Int] {\n    var graph = [[Int]](repeating: [], count: numCourses)\n    var inDegree = [Int](repeating: 0, count: numCourses)\n    \n    for pre in prerequisites {\n        graph[pre[1]].append(pre[0])\n        inDegree[pre[0]] += 1\n    }\n    \n    var queue = (0..<numCourses).filter { inDegree[$0] == 0 }\n    var result: [Int] = []\n    \n    while !queue.isEmpty {\n        let course = queue.removeFirst()\n        result.append(course)\n        for next in graph[course] {\n            inDegree[next] -= 1\n            if inDegree[next] == 0 {\n                queue.append(next)\n            }\n        }\n    }\n    \n    return result.count == numCourses ? result : []\n}",
+          "complexity": {
+            "time": "O(V + E)",
+            "space": "O(V + E)",
+            "timeExplanation": "Process each node and edge once",
+            "spaceExplanation": "Graph and queue storage"
+          },
+          "testCases": [
+            {
+              "id": "550e8400-e29b-41d4-a716-446655440245",
+              "input": "numCourses = 4, prerequisites = [[1,0],[2,0],[3,1],[3,2]]",
+              "expectedOutput": "[0,1,2,3] or [0,2,1,3]",
+              "explanation": "Valid topological orderings"
+            }
+          ]
+        }
+      ],
+      "relatedProblems": [
+        "course-schedule",
+        "alien-dictionary"
+      ],
+      "lastUpdated": "2026-02-06T00:00:00Z"
+    },
+    {
+      "id": "550e8400-e29b-41d4-a716-446655440029",
+      "problemSlug": "house-robber",
+      "summary": "Max money without robbing adjacent houses. DP: dp[i] = max(dp[i-1], dp[i-2] + nums[i]).",
+      "approaches": [
+        {
+          "id": "550e8400-e29b-41d4-a716-446655440140",
+          "name": "Dynamic Programming",
+          "order": 1,
+          "intuition": "At each house, choose: skip it (take prev max) or rob it (take prev-prev max + current).",
+          "approach": "1. dp[i] = max money robbing houses 0..i\n2. dp[i] = max(dp[i-1], dp[i-2] + nums[i])\n3. Optimize to O(1) space with two variables",
+          "explanation": "Can't rob adjacent, so if we rob house i, previous robbed must be i-2 or earlier.",
+          "code": "func rob(_ nums: [Int]) -> Int {\n    var prev2 = 0  // max from 2 houses back\n    var prev1 = 0  // max from previous house\n    \n    for num in nums {\n        let curr = max(prev1, prev2 + num)\n        prev2 = prev1\n        prev1 = curr\n    }\n    \n    return prev1\n}",
+          "complexity": {
+            "time": "O(n)",
+            "space": "O(1)",
+            "timeExplanation": "Single pass",
+            "spaceExplanation": "Two variables"
+          },
+          "testCases": [
+            {
+              "id": "550e8400-e29b-41d4-a716-446655440246",
+              "input": "[2,7,9,3,1]",
+              "expectedOutput": "12",
+              "explanation": "Rob houses 0,2,4: 2+9+1=12"
+            }
+          ]
+        }
+      ],
+      "relatedProblems": [
+        "house-robber-ii",
+        "house-robber-iii"
+      ],
+      "lastUpdated": "2026-02-06T00:00:00Z"
+    },
+    {
+      "id": "550e8400-e29b-41d4-a716-446655440030",
+      "problemSlug": "house-robber-ii",
+      "summary": "Circular houses (first and last adjacent). Run house robber twice: exclude first or exclude last.",
+      "approaches": [
+        {
+          "id": "550e8400-e29b-41d4-a716-446655440141",
+          "name": "Two Passes DP",
+          "order": 1,
+          "intuition": "Can't rob both first and last. Solve twice: houses[0..n-2] and houses[1..n-1], take max.",
+          "approach": "1. If n==1, return nums[0]\n2. Run house robber on nums[0..<n-1]\n3. Run house robber on nums[1..<n]\n4. Return max of both",
+          "explanation": "Breaking the circle by ensuring first and last aren't both included.",
+          "code": "func rob(_ nums: [Int]) -> Int {\n    if nums.count == 1 { return nums[0] }\n    \n    func robRange(_ start: Int, _ end: Int) -> Int {\n        var prev2 = 0, prev1 = 0\n        for i in start..<end {\n            let curr = max(prev1, prev2 + nums[i])\n            prev2 = prev1\n            prev1 = curr\n        }\n        return prev1\n    }\n    \n    return max(robRange(0, nums.count - 1), robRange(1, nums.count))\n}",
+          "complexity": {
+            "time": "O(n)",
+            "space": "O(1)",
+            "timeExplanation": "Two passes through array",
+            "spaceExplanation": "Constant space"
+          },
+          "testCases": [
+            {
+              "id": "550e8400-e29b-41d4-a716-446655440247",
+              "input": "[2,3,2]",
+              "expectedOutput": "3",
+              "explanation": "Can't rob 2 and 2 (adjacent in circle), rob 3"
+            }
+          ]
+        }
+      ],
+      "relatedProblems": [
+        "house-robber",
+        "house-robber-iii"
+      ],
+      "lastUpdated": "2026-02-06T00:00:00Z"
+    },
+    {
+      "id": "550e8400-e29b-41d4-a716-446655440031",
+      "problemSlug": "longest-palindromic-substring",
+      "summary": "Find longest palindrome substring. Expand from center for each position (and between positions).",
+      "approaches": [
+        {
+          "id": "550e8400-e29b-41d4-a716-446655440142",
+          "name": "Expand Around Center",
+          "order": 1,
+          "intuition": "A palindrome has a center. Try each index as center, expand while characters match.",
+          "approach": "1. For each index i, expand for odd-length (center i) and even-length (center i,i+1)\n2. Track longest palindrome found\n3. Return substring",
+          "explanation": "2n-1 potential centers (n single chars, n-1 pairs). Each expansion is O(n) worst case.",
+          "code": "func longestPalindrome(_ s: String) -> String {\n    let chars = Array(s)\n    var start = 0, maxLen = 0\n    \n    func expand(_ left: Int, _ right: Int) -> Int {\n        var l = left, r = right\n        while l >= 0 && r < chars.count && chars[l] == chars[r] {\n            l -= 1; r += 1\n        }\n        return r - l - 1\n    }\n    \n    for i in 0..<chars.count {\n        let len1 = expand(i, i)      // Odd length\n        let len2 = expand(i, i + 1)  // Even length\n        let len = max(len1, len2)\n        if len > maxLen {\n            maxLen = len\n            start = i - (len - 1) / 2\n        }\n    }\n    \n    return String(chars[start..<start + maxLen])\n}",
+          "complexity": {
+            "time": "O(n\u00b2)",
+            "space": "O(n)",
+            "timeExplanation": "n centers, O(n) expansion each",
+            "spaceExplanation": "String conversion"
+          },
+          "testCases": [
+            {
+              "id": "550e8400-e29b-41d4-a716-446655440248",
+              "input": "\"babad\"",
+              "expectedOutput": "\"bab\" or \"aba\"",
+              "explanation": "Both are valid longest palindromes"
+            }
+          ]
+        }
+      ],
+      "relatedProblems": [
+        "palindromic-substrings",
+        "longest-palindromic-subsequence"
+      ],
+      "lastUpdated": "2026-02-06T00:00:00Z"
+    },
+    {
+      "id": "550e8400-e29b-41d4-a716-446655440032",
+      "problemSlug": "palindromic-substrings",
+      "summary": "Count all palindromic substrings. Expand from each center, count valid expansions.",
+      "approaches": [
+        {
+          "id": "550e8400-e29b-41d4-a716-446655440143",
+          "name": "Expand Around Center",
+          "order": 1,
+          "intuition": "Same as longest palindrome, but count each successful expansion instead of tracking max.",
+          "approach": "1. For each center (single char and pairs), expand outward\n2. Count each position where chars match\n3. Sum all counts",
+          "explanation": "Each valid expansion is a palindrome. Total count includes all lengths.",
+          "code": "func countSubstrings(_ s: String) -> Int {\n    let chars = Array(s)\n    var count = 0\n    \n    func expand(_ left: Int, _ right: Int) -> Int {\n        var l = left, r = right, cnt = 0\n        while l >= 0 && r < chars.count && chars[l] == chars[r] {\n            cnt += 1\n            l -= 1; r += 1\n        }\n        return cnt\n    }\n    \n    for i in 0..<chars.count {\n        count += expand(i, i)      // Odd\n        count += expand(i, i + 1)  // Even\n    }\n    \n    return count\n}",
+          "complexity": {
+            "time": "O(n\u00b2)",
+            "space": "O(n)",
+            "timeExplanation": "n centers, O(n) expansion",
+            "spaceExplanation": "String to array"
+          },
+          "testCases": [
+            {
+              "id": "550e8400-e29b-41d4-a716-446655440249",
+              "input": "\"aaa\"",
+              "expectedOutput": "6",
+              "explanation": "a,a,a,aa,aa,aaa = 6 palindromes"
+            }
+          ]
+        }
+      ],
+      "relatedProblems": [
+        "longest-palindromic-substring"
+      ],
+      "lastUpdated": "2026-02-06T00:00:00Z"
+    },
+    {
+      "id": "550e8400-e29b-41d4-a716-446655440033",
+      "problemSlug": "decode-ways",
+      "summary": "Count ways to decode digit string to letters. DP: check single digit (1-9) and double digit (10-26).",
+      "approaches": [
+        {
+          "id": "550e8400-e29b-41d4-a716-446655440144",
+          "name": "Dynamic Programming",
+          "order": 1,
+          "intuition": "At each position, can decode 1 digit (if valid) or 2 digits (if valid). Sum the ways.",
+          "approach": "1. dp[i] = ways to decode s[0..i-1]\n2. If s[i-1] != '0': dp[i] += dp[i-1] (single digit)\n3. If s[i-2..i-1] in 10-26: dp[i] += dp[i-2] (double digit)",
+          "explanation": "'0' can't be decoded alone. '06' is invalid. Only '10'-'26' valid as two digits.",
+          "code": "func numDecodings(_ s: String) -> Int {\n    let chars = Array(s)\n    let n = chars.count\n    if chars[0] == \"0\" { return 0 }\n    \n    var prev2 = 1  // dp[i-2]\n    var prev1 = 1  // dp[i-1]\n    \n    for i in 1..<n {\n        var curr = 0\n        let oneDigit = Int(String(chars[i]))!\n        let twoDigit = Int(String(chars[i-1...i]))!\n        \n        if oneDigit >= 1 { curr += prev1 }\n        if twoDigit >= 10 && twoDigit <= 26 { curr += prev2 }\n        \n        prev2 = prev1\n        prev1 = curr\n    }\n    \n    return prev1\n}",
+          "complexity": {
+            "time": "O(n)",
+            "space": "O(1)",
+            "timeExplanation": "Single pass",
+            "spaceExplanation": "Two variables"
+          },
+          "testCases": [
+            {
+              "id": "550e8400-e29b-41d4-a716-446655440250",
+              "input": "\"226\"",
+              "expectedOutput": "3",
+              "explanation": "BZ (2,26), VF (22,6), BBF (2,2,6)"
+            }
+          ]
+        }
+      ],
+      "relatedProblems": [
+        "decode-ways-ii"
+      ],
+      "lastUpdated": "2026-02-06T00:00:00Z"
+    },
+    {
+      "id": "550e8400-e29b-41d4-a716-446655440034",
+      "problemSlug": "word-break",
+      "summary": "Check if string can be segmented into dictionary words. DP: dp[i] = can segment s[0..i-1].",
+      "approaches": [
+        {
+          "id": "550e8400-e29b-41d4-a716-446655440145",
+          "name": "Dynamic Programming",
+          "order": 1,
+          "intuition": "dp[i] is true if some dp[j] is true and s[j..i-1] is a word. Check all split points.",
+          "approach": "1. dp[0] = true (empty string)\n2. For each i, check all j < i\n3. If dp[j] && s[j..i-1] in dict: dp[i] = true",
+          "explanation": "Build up: if we can segment up to j, and j..i is a word, we can segment up to i.",
+          "code": "func wordBreak(_ s: String, _ wordDict: [String]) -> Bool {\n    let words = Set(wordDict)\n    let chars = Array(s)\n    let n = chars.count\n    var dp = [Bool](repeating: false, count: n + 1)\n    dp[0] = true\n    \n    for i in 1...n {\n        for j in 0..<i {\n            if dp[j] && words.contains(String(chars[j..<i])) {\n                dp[i] = true\n                break\n            }\n        }\n    }\n    \n    return dp[n]\n}",
+          "complexity": {
+            "time": "O(n\u00b2 * m)",
+            "space": "O(n)",
+            "timeExplanation": "n\u00b2 pairs, O(m) string comparison",
+            "spaceExplanation": "DP array"
+          },
+          "testCases": [
+            {
+              "id": "550e8400-e29b-41d4-a716-446655440251",
+              "input": "s = \"leetcode\", wordDict = [\"leet\",\"code\"]",
+              "expectedOutput": "true",
+              "explanation": "leet + code"
+            }
+          ]
+        }
+      ],
+      "relatedProblems": [
+        "word-break-ii"
+      ],
+      "lastUpdated": "2026-02-06T00:00:00Z"
+    },
+    {
+      "id": "550e8400-e29b-41d4-a716-446655440035",
+      "problemSlug": "longest-increasing-subsequence",
+      "summary": "Find length of LIS. DP O(n\u00b2) or binary search O(n log n) with patience sorting.",
+      "approaches": [
+        {
+          "id": "550e8400-e29b-41d4-a716-446655440146",
+          "name": "Binary Search (Patience Sort)",
+          "order": 1,
+          "intuition": "Maintain array of smallest tail for each length. Binary search for position to update.",
+          "approach": "1. tails[i] = smallest ending element of LIS of length i+1\n2. For each num: binary search for position in tails\n3. Replace or extend tails array\n4. Return tails.count",
+          "explanation": "tails is always sorted. We find where num fits and either replace (better ending) or extend.",
+          "code": "func lengthOfLIS(_ nums: [Int]) -> Int {\n    var tails: [Int] = []\n    \n    for num in nums {\n        var left = 0, right = tails.count\n        while left < right {\n            let mid = (left + right) / 2\n            if tails[mid] < num {\n                left = mid + 1\n            } else {\n                right = mid\n            }\n        }\n        if left == tails.count {\n            tails.append(num)\n        } else {\n            tails[left] = num\n        }\n    }\n    \n    return tails.count\n}",
+          "complexity": {
+            "time": "O(n log n)",
+            "space": "O(n)",
+            "timeExplanation": "n elements, O(log n) binary search each",
+            "spaceExplanation": "tails array"
+          },
+          "testCases": [
+            {
+              "id": "550e8400-e29b-41d4-a716-446655440252",
+              "input": "[10,9,2,5,3,7,101,18]",
+              "expectedOutput": "4",
+              "explanation": "[2,3,7,101] or [2,3,7,18]"
+            }
+          ]
+        }
+      ],
+      "relatedProblems": [
+        "number-of-longest-increasing-subsequence",
+        "increasing-triplet-subsequence"
+      ],
+      "lastUpdated": "2026-02-06T00:00:00Z"
+    },
+    {
+      "id": "550e8400-e29b-41d4-a716-446655440036",
+      "problemSlug": "maximum-subarray",
+      "summary": "Find contiguous subarray with maximum sum. Kadane's algorithm: track current sum, reset if negative.",
+      "approaches": [
+        {
+          "id": "550e8400-e29b-41d4-a716-446655440147",
+          "name": "Kadane's Algorithm",
+          "order": 1,
+          "intuition": "At each position, decide: extend current subarray or start fresh. If current sum is negative, starting fresh is better.",
+          "approach": "1. Track currentSum and maxSum\n2. For each num: currentSum = max(num, currentSum + num)\n3. Update maxSum = max(maxSum, currentSum)\n4. Return maxSum",
+          "explanation": "If currentSum < 0, adding it to next element makes it smaller. So reset to just the next element.",
+          "code": "func maxSubArray(_ nums: [Int]) -> Int {\n    var currentSum = nums[0]\n    var maxSum = nums[0]\n    \n    for i in 1..<nums.count {\n        currentSum = max(nums[i], currentSum + nums[i])\n        maxSum = max(maxSum, currentSum)\n    }\n    \n    return maxSum\n}",
+          "complexity": {
+            "time": "O(n)",
+            "space": "O(1)",
+            "timeExplanation": "Single pass",
+            "spaceExplanation": "Two variables"
+          },
+          "testCases": [
+            {
+              "id": "550e8400-e29b-41d4-a716-446655440253",
+              "input": "[-2,1,-3,4,-1,2,1,-5,4]",
+              "expectedOutput": "6",
+              "explanation": "[4,-1,2,1] has sum 6"
+            }
+          ]
+        }
+      ],
+      "relatedProblems": [
+        "maximum-product-subarray",
+        "maximum-sum-circular-subarray"
+      ],
+      "lastUpdated": "2026-02-06T00:00:00Z"
+    },
+    {
+      "id": "550e8400-e29b-41d4-a716-446655440037",
+      "problemSlug": "container-with-most-water",
+      "summary": "Find two lines that hold most water. Two pointers from ends, move the shorter one inward.",
+      "approaches": [
+        {
+          "id": "550e8400-e29b-41d4-a716-446655440148",
+          "name": "Two Pointers",
+          "order": 1,
+          "intuition": "Water limited by shorter line. Moving shorter line might find taller one; moving taller never helps.",
+          "approach": "1. left = 0, right = n-1\n2. Calculate area = min(height[left], height[right]) * (right - left)\n3. Move pointer with smaller height inward\n4. Track max area",
+          "explanation": "Width decreases as we move inward, so we need taller lines. Moving shorter line is only way to potentially increase area.",
+          "code": "func maxArea(_ height: [Int]) -> Int {\n    var left = 0, right = height.count - 1\n    var maxArea = 0\n    \n    while left < right {\n        let area = min(height[left], height[right]) * (right - left)\n        maxArea = max(maxArea, area)\n        \n        if height[left] < height[right] {\n            left += 1\n        } else {\n            right -= 1\n        }\n    }\n    \n    return maxArea\n}",
+          "complexity": {
+            "time": "O(n)",
+            "space": "O(1)",
+            "timeExplanation": "Single pass with two pointers",
+            "spaceExplanation": "Constant space"
+          },
+          "testCases": [
+            {
+              "id": "550e8400-e29b-41d4-a716-446655440254",
+              "input": "[1,8,6,2,5,4,8,3,7]",
+              "expectedOutput": "49",
+              "explanation": "Lines at index 1 and 8 (heights 8,7) give area 7*7=49"
+            }
+          ]
+        }
+      ],
+      "relatedProblems": [
+        "trapping-rain-water"
+      ],
+      "lastUpdated": "2026-02-06T00:00:00Z"
+    },
+    {
+      "id": "550e8400-e29b-41d4-a716-446655440038",
+      "problemSlug": "trapping-rain-water",
+      "summary": "Calculate trapped rainwater. At each position, water = min(maxLeft, maxRight) - height.",
+      "approaches": [
+        {
+          "id": "550e8400-e29b-41d4-a716-446655440149",
+          "name": "Two Pointers",
+          "order": 1,
+          "intuition": "Water at position depends on min of max heights on left and right. Use two pointers to track.",
+          "approach": "1. Track maxLeft, maxRight, left, right pointers\n2. Process smaller side (we know its constraint)\n3. Water = max - current height\n4. Move pointer inward, update max",
+          "explanation": "If maxLeft < maxRight, left side is the constraint. Water at left = maxLeft - height[left].",
+          "code": "func trap(_ height: [Int]) -> Int {\n    var left = 0, right = height.count - 1\n    var maxLeft = 0, maxRight = 0\n    var water = 0\n    \n    while left < right {\n        if height[left] < height[right] {\n            if height[left] >= maxLeft {\n                maxLeft = height[left]\n            } else {\n                water += maxLeft - height[left]\n            }\n            left += 1\n        } else {\n            if height[right] >= maxRight {\n                maxRight = height[right]\n            } else {\n                water += maxRight - height[right]\n            }\n            right -= 1\n        }\n    }\n    \n    return water\n}",
+          "complexity": {
+            "time": "O(n)",
+            "space": "O(1)",
+            "timeExplanation": "Single pass",
+            "spaceExplanation": "Constant space"
+          },
+          "testCases": [
+            {
+              "id": "550e8400-e29b-41d4-a716-446655440255",
+              "input": "[0,1,0,2,1,0,1,3,2,1,2,1]",
+              "expectedOutput": "6",
+              "explanation": "Water fills gaps between bars"
+            }
+          ]
+        }
+      ],
+      "relatedProblems": [
+        "container-with-most-water"
+      ],
+      "lastUpdated": "2026-02-06T00:00:00Z"
+    },
+    {
+      "id": "550e8400-e29b-41d4-a716-446655440039",
+      "problemSlug": "jump-game",
+      "summary": "Can reach last index from first? Track maximum reachable index, update as you go.",
+      "approaches": [
+        {
+          "id": "550e8400-e29b-41d4-a716-446655440150",
+          "name": "Greedy",
+          "order": 1,
+          "intuition": "Track farthest reachable position. If current index exceeds it, we're stuck.",
+          "approach": "1. maxReach = 0\n2. For each index i:\n   - If i > maxReach: return false\n   - maxReach = max(maxReach, i + nums[i])\n3. Return true if loop completes",
+          "explanation": "At each step, extend reach if possible. If we can't reach current position, we fail.",
+          "code": "func canJump(_ nums: [Int]) -> Bool {\n    var maxReach = 0\n    \n    for i in 0..<nums.count {\n        if i > maxReach { return false }\n        maxReach = max(maxReach, i + nums[i])\n    }\n    \n    return true\n}",
+          "complexity": {
+            "time": "O(n)",
+            "space": "O(1)",
+            "timeExplanation": "Single pass",
+            "spaceExplanation": "One variable"
+          },
+          "testCases": [
+            {
+              "id": "550e8400-e29b-41d4-a716-446655440256",
+              "input": "[2,3,1,1,4]",
+              "expectedOutput": "true",
+              "explanation": "Jump 1->2->4 or 1->3->4"
+            }
+          ]
+        }
+      ],
+      "relatedProblems": [
+        "jump-game-ii"
+      ],
+      "lastUpdated": "2026-02-06T00:00:00Z"
+    },
+    {
+      "id": "550e8400-e29b-41d4-a716-446655440040",
+      "problemSlug": "unique-paths",
+      "summary": "Count paths in grid moving only right/down. DP or combinatorics: C(m+n-2, m-1).",
+      "approaches": [
+        {
+          "id": "550e8400-e29b-41d4-a716-446655440151",
+          "name": "Dynamic Programming",
+          "order": 1,
+          "intuition": "Paths to (i,j) = paths to (i-1,j) + paths to (i,j-1). Fill grid row by row.",
+          "approach": "1. dp[i][j] = number of paths to reach (i,j)\n2. First row and column are all 1s\n3. dp[i][j] = dp[i-1][j] + dp[i][j-1]\n4. Return dp[m-1][n-1]",
+          "explanation": "Can only come from above or left. Sum both possibilities. Optimize to O(n) space with single row.",
+          "code": "func uniquePaths(_ m: Int, _ n: Int) -> Int {\n    var dp = [Int](repeating: 1, count: n)\n    \n    for _ in 1..<m {\n        for j in 1..<n {\n            dp[j] += dp[j-1]\n        }\n    }\n    \n    return dp[n-1]\n}",
+          "complexity": {
+            "time": "O(m*n)",
+            "space": "O(n)",
+            "timeExplanation": "Fill m*n cells",
+            "spaceExplanation": "Single row DP"
+          },
+          "testCases": [
+            {
+              "id": "550e8400-e29b-41d4-a716-446655440257",
+              "input": "m = 3, n = 7",
+              "expectedOutput": "28",
+              "explanation": "28 unique paths"
+            }
+          ]
+        }
+      ],
+      "relatedProblems": [
+        "unique-paths-ii",
+        "minimum-path-sum"
+      ],
+      "lastUpdated": "2026-02-06T00:00:00Z"
+    },
+    {
+      "id": "550e8400-e29b-41d4-a716-446655440041",
+      "problemSlug": "valid-palindrome",
+      "summary": "Check if string is palindrome ignoring non-alphanumeric. Two pointers from ends.",
+      "approaches": [
+        {
+          "id": "550e8400-e29b-41d4-a716-446655440152",
+          "name": "Two Pointers",
+          "order": 1,
+          "intuition": "Compare characters from both ends, skip non-alphanumeric, ignore case.",
+          "approach": "1. left = 0, right = n-1\n2. Skip non-alphanumeric from both ends\n3. Compare lowercase versions\n4. Return false if mismatch",
+          "explanation": "Filter and compare in one pass without creating new string.",
+          "code": "func isPalindrome(_ s: String) -> Bool {\n    let chars = Array(s.lowercased())\n    var left = 0, right = chars.count - 1\n    \n    while left < right {\n        while left < right && !chars[left].isLetter && !chars[left].isNumber {\n            left += 1\n        }\n        while left < right && !chars[right].isLetter && !chars[right].isNumber {\n            right -= 1\n        }\n        if chars[left] != chars[right] { return false }\n        left += 1\n        right -= 1\n    }\n    return true\n}",
+          "complexity": {
+            "time": "O(n)",
+            "space": "O(n)",
+            "timeExplanation": "Single pass",
+            "spaceExplanation": "Array conversion"
+          },
+          "testCases": [
+            {
+              "id": "550e8400-e29b-41d4-a716-446655440258",
+              "input": "\"A man, a plan, a canal: Panama\"",
+              "expectedOutput": "true",
+              "explanation": "amanaplanacanalpanama is palindrome"
+            }
+          ]
+        }
+      ],
+      "relatedProblems": [
+        "valid-palindrome-ii"
+      ],
+      "lastUpdated": "2026-02-06T00:00:00Z"
+    },
+    {
+      "id": "550e8400-e29b-41d4-a716-446655440042",
+      "problemSlug": "longest-consecutive-sequence",
+      "summary": "Find longest consecutive sequence in O(n). Use set, only start counting from sequence starts.",
+      "approaches": [
+        {
+          "id": "550e8400-e29b-41d4-a716-446655440153",
+          "name": "Hash Set",
+          "order": 1,
+          "intuition": "Put all in set. For each number, if n-1 not in set, it's a sequence start. Count forward.",
+          "approach": "1. Create set from nums\n2. For each num: if num-1 not in set, count consecutive\n3. Track max length",
+          "explanation": "Only counting from sequence starts ensures O(n) - each element visited at most twice.",
+          "code": "func longestConsecutive(_ nums: [Int]) -> Int {\n    let numSet = Set(nums)\n    var maxLength = 0\n    \n    for num in numSet {\n        // Only start if this is beginning of sequence\n        if !numSet.contains(num - 1) {\n            var current = num\n            var length = 1\n            while numSet.contains(current + 1) {\n                current += 1\n                length += 1\n            }\n            maxLength = max(maxLength, length)\n        }\n    }\n    \n    return maxLength\n}",
+          "complexity": {
+            "time": "O(n)",
+            "space": "O(n)",
+            "timeExplanation": "Each element visited at most twice",
+            "spaceExplanation": "Set storage"
+          },
+          "testCases": [
+            {
+              "id": "550e8400-e29b-41d4-a716-446655440259",
+              "input": "[100,4,200,1,3,2]",
+              "expectedOutput": "4",
+              "explanation": "Sequence [1,2,3,4]"
+            }
+          ]
+        }
+      ],
+      "relatedProblems": [
+        "binary-tree-longest-consecutive-sequence"
+      ],
+      "lastUpdated": "2026-02-06T00:00:00Z"
+    },
+    {
+      "id": "550e8400-e29b-41d4-a716-446655440043",
+      "problemSlug": "generate-parentheses",
+      "summary": "Generate all valid n pairs of parentheses. Backtrack, ensuring open >= close.",
+      "approaches": [
+        {
+          "id": "550e8400-e29b-41d4-a716-446655440154",
+          "name": "Backtracking",
+          "order": 1,
+          "intuition": "Add '(' if openCount < n. Add ')' if closeCount < openCount. Ensures validity.",
+          "approach": "1. Track open and close counts\n2. Add '(' if open < n\n3. Add ')' if close < open\n4. When length == 2n, save result",
+          "explanation": "Never more ')' than '(' ensures every prefix is valid. Stop when counts reach n.",
+          "code": "func generateParenthesis(_ n: Int) -> [String] {\n    var result: [String] = []\n    var current = \"\"\n    \n    func backtrack(_ open: Int, _ close: Int) {\n        if current.count == 2 * n {\n            result.append(current)\n            return\n        }\n        if open < n {\n            current.append(\"(\")\n            backtrack(open + 1, close)\n            current.removeLast()\n        }\n        if close < open {\n            current.append(\")\")\n            backtrack(open, close + 1)\n            current.removeLast()\n        }\n    }\n    \n    backtrack(0, 0)\n    return result\n}",
+          "complexity": {
+            "time": "O(4^n / \u221an)",
+            "space": "O(n)",
+            "timeExplanation": "Catalan number complexity",
+            "spaceExplanation": "Recursion depth"
+          },
+          "testCases": [
+            {
+              "id": "550e8400-e29b-41d4-a716-446655440260",
+              "input": "n = 3",
+              "expectedOutput": "[\"((()))\",\"(()())\",\"(())()\",\"()(())\",\"()()()\"]",
+              "explanation": "All 5 valid combinations"
+            }
+          ]
+        }
+      ],
+      "relatedProblems": [
+        "valid-parentheses",
+        "letter-combinations-of-a-phone-number"
+      ],
+      "lastUpdated": "2026-02-06T00:00:00Z"
+    },
+    {
+      "id": "550e8400-e29b-41d4-a716-446655440044",
+      "problemSlug": "daily-temperatures",
+      "summary": "Days until warmer temperature. Use monotonic decreasing stack.",
+      "approaches": [
+        {
+          "id": "550e8400-e29b-41d4-a716-446655440155",
+          "name": "Monotonic Stack",
+          "order": 1,
+          "intuition": "Stack holds indices of decreasing temps. When warmer found, pop and calculate days.",
+          "approach": "1. Stack stores indices of unresolved days\n2. For each day: pop while current > stack top\n3. For popped index, answer = current index - popped index\n4. Push current index",
+          "explanation": "Stack maintains indices waiting for warmer day. Pop when found, difference is wait time.",
+          "code": "func dailyTemperatures(_ temperatures: [Int]) -> [Int] {\n    var result = [Int](repeating: 0, count: temperatures.count)\n    var stack: [Int] = []  // indices\n    \n    for i in 0..<temperatures.count {\n        while !stack.isEmpty && temperatures[i] > temperatures[stack.last!] {\n            let j = stack.removeLast()\n            result[j] = i - j\n        }\n        stack.append(i)\n    }\n    \n    return result\n}",
+          "complexity": {
+            "time": "O(n)",
+            "space": "O(n)",
+            "timeExplanation": "Each element pushed/popped once",
+            "spaceExplanation": "Stack size"
+          },
+          "testCases": [
+            {
+              "id": "550e8400-e29b-41d4-a716-446655440261",
+              "input": "[73,74,75,71,69,72,76,73]",
+              "expectedOutput": "[1,1,4,2,1,1,0,0]",
+              "explanation": "Days until next warmer temp"
+            }
+          ]
+        }
+      ],
+      "relatedProblems": [
+        "next-greater-element-i"
+      ],
+      "lastUpdated": "2026-02-06T00:00:00Z"
+    },
+    {
+      "id": "550e8400-e29b-41d4-a716-446655440045",
+      "problemSlug": "evaluate-reverse-polish-notation",
+      "summary": "Evaluate RPN expression. Stack: push numbers, pop two for operators, push result.",
+      "approaches": [
+        {
+          "id": "550e8400-e29b-41d4-a716-446655440156",
+          "name": "Stack",
+          "order": 1,
+          "intuition": "Numbers go on stack. Operators pop two, compute, push result.",
+          "approach": "1. For each token:\n   - If number: push to stack\n   - If operator: pop b, pop a, push a op b\n2. Return stack top",
+          "explanation": "Order matters for - and /: second popped is left operand.",
+          "code": "func evalRPN(_ tokens: [String]) -> Int {\n    var stack: [Int] = []\n    \n    for token in tokens {\n        switch token {\n        case \"+\":\n            let b = stack.removeLast(), a = stack.removeLast()\n            stack.append(a + b)\n        case \"-\":\n            let b = stack.removeLast(), a = stack.removeLast()\n            stack.append(a - b)\n        case \"*\":\n            let b = stack.removeLast(), a = stack.removeLast()\n            stack.append(a * b)\n        case \"/\":\n            let b = stack.removeLast(), a = stack.removeLast()\n            stack.append(a / b)\n        default:\n            stack.append(Int(token)!)\n        }\n    }\n    \n    return stack[0]\n}",
+          "complexity": {
+            "time": "O(n)",
+            "space": "O(n)",
+            "timeExplanation": "Process each token once",
+            "spaceExplanation": "Stack for operands"
+          },
+          "testCases": [
+            {
+              "id": "550e8400-e29b-41d4-a716-446655440262",
+              "input": "[\"2\",\"1\",\"+\",\"3\",\"*\"]",
+              "expectedOutput": "9",
+              "explanation": "((2+1)*3) = 9"
+            }
+          ]
+        }
+      ],
+      "relatedProblems": [
+        "basic-calculator"
+      ],
+      "lastUpdated": "2026-02-06T00:00:00Z"
+    },
+    {
+      "id": "550e8400-e29b-41d4-a716-446655440046",
+      "problemSlug": "clone-graph",
+      "summary": "Deep copy a graph. Use hash map to track cloned nodes, BFS or DFS.",
+      "approaches": [
+        {
+          "id": "550e8400-e29b-41d4-a716-446655440157",
+          "name": "DFS with Hash Map",
+          "order": 1,
+          "intuition": "Map original nodes to clones. When visiting, create clone if not exists, recurse for neighbors.",
+          "approach": "1. Map: original -> clone\n2. DFS: if node in map, return clone\n3. Create clone, add to map\n4. Recursively clone neighbors",
+          "explanation": "Hash map prevents infinite loops by tracking visited nodes.",
+          "code": "func cloneGraph(_ node: Node?) -> Node? {\n    guard let node = node else { return nil }\n    \n    var cloned: [Int: Node] = [:]\n    \n    func dfs(_ node: Node) -> Node {\n        if let clone = cloned[node.val] { return clone }\n        \n        let clone = Node(node.val)\n        cloned[node.val] = clone\n        \n        for neighbor in node.neighbors {\n            if let n = neighbor {\n                clone.neighbors.append(dfs(n))\n            }\n        }\n        \n        return clone\n    }\n    \n    return dfs(node)\n}",
+          "complexity": {
+            "time": "O(V + E)",
+            "space": "O(V)",
+            "timeExplanation": "Visit each node and edge",
+            "spaceExplanation": "Hash map stores V nodes"
+          },
+          "testCases": [
+            {
+              "id": "550e8400-e29b-41d4-a716-446655440263",
+              "input": "[[2,4],[1,3],[2,4],[1,3]]",
+              "expectedOutput": "[[2,4],[1,3],[2,4],[1,3]]",
+              "explanation": "Deep copy preserves structure"
+            }
+          ]
+        }
+      ],
+      "relatedProblems": [
+        "copy-list-with-random-pointer"
+      ],
+      "lastUpdated": "2026-02-06T00:00:00Z"
+    },
+    {
+      "id": "550e8400-e29b-41d4-a716-446655440047",
+      "problemSlug": "max-area-of-island",
+      "summary": "Find largest island area. DFS/BFS from each land cell, mark visited, count area.",
+      "approaches": [
+        {
+          "id": "550e8400-e29b-41d4-a716-446655440158",
+          "name": "DFS",
+          "order": 1,
+          "intuition": "For each unvisited land cell, DFS to count connected land. Track max area.",
+          "approach": "1. For each cell (i,j) with value 1:\n2. DFS: mark visited (set to 0), count 1 + area of 4 neighbors\n3. Track maximum area",
+          "explanation": "Marking as 0 prevents revisiting. Each cell visited once.",
+          "code": "func maxAreaOfIsland(_ grid: [[Int]]) -> Int {\n    var grid = grid\n    let m = grid.count, n = grid[0].count\n    var maxArea = 0\n    \n    func dfs(_ i: Int, _ j: Int) -> Int {\n        guard i >= 0 && i < m && j >= 0 && j < n && grid[i][j] == 1 else { return 0 }\n        grid[i][j] = 0\n        return 1 + dfs(i+1, j) + dfs(i-1, j) + dfs(i, j+1) + dfs(i, j-1)\n    }\n    \n    for i in 0..<m {\n        for j in 0..<n {\n            if grid[i][j] == 1 {\n                maxArea = max(maxArea, dfs(i, j))\n            }\n        }\n    }\n    \n    return maxArea\n}",
+          "complexity": {
+            "time": "O(m*n)",
+            "space": "O(m*n)",
+            "timeExplanation": "Visit each cell once",
+            "spaceExplanation": "Recursion stack worst case"
+          },
+          "testCases": [
+            {
+              "id": "550e8400-e29b-41d4-a716-446655440264",
+              "input": "[[0,0,1,0],[1,1,1,0],[0,1,0,0]]",
+              "expectedOutput": "5",
+              "explanation": "Connected 1s form island of size 5"
+            }
+          ]
+        }
+      ],
+      "relatedProblems": [
+        "number-of-islands",
+        "island-perimeter"
+      ],
+      "lastUpdated": "2026-02-06T00:00:00Z"
+    },
+    {
+      "id": "550e8400-e29b-41d4-a716-446655440048",
+      "problemSlug": "surrounded-regions",
+      "summary": "Capture surrounded O's. Border-connected O's survive; mark them, then flip rest.",
+      "approaches": [
+        {
+          "id": "550e8400-e29b-41d4-a716-446655440159",
+          "name": "DFS from Border",
+          "order": 1,
+          "intuition": "O's connected to border can't be surrounded. Mark them, flip remaining O's to X.",
+          "approach": "1. DFS from all border O's, mark as 'S' (safe)\n2. Scan grid: O -> X, S -> O",
+          "explanation": "Reverse thinking: instead of finding surrounded, find NOT surrounded from borders.",
+          "code": "func solve(_ board: inout [[Character]]) {\n    guard !board.isEmpty else { return }\n    let m = board.count, n = board[0].count\n    \n    func dfs(_ i: Int, _ j: Int) {\n        guard i >= 0 && i < m && j >= 0 && j < n && board[i][j] == \"O\" else { return }\n        board[i][j] = \"S\"\n        dfs(i+1, j); dfs(i-1, j); dfs(i, j+1); dfs(i, j-1)\n    }\n    \n    // Mark border-connected O's\n    for i in 0..<m {\n        dfs(i, 0); dfs(i, n-1)\n    }\n    for j in 0..<n {\n        dfs(0, j); dfs(m-1, j)\n    }\n    \n    // Flip: O->X, S->O\n    for i in 0..<m {\n        for j in 0..<n {\n            if board[i][j] == \"O\" { board[i][j] = \"X\" }\n            else if board[i][j] == \"S\" { board[i][j] = \"O\" }\n        }\n    }\n}",
+          "complexity": {
+            "time": "O(m*n)",
+            "space": "O(m*n)",
+            "timeExplanation": "Visit each cell",
+            "spaceExplanation": "Recursion stack"
+          },
+          "testCases": [
+            {
+              "id": "550e8400-e29b-41d4-a716-446655440265",
+              "input": "[[\"X\",\"X\",\"X\"],[\"X\",\"O\",\"X\"],[\"X\",\"X\",\"X\"]]",
+              "expectedOutput": "[[\"X\",\"X\",\"X\"],[\"X\",\"X\",\"X\"],[\"X\",\"X\",\"X\"]]",
+              "explanation": "Center O is surrounded and captured"
+            }
+          ]
+        }
+      ],
+      "relatedProblems": [
+        "number-of-islands"
+      ],
+      "lastUpdated": "2026-02-06T00:00:00Z"
+    },
+    {
+      "id": "550e8400-e29b-41d4-a716-446655440049",
+      "problemSlug": "longest-common-subsequence",
+      "summary": "LCS of two strings. DP: if chars match, 1 + LCS of rest; else max of skipping either.",
+      "approaches": [
+        {
+          "id": "550e8400-e29b-41d4-a716-446655440160",
+          "name": "Dynamic Programming",
+          "order": 1,
+          "intuition": "dp[i][j] = LCS of text1[0..i-1] and text2[0..j-1]. If match, extend; else take max.",
+          "approach": "1. If text1[i-1] == text2[j-1]: dp[i][j] = dp[i-1][j-1] + 1\n2. Else: dp[i][j] = max(dp[i-1][j], dp[i][j-1])\n3. Return dp[m][n]",
+          "explanation": "Match extends previous LCS. No match means we must skip one character.",
+          "code": "func longestCommonSubsequence(_ text1: String, _ text2: String) -> Int {\n    let s1 = Array(text1), s2 = Array(text2)\n    let m = s1.count, n = s2.count\n    var dp = [[Int]](repeating: [Int](repeating: 0, count: n + 1), count: m + 1)\n    \n    for i in 1...m {\n        for j in 1...n {\n            if s1[i-1] == s2[j-1] {\n                dp[i][j] = dp[i-1][j-1] + 1\n            } else {\n                dp[i][j] = max(dp[i-1][j], dp[i][j-1])\n            }\n        }\n    }\n    \n    return dp[m][n]\n}",
+          "complexity": {
+            "time": "O(m*n)",
+            "space": "O(m*n)",
+            "timeExplanation": "Fill m*n table",
+            "spaceExplanation": "2D DP array (can optimize to O(n))"
+          },
+          "testCases": [
+            {
+              "id": "550e8400-e29b-41d4-a716-446655440266",
+              "input": "text1 = \"abcde\", text2 = \"ace\"",
+              "expectedOutput": "3",
+              "explanation": "LCS is \"ace\""
+            }
+          ]
+        }
+      ],
+      "relatedProblems": [
+        "edit-distance",
+        "longest-palindromic-subsequence"
+      ],
+      "lastUpdated": "2026-02-06T00:00:00Z"
+    },
+    {
+      "id": "550e8400-e29b-41d4-a716-446655440050",
+      "problemSlug": "edit-distance",
+      "summary": "Min operations (insert/delete/replace) to transform word1 to word2. Classic 2D DP.",
+      "approaches": [
+        {
+          "id": "550e8400-e29b-41d4-a716-446655440161",
+          "name": "Dynamic Programming",
+          "order": 1,
+          "intuition": "dp[i][j] = min ops for word1[0..i-1] to word2[0..j-1]. If match, no op; else try all three.",
+          "approach": "1. Base: dp[i][0] = i (delete all), dp[0][j] = j (insert all)\n2. If match: dp[i][j] = dp[i-1][j-1]\n3. Else: 1 + min(replace, insert, delete)",
+          "explanation": "Three choices: replace (i-1,j-1), insert (i,j-1), delete (i-1,j). Take minimum.",
+          "code": "func minDistance(_ word1: String, _ word2: String) -> Int {\n    let s1 = Array(word1), s2 = Array(word2)\n    let m = s1.count, n = s2.count\n    var dp = [[Int]](repeating: [Int](repeating: 0, count: n + 1), count: m + 1)\n    \n    for i in 0...m { dp[i][0] = i }\n    for j in 0...n { dp[0][j] = j }\n    \n    for i in 1...m {\n        for j in 1...n {\n            if s1[i-1] == s2[j-1] {\n                dp[i][j] = dp[i-1][j-1]\n            } else {\n                dp[i][j] = 1 + min(dp[i-1][j-1], min(dp[i-1][j], dp[i][j-1]))\n            }\n        }\n    }\n    \n    return dp[m][n]\n}",
+          "complexity": {
+            "time": "O(m*n)",
+            "space": "O(m*n)",
+            "timeExplanation": "Fill m*n table",
+            "spaceExplanation": "2D DP array"
+          },
+          "testCases": [
+            {
+              "id": "550e8400-e29b-41d4-a716-446655440267",
+              "input": "word1 = \"horse\", word2 = \"ros\"",
+              "expectedOutput": "3",
+              "explanation": "horse -> rorse -> rose -> ros"
+            }
+          ]
+        }
+      ],
+      "relatedProblems": [
+        "one-edit-distance",
+        "delete-operation-for-two-strings"
+      ],
+      "lastUpdated": "2026-02-06T00:00:00Z"
+    },
+    {
+      "id": "550e8400-e29b-41d4-a716-446655440051",
+      "problemSlug": "diameter-of-binary-tree",
+      "summary": "Longest path between any two nodes. For each node, diameter through it = leftHeight + rightHeight.",
+      "approaches": [
+        {
+          "id": "550e8400-e29b-41d4-a716-446655440162",
+          "name": "DFS Height",
+          "order": 1,
+          "intuition": "Diameter through node = left height + right height. Track max while computing heights.",
+          "approach": "1. DFS returns height of subtree\n2. At each node: update diameter = left + right\n3. Return 1 + max(left, right) as height",
+          "explanation": "Height is longest path to leaf. Diameter uses both sides.",
+          "code": "func diameterOfBinaryTree(_ root: TreeNode?) -> Int {\n    var diameter = 0\n    \n    func height(_ node: TreeNode?) -> Int {\n        guard let node = node else { return 0 }\n        let left = height(node.left)\n        let right = height(node.right)\n        diameter = max(diameter, left + right)\n        return 1 + max(left, right)\n    }\n    \n    _ = height(root)\n    return diameter\n}",
+          "complexity": {
+            "time": "O(n)",
+            "space": "O(h)",
+            "timeExplanation": "Visit each node once",
+            "spaceExplanation": "Recursion depth = height"
+          },
+          "testCases": [
+            {
+              "id": "550e8400-e29b-41d4-a716-446655440268",
+              "input": "[1,2,3,4,5]",
+              "expectedOutput": "3",
+              "explanation": "Path 4->2->1->3 or 5->2->1->3"
+            }
+          ]
+        }
+      ],
+      "relatedProblems": [
+        "binary-tree-maximum-path-sum"
+      ],
+      "lastUpdated": "2026-02-06T00:00:00Z"
+    },
+    {
+      "id": "550e8400-e29b-41d4-a716-446655440052",
+      "problemSlug": "balanced-binary-tree",
+      "summary": "Check if height-balanced. At each node, heights of subtrees differ by at most 1.",
+      "approaches": [
+        {
+          "id": "550e8400-e29b-41d4-a716-446655440163",
+          "name": "DFS Height Check",
+          "order": 1,
+          "intuition": "Compute height bottom-up. Return -1 if unbalanced, propagate up.",
+          "approach": "1. DFS returns height or -1 if unbalanced\n2. If left or right is -1, return -1\n3. If |left - right| > 1, return -1\n4. Else return 1 + max(left, right)",
+          "explanation": "Single pass: check balance while computing height.",
+          "code": "func isBalanced(_ root: TreeNode?) -> Bool {\n    func height(_ node: TreeNode?) -> Int {\n        guard let node = node else { return 0 }\n        let left = height(node.left)\n        if left == -1 { return -1 }\n        let right = height(node.right)\n        if right == -1 { return -1 }\n        if abs(left - right) > 1 { return -1 }\n        return 1 + max(left, right)\n    }\n    return height(root) != -1\n}",
+          "complexity": {
+            "time": "O(n)",
+            "space": "O(h)",
+            "timeExplanation": "Visit each node once",
+            "spaceExplanation": "Recursion depth"
+          },
+          "testCases": [
+            {
+              "id": "550e8400-e29b-41d4-a716-446655440269",
+              "input": "[3,9,20,null,null,15,7]",
+              "expectedOutput": "true",
+              "explanation": "Heights differ by at most 1 at each node"
+            }
+          ]
+        }
+      ],
+      "relatedProblems": [
+        "maximum-depth-of-binary-tree"
+      ],
+      "lastUpdated": "2026-02-06T00:00:00Z"
+    },
+    {
+      "id": "550e8400-e29b-41d4-a716-446655440053",
+      "problemSlug": "kth-largest-element-in-an-array",
+      "summary": "Find kth largest. Use min-heap of size k, or QuickSelect for O(n) average.",
+      "approaches": [
+        {
+          "id": "550e8400-e29b-41d4-a716-446655440164",
+          "name": "QuickSelect",
+          "order": 1,
+          "intuition": "Partition like QuickSort, but only recurse into the half containing k.",
+          "approach": "1. Pick pivot, partition array\n2. If pivot position == k-1, found it\n3. Else recurse into correct half",
+          "explanation": "Average O(n) because we halve search space each time.",
+          "code": "func findKthLargest(_ nums: [Int], _ k: Int) -> Int {\n    var nums = nums\n    let target = nums.count - k\n    \n    func partition(_ left: Int, _ right: Int) -> Int {\n        let pivot = nums[right]\n        var i = left\n        for j in left..<right {\n            if nums[j] < pivot {\n                nums.swapAt(i, j)\n                i += 1\n            }\n        }\n        nums.swapAt(i, right)\n        return i\n    }\n    \n    var left = 0, right = nums.count - 1\n    while true {\n        let p = partition(left, right)\n        if p == target { return nums[p] }\n        if p < target { left = p + 1 }\n        else { right = p - 1 }\n    }\n}",
+          "complexity": {
+            "time": "O(n) average",
+            "space": "O(1)",
+            "timeExplanation": "Average case, O(n\u00b2) worst",
+            "spaceExplanation": "In-place"
+          },
+          "testCases": [
+            {
+              "id": "550e8400-e29b-41d4-a716-446655440270",
+              "input": "nums = [3,2,1,5,6,4], k = 2",
+              "expectedOutput": "5",
+              "explanation": "Sorted: [1,2,3,4,5,6], 2nd largest is 5"
+            }
+          ]
+        }
+      ],
+      "relatedProblems": [
+        "kth-largest-element-in-a-stream"
+      ],
+      "lastUpdated": "2026-02-06T00:00:00Z"
+    },
+    {
+      "id": "550e8400-e29b-41d4-a716-446655440054",
+      "problemSlug": "task-scheduler",
+      "summary": "Min time to execute tasks with cooldown. Most frequent task defines structure.",
+      "approaches": [
+        {
+          "id": "550e8400-e29b-41d4-a716-446655440165",
+          "name": "Math/Greedy",
+          "order": 1,
+          "intuition": "Most frequent task needs (count-1) gaps of size n. Fill gaps with other tasks.",
+          "approach": "1. Count frequencies, find max freq and how many tasks have it\n2. Minimum = (maxFreq - 1) * (n + 1) + numMaxTasks\n3. Answer = max(above, total tasks)",
+          "explanation": "Frame built by most frequent task. Other tasks fill gaps or extend if needed.",
+          "code": "func leastInterval(_ tasks: [Character], _ n: Int) -> Int {\n    var freq = [Int](repeating: 0, count: 26)\n    for task in tasks {\n        freq[Int(task.asciiValue!) - 65] += 1\n    }\n    \n    let maxFreq = freq.max()!\n    let numMaxTasks = freq.filter { $0 == maxFreq }.count\n    \n    let minTime = (maxFreq - 1) * (n + 1) + numMaxTasks\n    return max(minTime, tasks.count)\n}",
+          "complexity": {
+            "time": "O(n)",
+            "space": "O(1)",
+            "timeExplanation": "Count frequencies once",
+            "spaceExplanation": "Fixed 26-char array"
+          },
+          "testCases": [
+            {
+              "id": "550e8400-e29b-41d4-a716-446655440271",
+              "input": "tasks = [\"A\",\"A\",\"A\",\"B\",\"B\",\"B\"], n = 2",
+              "expectedOutput": "8",
+              "explanation": "A_B_A_B_A_B or similar"
+            }
+          ]
+        }
+      ],
+      "relatedProblems": [
+        "reorganize-string"
+      ],
+      "lastUpdated": "2026-02-06T00:00:00Z"
+    },
+    {
+      "id": "550e8400-e29b-41d4-a716-446655440055",
+      "problemSlug": "maximum-product-subarray",
+      "summary": "Max product subarray. Track both max and min (negative * negative = positive).",
+      "approaches": [
+        {
+          "id": "550e8400-e29b-41d4-a716-446655440166",
+          "name": "DP with Min/Max",
+          "order": 1,
+          "intuition": "Negative number flips max and min. Track both to handle sign changes.",
+          "approach": "1. Track currentMax, currentMin, result\n2. For each num: newMax = max(num, num*currentMax, num*currentMin)\n3. newMin = min of same\n4. Update result",
+          "explanation": "A negative times the most negative gives largest. Hence track both.",
+          "code": "func maxProduct(_ nums: [Int]) -> Int {\n    var maxProd = nums[0]\n    var minProd = nums[0]\n    var result = nums[0]\n    \n    for i in 1..<nums.count {\n        let candidates = [nums[i], nums[i] * maxProd, nums[i] * minProd]\n        maxProd = candidates.max()!\n        minProd = candidates.min()!\n        result = max(result, maxProd)\n    }\n    \n    return result\n}",
+          "complexity": {
+            "time": "O(n)",
+            "space": "O(1)",
+            "timeExplanation": "Single pass",
+            "spaceExplanation": "Three variables"
+          },
+          "testCases": [
+            {
+              "id": "550e8400-e29b-41d4-a716-446655440272",
+              "input": "[2,3,-2,4]",
+              "expectedOutput": "6",
+              "explanation": "[2,3] has product 6"
+            }
+          ]
+        }
+      ],
+      "relatedProblems": [
+        "maximum-subarray",
+        "product-of-array-except-self"
+      ],
+      "lastUpdated": "2026-02-06T00:00:00Z"
+    },
+    {
+      "id": "550e8400-e29b-41d4-a716-446655440056",
+      "problemSlug": "pacific-atlantic-water-flow",
+      "summary": "Find cells that can flow to both Pacific and Atlantic oceans. Use reverse BFS/DFS from ocean edges.",
+      "approaches": [
+        {
+          "id": "550e8400-e29b-41d4-a716-446655440167",
+          "name": "Reverse BFS from Oceans",
+          "order": 1,
+          "intuition": "Instead of checking each cell, work backwards from oceans. A cell can reach ocean if water can flow TO it from ocean edge (going uphill).",
+          "approach": "1. BFS from Pacific edges (top, left)\n2. BFS from Atlantic edges (bottom, right)\n3. Cells in both sets can reach both oceans",
+          "explanation": "Reverse the problem: find which cells are reachable going uphill from each ocean. Intersection gives answer.",
+          "code": "func pacificAtlantic(_ heights: [[Int]]) -> [[Int]] {\n    guard !heights.isEmpty else { return [] }\n    let m = heights.count, n = heights[0].count\n    var pacific = Set<[Int]>()\n    var atlantic = Set<[Int]>()\n    \n    func bfs(_ starts: [[Int]], _ reachable: inout Set<[Int]>) {\n        var queue = starts\n        for s in starts { reachable.insert(s) }\n        let dirs = [(0,1),(0,-1),(1,0),(-1,0)]\n        \n        while !queue.isEmpty {\n            let curr = queue.removeFirst()\n            for (dr, dc) in dirs {\n                let nr = curr[0] + dr, nc = curr[1] + dc\n                if nr >= 0 && nr < m && nc >= 0 && nc < n &&\n                   !reachable.contains([nr, nc]) &&\n                   heights[nr][nc] >= heights[curr[0]][curr[1]] {\n                    reachable.insert([nr, nc])\n                    queue.append([nr, nc])\n                }\n            }\n        }\n    }\n    \n    var pacificStarts = [[Int]]()\n    var atlanticStarts = [[Int]]()\n    for i in 0..<m {\n        pacificStarts.append([i, 0])\n        atlanticStarts.append([i, n-1])\n    }\n    for j in 0..<n {\n        pacificStarts.append([0, j])\n        atlanticStarts.append([m-1, j])\n    }\n    \n    bfs(pacificStarts, &pacific)\n    bfs(atlanticStarts, &atlantic)\n    \n    return Array(pacific.intersection(atlantic))\n}",
+          "complexity": {
+            "time": "O(m*n)",
+            "space": "O(m*n)",
+            "timeExplanation": "Visit each cell at most twice",
+            "spaceExplanation": "Two sets storing cells"
+          },
+          "testCases": [
+            {
+              "id": "550e8400-e29b-41d4-a716-446655440273",
+              "input": "[[1,2,2,3,5],[3,2,3,4,4],[2,4,5,3,1],[6,7,1,4,5],[5,1,1,2,4]]",
+              "expectedOutput": "[[0,4],[1,3],[1,4],[2,2],[3,0],[3,1],[4,0]]",
+              "explanation": "These cells can flow to both oceans"
+            }
+          ]
+        }
+      ],
+      "relatedProblems": [
+        "number-of-islands",
+        "surrounded-regions"
+      ],
+      "lastUpdated": "2026-02-06T00:00:00Z"
+    },
+    {
+      "id": "550e8400-e29b-41d4-a716-446655440057",
+      "problemSlug": "number-of-connected-components-in-an-undirected-graph",
+      "summary": "Count connected components using Union-Find or DFS.",
+      "approaches": [
+        {
+          "id": "550e8400-e29b-41d4-a716-446655440168",
+          "name": "Union-Find",
+          "order": 1,
+          "intuition": "Each edge connects two nodes. Union-Find efficiently tracks which nodes are connected.",
+          "approach": "1. Initialize n components (each node is its own component)\n2. For each edge, union the two nodes\n3. Each successful union decreases component count by 1",
+          "explanation": "Union-Find with path compression and union by rank gives near O(1) operations.",
+          "code": "func countComponents(_ n: Int, _ edges: [[Int]]) -> Int {\n    var parent = Array(0..<n)\n    var rank = [Int](repeating: 0, count: n)\n    var components = n\n    \n    func find(_ x: Int) -> Int {\n        if parent[x] != x {\n            parent[x] = find(parent[x])\n        }\n        return parent[x]\n    }\n    \n    func union(_ x: Int, _ y: Int) {\n        let px = find(x), py = find(y)\n        if px == py { return }\n        if rank[px] < rank[py] {\n            parent[px] = py\n        } else if rank[px] > rank[py] {\n            parent[py] = px\n        } else {\n            parent[py] = px\n            rank[px] += 1\n        }\n        components -= 1\n    }\n    \n    for edge in edges {\n        union(edge[0], edge[1])\n    }\n    \n    return components\n}",
+          "complexity": {
+            "time": "O(E * α(n))",
+            "space": "O(n)",
+            "timeExplanation": "α is inverse Ackermann, nearly constant",
+            "spaceExplanation": "Parent and rank arrays"
+          },
+          "testCases": [
+            {
+              "id": "550e8400-e29b-41d4-a716-446655440274",
+              "input": "n=5, edges=[[0,1],[1,2],[3,4]]",
+              "expectedOutput": "2",
+              "explanation": "Components: {0,1,2} and {3,4}"
+            }
+          ]
+        }
+      ],
+      "relatedProblems": [
+        "number-of-islands",
+        "graph-valid-tree"
+      ],
+      "lastUpdated": "2026-02-06T00:00:00Z"
+    },
+    {
+      "id": "550e8400-e29b-41d4-a716-446655440058",
+      "problemSlug": "graph-valid-tree",
+      "summary": "A valid tree has n-1 edges and is fully connected (no cycles).",
+      "approaches": [
+        {
+          "id": "550e8400-e29b-41d4-a716-446655440169",
+          "name": "Union-Find Cycle Detection",
+          "order": 1,
+          "intuition": "Tree = connected graph with no cycles. If union finds same root, there's a cycle.",
+          "approach": "1. Check if edges == n-1 (required for tree)\n2. Union-Find: if two nodes already connected, cycle exists\n3. After all unions, check if single component",
+          "explanation": "Adding an edge between already-connected nodes creates a cycle. Tree must have exactly n-1 edges.",
+          "code": "func validTree(_ n: Int, _ edges: [[Int]]) -> Bool {\n    if edges.count != n - 1 { return false }\n    \n    var parent = Array(0..<n)\n    \n    func find(_ x: Int) -> Int {\n        if parent[x] != x {\n            parent[x] = find(parent[x])\n        }\n        return parent[x]\n    }\n    \n    for edge in edges {\n        let p1 = find(edge[0]), p2 = find(edge[1])\n        if p1 == p2 { return false }  // Cycle detected\n        parent[p1] = p2\n    }\n    \n    return true\n}",
+          "complexity": {
+            "time": "O(E * α(n))",
+            "space": "O(n)",
+            "timeExplanation": "Process each edge with near-constant union-find",
+            "spaceExplanation": "Parent array"
+          },
+          "testCases": [
+            {
+              "id": "550e8400-e29b-41d4-a716-446655440275",
+              "input": "n=5, edges=[[0,1],[0,2],[0,3],[1,4]]",
+              "expectedOutput": "true",
+              "explanation": "4 edges for 5 nodes, no cycles, connected"
+            }
+          ]
+        }
+      ],
+      "relatedProblems": [
+        "number-of-connected-components-in-an-undirected-graph",
+        "redundant-connection"
+      ],
+      "lastUpdated": "2026-02-06T00:00:00Z"
+    },
+    {
+      "id": "550e8400-e29b-41d4-a716-446655440059",
+      "problemSlug": "redundant-connection",
+      "summary": "Find edge that creates cycle in undirected graph. Last edge that connects already-connected nodes.",
+      "approaches": [
+        {
+          "id": "550e8400-e29b-41d4-a716-446655440170",
+          "name": "Union-Find",
+          "order": 1,
+          "intuition": "Process edges in order. When union fails (same component), that's the redundant edge.",
+          "approach": "1. Union-Find with each edge\n2. If two nodes already in same component, return this edge\n3. This gives the last edge forming a cycle",
+          "explanation": "The problem guarantees exactly one redundant edge. First edge that creates cycle (when processing in order) is the answer.",
+          "code": "func findRedundantConnection(_ edges: [[Int]]) -> [Int] {\n    let n = edges.count\n    var parent = Array(0...n)\n    \n    func find(_ x: Int) -> Int {\n        if parent[x] != x {\n            parent[x] = find(parent[x])\n        }\n        return parent[x]\n    }\n    \n    for edge in edges {\n        let p1 = find(edge[0]), p2 = find(edge[1])\n        if p1 == p2 {\n            return edge\n        }\n        parent[p1] = p2\n    }\n    \n    return []\n}",
+          "complexity": {
+            "time": "O(n * α(n))",
+            "space": "O(n)",
+            "timeExplanation": "Process n edges with near-constant find",
+            "spaceExplanation": "Parent array"
+          },
+          "testCases": [
+            {
+              "id": "550e8400-e29b-41d4-a716-446655440276",
+              "input": "[[1,2],[1,3],[2,3]]",
+              "expectedOutput": "[2,3]",
+              "explanation": "[2,3] creates cycle 1-2-3-1"
+            }
+          ]
+        }
+      ],
+      "relatedProblems": [
+        "graph-valid-tree",
+        "redundant-connection-ii"
+      ],
+      "lastUpdated": "2026-02-06T00:00:00Z"
+    },
+    {
+      "id": "550e8400-e29b-41d4-a716-446655440060",
+      "problemSlug": "word-ladder",
+      "summary": "Transform word to target changing one letter at a time. BFS finds shortest path.",
+      "approaches": [
+        {
+          "id": "550e8400-e29b-41d4-a716-446655440171",
+          "name": "BFS with Pattern Matching",
+          "order": 1,
+          "intuition": "Each word connects to words differing by one letter. BFS explores level by level for shortest path.",
+          "approach": "1. Build pattern map: 'hot' -> ['*ot', 'h*t', 'ho*']\n2. BFS from beginWord\n3. For each word, find neighbors via pattern\n4. First time reaching endWord is shortest",
+          "explanation": "Pattern matching avoids O(26*L) letter substitutions. Map each word to wildcard patterns for O(1) neighbor lookup.",
+          "code": "func ladderLength(_ beginWord: String, _ endWord: String, _ wordList: [String]) -> Int {\n    var wordSet = Set(wordList)\n    if !wordSet.contains(endWord) { return 0 }\n    \n    var queue = [(beginWord, 1)]\n    var visited = Set([beginWord])\n    \n    while !queue.isEmpty {\n        let (word, level) = queue.removeFirst()\n        var chars = Array(word)\n        \n        for i in 0..<chars.count {\n            let original = chars[i]\n            for c in \"abcdefghijklmnopqrstuvwxyz\" {\n                chars[i] = c\n                let newWord = String(chars)\n                if newWord == endWord { return level + 1 }\n                if wordSet.contains(newWord) && !visited.contains(newWord) {\n                    visited.insert(newWord)\n                    queue.append((newWord, level + 1))\n                }\n            }\n            chars[i] = original\n        }\n    }\n    \n    return 0\n}",
+          "complexity": {
+            "time": "O(M² * N)",
+            "space": "O(M * N)",
+            "timeExplanation": "M = word length, N = word count. Check 26*M neighbors for N words",
+            "spaceExplanation": "Queue and visited set"
+          },
+          "testCases": [
+            {
+              "id": "550e8400-e29b-41d4-a716-446655440277",
+              "input": "beginWord=\"hit\", endWord=\"cog\", wordList=[\"hot\",\"dot\",\"dog\",\"lot\",\"log\",\"cog\"]",
+              "expectedOutput": "5",
+              "explanation": "hit -> hot -> dot -> dog -> cog"
+            }
+          ]
+        }
+      ],
+      "relatedProblems": [
+        "word-ladder-ii",
+        "minimum-genetic-mutation"
+      ],
+      "lastUpdated": "2026-02-06T00:00:00Z"
+    },
+    {
+      "id": "550e8400-e29b-41d4-a716-446655440061",
+      "problemSlug": "min-cost-to-connect-all-points",
+      "summary": "Minimum spanning tree of points using Manhattan distance. Use Prim's or Kruskal's.",
+      "approaches": [
+        {
+          "id": "550e8400-e29b-41d4-a716-446655440172",
+          "name": "Prim's Algorithm",
+          "order": 1,
+          "intuition": "Greedily add cheapest edge connecting MST to a new node.",
+          "approach": "1. Start from any node\n2. Use min-heap to track cheapest edges to unvisited nodes\n3. Add cheapest edge, mark node visited\n4. Add all edges from new node to heap\n5. Repeat until all nodes connected",
+          "explanation": "Prim's builds MST by always picking minimum weight edge to expand the tree.",
+          "code": "func minCostConnectPoints(_ points: [[Int]]) -> Int {\n    let n = points.count\n    var visited = [Bool](repeating: false, count: n)\n    var minCost = [Int](repeating: Int.max, count: n)\n    minCost[0] = 0\n    var totalCost = 0\n    \n    for _ in 0..<n {\n        var minIdx = -1\n        var minVal = Int.max\n        for j in 0..<n {\n            if !visited[j] && minCost[j] < minVal {\n                minVal = minCost[j]\n                minIdx = j\n            }\n        }\n        \n        visited[minIdx] = true\n        totalCost += minVal\n        \n        for j in 0..<n {\n            if !visited[j] {\n                let dist = abs(points[minIdx][0] - points[j][0]) + \n                           abs(points[minIdx][1] - points[j][1])\n                minCost[j] = min(minCost[j], dist)\n            }\n        }\n    }\n    \n    return totalCost\n}",
+          "complexity": {
+            "time": "O(n²)",
+            "space": "O(n)",
+            "timeExplanation": "n iterations, each scans n nodes",
+            "spaceExplanation": "Visited and minCost arrays"
+          },
+          "testCases": [
+            {
+              "id": "550e8400-e29b-41d4-a716-446655440278",
+              "input": "[[0,0],[2,2],[3,10],[5,2],[7,0]]",
+              "expectedOutput": "20",
+              "explanation": "Connect points with minimum total Manhattan distance"
+            }
+          ]
+        }
+      ],
+      "relatedProblems": [
+        "minimum-spanning-tree",
+        "connecting-cities-with-minimum-cost"
+      ],
+      "lastUpdated": "2026-02-06T00:00:00Z"
+    },
+    {
+      "id": "550e8400-e29b-41d4-a716-446655440062",
+      "problemSlug": "network-delay-time",
+      "summary": "Shortest path from source to all nodes. Classic Dijkstra's algorithm.",
+      "approaches": [
+        {
+          "id": "550e8400-e29b-41d4-a716-446655440173",
+          "name": "Dijkstra's Algorithm",
+          "order": 1,
+          "intuition": "Greedily process nodes in order of distance from source. Once processed, distance is final.",
+          "approach": "1. Build adjacency list\n2. Min-heap with (distance, node), start with (0, source)\n3. Pop minimum, skip if visited\n4. Update neighbors if shorter path found\n5. Return max distance (time for all to receive)",
+          "explanation": "Dijkstra's works because we always process the closest unvisited node, so its distance is optimal.",
+          "code": "func networkDelayTime(_ times: [[Int]], _ n: Int, _ k: Int) -> Int {\n    var graph = [Int: [(Int, Int)]]()\n    for t in times {\n        graph[t[0], default: []].append((t[1], t[2]))\n    }\n    \n    var dist = [Int: Int]()\n    var heap = [(0, k)]  // (distance, node)\n    \n    while !heap.isEmpty {\n        heap.sort { $0.0 > $1.0 }  // Simple heap simulation\n        let (d, node) = heap.removeLast()\n        \n        if dist[node] != nil { continue }\n        dist[node] = d\n        \n        for (neighbor, weight) in graph[node] ?? [] {\n            if dist[neighbor] == nil {\n                heap.append((d + weight, neighbor))\n            }\n        }\n    }\n    \n    if dist.count != n { return -1 }\n    return dist.values.max()!\n}",
+          "complexity": {
+            "time": "O(E log V)",
+            "space": "O(V + E)",
+            "timeExplanation": "Each edge processed once, heap operations O(log V)",
+            "spaceExplanation": "Graph and distance storage"
+          },
+          "testCases": [
+            {
+              "id": "550e8400-e29b-41d4-a716-446655440279",
+              "input": "times=[[2,1,1],[2,3,1],[3,4,1]], n=4, k=2",
+              "expectedOutput": "2",
+              "explanation": "From node 2: node 1 and 3 at time 1, node 4 at time 2"
+            }
+          ]
+        }
+      ],
+      "relatedProblems": [
+        "cheapest-flights-within-k-stops",
+        "path-with-minimum-effort"
+      ],
+      "lastUpdated": "2026-02-06T00:00:00Z"
+    },
+    {
+      "id": "550e8400-e29b-41d4-a716-446655440063",
+      "problemSlug": "cheapest-flights-within-k-stops",
+      "summary": "Shortest path with at most K stops. Modified Bellman-Ford or BFS with pruning.",
+      "approaches": [
+        {
+          "id": "550e8400-e29b-41d4-a716-446655440174",
+          "name": "Bellman-Ford with K iterations",
+          "order": 1,
+          "intuition": "Bellman-Ford relaxes all edges. K+1 iterations gives paths with at most K stops.",
+          "approach": "1. Initialize distances (source = 0, others = infinity)\n2. Repeat K+1 times:\n   - Copy current distances\n   - Relax all edges using previous distances\n3. Return destination distance",
+          "explanation": "Each iteration adds one more edge to paths. K+1 edges = K intermediate stops.",
+          "code": "func findCheapestPrice(_ n: Int, _ flights: [[Int]], _ src: Int, _ dst: Int, _ k: Int) -> Int {\n    var dist = [Int](repeating: Int.max, count: n)\n    dist[src] = 0\n    \n    for _ in 0...k {\n        let prev = dist\n        for f in flights {\n            let from = f[0], to = f[1], price = f[2]\n            if prev[from] != Int.max {\n                dist[to] = min(dist[to], prev[from] + price)\n            }\n        }\n    }\n    \n    return dist[dst] == Int.max ? -1 : dist[dst]\n}",
+          "complexity": {
+            "time": "O(K * E)",
+            "space": "O(n)",
+            "timeExplanation": "K+1 iterations over E edges",
+            "spaceExplanation": "Distance array"
+          },
+          "testCases": [
+            {
+              "id": "550e8400-e29b-41d4-a716-446655440280",
+              "input": "n=4, flights=[[0,1,100],[1,2,100],[2,0,100],[1,3,600],[2,3,200]], src=0, dst=3, k=1",
+              "expectedOutput": "700",
+              "explanation": "0->1->3 costs 700 with 1 stop"
+            }
+          ]
+        }
+      ],
+      "relatedProblems": [
+        "network-delay-time",
+        "minimum-cost-to-reach-destination-in-time"
+      ],
+      "lastUpdated": "2026-02-06T00:00:00Z"
+    },
+    {
+      "id": "550e8400-e29b-41d4-a716-446655440064",
+      "problemSlug": "swim-in-rising-water",
+      "summary": "Find minimum time to swim from top-left to bottom-right. Binary search + BFS or modified Dijkstra.",
+      "approaches": [
+        {
+          "id": "550e8400-e29b-41d4-a716-446655440175",
+          "name": "Binary Search + BFS",
+          "order": 1,
+          "intuition": "Binary search on time T. Check if path exists using only cells with elevation <= T.",
+          "approach": "1. Binary search on T from 0 to max elevation\n2. For each T, BFS to check if path exists\n3. Find minimum T where path is possible",
+          "explanation": "At time T, all cells with elevation <= T are accessible. Binary search finds minimum viable T.",
+          "code": "func swimInWater(_ grid: [[Int]]) -> Int {\n    let n = grid.count\n    let dirs = [(0,1),(0,-1),(1,0),(-1,0)]\n    \n    func canReach(_ t: Int) -> Bool {\n        if grid[0][0] > t { return false }\n        var visited = Set<[Int]>()\n        var queue = [[0, 0]]\n        visited.insert([0, 0])\n        \n        while !queue.isEmpty {\n            let curr = queue.removeFirst()\n            if curr == [n-1, n-1] { return true }\n            \n            for (dr, dc) in dirs {\n                let nr = curr[0] + dr, nc = curr[1] + dc\n                if nr >= 0 && nr < n && nc >= 0 && nc < n &&\n                   !visited.contains([nr, nc]) && grid[nr][nc] <= t {\n                    visited.insert([nr, nc])\n                    queue.append([nr, nc])\n                }\n            }\n        }\n        return false\n    }\n    \n    var lo = grid[0][0], hi = n * n - 1\n    while lo < hi {\n        let mid = (lo + hi) / 2\n        if canReach(mid) {\n            hi = mid\n        } else {\n            lo = mid + 1\n        }\n    }\n    \n    return lo\n}",
+          "complexity": {
+            "time": "O(n² log n²)",
+            "space": "O(n²)",
+            "timeExplanation": "Binary search O(log n²), BFS O(n²) each",
+            "spaceExplanation": "Visited set"
+          },
+          "testCases": [
+            {
+              "id": "550e8400-e29b-41d4-a716-446655440281",
+              "input": "[[0,2],[1,3]]",
+              "expectedOutput": "3",
+              "explanation": "At t=3, path 0->2->3 or 0->1->3 possible"
+            }
+          ]
+        }
+      ],
+      "relatedProblems": [
+        "path-with-minimum-effort",
+        "trapping-rain-water-ii"
+      ],
+      "lastUpdated": "2026-02-06T00:00:00Z"
+    },
+    {
+      "id": "550e8400-e29b-41d4-a716-446655440065",
+      "problemSlug": "reconstruct-itinerary",
+      "summary": "Find Eulerian path visiting all edges. Use Hierholzer's algorithm with lexical ordering.",
+      "approaches": [
+        {
+          "id": "550e8400-e29b-41d4-a716-446655440176",
+          "name": "Hierholzer's Algorithm",
+          "order": 1,
+          "intuition": "Build itinerary by DFS, adding airports in reverse post-order. Sorted adjacency ensures lexical order.",
+          "approach": "1. Build adjacency list, sort destinations\n2. DFS from 'JFK', greedily visit smallest destination\n3. Add to result in reverse (post-order)\n4. Reverse final result",
+          "explanation": "Hierholzer's visits each edge exactly once. Sorting ensures lexicographically smallest path.",
+          "code": "func findItinerary(_ tickets: [[String]]) -> [String] {\n    var graph = [String: [String]]()\n    for t in tickets {\n        graph[t[0], default: []].append(t[1])\n    }\n    for key in graph.keys {\n        graph[key]?.sort(by: >)  // Reverse sort for pop efficiency\n    }\n    \n    var result = [String]()\n    \n    func dfs(_ airport: String) {\n        while !(graph[airport]?.isEmpty ?? true) {\n            let next = graph[airport]!.removeLast()\n            dfs(next)\n        }\n        result.append(airport)\n    }\n    \n    dfs(\"JFK\")\n    return result.reversed()\n}",
+          "complexity": {
+            "time": "O(E log E)",
+            "space": "O(E)",
+            "timeExplanation": "Sorting edges dominates",
+            "spaceExplanation": "Graph and result storage"
+          },
+          "testCases": [
+            {
+              "id": "550e8400-e29b-41d4-a716-446655440282",
+              "input": "[[\"MU\",\"LHR\"],[\"JFK\",\"MUC\"],[\"SFO\",\"SJC\"],[\"LHR\",\"SFO\"]]",
+              "expectedOutput": "[\"JFK\",\"MUC\",\"LHR\",\"SFO\",\"SJC\"]",
+              "explanation": "Visit all tickets starting from JFK"
+            }
+          ]
+        }
+      ],
+      "relatedProblems": [
+        "valid-arrangement-of-pairs",
+        "cracking-the-safe"
+      ],
+      "lastUpdated": "2026-02-06T00:00:00Z"
+    },
+    {
+      "id": "550e8400-e29b-41d4-a716-446655440066",
+      "problemSlug": "word-search",
+      "summary": "Find if word exists in grid by traversing adjacent cells. Use DFS with backtracking.",
+      "approaches": [
+        {
+          "id": "550e8400-e29b-41d4-a716-446655440177",
+          "name": "DFS Backtracking",
+          "order": 1,
+          "intuition": "Start from each cell matching first letter. Explore all 4 directions, marking visited cells to avoid cycles.",
+          "approach": "1. For each cell matching word[0], start DFS\n2. At each step, check if current cell matches current char\n3. Mark cell visited (modify to special char)\n4. Recurse to 4 neighbors for next char\n5. Backtrack: restore cell value\n6. Return true if word fully matched",
+          "explanation": "Backtracking is key: we temporarily mark cells as visited during exploration, then restore them when backtracking. This allows the same cell to be used in different paths.",
+          "code": "func exist(_ board: [[Character]], _ word: String) -> Bool {\n    var board = board\n    let m = board.count, n = board[0].count\n    let word = Array(word)\n    \n    func dfs(_ i: Int, _ j: Int, _ k: Int) -> Bool {\n        if k == word.count { return true }\n        if i < 0 || i >= m || j < 0 || j >= n || board[i][j] != word[k] {\n            return false\n        }\n        \n        let temp = board[i][j]\n        board[i][j] = \"#\"  // Mark visited\n        \n        let found = dfs(i+1, j, k+1) || dfs(i-1, j, k+1) ||\n                    dfs(i, j+1, k+1) || dfs(i, j-1, k+1)\n        \n        board[i][j] = temp  // Backtrack\n        return found\n    }\n    \n    for i in 0..<m {\n        for j in 0..<n {\n            if dfs(i, j, 0) { return true }\n        }\n    }\n    return false\n}",
+          "complexity": {
+            "time": "O(m * n * 4^L)",
+            "space": "O(L)",
+            "timeExplanation": "Try each cell, DFS explores up to 4^L paths where L = word length",
+            "spaceExplanation": "Recursion stack depth equals word length"
+          },
+          "testCases": [
+            {
+              "id": "550e8400-e29b-41d4-a716-446655440283",
+              "input": "board=[[\"A\",\"B\",\"C\",\"E\"],[\"S\",\"F\",\"C\",\"S\"],[\"A\",\"D\",\"E\",\"E\"]], word=\"ABCCED\"",
+              "expectedOutput": "true",
+              "explanation": "Path: A(0,0)->B(0,1)->C(0,2)->C(1,2)->E(2,2)->D(2,1)"
+            }
+          ]
+        }
+      ],
+      "relatedProblems": [
+        "word-search-ii",
+        "number-of-islands"
+      ],
+      "lastUpdated": "2026-02-06T00:00:00Z"
+    },
+    {
+      "id": "550e8400-e29b-41d4-a716-446655440067",
+      "problemSlug": "alien-dictionary",
+      "summary": "Derive character ordering from sorted alien words. Build graph from adjacent word comparisons, then topological sort.",
+      "approaches": [
+        {
+          "id": "550e8400-e29b-41d4-a716-446655440178",
+          "name": "Topological Sort (BFS)",
+          "order": 1,
+          "intuition": "Compare adjacent words to find ordering rules (edges). Build directed graph where edge a->b means a comes before b. Topological sort gives valid ordering.",
+          "approach": "1. Compare adjacent words pairwise\n2. First differing char gives edge: words[i][k] -> words[i+1][k]\n3. Build graph and in-degree count\n4. BFS from chars with in-degree 0\n5. If result has all chars, return it; else cycle exists",
+          "explanation": "Adjacent sorted words reveal ordering: 'wrt' before 'wrf' means t < f. Edge case: 'abc' before 'ab' is invalid (longer word can't come after prefix).",
+          "code": "func alienOrder(_ words: [String]) -> String {\n    var graph = [Character: Set<Character>]()\n    var inDegree = [Character: Int]()\n    \n    // Initialize all characters\n    for word in words {\n        for c in word {\n            graph[c] = graph[c] ?? Set()\n            inDegree[c] = inDegree[c] ?? 0\n        }\n    }\n    \n    // Build graph from adjacent word pairs\n    for i in 0..<words.count - 1 {\n        let w1 = Array(words[i]), w2 = Array(words[i+1])\n        \n        // Check invalid case: prefix comes after longer word\n        if w1.count > w2.count && w1.starts(with: w2) {\n            return \"\"\n        }\n        \n        // Find first differing character\n        for j in 0..<min(w1.count, w2.count) {\n            if w1[j] != w2[j] {\n                if !graph[w1[j]]!.contains(w2[j]) {\n                    graph[w1[j]]!.insert(w2[j])\n                    inDegree[w2[j]]! += 1\n                }\n                break\n            }\n        }\n    }\n    \n    // BFS topological sort\n    var queue = inDegree.filter { $0.value == 0 }.map { $0.key }\n    var result = \"\"\n    \n    while !queue.isEmpty {\n        let c = queue.removeFirst()\n        result.append(c)\n        \n        for next in graph[c]! {\n            inDegree[next]! -= 1\n            if inDegree[next] == 0 {\n                queue.append(next)\n            }\n        }\n    }\n    \n    return result.count == inDegree.count ? result : \"\"\n}",
+          "complexity": {
+            "time": "O(C)",
+            "space": "O(1)",
+            "timeExplanation": "C = total chars across all words. Process each char once.",
+            "spaceExplanation": "Graph has at most 26 nodes (alphabet size)"
+          },
+          "testCases": [
+            {
+              "id": "550e8400-e29b-41d4-a716-446655440284",
+              "input": "[\"wrt\",\"wrf\",\"er\",\"ett\",\"rftt\"]",
+              "expectedOutput": "\"wertf\"",
+              "explanation": "From comparisons: t<f, w<e, r<t, e<r. Order: w->e->r->t->f"
+            }
+          ]
+        }
+      ],
+      "relatedProblems": [
+        "course-schedule",
+        "course-schedule-ii"
+      ],
+      "lastUpdated": "2026-02-06T00:00:00Z"
     }
   ]
 }

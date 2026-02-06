@@ -37,7 +37,7 @@ FocusApp is a native macOS study companion for Data Structures & Algorithms prep
 ## Configuration
 - Default username can be edited in `FocusApp/Models/AppData.swift`.
 - Saved code is stored per problem and language.
-- Bundled solution content lives in `FocusApp/Resources/Solutions.json`.
+- Bundled solution content lives in `FocusApp/Resources/Solutions.json` (85 problems: core plan + sprint list).
 
 ## Data Storage
 Progress is stored locally in a SwiftData persistent store (default location under Application Support).

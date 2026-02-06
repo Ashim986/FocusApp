@@ -1,7 +1,7 @@
 # FocusApp - Agent Guide
 
 ## Project Overview
-FocusApp is a native macOS study companion for Data Structures & Algorithms preparation. It tracks a 13-day core plan plus a 2-day priority sprint (25 problems), daily habits, and focus tools. Progress syncs from LeetCode.
+FocusApp is a native macOS study companion for Data Structures & Algorithms preparation. It tracks a 13-day core plan plus a 2-day priority sprint (25 problems), daily habits, and focus tools. Progress syncs from LeetCode. Bundled solution write-ups live in `FocusApp/Resources/Solutions.json` (85 problems).
 
 ## Project Structure
 ```
@@ -47,7 +47,9 @@ FocusApp/
 │   │   ├── ProcessRunner.swift
 │   │   ├── LanguageExecutor.swift
 │   │   ├── SwiftExecutor.swift
-│   │   └── PythonExecutor.swift
+│   │   ├── PythonExecutor.swift
+│   │   ├── SolutionModels.swift     # Bundled solution data models
+│   │   └── SolutionStore.swift      # Solution loader (Solutions.json)
 │   ├── Views/
 │   │   ├── Content/
 │   │   │   ├── ContentView.swift        # Main tabbed interface
@@ -151,9 +153,14 @@ FocusApp/
 │   │   ├── DayCard.swift            # Day card component
 │   │   └── ProblemRow.swift         # Problem row component
 │   ├── Helpers/
-│   │   └── Colors.swift             # Color definitions
+│   │   ├── Colors.swift             # Color definitions
+│   │   └── AppStrings.swift         # Localized string helpers
+│   ├── Resources/
+│   │   ├── Localizable.xcstrings    # Localization strings catalog
+│   │   └── Solutions.json           # Bundled solutions content
 │   └── Shared/
-│       └── SharedDataStore.swift    # FileAppStorage, PlanCalendar, AppConstants
+│       ├── SharedDataStore.swift    # FileAppStorage, PlanCalendar, AppConstants
+│       └── SwiftDataStorage.swift   # SwiftData persistence
 ├── AGENTS.md                        # This file
 ├── CLAUDE.md                        # Detailed dev guide
 └── README.md                        # Project readme

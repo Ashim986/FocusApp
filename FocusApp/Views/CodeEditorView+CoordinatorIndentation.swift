@@ -28,7 +28,7 @@ extension CodeEditorView.Coordinator {
         }
     }
 
-    private func leadingIndentation(in line: String) -> String {
+    func leadingIndentation(in line: String) -> String {
         var indentation = ""
         for char in line {
             if char == " " {

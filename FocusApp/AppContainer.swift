@@ -101,8 +101,8 @@ final class AppContainer {
         let codeExecutionService = CodeExecutionService(logger: debugLogStore)
         self.codeExecutionService = codeExecutionService
 
-        let bundledStore = BundledSolutionStore()
-        let solutionStore = OnDemandSolutionProvider(bundledStore: bundledStore)
+        let topicStore = TopicSolutionStore()
+        let solutionStore = OnDemandSolutionProvider(bundledStore: topicStore)
         self.solutionStore = solutionStore
 
         self.contentPresenter = ContentPresenter(

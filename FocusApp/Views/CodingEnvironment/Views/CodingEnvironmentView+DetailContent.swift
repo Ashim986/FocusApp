@@ -36,14 +36,6 @@ extension CodingEnvironmentView {
     @ViewBuilder
     var editorialContent: some View {
         VStack(alignment: .leading, spacing: 12) {
-            solutionSection(title: L10n.Coding.editorialIntuitionTitle) {
-                Text(L10n.Coding.editorialIntuitionBody)
-            }
-
-            solutionSection(title: L10n.Coding.editorialApproachTitle) {
-                Text(L10n.Coding.editorialApproachBody)
-            }
-
             solutionSection(title: L10n.Coding.editorialVisualTitle) {
                 DataJourneyView(
                     events: presenter.dataJourney,
@@ -57,6 +49,14 @@ extension CodingEnvironmentView {
 
             solutionSection(title: L10n.Coding.editorialWalkthroughTitle) {
                 walkthroughContent
+            }
+
+            solutionSection(title: L10n.Coding.editorialIntuitionTitle) {
+                Text(L10n.Coding.editorialIntuitionBody)
+            }
+
+            solutionSection(title: L10n.Coding.editorialApproachTitle) {
+                Text(L10n.Coding.editorialApproachBody)
             }
 
             solutionSection(title: L10n.Coding.editorialBigOTitle) {
@@ -79,7 +79,7 @@ extension CodingEnvironmentView {
             } else {
                 VStack(alignment: .leading, spacing: 10) {
                     ForEach(submissions) { submission in
-                        submissionRow(submission)
+                        submissionRow(submission, problem: problem)
                     }
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
@@ -148,24 +148,22 @@ extension CodingEnvironmentView {
         .clipShape(RoundedRectangle(cornerRadius: 6))
     }
 
-    private func submissionRow(_ submission: CodeSubmission) -> some View {
+    private func submissionRow(_ submission: CodeSubmission, problem: Problem) -> some View {
         DisclosureGroup {
             codeBlock(submission.code)
         } label: {
             HStack {
-                Text(languageLabel(for: submission.languageSlug))
+                Text(problem.displayName)
                     .font(.system(size: 11, weight: .semibold))
                     .foregroundColor(.white)
 
-                if let tag = submission.algorithmTag, !tag.isEmpty {
-                    Text(tag)
-                        .font(.system(size: 10, weight: .semibold))
-                        .foregroundColor(Color.appPurple)
-                        .padding(.horizontal, 8)
-                        .padding(.vertical, 3)
-                        .background(Color.appPurple.opacity(0.15))
-                        .clipShape(Capsule())
-                }
+                Text(languageLabel(for: submission.languageSlug))
+                    .font(.system(size: 10, weight: .semibold))
+                    .foregroundColor(Color.appPurple)
+                    .padding(.horizontal, 8)
+                    .padding(.vertical, 3)
+                    .background(Color.appPurple.opacity(0.15))
+                    .clipShape(Capsule())
 
                 Spacer()
 

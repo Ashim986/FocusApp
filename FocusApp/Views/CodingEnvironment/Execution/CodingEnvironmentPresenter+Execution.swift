@@ -34,6 +34,7 @@ extension CodingEnvironmentPresenter {
         isRunning = true
         compilationOutput = ""
         errorOutput = ""
+        executionLogAnchor = Date()
 
         runTask?.cancel()
         runTask = Task { [weak self] in
@@ -83,6 +84,10 @@ extension CodingEnvironmentPresenter {
         isRunning = true
         compilationOutput = ""
         errorOutput = ""
+        executionLogAnchor = Date()
+        showSubmissionTagPrompt = false
+        pendingSubmission = nil
+        submissionTagInput = ""
 
         runTask?.cancel()
         runTask = Task { [weak self] in
@@ -150,7 +155,7 @@ extension CodingEnvironmentPresenter {
             guard !Task.isCancelled else { return }
             if saveSubmission, allPassed {
                 await MainActor.run {
-                    self.prepareSubmissionPrompt()
+                    self.recordSubmission()
                 }
             }
             await MainActor.run {

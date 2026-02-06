@@ -12,7 +12,7 @@ struct TraceValueView: View {
         case .number(let number, let isInt):
             bubble(for: .number(number, isInt: isInt))
         case .string(let stringValue):
-            bubble(for: .string(stringValue))
+            arrayView(stringCharacters(from: stringValue))
         case .array(let items):
             arrayView(items)
         case .object(let map):
@@ -55,11 +55,18 @@ struct TraceValueView: View {
     }
 
     private func typedView(type: String, value: TraceValue) -> some View {
-        switch type.lowercased() {
+        let lowered = type.lowercased()
+        switch lowered {
         case "list":
             return AnyView(listView(value))
         case "tree":
             return AnyView(treeView(value))
+        case "set":
+            return AnyView(setView(value))
+        case "stack":
+            return AnyView(stackView(value))
+        case "queue":
+            return AnyView(queueView(value))
         default:
             return AnyView(TraceValueView(value: value))
         }
@@ -102,7 +109,9 @@ struct TraceValueView: View {
         showIndices: Bool,
         cycleIndex: Int? = nil,
         isTruncated: Bool = false,
-        isDoubly: Bool = false
+        isDoubly: Bool = false,
+        pointers: [PointerMarker] = [],
+        gapIndices: Set<Int> = []
     ) -> some View {
         SequenceBubbleRow(
             items: items,
@@ -110,13 +119,59 @@ struct TraceValueView: View {
             cycleIndex: cycleIndex,
             isTruncated: isTruncated,
             isDoubly: isDoubly,
-            pointers: []
+            pointers: pointers,
+            gapIndices: gapIndices
         )
     }
 
     private func bubble(for value: TraceValue) -> some View {
         let model = TraceBubbleModel.from(value)
         return TraceBubble(text: model.text, fill: model.fill)
+    }
+
+    private func stringCharacters(from value: String) -> [TraceValue] {
+        value.map { TraceValue.string(String($0)) }
+    }
+
+    private func setView(_ value: TraceValue) -> some View {
+        guard case .array(let items) = value else {
+            return AnyView(TraceValueView(value: value))
+        }
+        let gaps = Set(items.indices.dropLast())
+        return AnyView(sequenceView(items, showIndices: false, gapIndices: gaps))
+    }
+
+    private func stackView(_ value: TraceValue) -> some View {
+        guard case .array(let items) = value else {
+            return AnyView(TraceValueView(value: value))
+        }
+        let pointers = stackPointers(for: items)
+        return AnyView(sequenceView(items, showIndices: false, pointers: pointers))
+    }
+
+    private func queueView(_ value: TraceValue) -> some View {
+        guard case .array(let items) = value else {
+            return AnyView(TraceValueView(value: value))
+        }
+        let pointers = queuePointers(for: items)
+        return AnyView(sequenceView(items, showIndices: false, pointers: pointers))
+    }
+
+    private func stackPointers(for items: [TraceValue]) -> [PointerMarker] {
+        guard let topIndex = items.indices.last else { return [] }
+        return [PointerMarker(name: "top", index: topIndex)]
+    }
+
+    private func queuePointers(for items: [TraceValue]) -> [PointerMarker] {
+        guard let firstIndex = items.indices.first else { return [] }
+        let lastIndex = items.indices.last ?? firstIndex
+        if firstIndex == lastIndex {
+            return [PointerMarker(name: "front/back", index: firstIndex)]
+        }
+        return [
+            PointerMarker(name: "front", index: firstIndex),
+            PointerMarker(name: "back", index: lastIndex)
+        ]
     }
 
     private func adjacencyList(from items: [TraceValue]) -> [[Int]]? {

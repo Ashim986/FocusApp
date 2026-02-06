@@ -62,7 +62,7 @@ struct TraceBubbleModel {
             let label = compact ? "\(items.count)" : "[\(items.count)]"
             return TraceBubbleModel(text: label, fill: Color.appGray700)
         case .object(let map):
-            let label = compact ? "\(map.count)" : "{\(map.count)}"
+            let label = dictionaryPreview(map: map, seed: nil)
             return TraceBubbleModel(text: label, fill: Color.appGray700)
         case .list(let list):
             let label = compact ? "\(list.nodes.count)" : "[\(list.nodes.count)]"
@@ -72,9 +72,83 @@ struct TraceBubbleModel {
             return TraceBubbleModel(text: label, fill: Color.appGray700)
         case .listPointer, .treePointer:
             return TraceBubbleModel(text: "ptr", fill: Color.appGray700)
-        case .typed(_, let inner):
-            return from(inner, compact: compact)
+        case .typed(let type, let inner):
+            return typedBubbleModel(type: type, inner: inner, compact: compact)
         }
+    }
+
+    private static func typedBubbleModel(
+        type: String,
+        inner: TraceValue,
+        compact: Bool
+    ) -> TraceBubbleModel {
+        let lowered = type.lowercased()
+        if case .array(let items) = inner {
+            switch lowered {
+            case "set":
+                return TraceBubbleModel(text: "{\(items.count)}", fill: Color.appCyan.opacity(0.25))
+            case "stack":
+                return TraceBubbleModel(text: "S\(items.count)", fill: Color.appPurple.opacity(0.25))
+            case "queue":
+                return TraceBubbleModel(text: "Q\(items.count)", fill: Color.appGreen.opacity(0.25))
+            default:
+                break
+            }
+        }
+        return from(inner, compact: compact)
+    }
+
+    static func dictionaryPreview(map: [String: TraceValue], seed: String?) -> String {
+        guard !map.isEmpty else { return "[:]" }
+        let keys = map.keys.sorted()
+        let index = stableIndex(seed: seed ?? keys.joined(separator: "|"), count: keys.count)
+        let key = keys[index]
+        let keyInitial = initialCharacter(from: key)
+        let value = map[key] ?? .null
+        let valueInitial = initialCharacter(for: value)
+        return "[\(keyInitial):\(valueInitial)]"
+    }
+
+    static func arrayInitialPreview(items: [TraceValue]) -> String {
+        guard let first = items.first else { return "[]" }
+        let initial = initialCharacter(for: first)
+        return "[\(initial)]"
+    }
+
+    static func initialCharacter(for value: TraceValue) -> String {
+        switch value {
+        case .string(let stringValue):
+            return initialCharacter(from: stringValue)
+        case .array(let items):
+            guard let first = items.first else { return "?" }
+            return initialCharacter(for: first)
+        case .list(let list):
+            guard let first = list.nodes.first?.value else { return "?" }
+            return initialCharacter(for: first)
+        case .object(let map):
+            return initialCharacter(from: dictionaryPreview(map: map, seed: nil))
+        case .typed(_, let inner):
+            return initialCharacter(for: inner)
+        default:
+            let text = from(value, compact: true).text
+            return initialCharacter(from: text)
+        }
+    }
+
+    static func initialCharacter(from text: String) -> String {
+        let trimmed = text.trimmingCharacters(in: .whitespacesAndNewlines)
+        for char in trimmed {
+            if char.isLetter || char.isNumber {
+                return String(char)
+            }
+        }
+        return "?"
+    }
+
+    static func stableIndex(seed: String, count: Int) -> Int {
+        guard count > 0 else { return 0 }
+        let sum = seed.unicodeScalars.reduce(0) { $0 + Int($1.value) }
+        return abs(sum) % count
     }
 
 }

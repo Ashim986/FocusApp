@@ -1,4 +1,7 @@
 import SwiftUI
+#if canImport(AppKit)
+import AppKit
+#endif
 
 struct DebugLogRow: View {
     let entry: DebugLogEntry
@@ -13,7 +16,7 @@ struct DebugLogRow: View {
                     .padding(.top, 6)
 
                 VStack(alignment: .leading, spacing: 4) {
-                    HStack {
+                    HStack(alignment: .center, spacing: 8) {
                         Text(entry.title)
                             .font(.system(size: 12, weight: .semibold))
                             .foregroundColor(.white)
@@ -21,34 +24,51 @@ struct DebugLogRow: View {
                         Text(Self.timestampFormatter.string(from: entry.timestamp))
                             .font(.system(size: 10))
                             .foregroundColor(Color.appGray500)
+                        Image(systemName: isExpanded ? "chevron.down" : "chevron.right")
+                            .font(.system(size: 10, weight: .semibold))
+                            .foregroundColor(Color.appGray500)
+                        Button(action: copyEntry) {
+                            Image(systemName: "doc.on.doc")
+                                .font(.system(size: 10))
+                                .foregroundColor(Color.appGray500)
+                        }
+                        .buttonStyle(.plain)
+                        .help("Copy log")
                     }
 
                     Text(entry.message)
                         .font(.system(size: 11))
                         .foregroundColor(Color.appGray300)
                         .lineLimit(isExpanded ? nil : 2)
+                        .fixedSize(horizontal: false, vertical: true)
 
-                    if isExpanded, !entry.metadata.isEmpty {
-                        VStack(alignment: .leading, spacing: 2) {
-                            ForEach(entry.metadata.sorted(by: { $0.key < $1.key }), id: \.key) { key, value in
-                                Text("\(key): \(value)")
-                                    .font(.system(size: 10, design: .monospaced))
-                                    .foregroundColor(Color.appGray400)
+                    if let detail = primaryDetail {
+                        Text(detail)
+                            .font(.system(size: 10, design: .monospaced))
+                            .foregroundColor(Color.appGray400)
+                            .lineLimit(isExpanded ? nil : 3)
+                            .fixedSize(horizontal: false, vertical: true)
+                    }
+
+                    if isExpanded {
+                        if isNetwork {
+                            if let curl = networkCurl {
+                                detailSection(title: "cURL", value: curl)
                             }
+                            if let request = networkRequestDetail {
+                                detailSection(title: "Request", value: request)
+                            }
+                            if let response = networkResponseDetail {
+                                detailSection(title: "Response", value: response)
+                            }
+                            if !supplementalMetadata.isEmpty {
+                                metadataSection(supplementalMetadata)
+                            }
+                        } else if !entry.metadata.isEmpty {
+                            metadataSection(sortedMetadata)
                         }
                     }
                 }
-            }
-
-            if !entry.metadata.isEmpty {
-                Button(isExpanded ? L10n.Debug.hideDetails : L10n.Debug.showDetails) {
-                    withAnimation(.easeInOut(duration: 0.2)) {
-                        isExpanded.toggle()
-                    }
-                }
-                .buttonStyle(.plain)
-                .font(.system(size: 10, weight: .semibold))
-                .foregroundColor(Color.appPurple)
             }
         }
         .padding(10)
@@ -61,6 +81,12 @@ struct DebugLogRow: View {
                 .stroke(levelBorder, lineWidth: 1)
         )
         .listRowSeparator(.hidden)
+        .contentShape(Rectangle())
+        .onTapGesture {
+            withAnimation(.easeInOut(duration: 0.2)) {
+                isExpanded.toggle()
+            }
+        }
     }
 
     private var levelColor: Color {
@@ -94,6 +120,153 @@ struct DebugLogRow: View {
         case .error:
             return Color.appRed.opacity(0.6)
         }
+    }
+
+    private var isNetwork: Bool {
+        entry.category == .network
+    }
+
+    private var networkRequestDetail: String? {
+        entry.metadata["request"]
+    }
+
+    private var networkResponseDetail: String? {
+        entry.metadata["response"]
+    }
+
+    private var networkCurl: String? {
+        entry.metadata["curl"]
+    }
+
+    private var primaryDetail: String? {
+        let metadata = entry.metadata
+        if let error = metadata["error"], !error.isEmpty {
+            return error
+        }
+        if let warning = metadata["warning"], !warning.isEmpty {
+            return warning
+        }
+        if let stderr = metadata["stderr"], !stderr.isEmpty {
+            return stderr
+        }
+        if entry.level == .error {
+            return nil
+        }
+        return nil
+    }
+
+    private var sortedMetadata: [(key: String, value: String)] {
+        let preferredOrder = [
+            "method",
+            "url",
+            "status",
+            "duration_ms",
+            "bytes",
+            "curl",
+            "request",
+            "response"
+        ]
+        return entry.metadata.sorted { left, right in
+            let leftIndex = preferredOrder.firstIndex(of: left.key) ?? Int.max
+            let rightIndex = preferredOrder.firstIndex(of: right.key) ?? Int.max
+            if leftIndex != rightIndex {
+                return leftIndex < rightIndex
+            }
+            return left.key < right.key
+        }
+    }
+
+    private var supplementalMetadata: [(key: String, value: String)] {
+        sortedMetadata.filter { key, _ in
+            key != "request" && key != "response" && key != "curl"
+        }
+    }
+
+    private func copyEntry() {
+        let time = Self.timestampFormatter.string(from: entry.timestamp)
+        var lines: [String] = [
+            "[\(time)] [\(entry.level.rawValue)] [\(entry.category.rawValue)] \(entry.title)",
+            entry.message
+        ]
+        if !entry.metadata.isEmpty {
+            for (key, value) in sortedMetadata {
+                if value.contains("\n") {
+                    lines.append("\(key):")
+                    lines.append(value)
+                } else {
+                    lines.append("\(key): \(value)")
+                }
+            }
+        }
+        let text = lines.joined(separator: "\n")
+        #if canImport(AppKit)
+        NSPasteboard.general.clearContents()
+        NSPasteboard.general.setString(text, forType: .string)
+        #endif
+    }
+
+    @ViewBuilder
+    private func detailSection(title: String, value: String) -> some View {
+        VStack(alignment: .leading, spacing: 4) {
+            HStack {
+                Text(title)
+                    .font(.system(size: 10, weight: .semibold))
+                    .foregroundColor(Color.appGray400)
+                Spacer()
+                Button(
+                    action: { copySection(title: title, value: value) },
+                    label: {
+                        Image(systemName: "doc.on.doc")
+                            .font(.system(size: 9))
+                            .foregroundColor(Color.appGray500)
+                    }
+                )
+                .buttonStyle(.plain)
+                .help("Copy \(title.lowercased())")
+            }
+            Text(value)
+                .font(.system(size: 10, design: .monospaced))
+                .foregroundColor(Color.appGray300)
+                .textSelection(.enabled)
+                .fixedSize(horizontal: false, vertical: true)
+        }
+        .padding(8)
+        .background(Color.black.opacity(0.2))
+        .clipShape(RoundedRectangle(cornerRadius: 6))
+    }
+
+    @ViewBuilder
+    private func metadataSection(_ items: [(key: String, value: String)]) -> some View {
+        VStack(alignment: .leading, spacing: 2) {
+            ForEach(items, id: \.key) { key, value in
+                if value.contains("\n") {
+                    VStack(alignment: .leading, spacing: 2) {
+                        Text("\(key):")
+                            .font(.system(size: 10, weight: .semibold))
+                            .foregroundColor(Color.appGray400)
+                        Text(value)
+                            .font(.system(size: 10, design: .monospaced))
+                            .foregroundColor(Color.appGray400)
+                            .textSelection(.enabled)
+                            .fixedSize(horizontal: false, vertical: true)
+                    }
+                } else {
+                    Text("\(key): \(value)")
+                        .font(.system(size: 10, design: .monospaced))
+                        .foregroundColor(Color.appGray400)
+                        .textSelection(.enabled)
+                        .fixedSize(horizontal: false, vertical: true)
+                }
+            }
+        }
+    }
+
+    private func copySection(title: String, value: String) {
+        #if canImport(AppKit)
+        let text = "\(title):\n\(value)"
+        NSPasteboard.general.clearContents()
+        NSPasteboard.general.setString(text, forType: .string)
+        #endif
     }
 
     private static let timestampFormatter: DateFormatter = {

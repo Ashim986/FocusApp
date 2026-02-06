@@ -35,6 +35,7 @@ protocol RequestExecuting {
 final class URLSessionRequestExecutor: RequestExecuting {
     private let session: URLSession
     private let logger: DebugLogRecording?
+    private let maxBodyLogLength = 4000
 
     init(
         session: URLSession = URLSession(configuration: .default),
@@ -48,50 +49,36 @@ final class URLSessionRequestExecutor: RequestExecuting {
         let startTime = Date()
         let method = request.httpMethod ?? HTTPMethod.get.rawValue
         let urlString = request.url?.absoluteString ?? "unknown"
-
-        logger?.recordAsync(
-            DebugLogEntry(
-                level: .info,
-                category: .network,
-                title: "Request",
-                message: "\(method) \(urlString)",
-                metadata: [
-                    "method": method,
-                    "url": urlString
-                ]
-            )
+        let requestDetails = formatRequestDetails(request, method: method, url: urlString)
+        let curlCommand = buildCurlCommand(request, method: method, url: urlString)
+        let context = RequestLogContext(
+            method: method,
+            urlString: urlString,
+            requestDetails: requestDetails,
+            curlCommand: curlCommand
         )
+
+        logRequest(context)
 
         do {
             let (data, response) = try await session.data(for: request)
             guard let httpResponse = response as? HTTPURLResponse else {
-                logger?.recordAsync(
-                    DebugLogEntry(
-                        level: .error,
-                        category: .network,
-                        title: "Invalid response",
-                        message: "\(method) \(urlString)",
-                        metadata: [
-                            "method": method,
-                            "url": urlString
-                        ]
-                    )
-                )
+                logInvalidResponse(context)
                 throw NetworkError.invalidResponse
             }
             let duration = Int(Date().timeIntervalSince(startTime) * 1000)
-            logger?.recordAsync(
-                DebugLogEntry(
-                    level: (200..<300).contains(httpResponse.statusCode) ? .info : .error,
-                    category: .network,
-                    title: "Response",
-                    message: "\(httpResponse.statusCode) \(method) \(urlString)",
-                    metadata: [
-                        "status": "\(httpResponse.statusCode)",
-                        "duration_ms": "\(duration)",
-                        "bytes": "\(data.count)"
-                    ]
-                )
+            let responseDetails = formatResponseDetails(
+                response: httpResponse,
+                data: data,
+                duration: duration,
+                url: urlString
+            )
+            logResponse(
+                context,
+                status: httpResponse.statusCode,
+                duration: duration,
+                bytes: data.count,
+                responseDetails: responseDetails
             )
             guard (200..<300).contains(httpResponse.statusCode) else {
                 throw NetworkError.httpStatus(httpResponse.statusCode)
@@ -99,20 +86,265 @@ final class URLSessionRequestExecutor: RequestExecuting {
             return data
         } catch {
             let duration = Int(Date().timeIntervalSince(startTime) * 1000)
-            logger?.recordAsync(
-                DebugLogEntry(
-                    level: .error,
-                    category: .network,
-                    title: "Request failed",
-                    message: "\(method) \(urlString)",
-                    metadata: [
-                        "duration_ms": "\(duration)",
-                        "error": error.localizedDescription
-                    ]
-                )
-            )
+            logFailure(context, duration: duration, error: error.localizedDescription)
             throw error
         }
+    }
+
+    private struct RequestLogContext {
+        let method: String
+        let urlString: String
+        let requestDetails: String?
+        let curlCommand: String?
+    }
+
+    private func logRequest(_ context: RequestLogContext) {
+        logger?.recordAsync(
+            DebugLogEntry(
+                level: .info,
+                category: .network,
+                title: "Request",
+                message: "\(context.method) \(context.urlString)",
+                metadata: buildRequestMetadata(
+                    method: context.method,
+                    url: context.urlString,
+                    details: context.requestDetails,
+                    curl: context.curlCommand
+                )
+            )
+        )
+    }
+
+    private func logInvalidResponse(_ context: RequestLogContext) {
+        logger?.recordAsync(
+            DebugLogEntry(
+                level: .error,
+                category: .network,
+                title: "Invalid response",
+                message: "\(context.method) \(context.urlString)",
+                metadata: buildRequestMetadata(
+                    method: context.method,
+                    url: context.urlString,
+                    details: context.requestDetails,
+                    curl: context.curlCommand
+                )
+            )
+        )
+    }
+
+    private func logResponse(
+        _ context: RequestLogContext,
+        status: Int,
+        duration: Int,
+        bytes: Int,
+        responseDetails: String?
+    ) {
+        logger?.recordAsync(
+            DebugLogEntry(
+                level: (200..<300).contains(status) ? .info : .error,
+                category: .network,
+                title: "Response",
+                message: "\(status) \(context.method) \(context.urlString)",
+                metadata: buildResponseMetadata(
+                    status: status,
+                    duration: duration,
+                    bytes: bytes,
+                    details: responseDetails,
+                    requestDetails: context.requestDetails,
+                    curl: context.curlCommand
+                )
+            )
+        )
+    }
+
+    private func logFailure(_ context: RequestLogContext, duration: Int, error: String) {
+        logger?.recordAsync(
+            DebugLogEntry(
+                level: .error,
+                category: .network,
+                title: "Request failed",
+                message: "\(context.method) \(context.urlString)",
+                metadata: buildFailureMetadata(
+                    duration: duration,
+                    error: error,
+                    requestDetails: context.requestDetails,
+                    curl: context.curlCommand
+                )
+            )
+        )
+    }
+
+    private func buildRequestMetadata(
+        method: String,
+        url: String,
+        details: String?,
+        curl: String?
+    ) -> [String: String] {
+        var metadata: [String: String] = [
+            "method": method,
+            "url": url
+        ]
+        if let details {
+            metadata["request"] = details
+        }
+        if let curl {
+            metadata["curl"] = curl
+        }
+        return metadata
+    }
+
+    private func buildResponseMetadata(
+        status: Int,
+        duration: Int,
+        bytes: Int,
+        details: String?,
+        requestDetails: String?,
+        curl: String?
+    ) -> [String: String] {
+        var metadata: [String: String] = [
+            "status": "\(status)",
+            "duration_ms": "\(duration)",
+            "bytes": "\(bytes)"
+        ]
+        if let details {
+            metadata["response"] = details
+        }
+        if let requestDetails {
+            metadata["request"] = requestDetails
+        }
+        if let curl {
+            metadata["curl"] = curl
+        }
+        return metadata
+    }
+
+    private func buildFailureMetadata(
+        duration: Int,
+        error: String,
+        requestDetails: String?,
+        curl: String?
+    ) -> [String: String] {
+        var metadata: [String: String] = [
+            "duration_ms": "\(duration)",
+            "error": error
+        ]
+        if let requestDetails {
+            metadata["request"] = requestDetails
+        }
+        if let curl {
+            metadata["curl"] = curl
+        }
+        return metadata
+    }
+
+    private func formatRequestDetails(_ request: URLRequest, method: String, url: String) -> String? {
+        var payload: [String: Any] = [
+            "method": method,
+            "url": url
+        ]
+        if let headers = request.allHTTPHeaderFields, !headers.isEmpty {
+            payload["headers"] = sanitizedHeaders(headers)
+        }
+        if let bodyValue = bodyPayload(from: request.httpBody) {
+            payload["body"] = bodyValue
+        }
+        return prettyPrintedJSONString(from: payload)
+    }
+
+    private func formatResponseDetails(
+        response: HTTPURLResponse,
+        data: Data,
+        duration: Int,
+        url: String
+    ) -> String? {
+        var payload: [String: Any] = [
+            "status": response.statusCode,
+            "duration_ms": duration,
+            "bytes": data.count,
+            "url": url
+        ]
+        let headers = responseHeaderFields(response)
+        if !headers.isEmpty {
+            payload["headers"] = headers
+        }
+        if let bodyValue = bodyPayload(from: data) {
+            payload["body"] = bodyValue
+        }
+        return prettyPrintedJSONString(from: payload)
+    }
+
+    private func sanitizedHeaders(_ headers: [String: String]) -> [String: String] {
+        let sensitive = ["authorization", "cookie", "set-cookie", "x-api-key"]
+        return headers.reduce(into: [String: String]()) { result, entry in
+            let key = entry.key
+            let value = entry.value
+            if sensitive.contains(key.lowercased()) {
+                result[key] = "<redacted>"
+            } else {
+                result[key] = value
+            }
+        }
+    }
+
+    private func responseHeaderFields(_ response: HTTPURLResponse) -> [String: String] {
+        var headers: [String: String] = [:]
+        for (key, value) in response.allHeaderFields {
+            let keyString = String(describing: key)
+            headers[keyString] = String(describing: value)
+        }
+        return sanitizedHeaders(headers)
+    }
+
+    private func bodyPayload(from data: Data?) -> Any? {
+        guard let data, !data.isEmpty else { return nil }
+        if let jsonObject = try? JSONSerialization.jsonObject(with: data, options: []) {
+            return jsonObject
+        }
+        if let text = String(data: data, encoding: .utf8) {
+            return trimmed(text)
+        }
+        return "<\(data.count) bytes>"
+    }
+
+    private func prettyPrintedJSONString(from payload: Any) -> String? {
+        guard JSONSerialization.isValidJSONObject(payload) else { return nil }
+        guard let data = try? JSONSerialization.data(
+            withJSONObject: payload,
+            options: [.prettyPrinted, .sortedKeys]
+        ) else {
+            return nil
+        }
+        guard let text = String(data: data, encoding: .utf8) else { return nil }
+        return trimmed(text)
+    }
+
+    private func buildCurlCommand(_ request: URLRequest, method: String, url: String) -> String? {
+        var components: [String] = []
+        components.append("curl -X \(method) '\(url)'")
+
+        if let headers = request.allHTTPHeaderFields {
+            let sanitized = sanitizedHeaders(headers)
+            for (key, value) in sanitized.sorted(by: { $0.key < $1.key }) {
+                components.append("  -H '\(escapeSingleQuotes(key)): \(escapeSingleQuotes(value))'")
+            }
+        }
+
+        if let body = request.httpBody, let bodyString = String(data: body, encoding: .utf8) {
+            let trimmedBody = trimmed(bodyString)
+            components.append("  --data-raw '\(escapeSingleQuotes(trimmedBody))'")
+        }
+
+        return components.joined(separator: " \\\n")
+    }
+
+    private func escapeSingleQuotes(_ value: String) -> String {
+        value.replacingOccurrences(of: "'", with: "'\"'\"'")
+    }
+
+    private func trimmed(_ value: String) -> String {
+        guard value.count > maxBodyLogLength else { return value }
+        let prefix = value.prefix(maxBodyLogLength)
+        return String(prefix) + "\n... (truncated)"
     }
 }
 

@@ -61,7 +61,10 @@ extension CodeEditorView.Coordinator {
             )
         }
 
-        guard !diagnostics.isEmpty else { return }
+        if diagnostics.isEmpty {
+            updateBracketHighlights(in: textView)
+            return
+        }
 
         let underlineColor = NSColor(Color.appRed)
         let lineBackground = NSColor(Color.appRed).withAlphaComponent(0.12)
@@ -78,6 +81,8 @@ extension CodeEditorView.Coordinator {
                 textStorage.addAttribute(.underlineColor, value: underlineColor, range: underlineRange)
             }
         }
+
+        updateBracketHighlights(in: textView)
     }
 
     private func underlineRange(

@@ -1,0 +1,65 @@
+{
+  "last-stone-weight": {
+    "summary": "Smash the two heaviest stones together repeatedly. If equal, both destroyed; if different, the difference remains. Return the last remaining stone's weight or 0. Use a max-heap for efficient retrieval.",
+    "approaches": [
+      {
+        "name": "Max-Heap (Priority Queue)",
+        "intuition": "We always need the two largest stones. A max-heap gives us O(log n) access to the maximum element. Pop two, push back the difference if non-zero.",
+        "approach": "1. Build a max-heap from all stones\n2. While heap has more than one stone:\n   a. Pop two largest (y >= x)\n   b. If y > x, push y - x back\n3. Return heap top if exists, else 0",
+        "explanation": "A max-heap maintains the invariant that the largest element is always at the root. By using a heap, each smash operation (2 pops + 1 optional push) is O(log n). We continue until at most one stone remains. Swift doesn't have a built-in heap, so we simulate with sorted array or use negative values with a min-heap.",
+        "code": "func lastStoneWeight(_ stones: [Int]) -> Int {\n    var heap = stones.sorted()\n    \n    while heap.count > 1 {\n        let y = heap.removeLast()  // Largest\n        let x = heap.removeLast()  // Second largest\n        \n        if y > x {\n            // Insert y - x in sorted position\n            let diff = y - x\n            let insertIndex = heap.firstIndex { $0 >= diff } ?? heap.count\n            heap.insert(diff, at: insertIndex)\n        }\n    }\n    \n    return heap.first ?? 0\n}",
+        "complexity": {
+          "time": "O(n\u00b2 log n) worst case with array",
+          "space": "O(n)",
+          "timeExplanation": "Up to n smashes, each with O(n) insertion. True heap would be O(n log n)",
+          "spaceExplanation": "Storing all stones in heap/array"
+        },
+        "testCases": [
+          {
+            "input": "stones = [2,7,4,1,8,1]",
+            "expectedOutput": "1",
+            "explanation": "8,7\u21921. 4,2\u21922. 2,1\u21921. 1,1\u21920. 1 remains."
+          },
+          {
+            "input": "stones = [1]",
+            "expectedOutput": "1",
+            "explanation": "Single stone, nothing to smash"
+          },
+          {
+            "input": "stones = [2,2]",
+            "expectedOutput": "0",
+            "explanation": "Equal stones destroy each other"
+          }
+        ]
+      },
+      {
+        "name": "Simulated Max-Heap with Negative Values",
+        "intuition": "Swift's standard library doesn't include a heap, but we can use CFBinaryHeap or simulate with an array. Using negative values with a min-heap simulates a max-heap.",
+        "approach": "1. Store negative values (so min-heap acts as max-heap)\n2. Pop two smallest (most negative = largest original)\n3. If difference, push negative difference\n4. Return negative of remaining value",
+        "explanation": "This is a common trick when only min-heap is available. By negating all values, the smallest negative corresponds to the largest original value. The algorithm remains the same, just negate on insert and extract.",
+        "code": "func lastStoneWeight(_ stones: [Int]) -> Int {\n    // Using sorted array as simple heap\n    var heap = stones.sorted(by: >)  // Descending order\n    \n    while heap.count > 1 {\n        let first = heap.removeFirst()   // Largest\n        let second = heap.removeFirst()  // Second largest\n        \n        if first != second {\n            let diff = first - second\n            // Binary search insert to maintain sorted order\n            if let idx = heap.firstIndex(where: { $0 < diff }) {\n                heap.insert(diff, at: idx)\n            } else {\n                heap.append(diff)\n            }\n        }\n    }\n    \n    return heap.first ?? 0\n}",
+        "complexity": {
+          "time": "O(n\u00b2 ) with sorted array simulation",
+          "space": "O(n)",
+          "timeExplanation": "Each insertion is O(n) for binary search + shift, n iterations",
+          "spaceExplanation": "Array stores all remaining stones"
+        },
+        "testCases": [
+          {
+            "input": "stones = [2,7,4,1,8,1]",
+            "expectedOutput": "1",
+            "explanation": "Same process, different implementation"
+          },
+          {
+            "input": "stones = [10,4,2,10]",
+            "expectedOutput": "2",
+            "explanation": "10,10\u21920. 4,2\u21922. Result: 2"
+          }
+        ]
+      }
+    ],
+    "relatedProblems": [
+      "last-stone-weight-ii"
+    ]
+  }
+}

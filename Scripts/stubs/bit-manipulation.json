@@ -1,0 +1,304 @@
+{
+  "single-number": {
+    "summary": "Find the element that appears only once when all others appear twice. XOR all elements - pairs cancel out (a^a=0) leaving only the single number.",
+    "approaches": [
+      {
+        "name": "XOR Bit Manipulation",
+        "intuition": "XOR has two key properties: a^a=0 and a^0=a. If we XOR all numbers, pairs cancel out and only the single number remains.",
+        "approach": "1. Initialize result = 0\n2. XOR each number with result\n3. Return result",
+        "explanation": "XOR is associative and commutative, so the order doesn't matter. For array [a,b,a], we compute a^b^a = (a^a)^b = 0^b = b. Every number that appears twice contributes 0 to the final result, leaving only the unique number.",
+        "code": "func singleNumber(_ nums: [Int]) -> Int {\n    var result = 0\n    for num in nums {\n        result ^= num\n    }\n    return result\n}",
+        "complexity": {
+          "time": "O(n)",
+          "space": "O(1)",
+          "timeExplanation": "Single pass through all n elements",
+          "spaceExplanation": "Only one variable regardless of input size"
+        },
+        "testCases": [
+          {
+            "input": "nums = [2,2,1]",
+            "expectedOutput": "1",
+            "explanation": "2^2^1 = 0^1 = 1"
+          },
+          {
+            "input": "nums = [4,1,2,1,2]",
+            "expectedOutput": "4",
+            "explanation": "4^1^2^1^2 = 4^(1^1)^(2^2) = 4^0^0 = 4"
+          },
+          {
+            "input": "nums = [1]",
+            "expectedOutput": "1",
+            "explanation": "Single element is the answer"
+          }
+        ]
+      },
+      {
+        "name": "Hash Set",
+        "intuition": "Track seen numbers in a set. If we see a number again, remove it. The remaining number is the answer.",
+        "approach": "1. Create empty set\n2. For each number: if in set, remove it; else add it\n3. Return the single element in set",
+        "explanation": "This approach explicitly models the 'pairing' logic. Numbers that appear twice get added then removed, leaving only the unique number. While correct, it uses O(n) space unlike the XOR solution.",
+        "code": "func singleNumber(_ nums: [Int]) -> Int {\n    var seen = Set<Int>()\n    for num in nums {\n        if seen.contains(num) {\n            seen.remove(num)\n        } else {\n            seen.insert(num)\n        }\n    }\n    return seen.first!\n}",
+        "complexity": {
+          "time": "O(n)",
+          "space": "O(n)",
+          "timeExplanation": "Single pass with O(1) set operations",
+          "spaceExplanation": "Set can hold up to n/2 elements"
+        },
+        "testCases": [
+          {
+            "input": "nums = [2,2,1]",
+            "expectedOutput": "1",
+            "explanation": "Add 2, remove 2, add 1. Set = {1}"
+          }
+        ]
+      }
+    ],
+    "relatedProblems": [
+      "single-number-ii",
+      "single-number-iii"
+    ]
+  },
+  "number-of-1-bits": {
+    "summary": "Count the number of 1 bits (Hamming weight) in an integer. Use bit manipulation: n & (n-1) clears the lowest set bit, or check each bit with n & 1.",
+    "approaches": [
+      {
+        "name": "Brian Kernighan's Algorithm",
+        "intuition": "n & (n-1) clears the rightmost set bit. Count how many times we can do this until n becomes 0.",
+        "approach": "1. Initialize count = 0\n2. While n != 0:\n   a. n = n & (n - 1)\n   b. count += 1\n3. Return count",
+        "explanation": "When we subtract 1 from n, all bits after the rightmost 1 are flipped (including the 1 itself). ANDing with original n clears that rightmost 1. For example: 12 (1100) & 11 (1011) = 8 (1000). We cleared the rightmost 1 bit. This runs in O(k) where k is the number of 1 bits, not the total bits.",
+        "code": "func hammingWeight(_ n: Int) -> Int {\n    var num = n\n    var count = 0\n    \n    while num != 0 {\n        num &= (num - 1)\n        count += 1\n    }\n    \n    return count\n}",
+        "complexity": {
+          "time": "O(k)",
+          "space": "O(1)",
+          "timeExplanation": "k is the number of 1 bits, at most 32 for 32-bit integer",
+          "spaceExplanation": "Only using counter variable"
+        },
+        "testCases": [
+          {
+            "input": "n = 11 (binary: 1011)",
+            "expectedOutput": "3",
+            "explanation": "1011 \u2192 1010 (count 1) \u2192 1000 (count 2) \u2192 0 (count 3)"
+          },
+          {
+            "input": "n = 128 (binary: 10000000)",
+            "expectedOutput": "1",
+            "explanation": "Only one 1 bit, single iteration"
+          },
+          {
+            "input": "n = 2147483645 (many 1s)",
+            "expectedOutput": "30",
+            "explanation": "Almost all bits set in this large number"
+          }
+        ]
+      },
+      {
+        "name": "Check Each Bit",
+        "intuition": "Check the least significant bit with n & 1, then right shift. Repeat for all 32 bits.",
+        "approach": "1. Initialize count = 0\n2. Repeat 32 times:\n   a. If n & 1 == 1, increment count\n   b. Right shift n by 1\n3. Return count",
+        "explanation": "We examine each bit position by masking with 1 (which checks if the LSB is set) and then shifting right to bring the next bit into position. This always takes 32 iterations for a 32-bit integer regardless of how many 1s there are.",
+        "code": "func hammingWeight(_ n: Int) -> Int {\n    var num = n\n    var count = 0\n    \n    for _ in 0..<32 {\n        count += num & 1\n        num >>= 1\n    }\n    \n    return count\n}",
+        "complexity": {
+          "time": "O(1)",
+          "space": "O(1)",
+          "timeExplanation": "Always exactly 32 iterations for 32-bit integer",
+          "spaceExplanation": "Only counter and input variables"
+        },
+        "testCases": [
+          {
+            "input": "n = 11",
+            "expectedOutput": "3",
+            "explanation": "Check all 32 bits, count three 1s"
+          },
+          {
+            "input": "n = 0",
+            "expectedOutput": "0",
+            "explanation": "No bits set"
+          }
+        ]
+      }
+    ],
+    "relatedProblems": [
+      "reverse-bits",
+      "counting-bits",
+      "hamming-distance"
+    ]
+  },
+  "counting-bits": {
+    "summary": "Return array where ans[i] is the number of 1 bits in i, for i from 0 to n. Use DP: ans[i] = ans[i >> 1] + (i & 1), or ans[i] = ans[i & (i-1)] + 1.",
+    "approaches": [
+      {
+        "name": "DP with Right Shift",
+        "intuition": "The number of 1s in i equals the number of 1s in i/2 (i >> 1) plus whether the last bit is 1 (i & 1).",
+        "approach": "1. Create array ans of size n+1\n2. ans[0] = 0\n3. For i from 1 to n: ans[i] = ans[i >> 1] + (i & 1)\n4. Return ans",
+        "explanation": "Right shifting drops the last bit. So i's bit count is (i >> 1)'s bit count plus the dropped bit (0 or 1). For example, 5 (101) >> 1 = 2 (10). ans[5] = ans[2] + (5 & 1) = 1 + 1 = 2. We build up from smaller numbers, which we've already computed.",
+        "code": "func countBits(_ n: Int) -> [Int] {\n    var ans = [Int](repeating: 0, count: n + 1)\n    \n    for i in 1...n {\n        ans[i] = ans[i >> 1] + (i & 1)\n    }\n    \n    return ans\n}",
+        "complexity": {
+          "time": "O(n)",
+          "space": "O(n)",
+          "timeExplanation": "Single pass from 1 to n",
+          "spaceExplanation": "Output array of size n+1"
+        },
+        "testCases": [
+          {
+            "input": "n = 2",
+            "expectedOutput": "[0,1,1]",
+            "explanation": "0=0b0 (0), 1=0b1 (1), 2=0b10 (1)"
+          },
+          {
+            "input": "n = 5",
+            "expectedOutput": "[0,1,1,2,1,2]",
+            "explanation": "0,1,10,11,100,101 have 0,1,1,2,1,2 ones respectively"
+          }
+        ]
+      },
+      {
+        "name": "DP with Brian Kernighan",
+        "intuition": "ans[i] = ans[i & (i-1)] + 1, since i & (i-1) clears the lowest set bit. We've already computed ans for that smaller number.",
+        "approach": "1. Create array ans of size n+1, ans[0] = 0\n2. For i from 1 to n: ans[i] = ans[i & (i-1)] + 1\n3. Return ans",
+        "explanation": "i & (i-1) removes exactly one 1 bit from i. So ans[i] is one more than ans of the result. For example, 6 (110) & 5 (101) = 4 (100). ans[6] = ans[4] + 1 = 1 + 1 = 2. This directly uses the relationship between adjacent numbers in terms of set bits.",
+        "code": "func countBits(_ n: Int) -> [Int] {\n    var ans = [Int](repeating: 0, count: n + 1)\n    \n    for i in 1...n {\n        ans[i] = ans[i & (i - 1)] + 1\n    }\n    \n    return ans\n}",
+        "complexity": {
+          "time": "O(n)",
+          "space": "O(n)",
+          "timeExplanation": "Single pass, O(1) work per number",
+          "spaceExplanation": "Output array of size n+1"
+        },
+        "testCases": [
+          {
+            "input": "n = 5",
+            "expectedOutput": "[0,1,1,2,1,2]",
+            "explanation": "Same result, different recurrence"
+          },
+          {
+            "input": "n = 0",
+            "expectedOutput": "[0]",
+            "explanation": "Just zero, which has 0 ones"
+          }
+        ]
+      }
+    ],
+    "relatedProblems": [
+      "number-of-1-bits",
+      "binary-watch"
+    ]
+  },
+  "reverse-bits": {
+    "summary": "Reverse the bits of a 32-bit unsigned integer. Extract each bit from the input and place it in the mirrored position of the result.",
+    "approaches": [
+      {
+        "name": "Bit by Bit",
+        "intuition": "Extract the least significant bit from input, place it at the most significant position of result, then shift both accordingly.",
+        "approach": "1. Initialize result = 0\n2. For 32 iterations:\n   a. Left shift result by 1 (make room)\n   b. Add n's least significant bit (n & 1)\n   c. Right shift n by 1\n3. Return result",
+        "explanation": "We process bits from right to left in n, and place them from left to right in result. After 32 iterations, bit 0 of original n is now bit 31 of result, bit 1 is bit 30, etc. Each iteration shifts result left (making room at LSB) and shifts n right (exposing next bit).",
+        "code": "func reverseBits(_ n: Int) -> Int {\n    var result = 0\n    var num = n\n    \n    for _ in 0..<32 {\n        result = (result << 1) | (num & 1)\n        num >>= 1\n    }\n    \n    return result\n}",
+        "complexity": {
+          "time": "O(1)",
+          "space": "O(1)",
+          "timeExplanation": "Always exactly 32 iterations",
+          "spaceExplanation": "Only using two integer variables"
+        },
+        "testCases": [
+          {
+            "input": "n = 43261596 (00000010100101000001111010011100)",
+            "expectedOutput": "964176192 (00111001011110000010100101000000)",
+            "explanation": "Bits reversed position by position"
+          },
+          {
+            "input": "n = 4294967293 (11111111111111111111111111111101)",
+            "expectedOutput": "3221225471 (10111111111111111111111111111111)",
+            "explanation": "Near-maximum value with trailing zeros becomes leading zeros"
+          }
+        ]
+      },
+      {
+        "name": "Divide and Conquer (Swap)",
+        "intuition": "Swap adjacent bits, then adjacent pairs, then adjacent nibbles, etc. Like merge sort in reverse - combine small swaps into larger reversal.",
+        "approach": "1. Swap adjacent bits\n2. Swap adjacent 2-bit groups\n3. Swap adjacent 4-bit groups\n4. Swap adjacent 8-bit groups\n5. Swap adjacent 16-bit groups",
+        "explanation": "Each step swaps groups of increasing size. After swapping 1s, 2s, 4s, 8s, and 16s, we've effectively reversed all 32 bits. Uses bit masks to isolate and move groups. Very fast with just 5 operations (plus masks).",
+        "code": "func reverseBits(_ n: Int) -> Int {\n    var num = n\n    // Swap adjacent bits\n    num = ((num & 0x55555555) << 1) | ((num >> 1) & 0x55555555)\n    // Swap adjacent 2-bit pairs\n    num = ((num & 0x33333333) << 2) | ((num >> 2) & 0x33333333)\n    // Swap adjacent 4-bit nibbles\n    num = ((num & 0x0F0F0F0F) << 4) | ((num >> 4) & 0x0F0F0F0F)\n    // Swap adjacent bytes\n    num = ((num & 0x00FF00FF) << 8) | ((num >> 8) & 0x00FF00FF)\n    // Swap adjacent 16-bit halves\n    num = ((num & 0x0000FFFF) << 16) | ((num >> 16) & 0x0000FFFF)\n    return num\n}",
+        "complexity": {
+          "time": "O(1)",
+          "space": "O(1)",
+          "timeExplanation": "Fixed 5 swap operations",
+          "spaceExplanation": "Only using one variable"
+        },
+        "testCases": [
+          {
+            "input": "n = 43261596",
+            "expectedOutput": "964176192",
+            "explanation": "Same result as bit-by-bit, but faster constant factor"
+          }
+        ]
+      }
+    ],
+    "relatedProblems": [
+      "number-of-1-bits",
+      "reverse-integer"
+    ]
+  },
+  "missing-number": {
+    "summary": "Find the missing number in array containing n distinct numbers from 0 to n. Use XOR (numbers cancel out) or math (expected sum - actual sum).",
+    "approaches": [
+      {
+        "name": "XOR Bit Manipulation",
+        "intuition": "XOR all numbers 0 to n and all numbers in array. Pairs cancel out (a^a=0), leaving only the missing number.",
+        "approach": "1. Initialize result = n (start with the last index)\n2. XOR result with each index i and nums[i]\n3. Return result",
+        "explanation": "If array has numbers [0,1,3] with n=3, we XOR: (0^1^2^3) ^ (0^1^3) = 2. The index sequence gives us 0 to n-1, and we initialize with n to cover all expected numbers. Each present number appears in both sequences and cancels out.",
+        "code": "func missingNumber(_ nums: [Int]) -> Int {\n    var result = nums.count  // This is 'n'\n    \n    for i in 0..<nums.count {\n        result ^= i ^ nums[i]\n    }\n    \n    return result\n}",
+        "complexity": {
+          "time": "O(n)",
+          "space": "O(1)",
+          "timeExplanation": "Single pass through array",
+          "spaceExplanation": "Only one variable for result"
+        },
+        "testCases": [
+          {
+            "input": "nums = [3,0,1]",
+            "expectedOutput": "2",
+            "explanation": "n=3, expected [0,1,2,3]. Missing is 2."
+          },
+          {
+            "input": "nums = [0,1]",
+            "expectedOutput": "2",
+            "explanation": "n=2, expected [0,1,2]. Missing is 2."
+          },
+          {
+            "input": "nums = [9,6,4,2,3,5,7,0,1]",
+            "expectedOutput": "8",
+            "explanation": "n=9, missing 8 from sequence 0-9"
+          }
+        ]
+      },
+      {
+        "name": "Math (Gauss Sum)",
+        "intuition": "Sum of 0 to n is n*(n+1)/2. Subtract actual array sum to get missing number.",
+        "approach": "1. Calculate expected sum = n * (n + 1) / 2\n2. Calculate actual sum of array\n3. Return expected - actual",
+        "explanation": "Gauss's formula gives us the sum of first n natural numbers (including 0, it's 0+1+...+n). The difference between expected and actual sum is exactly the missing number. Watch for integer overflow with very large n.",
+        "code": "func missingNumber(_ nums: [Int]) -> Int {\n    let n = nums.count\n    let expectedSum = n * (n + 1) / 2\n    let actualSum = nums.reduce(0, +)\n    return expectedSum - actualSum\n}",
+        "complexity": {
+          "time": "O(n)",
+          "space": "O(1)",
+          "timeExplanation": "Single pass to compute sum",
+          "spaceExplanation": "Only storing two integers"
+        },
+        "testCases": [
+          {
+            "input": "nums = [3,0,1]",
+            "expectedOutput": "2",
+            "explanation": "Expected sum = 3*4/2 = 6. Actual = 4. Missing = 2."
+          },
+          {
+            "input": "nums = [0]",
+            "expectedOutput": "1",
+            "explanation": "n=1, expected [0,1]. Sum should be 1, actual is 0. Missing = 1."
+          }
+        ]
+      }
+    ],
+    "relatedProblems": [
+      "find-the-duplicate-number",
+      "find-all-numbers-disappeared-in-an-array",
+      "first-missing-positive"
+    ]
+  }
+}

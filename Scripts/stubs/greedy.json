@@ -1,0 +1,109 @@
+{
+  "jump-game-ii": {
+    "summary": "Find minimum jumps to reach end of array where nums[i] is max jump length from i. Greedy: at each step, jump to position that lets you reach furthest.",
+    "approaches": [
+      {
+        "name": "Greedy (BFS-like)",
+        "intuition": "Track the furthest position reachable. When we reach current boundary, we must jump. Count jumps when boundary is reached.",
+        "approach": "1. Track currentEnd (boundary of current jump) and furthest reachable\n2. For each position, update furthest\n3. When i reaches currentEnd, increment jumps, update currentEnd to furthest\n4. Stop when currentEnd >= last index",
+        "explanation": "Think of it as BFS where each 'level' is positions reachable with the same number of jumps. currentEnd marks the boundary of current level. When we reach it, we've explored all positions at this level and must jump to next level (furthest becomes new boundary).",
+        "code": "func jump(_ nums: [Int]) -> Int {\n    if nums.count <= 1 { return 0 }\n    \n    var jumps = 0\n    var currentEnd = 0\n    var furthest = 0\n    \n    for i in 0..<nums.count - 1 {\n        furthest = max(furthest, i + nums[i])\n        \n        if i == currentEnd {\n            jumps += 1\n            currentEnd = furthest\n            if currentEnd >= nums.count - 1 { break }\n        }\n    }\n    \n    return jumps\n}",
+        "complexity": {
+          "time": "O(n)",
+          "space": "O(1)",
+          "timeExplanation": "Single pass through array",
+          "spaceExplanation": "Only tracking three variables"
+        },
+        "testCases": [
+          {
+            "input": "nums = [2,3,1,1,4]",
+            "expectedOutput": "2",
+            "explanation": "Jump from 0\u21921 (can reach up to 4), then 1\u21924. Two jumps."
+          },
+          {
+            "input": "nums = [2,3,0,1,4]",
+            "expectedOutput": "2",
+            "explanation": "Same: 0\u21921\u21924"
+          }
+        ]
+      },
+      {
+        "name": "DP (for comparison)",
+        "intuition": "dp[i] = minimum jumps to reach position i. For each position, update all reachable positions.",
+        "approach": "1. dp[0] = 0, dp[i] = infinity\n2. For each i, for each j reachable from i: dp[j] = min(dp[j], dp[i]+1)\n3. Return dp[n-1]",
+        "explanation": "This is the straightforward DP approach. For each position, we update all positions we can jump to. Less efficient than greedy but easier to understand. Shows the greedy solution is optimal.",
+        "code": "func jump(_ nums: [Int]) -> Int {\n    let n = nums.count\n    var dp = [Int](repeating: Int.max, count: n)\n    dp[0] = 0\n    \n    for i in 0..<n {\n        for j in i+1...min(i + nums[i], n - 1) {\n            dp[j] = min(dp[j], dp[i] + 1)\n        }\n    }\n    \n    return dp[n - 1]\n}",
+        "complexity": {
+          "time": "O(n\u00b2)",
+          "space": "O(n)",
+          "timeExplanation": "For each position, potentially update many others",
+          "spaceExplanation": "DP array of size n"
+        },
+        "testCases": [
+          {
+            "input": "nums = [2,3,1,1,4]",
+            "expectedOutput": "2",
+            "explanation": "dp builds: [0,1,1,2,2]. Answer is 2."
+          }
+        ]
+      }
+    ],
+    "relatedProblems": [
+      "jump-game",
+      "jump-game-iii"
+    ]
+  },
+  "gas-station": {
+    "summary": "Find starting gas station index to complete circular trip. If total gas >= total cost, solution exists. Start from station after the one where tank goes negative.",
+    "approaches": [
+      {
+        "name": "Greedy Single Pass",
+        "intuition": "If total gas >= total cost, solution exists. If we run out at station i, start after i (stations 0 to i can't be start). Track where tank goes negative.",
+        "approach": "1. Track total (gas - cost for all) and tank (running sum)\n2. If tank < 0, reset start to next station, reset tank\n3. Return start if total >= 0, else -1",
+        "explanation": "Key insight: if we can't reach station i+1 from some start s, then any station between s and i also can't reach i+1 (because we'd have even less gas). So when tank goes negative, skip all those stations. If total is non-negative, the remaining stations must work.",
+        "code": "func canCompleteCircuit(_ gas: [Int], _ cost: [Int]) -> Int {\n    var total = 0\n    var tank = 0\n    var start = 0\n    \n    for i in 0..<gas.count {\n        let diff = gas[i] - cost[i]\n        total += diff\n        tank += diff\n        \n        if tank < 0 {\n            start = i + 1\n            tank = 0\n        }\n    }\n    \n    return total >= 0 ? start : -1\n}",
+        "complexity": {
+          "time": "O(n)",
+          "space": "O(1)",
+          "timeExplanation": "Single pass through arrays",
+          "spaceExplanation": "Only tracking a few variables"
+        },
+        "testCases": [
+          {
+            "input": "gas = [1,2,3,4,5], cost = [3,4,5,1,2]",
+            "expectedOutput": "3",
+            "explanation": "Start at station 3: tank 4-1=3, 3+5-2=6, 6+1-3=4, 4+2-4=2, 2+3-5=0. Success!"
+          },
+          {
+            "input": "gas = [2,3,4], cost = [3,4,3]",
+            "expectedOutput": "-1",
+            "explanation": "Total gas 9 < total cost 10. Impossible."
+          }
+        ]
+      },
+      {
+        "name": "Brute Force (for understanding)",
+        "intuition": "Try each station as start. Simulate the trip and check if we complete the circuit.",
+        "approach": "1. For each starting station i\n2. Simulate trip: at each station add gas, subtract cost\n3. If tank ever negative, this start fails\n4. If complete circuit, return i",
+        "explanation": "Simple simulation to verify the greedy approach. Try each start, simulate the journey. TLE for large inputs but helps understand the problem.",
+        "code": "func canCompleteCircuit(_ gas: [Int], _ cost: [Int]) -> Int {\n    let n = gas.count\n    \n    for start in 0..<n {\n        var tank = 0\n        var success = true\n        \n        for i in 0..<n {\n            let station = (start + i) % n\n            tank += gas[station] - cost[station]\n            if tank < 0 {\n                success = false\n                break\n            }\n        }\n        \n        if success { return start }\n    }\n    \n    return -1\n}",
+        "complexity": {
+          "time": "O(n\u00b2)",
+          "space": "O(1)",
+          "timeExplanation": "Try each of n starts, each simulation is O(n)",
+          "spaceExplanation": "Only loop variables"
+        },
+        "testCases": [
+          {
+            "input": "gas = [1,2,3,4,5], cost = [3,4,5,1,2]",
+            "expectedOutput": "3",
+            "explanation": "Trying stations 0,1,2 fail. Station 3 succeeds."
+          }
+        ]
+      }
+    ],
+    "relatedProblems": [
+      "minimum-cost-to-hire-k-workers"
+    ]
+  }
+}

@@ -108,6 +108,47 @@ extension CodingEnvironmentPresenter {
         }
 
         testCases = cases
+        applySolutionTestCaseFallback()
+    }
+
+    func applySolutionTestCaseFallback() {
+        guard !testCases.isEmpty else { return }
+        guard let fallbackCases = currentSolution?.sortedApproaches.first?.testCases,
+              !fallbackCases.isEmpty else { return }
+
+        var updated: [TestCase] = []
+        updated.reserveCapacity(testCases.count)
+
+        for (index, testCase) in testCases.enumerated() {
+            guard fallbackCases.indices.contains(index) else {
+                updated.append(testCase)
+                continue
+            }
+            let fallback = fallbackCases[index]
+            let needsInput = isMissingInput(testCase.input)
+            let needsOutput = isMissingOutput(testCase.expectedOutput)
+            if needsInput || needsOutput {
+                let input = needsInput ? fallback.input : testCase.input
+                let output = needsOutput ? fallback.expectedOutput : testCase.expectedOutput
+                var merged = TestCase(input: input, expectedOutput: output)
+                merged.actualOutput = testCase.actualOutput
+                merged.passed = testCase.passed
+                updated.append(merged)
+            } else {
+                updated.append(testCase)
+            }
+        }
+
+        testCases = updated
+    }
+
+    private func isMissingInput(_ input: String) -> Bool {
+        input.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+    }
+
+    private func isMissingOutput(_ output: String) -> Bool {
+        let trimmed = output.trimmingCharacters(in: .whitespacesAndNewlines)
+        return trimmed.isEmpty || trimmed == "Expected output"
     }
 
     private func groupInputs(_ inputs: [String], size: Int) -> [String] {

@@ -1,6 +1,20 @@
 import SwiftUI
+#if canImport(AppKit)
+import AppKit
+#endif
 
 extension ModernOutputView {
+    private var executionEntries: [DebugLogEntry] {
+        let filtered = debugEntries.filter { entry in
+            guard entry.category == .execution else { return false }
+            if let anchor = logAnchor {
+                return entry.timestamp >= anchor
+            }
+            return true
+        }
+        return filtered.sorted { $0.timestamp < $1.timestamp }
+    }
+
     @ViewBuilder
     var resultContent: some View {
         if !hasTestResults && output.isEmpty && error.isEmpty {
@@ -16,39 +30,6 @@ extension ModernOutputView {
         } else if hasTestResults {
             ScrollView {
                 VStack(alignment: .leading, spacing: 12) {
-                    let statusColor = hasFailures
-                        ? Color.appRed
-                        : (allTestsPassed ? Color.appGreen : Color.appAmber)
-                    let statusIcon = hasFailures
-                        ? "xmark.circle.fill"
-                        : (allTestsPassed ? "checkmark.circle.fill" : "clock.fill")
-                    let statusText = hasFailures
-                        ? L10n.Coding.Output.wrongAnswer
-                        : (allTestsPassed ? L10n.Coding.Output.accepted : L10n.Coding.Output.running)
-                    HStack(spacing: 10) {
-                        Image(systemName: statusIcon)
-                            .font(.system(size: 24))
-                            .foregroundColor(statusColor)
-
-                        VStack(alignment: .leading, spacing: 2) {
-                            Text(statusText)
-                                .font(.system(size: 14, weight: .semibold))
-                                .foregroundColor(statusColor)
-
-                            let passedCount = testCases.filter { $0.passed == true }.count
-                            Text(L10n.Coding.Output.testsPassed(passedCount, testCases.count))
-                                .font(.system(size: 11))
-                                .foregroundColor(Color.appGray500)
-                        }
-
-                        Spacer()
-                    }
-                    .padding(12)
-                    .background(
-                        RoundedRectangle(cornerRadius: 8)
-                            .fill(statusColor.opacity(0.1))
-                    )
-
                     ForEach(Array(testCases.enumerated()), id: \.element.id) { index, testCase in
                         if let passed = testCase.passed {
                             testResultRow(index: index, testCase: testCase, passed: passed)
@@ -172,7 +153,7 @@ extension ModernOutputView {
 
     @ViewBuilder
     var debugContent: some View {
-        if error.isEmpty {
+        if error.isEmpty && executionEntries.isEmpty && diagnostics.isEmpty {
             VStack(spacing: 8) {
                 Image(systemName: "ladybug")
                     .font(.system(size: 26))
@@ -185,20 +166,93 @@ extension ModernOutputView {
         } else {
             ScrollView {
                 VStack(alignment: .leading, spacing: 8) {
-                    Text(L10n.Coding.Output.stderrLabel)
-                        .font(.system(size: 10, weight: .medium))
-                        .foregroundColor(Color.appRed)
+                    if !diagnostics.isEmpty {
+                        Text("Diagnostics")
+                            .font(.system(size: 10, weight: .medium))
+                            .foregroundColor(Color.appRed)
 
-                    Text(error)
-                        .font(.system(size: 11, design: .monospaced))
-                        .foregroundColor(Color.appRed)
-                        .textSelection(.enabled)
-                        .padding(8)
-                        .background(Color.appRed.opacity(0.1))
-                        .clipShape(RoundedRectangle(cornerRadius: 6))
+                        VStack(spacing: 6) {
+                            ForEach(diagnostics, id: \.self) { diagnostic in
+                                diagnosticRow(diagnostic)
+                            }
+                        }
+                        .padding(.bottom, 4)
+                    }
+
+                    if !error.isEmpty {
+                        Text(L10n.Coding.Output.stderrLabel)
+                            .font(.system(size: 10, weight: .medium))
+                            .foregroundColor(Color.appRed)
+
+                        Text(error)
+                            .font(.system(size: 11, design: .monospaced))
+                            .foregroundColor(Color.appRed)
+                            .textSelection(.enabled)
+                            .padding(8)
+                            .background(Color.appRed.opacity(0.1))
+                            .clipShape(RoundedRectangle(cornerRadius: 6))
+                    }
+
+                    if !executionEntries.isEmpty {
+                        Text(L10n.Debug.logsTitle)
+                            .font(.system(size: 10, weight: .medium))
+                            .foregroundColor(Color.appGray400)
+                            .padding(.top, (error.isEmpty && diagnostics.isEmpty) ? 0 : 6)
+
+                        VStack(spacing: 8) {
+                            ForEach(executionEntries) { entry in
+                                DebugLogRow(entry: entry)
+                            }
+                        }
+                    }
                 }
                 .padding(12)
             }
         }
+    }
+
+    @ViewBuilder
+    private func diagnosticRow(_ diagnostic: CodeEditorDiagnostic) -> some View {
+        HStack(alignment: .top, spacing: 8) {
+            VStack(alignment: .leading, spacing: 2) {
+                Text(diagnosticLocation(diagnostic))
+                    .font(.system(size: 10, design: .monospaced))
+                    .foregroundColor(Color.appRed)
+                Text(diagnostic.message)
+                    .font(.system(size: 11))
+                    .foregroundColor(Color.appGray200)
+                    .textSelection(.enabled)
+            }
+
+            Spacer(minLength: 0)
+
+            Button(
+                action: { copyDiagnostic(diagnostic) },
+                label: {
+                    Image(systemName: "doc.on.doc")
+                        .font(.system(size: 9))
+                        .foregroundColor(Color.appGray500)
+                }
+            )
+            .buttonStyle(.plain)
+        }
+        .padding(8)
+        .background(Color.appRed.opacity(0.1))
+        .clipShape(RoundedRectangle(cornerRadius: 6))
+    }
+
+    private func diagnosticLocation(_ diagnostic: CodeEditorDiagnostic) -> String {
+        if let column = diagnostic.column {
+            return "Line \(diagnostic.line), Col \(column)"
+        }
+        return "Line \(diagnostic.line)"
+    }
+
+    private func copyDiagnostic(_ diagnostic: CodeEditorDiagnostic) {
+        #if canImport(AppKit)
+        let text = "\(diagnosticLocation(diagnostic)): \(diagnostic.message)"
+        NSPasteboard.general.clearContents()
+        NSPasteboard.general.setString(text, forType: .string)
+        #endif
     }
 }

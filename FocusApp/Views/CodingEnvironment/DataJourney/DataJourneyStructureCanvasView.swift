@@ -8,6 +8,9 @@ enum TraceStructure {
     case array([TraceValue])
     case graph([[Int]])
     case dictionary([DictionaryEntry])
+    case set([TraceValue])
+    case stack([TraceValue])
+    case queue([TraceValue])
 }
 
 struct NamedTraceList: Identifiable {
@@ -277,6 +280,50 @@ struct DataJourneyStructureCanvasView: View {
                 case .dictionary(let entries):
                     DictionaryStructureRow(
                         entries: entries,
+                        pointers: pointerMarkers,
+                        bubbleStyle: .solid,
+                        bubbleSize: structureBubbleSize,
+                        pointerFontSize: structurePointerFontSize,
+                        pointerHorizontalPadding: structurePointerHorizontalPadding,
+                        pointerVerticalPadding: structurePointerVerticalPadding
+                    )
+                case .set(let items):
+                    let gaps = Set(items.indices.dropLast())
+                    SequenceBubbleRow(
+                        items: items,
+                        showIndices: false,
+                        cycleIndex: nil,
+                        isTruncated: false,
+                        isDoubly: false,
+                        pointers: [],
+                        gapIndices: gaps,
+                        bubbleStyle: .solid,
+                        bubbleSize: structureBubbleSize,
+                        pointerFontSize: structurePointerFontSize,
+                        pointerHorizontalPadding: structurePointerHorizontalPadding,
+                        pointerVerticalPadding: structurePointerVerticalPadding
+                    )
+                case .stack(let items):
+                    SequenceBubbleRow(
+                        items: items,
+                        showIndices: false,
+                        cycleIndex: nil,
+                        isTruncated: false,
+                        isDoubly: false,
+                        pointers: pointerMarkers,
+                        bubbleStyle: .solid,
+                        bubbleSize: structureBubbleSize,
+                        pointerFontSize: structurePointerFontSize,
+                        pointerHorizontalPadding: structurePointerHorizontalPadding,
+                        pointerVerticalPadding: structurePointerVerticalPadding
+                    )
+                case .queue(let items):
+                    SequenceBubbleRow(
+                        items: items,
+                        showIndices: false,
+                        cycleIndex: nil,
+                        isTruncated: false,
+                        isDoubly: false,
                         pointers: pointerMarkers,
                         bubbleStyle: .solid,
                         bubbleSize: structureBubbleSize,

@@ -1,0 +1,295 @@
+{
+  "min-stack": {
+    "summary": "Design a stack that supports push, pop, top, and retrieving the minimum element in O(1) time. Store the minimum alongside each element or use a separate min-tracking stack.",
+    "approaches": [
+      {
+        "name": "Two Stacks",
+        "intuition": "Maintain a regular stack for values and a parallel stack that tracks the minimum at each level. When we push, also push the new minimum to the min stack.",
+        "approach": "1. Main stack stores all values\n2. Min stack stores the minimum at each height\n3. Push: push value to main, push min(value, minStack.top) to min stack\n4. Pop: pop from both stacks\n5. GetMin: return min stack top",
+        "explanation": "The min stack maintains the invariant that minStack[i] is the minimum of all elements from stack[0] to stack[i]. When we push a new element, the new minimum is either the element itself or the previous minimum (whichever is smaller). When we pop, we remove from both stacks, and the min stack still correctly reflects the minimum of remaining elements.",
+        "code": "class MinStack {\n    private var stack: [Int] = []\n    private var minStack: [Int] = []\n    \n    init() {}\n    \n    func push(_ val: Int) {\n        stack.append(val)\n        let newMin = minStack.isEmpty ? val : min(val, minStack.last!)\n        minStack.append(newMin)\n    }\n    \n    func pop() {\n        stack.removeLast()\n        minStack.removeLast()\n    }\n    \n    func top() -> Int {\n        return stack.last!\n    }\n    \n    func getMin() -> Int {\n        return minStack.last!\n    }\n}",
+        "complexity": {
+          "time": "O(1) for all operations",
+          "space": "O(n)",
+          "timeExplanation": "All operations are constant time - just array append/remove/access",
+          "spaceExplanation": "Two stacks, each can hold up to n elements"
+        },
+        "testCases": [
+          {
+            "input": "push(-2), push(0), push(-3), getMin(), pop(), top(), getMin()",
+            "expectedOutput": "-3, 0, -2",
+            "explanation": "After pushes: stack=[-2,0,-3], minStack=[-2,-2,-3]. getMin=-3. Pop. stack=[-2,0], minStack=[-2,-2]. top=0, getMin=-2."
+          }
+        ]
+      },
+      {
+        "name": "Single Stack with Pairs",
+        "intuition": "Store (value, currentMin) pairs in a single stack. Each entry knows the minimum at that point in the stack's history.",
+        "approach": "1. Stack stores tuples of (value, minAtThisLevel)\n2. Push: calculate new min, push (value, newMin)\n3. Pop: remove top tuple\n4. Top: return first element of top tuple\n5. GetMin: return second element of top tuple",
+        "explanation": "By storing the minimum alongside each value, we embed the min-tracking directly into the main data structure. This uses the same total memory as two stacks but with better cache locality since related data is adjacent.",
+        "code": "class MinStack {\n    private var stack: [(val: Int, min: Int)] = []\n    \n    init() {}\n    \n    func push(_ val: Int) {\n        let currentMin = stack.isEmpty ? val : min(val, stack.last!.min)\n        stack.append((val, currentMin))\n    }\n    \n    func pop() {\n        stack.removeLast()\n    }\n    \n    func top() -> Int {\n        return stack.last!.val\n    }\n    \n    func getMin() -> Int {\n        return stack.last!.min\n    }\n}",
+        "complexity": {
+          "time": "O(1) for all operations",
+          "space": "O(n)",
+          "timeExplanation": "All operations are single array operations",
+          "spaceExplanation": "Stack stores n pairs"
+        },
+        "testCases": [
+          {
+            "input": "push(1), push(2), getMin(), push(-1), getMin(), pop(), getMin()",
+            "expectedOutput": "1, -1, 1",
+            "explanation": "Stack builds: [(1,1), (2,1), (-1,-1)]. Mins are 1, -1, then back to 1 after pop."
+          }
+        ]
+      }
+    ],
+    "relatedProblems": [
+      "max-stack"
+    ]
+  },
+  "asteroid-collision": {
+    "summary": "Asteroids move right (+) or left (-). When they collide, smaller one explodes; equal sizes both explode. Use a stack to simulate collisions as asteroids move.",
+    "approaches": [
+      {
+        "name": "Stack Simulation",
+        "intuition": "Right-moving asteroids wait on stack for potential collision. Left-moving asteroids collide with stack (right-movers) until destroyed or survives.",
+        "approach": "1. For each asteroid:\n   a. If positive, push to stack\n   b. If negative, resolve collisions with stack:\n      - While stack top is positive and smaller, pop (it explodes)\n      - If stack top is positive and equal, pop and don't push (both explode)\n      - If stack empty or top is negative, push (survives)\n2. Return stack as array",
+        "explanation": "Only right-moving (positive) and left-moving (negative) can collide. Two left-movers never collide (both going left). The stack holds surviving asteroids. When we see a negative asteroid, it can only collide with positive ones on the stack. We keep destroying stack asteroids until the negative one is destroyed or survives.",
+        "code": "func asteroidCollision(_ asteroids: [Int]) -> [Int] {\n    var stack: [Int] = []\n    \n    for asteroid in asteroids {\n        if asteroid > 0 {\n            stack.append(asteroid)\n        } else {\n            // asteroid < 0, resolve collisions\n            while !stack.isEmpty && stack.last! > 0 && stack.last! < -asteroid {\n                stack.removeLast()  // Stack asteroid explodes\n            }\n            \n            if stack.isEmpty || stack.last! < 0 {\n                stack.append(asteroid)  // Survives\n            } else if stack.last! == -asteroid {\n                stack.removeLast()  // Both explode\n            }\n            // else: stack.last! > -asteroid, incoming asteroid explodes (don't push)\n        }\n    }\n    \n    return stack\n}",
+        "complexity": {
+          "time": "O(n)",
+          "space": "O(n)",
+          "timeExplanation": "Each asteroid pushed and popped at most once",
+          "spaceExplanation": "Stack can hold all asteroids in worst case"
+        },
+        "testCases": [
+          {
+            "input": "asteroids = [5,10,-5]",
+            "expectedOutput": "[5,10]",
+            "explanation": "10 and -5 collide, 10 survives. 5 and 10 don't collide (same direction)."
+          },
+          {
+            "input": "asteroids = [8,-8]",
+            "expectedOutput": "[]",
+            "explanation": "Equal size, both explode."
+          },
+          {
+            "input": "asteroids = [10,2,-5]",
+            "expectedOutput": "[10]",
+            "explanation": "-5 destroys 2, then collides with 10 and explodes."
+          },
+          {
+            "input": "asteroids = [-2,-1,1,2]",
+            "expectedOutput": "[-2,-1,1,2]",
+            "explanation": "Left-movers go left, right-movers go right. No collisions."
+          }
+        ]
+      },
+      {
+        "name": "Stack with Explicit State",
+        "intuition": "Same logic but with a boolean to track if the incoming asteroid survives all collisions, making the code flow clearer.",
+        "approach": "1. For each asteroid:\n   a. Set alive = true\n   b. While alive and asteroid < 0 and stack top > 0:\n      - If |asteroid| > stack top: pop, continue\n      - If |asteroid| == stack top: pop, alive = false\n      - If |asteroid| < stack top: alive = false\n   c. If alive, push asteroid",
+        "explanation": "This version explicitly tracks whether the incoming asteroid survives. The while loop continues as long as there's potential for collision (incoming negative, stack top positive) and the incoming asteroid is still 'alive'. This makes the three collision outcomes clearer.",
+        "code": "func asteroidCollision(_ asteroids: [Int]) -> [Int] {\n    var stack: [Int] = []\n    \n    for asteroid in asteroids {\n        var alive = true\n        \n        while alive && asteroid < 0 && !stack.isEmpty && stack.last! > 0 {\n            let top = stack.last!\n            if top < -asteroid {\n                stack.removeLast()  // Top explodes, continue checking\n            } else if top == -asteroid {\n                stack.removeLast()  // Both explode\n                alive = false\n            } else {\n                alive = false  // Incoming explodes\n            }\n        }\n        \n        if alive {\n            stack.append(asteroid)\n        }\n    }\n    \n    return stack\n}",
+        "complexity": {
+          "time": "O(n)",
+          "space": "O(n)",
+          "timeExplanation": "Each asteroid processed once, total pops <= n",
+          "spaceExplanation": "Stack size at most n"
+        },
+        "testCases": [
+          {
+            "input": "asteroids = [1,-1,-2]",
+            "expectedOutput": "[-2]",
+            "explanation": "1 and -1 both explode. -2 survives (nothing to collide with)."
+          }
+        ]
+      }
+    ],
+    "relatedProblems": [
+      "can-place-flowers",
+      "destroying-asteroids"
+    ]
+  },
+  "daily-temperatures": {
+    "summary": "For each day, find how many days until a warmer temperature. Use a monotonic decreasing stack to track indices of days waiting for a warmer day.",
+    "approaches": [
+      {
+        "name": "Monotonic Stack",
+        "intuition": "Maintain a stack of indices for days we haven't found a warmer day yet. When we see a warmer day, pop all colder days from stack and record their wait times.",
+        "approach": "1. Initialize result array with zeros\n2. Use stack to store indices of temperatures\n3. For each day i:\n   a. While stack not empty and T[i] > T[stack.top]:\n      - Pop index j, set result[j] = i - j\n   b. Push i to stack\n4. Return result (days left in stack stay 0)",
+        "explanation": "The stack maintains indices in decreasing temperature order. When we find a warmer temperature, it's the answer for all cooler temperatures on the stack. We pop them and calculate the day difference. Days that never find a warmer temperature remain in the stack with result[i] = 0.",
+        "code": "func dailyTemperatures(_ temperatures: [Int]) -> [Int] {\n    var result = [Int](repeating: 0, count: temperatures.count)\n    var stack: [Int] = []  // Stack of indices\n    \n    for i in 0..<temperatures.count {\n        while !stack.isEmpty && temperatures[i] > temperatures[stack.last!] {\n            let j = stack.removeLast()\n            result[j] = i - j\n        }\n        stack.append(i)\n    }\n    \n    return result\n}",
+        "complexity": {
+          "time": "O(n)",
+          "space": "O(n)",
+          "timeExplanation": "Each index pushed and popped at most once",
+          "spaceExplanation": "Stack can hold all indices in worst case (decreasing temps)"
+        },
+        "testCases": [
+          {
+            "input": "temperatures = [73,74,75,71,69,72,76,73]",
+            "expectedOutput": "[1,1,4,2,1,1,0,0]",
+            "explanation": "Day 0: next warmer is day 1 (1 day). Day 2: next warmer is day 6 (4 days). Days 6,7: no warmer day."
+          },
+          {
+            "input": "temperatures = [30,40,50,60]",
+            "expectedOutput": "[1,1,1,0]",
+            "explanation": "Increasing temps - each day's answer is 1 except last"
+          },
+          {
+            "input": "temperatures = [30,60,90]",
+            "expectedOutput": "[1,1,0]",
+            "explanation": "Strictly increasing"
+          }
+        ]
+      },
+      {
+        "name": "Reverse Iteration",
+        "intuition": "Process from right to left. For each day, check if the next day is warmer. If not, use the next day's result to skip ahead.",
+        "approach": "1. Initialize result array with zeros\n2. For i from n-2 down to 0:\n   a. j = i + 1\n   b. While T[j] <= T[i] and result[j] > 0: j += result[j]\n   c. If T[j] > T[i]: result[i] = j - i",
+        "explanation": "When T[i+1] isn't warmer than T[i], we can use result[i+1] to skip directly to the next warmer day after i+1. This creates a form of path compression. If we hit a day with result = 0 (no warmer day), we know T[i] also has no warmer day.",
+        "code": "func dailyTemperatures(_ temperatures: [Int]) -> [Int] {\n    let n = temperatures.count\n    var result = [Int](repeating: 0, count: n)\n    \n    for i in (0..<n-1).reversed() {\n        var j = i + 1\n        while temperatures[j] <= temperatures[i] && result[j] > 0 {\n            j += result[j]\n        }\n        if temperatures[j] > temperatures[i] {\n            result[i] = j - i\n        }\n    }\n    \n    return result\n}",
+        "complexity": {
+          "time": "O(n)",
+          "space": "O(n)",
+          "timeExplanation": "Amortized O(n) - each element visited limited times via skipping",
+          "spaceExplanation": "Output array of size n"
+        },
+        "testCases": [
+          {
+            "input": "temperatures = [73,74,75,71,69,72,76,73]",
+            "expectedOutput": "[1,1,4,2,1,1,0,0]",
+            "explanation": "Same result, processed right to left"
+          }
+        ]
+      }
+    ],
+    "relatedProblems": [
+      "next-greater-element-i",
+      "next-greater-element-ii",
+      "online-stock-span"
+    ]
+  },
+  "car-fleet": {
+    "summary": "Determine how many car fleets arrive at the destination. Cars that catch up merge into one fleet. Sort by position descending and count how many cars don't catch up to the car ahead.",
+    "approaches": [
+      {
+        "name": "Sort by Position + Stack",
+        "intuition": "Process cars from closest to target to furthest. Calculate time to reach target for each car. If a car behind takes less time, it catches up and merges with the fleet ahead.",
+        "approach": "1. Pair positions with speeds and sort by position descending\n2. Calculate time to reach target for each car\n3. Use a stack to track fleet arrival times\n4. If current car's time > stack top, it forms a new fleet\n5. If current car's time <= stack top, it joins that fleet (don't push)\n6. Return stack size",
+        "explanation": "A car closer to target will block all faster cars behind it. If car B is behind car A and would arrive sooner, B must slow down to A's pace - they become one fleet arriving at A's time. By processing from front to back, we determine if each car forms a new fleet or joins an existing one.",
+        "code": "func carFleet(_ target: Int, _ position: [Int], _ speed: [Int]) -> Int {\n    let n = position.count\n    if n == 0 { return 0 }\n    \n    // Pair (position, speed) and sort by position descending\n    var cars = zip(position, speed).map { ($0, $1) }\n    cars.sort { $0.0 > $1.0 }\n    \n    var fleets = 0\n    var lastTime: Double = 0\n    \n    for (pos, spd) in cars {\n        let time = Double(target - pos) / Double(spd)\n        if time > lastTime {\n            fleets += 1\n            lastTime = time\n        }\n    }\n    \n    return fleets\n}",
+        "complexity": {
+          "time": "O(n log n)",
+          "space": "O(n)",
+          "timeExplanation": "Dominated by sorting the cars array",
+          "spaceExplanation": "Storage for the cars array with position-speed pairs"
+        },
+        "testCases": [
+          {
+            "input": "target = 12, position = [10,8,0,5,3], speed = [2,4,1,1,3]",
+            "expectedOutput": "3",
+            "explanation": "Car at 10 arrives at time 1. Car at 8 arrives at time 1, catches up \u2192 1 fleet. Car at 0 arrives at time 12. Cars at 5,3 catch up to it \u2192 1 fleet. Total: 3 fleets."
+          },
+          {
+            "input": "target = 10, position = [3], speed = [3]",
+            "expectedOutput": "1",
+            "explanation": "Single car forms one fleet"
+          },
+          {
+            "input": "target = 100, position = [0,2,4], speed = [4,2,1]",
+            "expectedOutput": "1",
+            "explanation": "All cars eventually catch up to the slowest (front) car"
+          }
+        ]
+      },
+      {
+        "name": "Monotonic Stack (Explicit)",
+        "intuition": "Maintain a stack of arrival times. Each time represents a fleet. Pop times that would be caught by a slower car behind.",
+        "approach": "1. Sort cars by position descending\n2. Maintain stack of arrival times (monotonically increasing)\n3. For each car, calculate arrival time\n4. While stack not empty and current time >= stack top, pop (merge)\n5. Push current time\n6. Return stack size",
+        "explanation": "The stack maintains fleet arrival times in increasing order. When we find a car that takes longer to arrive than the fleet ahead, it becomes a new fleet. Cars that would arrive faster join existing fleets. This explicitly models the fleet merging process.",
+        "code": "func carFleet(_ target: Int, _ position: [Int], _ speed: [Int]) -> Int {\n    let n = position.count\n    if n == 0 { return 0 }\n    \n    var cars = zip(position, speed).map { ($0, $1) }\n    cars.sort { $0.0 > $1.0 }\n    \n    var stack: [Double] = []\n    \n    for (pos, spd) in cars {\n        let time = Double(target - pos) / Double(spd)\n        \n        // If this car is slower (takes longer), it forms new fleet\n        // Otherwise it joins the fleet ahead\n        if stack.isEmpty || time > stack.last! {\n            stack.append(time)\n        }\n    }\n    \n    return stack.count\n}",
+        "complexity": {
+          "time": "O(n log n)",
+          "space": "O(n)",
+          "timeExplanation": "Sorting dominates; stack operations are O(n) total",
+          "spaceExplanation": "Stack can hold at most n fleet times"
+        },
+        "testCases": [
+          {
+            "input": "target = 12, position = [10,8,0,5,3], speed = [2,4,1,1,3]",
+            "expectedOutput": "3",
+            "explanation": "Stack builds: [1.0] \u2192 [1.0] (8 catches 10) \u2192 [1.0, 12.0] \u2192 [1.0, 12.0] (5 joins) \u2192 [1.0, 12.0] (3 joins)"
+          },
+          {
+            "input": "target = 10, position = [6,8], speed = [3,2]",
+            "expectedOutput": "2",
+            "explanation": "Car at 8 takes time 1. Car at 6 takes time 4/3 \u2248 1.33 > 1, so 2 fleets"
+          }
+        ]
+      }
+    ],
+    "relatedProblems": [
+      "car-fleet-ii"
+    ]
+  },
+  "valid-sudoku": {
+    "summary": "Validate a 9\u00d79 Sudoku board. Check that each row, column, and 3\u00d73 sub-box contains digits 1-9 without repetition. Empty cells (denoted by '.') are allowed.",
+    "approaches": [
+      {
+        "name": "Three Sets per Unit",
+        "intuition": "Use hash sets to track seen numbers for each row, column, and 3\u00d73 box. If we encounter a duplicate in any unit, the board is invalid.",
+        "approach": "1. Create 9 sets for rows, 9 for columns, 9 for boxes\n2. Iterate through each cell\n3. For non-empty cells, check if number exists in its row/col/box set\n4. If duplicate found, return false\n5. Otherwise, add number to all three sets",
+        "explanation": "Each cell belongs to exactly one row, one column, and one 3\u00d73 box. The box index can be computed as (row/3)*3 + (col/3). We only need to check filled cells since empty cells don't violate constraints. Using sets gives O(1) lookup for duplicates.",
+        "code": "func isValidSudoku(_ board: [[Character]]) -> Bool {\n    var rows = Array(repeating: Set<Character>(), count: 9)\n    var cols = Array(repeating: Set<Character>(), count: 9)\n    var boxes = Array(repeating: Set<Character>(), count: 9)\n    \n    for i in 0..<9 {\n        for j in 0..<9 {\n            let char = board[i][j]\n            if char == \".\" { continue }\n            \n            let boxIndex = (i / 3) * 3 + (j / 3)\n            \n            if rows[i].contains(char) ||\n               cols[j].contains(char) ||\n               boxes[boxIndex].contains(char) {\n                return false\n            }\n            \n            rows[i].insert(char)\n            cols[j].insert(char)\n            boxes[boxIndex].insert(char)\n        }\n    }\n    \n    return true\n}",
+        "complexity": {
+          "time": "O(1)",
+          "space": "O(1)",
+          "timeExplanation": "Always 81 cells to check - constant for 9\u00d79 board",
+          "spaceExplanation": "27 sets with at most 9 elements each - constant space"
+        },
+        "testCases": [
+          {
+            "input": "board = [[\"5\",\"3\",\".\",\".\",\"7\",\".\",\".\",\".\",\".\"],[\"6\",\".\",\".\",\"1\",\"9\",\"5\",\".\",\".\",\".\"],[\".\",\"9\",\"8\",\".\",\".\",\".\",\".\",\"6\",\".\"],[\"8\",\".\",\".\",\".\",\"6\",\".\",\".\",\".\",\"3\"],[\"4\",\".\",\".\",\"8\",\".\",\"3\",\".\",\".\",\"1\"],[\"7\",\".\",\".\",\".\",\"2\",\".\",\".\",\".\",\"6\"],[\".\",\"6\",\".\",\".\",\".\",\".\",\"2\",\"8\",\".\"],[\".\",\".\",\".\",\"4\",\"1\",\"9\",\".\",\".\",\"5\"],[\".\",\".\",\".\",\".\",\"8\",\".\",\".\",\"7\",\"9\"]]",
+            "expectedOutput": "true",
+            "explanation": "Valid Sudoku board - no duplicates in any row, column, or box"
+          },
+          {
+            "input": "board = [[\"8\",\"3\",\".\",\".\",\"7\",\".\",\".\",\".\",\".\"],[\"6\",\".\",\".\",\"1\",\"9\",\"5\",\".\",\".\",\".\"],[\".\",\"9\",\"8\",\".\",\".\",\".\",\".\",\"6\",\".\"],[\"8\",\".\",\".\",\".\",\"6\",\".\",\".\",\".\",\"3\"],[\"4\",\".\",\".\",\"8\",\".\",\"3\",\".\",\".\",\"1\"],[\"7\",\".\",\".\",\".\",\"2\",\".\",\".\",\".\",\"6\"],[\".\",\"6\",\".\",\".\",\".\",\".\",\"2\",\"8\",\".\"],[\".\",\".\",\".\",\"4\",\"1\",\"9\",\".\",\".\",\"5\"],[\".\",\".\",\".\",\".\",\"8\",\".\",\".\",\"7\",\"9\"]]",
+            "expectedOutput": "false",
+            "explanation": "Two 8's in the first column (rows 0 and 3)"
+          }
+        ]
+      },
+      {
+        "name": "Bit Manipulation",
+        "intuition": "Use integers as bit sets instead of hash sets. Each bit represents whether a digit (1-9) has been seen. This is more memory-efficient.",
+        "approach": "1. Use 9 integers for rows, 9 for cols, 9 for boxes (bits represent digits)\n2. For each cell, compute bit mask for the digit\n3. Check if bit is already set in row/col/box\n4. If set, return false; otherwise set the bit",
+        "explanation": "For digit d, we use bit (1 << d) as a marker. If (row[i] & bit) != 0, the digit was already seen in that row. Using bitwise operations is faster than hash set operations and uses less memory (just integers instead of set objects).",
+        "code": "func isValidSudoku(_ board: [[Character]]) -> Bool {\n    var rows = [Int](repeating: 0, count: 9)\n    var cols = [Int](repeating: 0, count: 9)\n    var boxes = [Int](repeating: 0, count: 9)\n    \n    for i in 0..<9 {\n        for j in 0..<9 {\n            let char = board[i][j]\n            if char == \".\" { continue }\n            \n            let digit = Int(char.asciiValue! - Character(\"0\").asciiValue!)\n            let bit = 1 << digit\n            let boxIndex = (i / 3) * 3 + (j / 3)\n            \n            if (rows[i] & bit) != 0 ||\n               (cols[j] & bit) != 0 ||\n               (boxes[boxIndex] & bit) != 0 {\n                return false\n            }\n            \n            rows[i] |= bit\n            cols[j] |= bit\n            boxes[boxIndex] |= bit\n        }\n    }\n    \n    return true\n}",
+        "complexity": {
+          "time": "O(1)",
+          "space": "O(1)",
+          "timeExplanation": "Fixed 81 cells, constant operations per cell",
+          "spaceExplanation": "27 integers - more efficient than sets"
+        },
+        "testCases": [
+          {
+            "input": "board with valid partial fill",
+            "expectedOutput": "true",
+            "explanation": "Bit operations efficiently check for duplicates"
+          },
+          {
+            "input": "board with duplicate in box",
+            "expectedOutput": "false",
+            "explanation": "boxes[boxIndex] & bit detects the duplicate"
+          }
+        ]
+      }
+    ],
+    "relatedProblems": [
+      "sudoku-solver"
+    ]
+  }
+}

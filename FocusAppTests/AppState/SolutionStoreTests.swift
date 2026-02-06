@@ -96,4 +96,14 @@ final class SolutionStoreTests: XCTestCase {
         XCTAssertGreaterThan(store.solutionCount, 0)
         XCTAssertNotNil(store.solution(for: "reverse-linked-list"))
     }
+
+    // MARK: - TopicSolutionStore Tests
+
+    func testTopicSolutionStoreLoadsFromBundle() {
+        let store = TopicSolutionStore()
+
+        XCTAssertGreaterThan(store.solutionCount, 0)
+        XCTAssertNotNil(store.solution(for: "reverse-linked-list"))
+        XCTAssertNotNil(store.solution(for: "two-sum"))
+    }
 }

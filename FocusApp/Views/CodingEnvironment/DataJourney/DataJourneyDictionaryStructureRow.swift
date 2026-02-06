@@ -1,9 +1,9 @@
 import SwiftUI
 
 struct DictionaryEntry: Identifiable {
-    let id = UUID()
     let key: String
     let value: TraceValue
+    var id: String { key }
 }
 
 struct DictionaryStructureRow: View {
@@ -42,7 +42,7 @@ struct DictionaryStructureRow: View {
         ScrollView(.horizontal, showsIndicators: false) {
             HStack(spacing: 12) {
                 ForEach(Array(entries.enumerated()), id: \.element.id) { index, entry in
-                    let model = dictionaryValueModel(for: entry.value)
+                    let model = dictionaryValueModel(for: entry.value, key: entry.key)
                     let keyFill = Color.appGray700
                     let valueFill = model.fill
                     let pointerStack = pointersByIndex[index] ?? []
@@ -99,20 +99,22 @@ struct DictionaryStructureRow: View {
         return grouped
     }
 
-    private func dictionaryValueModel(for value: TraceValue) -> TraceBubbleModel {
+    private func dictionaryValueModel(for value: TraceValue, key: String) -> TraceBubbleModel {
         switch value {
         case .array(let items):
-            if let last = items.last {
-                return TraceBubbleModel.from(last)
-            }
-            return TraceBubbleModel(text: "empty", fill: Color.appGray700)
+            let label = TraceBubbleModel.arrayInitialPreview(items: items)
+            return TraceBubbleModel(text: label, fill: Color.appGray700)
         case .list(let list):
-            if let last = list.nodes.last?.value {
-                return TraceBubbleModel.from(last)
+            guard !list.nodes.isEmpty else {
+                return TraceBubbleModel(text: "empty", fill: Color.appGray700)
             }
-            return TraceBubbleModel(text: "empty", fill: Color.appGray700)
+            let index = TraceBubbleModel.stableIndex(seed: key, count: list.nodes.count)
+            return TraceBubbleModel.from(list.nodes[index].value)
+        case .object(let map):
+            let label = TraceBubbleModel.dictionaryPreview(map: map, seed: key)
+            return TraceBubbleModel(text: label, fill: Color.appGray700)
         case .typed(_, let inner):
-            return dictionaryValueModel(for: inner)
+            return dictionaryValueModel(for: inner, key: key)
         default:
             return TraceBubbleModel.from(value, compact: true)
         }

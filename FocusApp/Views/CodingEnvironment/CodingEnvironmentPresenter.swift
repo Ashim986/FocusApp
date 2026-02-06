@@ -33,6 +33,7 @@ final class CodingEnvironmentPresenter: ObservableObject {
     @Published var highlightedExecutionLine: Int?
     @Published private(set) var isJourneyTruncated = false
     @Published var codeResetNotice: String?
+    @Published var executionLogAnchor: Date?
 
     let interactor: CodingEnvironmentInteractor
     let logger: DebugLogRecording?
@@ -163,6 +164,7 @@ final class CodingEnvironmentPresenter: ObservableObject {
 
     func loadSolution(for problem: Problem) {
         currentSolution = interactor.solution(for: problem)
+        applySolutionTestCaseFallback()
     }
 
     func clearJourney() {

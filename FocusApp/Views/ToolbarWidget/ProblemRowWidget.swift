@@ -21,8 +21,7 @@ struct ProblemRowWidget: View {
             }, label: {
                 Text(problem.displayName)
                     .font(.system(size: 11))
-                    .foregroundColor(isCompleted ? .gray : .white.opacity(0.9))
-                    .strikethrough(isCompleted, color: .gray)
+                    .foregroundColor(isCompleted ? .gray.opacity(0.85) : .white.opacity(0.9))
                     .lineLimit(1)
                     .underline(isHovering)
             })

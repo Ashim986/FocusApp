@@ -18,6 +18,12 @@ extension DataJourneyStructureCanvasView {
             return graphPointers(in: selectedEvent, adjacency: adjacency)
         case .dictionary(let entries):
             return dictionaryPointers(in: selectedEvent, entries: entries)
+        case .set:
+            return []
+        case .stack(let items):
+            return stackPointers(for: items)
+        case .queue(let items):
+            return queuePointers(for: items)
         }
     }
 
@@ -247,5 +253,22 @@ extension DataJourneyStructureCanvasView {
         if lowered.hasSuffix("index") { return true }
         let allowed = ["i", "j", "k", "idx", "index", "left", "right", "mid", "lo", "hi", "start", "end"]
         return allowed.contains(lowered)
+    }
+
+    func stackPointers(for items: [TraceValue]) -> [PointerMarker] {
+        guard let topIndex = items.indices.last else { return [] }
+        return [PointerMarker(name: "top", index: topIndex)]
+    }
+
+    func queuePointers(for items: [TraceValue]) -> [PointerMarker] {
+        guard let firstIndex = items.indices.first else { return [] }
+        let lastIndex = items.indices.last ?? firstIndex
+        if firstIndex == lastIndex {
+            return [PointerMarker(name: "front/back", index: firstIndex)]
+        }
+        return [
+            PointerMarker(name: "front", index: firstIndex),
+            PointerMarker(name: "back", index: lastIndex)
+        ]
     }
 }

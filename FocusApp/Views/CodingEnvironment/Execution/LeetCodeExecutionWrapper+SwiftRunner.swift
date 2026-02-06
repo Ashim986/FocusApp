@@ -14,6 +14,55 @@ extension LeetCodeExecutionWrapper {
     }
 
     private static let swiftRunnerPreludeBody = """
+        func parseQuotedString(_ input: String) -> String? {
+            let trimmed = input.trimmingCharacters(in: .whitespacesAndNewlines)
+            guard trimmed.count >= 2,
+                  trimmed.first == "\\\"",
+                  trimmed.last == "\\\"" else { return nil }
+            let inner = String(trimmed.dropFirst().dropLast())
+            var result = ""
+            var isEscaping = false
+            for char in inner {
+                if isEscaping {
+                    switch char {
+                    case "n":
+                        result.append("\\n")
+                    case "r":
+                        result.append("\\r")
+                    case "t":
+                        result.append("\\t")
+                    case "\"":
+                        result.append("\\\"")
+                    case "\\":
+                        result.append("\\\\")
+                    default:
+                        result.append(char)
+                    }
+                    isEscaping = false
+                } else if char == "\\" {
+                    isEscaping = true
+                } else {
+                    result.append(char)
+                }
+            }
+            if isEscaping {
+                result.append("\\")
+            }
+            return result
+        }
+
+        func normalizeStringValue(_ value: Any) -> Any {
+            if let stringValue = value as? String,
+               let quoted = parseQuotedString(stringValue) {
+                return quoted
+            }
+            return value
+        }
+
+        func normalizeStringValues(_ values: [Any]) -> [Any] {
+            values.map { normalizeStringValue($0) }
+        }
+
         func parseKeyValueInput(_ input: String, paramNames: [String]) -> [String: Any] {
             guard !paramNames.isEmpty else { return [:] }
             let pattern = "\\\\b([A-Za-z_][A-Za-z0-9_]*)\\\\b\\\\s*="
@@ -35,9 +84,11 @@ extension LeetCodeExecutionWrapper {
                 guard !cleaned.isEmpty else { continue }
                 if let data = cleaned.data(using: .utf8),
                    let json = try? JSONSerialization.jsonObject(with: data) {
-                    results[name] = json
+                    results[name] = normalizeStringValue(json)
+                } else if let quoted = parseQuotedString(cleaned) {
+                    results[name] = quoted
                 } else {
-                    results[name] = cleaned
+                    results[name] = normalizeStringValue(cleaned)
                 }
             }
             var filtered: [String: Any] = [:]
@@ -55,24 +106,29 @@ extension LeetCodeExecutionWrapper {
             let keyValues = parseKeyValueInput(trimmed, paramNames: paramNames)
             if !keyValues.isEmpty {
                 let ordered = paramNames.compactMap { keyValues[$0] }
-                return ordered
+                return normalizeStringValues(ordered)
             }
             if let data = trimmed.data(using: .utf8),
                let json = try? JSONSerialization.jsonObject(with: data) {
                 if expectedCount == 1 {
-                    return [json]
+                    return [normalizeStringValue(json)]
                 }
-                if let array = json as? [Any] { return array }
-                return [json]
+                if let array = json as? [Any] { return normalizeStringValues(array) }
+                return [normalizeStringValue(json)]
+            }
+            if let quoted = parseQuotedString(trimmed) {
+                return [quoted]
             }
             let lines = trimmed.split(whereSeparator: { $0.isNewline }).map(String.init)
             var values: [Any] = []
             for line in lines {
                 if let data = line.data(using: .utf8),
                    let json = try? JSONSerialization.jsonObject(with: data) {
-                    values.append(json)
+                    values.append(normalizeStringValue(json))
+                } else if let quoted = parseQuotedString(line) {
+                    values.append(quoted)
                 } else {
-                    values.append(line)
+                    values.append(normalizeStringValue(line))
                 }
             }
             if expectedCount == 1 {
@@ -170,6 +226,10 @@ extension LeetCodeExecutionWrapper {
         }
 
         func toString(_ value: Any) -> String {
+            if let stringValue = value as? String,
+               let quoted = parseQuotedString(stringValue) {
+                return quoted
+            }
             if let stringValue = value as? String { return stringValue }
             return String(describing: value)
         }

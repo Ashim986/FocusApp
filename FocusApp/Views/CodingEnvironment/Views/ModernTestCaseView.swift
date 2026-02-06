@@ -2,6 +2,7 @@ import SwiftUI
 
 struct ModernTestCaseView: View {
     @ObservedObject var presenter: CodingEnvironmentPresenter
+    @Binding var isCollapsed: Bool
     @State private var selectedTestIndex: Int = 0
 
     var body: some View {
@@ -15,12 +16,23 @@ struct ModernTestCaseView: View {
 
                 Spacer()
 
-                Button(action: presenter.addManualTestCase) {
-                    Image(systemName: "plus")
-                        .font(.system(size: 11, weight: .medium))
-                        .foregroundColor(Color.appGray400)
+                HStack(spacing: 6) {
+                    Button(action: presenter.addManualTestCase) {
+                        Image(systemName: "plus")
+                            .font(.system(size: 11, weight: .medium))
+                            .foregroundColor(Color.appGray400)
+                    }
+                    .buttonStyle(.plain)
+
+                    Button(action: {
+                        isCollapsed.toggle()
+                    }, label: {
+                        Image(systemName: isCollapsed ? "chevron.up" : "chevron.down")
+                            .font(.system(size: 11, weight: .medium))
+                            .foregroundColor(Color.appGray400)
+                    })
+                    .buttonStyle(.plain)
                 }
-                .buttonStyle(.plain)
                 .padding(.trailing, 12)
             }
             .background(Color.appGray800)
@@ -31,7 +43,9 @@ struct ModernTestCaseView: View {
                 alignment: .bottom
             )
 
-            if presenter.testCases.isEmpty {
+            if isCollapsed {
+                EmptyView()
+            } else if presenter.testCases.isEmpty {
                 VStack(spacing: 8) {
                     Image(systemName: "doc.text")
                         .font(.system(size: 20))
@@ -67,7 +81,7 @@ struct ModernTestCaseView: View {
                 }
             }
         }
-        .frame(height: 180)
+        .frame(height: isCollapsed ? 36 : 180)
     }
 
     private func testCaseTab(index: Int, testCase: TestCase) -> some View {

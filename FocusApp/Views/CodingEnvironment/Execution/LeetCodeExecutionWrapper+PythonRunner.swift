@@ -1,6 +1,7 @@
 import Foundation
 
 extension LeetCodeExecutionWrapper {
+    // swiftlint:disable function_body_length
     static func pythonRunnerPrelude(paramNamesLiteral: String) -> String {
         """
         # FocusApp LeetCode Runner
@@ -8,6 +9,22 @@ extension LeetCodeExecutionWrapper {
         import sys
         from typing import List, Optional
         PARAM_NAMES = [\(paramNamesLiteral)]
+
+        def _parse_quoted_string(value):
+            value = value.strip()
+            if len(value) >= 2 and value[0] == '"' and value[-1] == '"':
+                inner = value[1:-1]
+                try:
+                    return bytes(inner, "utf-8").decode("unicode_escape")
+                except Exception:
+                    return inner
+            return None
+
+        def _normalize_string_value(value):
+            if isinstance(value, str):
+                quoted = _parse_quoted_string(value)
+                return quoted if quoted is not None else value
+            return value
 
         def _parse_kv_input(raw, param_names):
             import re
@@ -25,9 +42,10 @@ extension LeetCodeExecutionWrapper {
                 if not value:
                     continue
                 try:
-                    results[name] = json.loads(value)
+                    results[name] = _normalize_string_value(json.loads(value))
                 except json.JSONDecodeError:
-                    results[name] = value
+                    quoted = _parse_quoted_string(value)
+                    results[name] = quoted if quoted is not None else _normalize_string_value(value)
             return {name: results[name] for name in param_names if name in results}
 
         def _parse_args(raw, expected_count):
@@ -36,22 +54,26 @@ extension LeetCodeExecutionWrapper {
                 return []
             kv = _parse_kv_input(raw, PARAM_NAMES)
             if kv:
-                return [kv[name] for name in PARAM_NAMES if name in kv]
+                return [_normalize_string_value(kv[name]) for name in PARAM_NAMES if name in kv]
             try:
                 data = json.loads(raw)
                 if expected_count == 1:
-                    return [data]
+                    return [_normalize_string_value(data)]
                 if isinstance(data, list):
-                    return data
-                return [data]
+                    return [_normalize_string_value(item) for item in data]
+                return [_normalize_string_value(data)]
             except json.JSONDecodeError:
+                quoted = _parse_quoted_string(raw)
+                if quoted is not None:
+                    return [quoted]
                 lines = [line for line in raw.splitlines() if line.strip()]
                 values = []
                 for line in lines:
                     try:
-                        values.append(json.loads(line))
+                        values.append(_normalize_string_value(json.loads(line)))
                     except json.JSONDecodeError:
-                        values.append(line)
+                        quoted_line = _parse_quoted_string(line)
+                        values.append(quoted_line if quoted_line is not None else _normalize_string_value(line))
                 if expected_count == 1:
                     if len(values) == 1:
                         return [values[0]]
@@ -63,6 +85,7 @@ extension LeetCodeExecutionWrapper {
                 return values
         """
     }
+    // swiftlint:enable function_body_length
 
     static func pythonRunnerConversions(listNodeHelpers: String, treeNodeHelpers: String) -> String {
         """
@@ -93,6 +116,9 @@ extension LeetCodeExecutionWrapper {
             return str(value).strip().lower() in {"true", "1"}
 
         def _to_str(value):
+            if isinstance(value, str):
+                quoted = _parse_quoted_string(value)
+                return quoted if quoted is not None else value
             return str(value)
 
         def _to_list(value, transform):

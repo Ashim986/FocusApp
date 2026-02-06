@@ -1,0 +1,229 @@
+{
+  "diameter-of-binary-tree": {
+    "summary": "Find the longest path between any two nodes (doesn't need to pass through root). For each node, diameter through it = left depth + right depth. Track max across all nodes.",
+    "approaches": [
+      {
+        "name": "DFS with Global Max",
+        "intuition": "At each node, calculate left and right depths. The path through this node has length leftDepth + rightDepth. Track the maximum across all nodes.",
+        "approach": "1. Initialize maxDiameter = 0\n2. DFS function returns depth of subtree\n3. At each node:\n   a. Get left depth, right depth\n   b. Update maxDiameter = max(maxDiameter, left + right)\n   c. Return 1 + max(left, right) as depth\n4. Return maxDiameter",
+        "explanation": "The diameter is the number of edges on the longest path. At each node, the longest path through it uses the deepest node in left subtree + node + deepest node in right subtree. The depth we return is for the parent to use in its calculation. We compute diameter at every node and keep the maximum.",
+        "code": "func diameterOfBinaryTree(_ root: TreeNode?) -> Int {\n    var maxDiameter = 0\n    \n    func depth(_ node: TreeNode?) -> Int {\n        guard let node = node else { return 0 }\n        \n        let leftDepth = depth(node.left)\n        let rightDepth = depth(node.right)\n        \n        // Update diameter at this node\n        maxDiameter = max(maxDiameter, leftDepth + rightDepth)\n        \n        // Return depth for parent's calculation\n        return 1 + max(leftDepth, rightDepth)\n    }\n    \n    depth(root)\n    return maxDiameter\n}",
+        "complexity": {
+          "time": "O(n)",
+          "space": "O(h)",
+          "timeExplanation": "Visit each node exactly once",
+          "spaceExplanation": "Recursion stack depth is tree height h, O(n) worst case for skewed tree"
+        },
+        "testCases": [
+          {
+            "input": "root = [1,2,3,4,5]",
+            "expectedOutput": "3",
+            "explanation": "Longest path is 4-2-1-3 or 5-2-1-3, length 3 edges"
+          },
+          {
+            "input": "root = [1,2]",
+            "expectedOutput": "1",
+            "explanation": "Only one edge: 2-1"
+          }
+        ]
+      },
+      {
+        "name": "DFS Returning Tuple",
+        "intuition": "Return both depth and max diameter from each subtree. No need for global variable.",
+        "approach": "1. DFS returns (depth, maxDiameterInSubtree)\n2. At each node:\n   a. Get (leftDepth, leftMax) and (rightDepth, rightMax)\n   b. diameterThroughHere = leftDepth + rightDepth\n   c. Return (1 + max depths, max of leftMax, rightMax, diameterThroughHere)",
+        "explanation": "This functional approach avoids mutable state by returning all needed information. The diameter at any point is the max of: diameter entirely in left subtree, diameter entirely in right subtree, or diameter passing through current node.",
+        "code": "func diameterOfBinaryTree(_ root: TreeNode?) -> Int {\n    func dfs(_ node: TreeNode?) -> (depth: Int, diameter: Int) {\n        guard let node = node else { return (0, 0) }\n        \n        let left = dfs(node.left)\n        let right = dfs(node.right)\n        \n        let depth = 1 + max(left.depth, right.depth)\n        let diameter = max(left.depth + right.depth, max(left.diameter, right.diameter))\n        \n        return (depth, diameter)\n    }\n    \n    return dfs(root).diameter\n}",
+        "complexity": {
+          "time": "O(n)",
+          "space": "O(h)",
+          "timeExplanation": "Single traversal of all nodes",
+          "spaceExplanation": "Recursion stack bounded by tree height"
+        },
+        "testCases": [
+          {
+            "input": "root = [1,2,3,4,5]",
+            "expectedOutput": "3",
+            "explanation": "Same result without global state"
+          }
+        ]
+      }
+    ],
+    "relatedProblems": [
+      "binary-tree-maximum-path-sum",
+      "longest-univalue-path"
+    ]
+  },
+  "balanced-binary-tree": {
+    "summary": "Check if a binary tree is height-balanced (for every node, left and right subtree heights differ by at most 1). DFS returning height, return -1 if unbalanced.",
+    "approaches": [
+      {
+        "name": "DFS with Height Check",
+        "intuition": "Compute height of each subtree. If difference > 1 at any node, tree is unbalanced. Use -1 as sentinel for unbalanced subtree.",
+        "approach": "1. DFS returns height if balanced, -1 if not\n2. At each node:\n   a. Get left height (return -1 if left returns -1)\n   b. Get right height (return -1 if right returns -1)\n   c. If |left - right| > 1, return -1\n   d. Return 1 + max(left, right)\n3. Return dfs(root) != -1",
+        "explanation": "We compute height bottom-up. If any subtree is unbalanced, we propagate -1 upward and stop checking. If subtrees are balanced but their heights differ by more than 1, we also return -1. Only if we reach the root without returning -1 is the tree balanced.",
+        "code": "func isBalanced(_ root: TreeNode?) -> Bool {\n    func height(_ node: TreeNode?) -> Int {\n        guard let node = node else { return 0 }\n        \n        let leftHeight = height(node.left)\n        if leftHeight == -1 { return -1 }\n        \n        let rightHeight = height(node.right)\n        if rightHeight == -1 { return -1 }\n        \n        if abs(leftHeight - rightHeight) > 1 {\n            return -1\n        }\n        \n        return 1 + max(leftHeight, rightHeight)\n    }\n    \n    return height(root) != -1\n}",
+        "complexity": {
+          "time": "O(n)",
+          "space": "O(h)",
+          "timeExplanation": "Visit each node at most once, early exit on imbalance",
+          "spaceExplanation": "Recursion stack depth equals tree height"
+        },
+        "testCases": [
+          {
+            "input": "root = [3,9,20,null,null,15,7]",
+            "expectedOutput": "true",
+            "explanation": "All nodes have subtrees differing by at most 1 in height"
+          },
+          {
+            "input": "root = [1,2,2,3,3,null,null,4,4]",
+            "expectedOutput": "false",
+            "explanation": "Left subtree has height 3, right has height 1. Difference > 1."
+          },
+          {
+            "input": "root = []",
+            "expectedOutput": "true",
+            "explanation": "Empty tree is balanced"
+          }
+        ]
+      },
+      {
+        "name": "Top-Down (Less Efficient)",
+        "intuition": "Check balance at each node by computing full height of both subtrees. Simple but recomputes heights.",
+        "approach": "1. isBalanced checks: left balanced, right balanced, height difference <= 1\n2. height function computes full height recursively\n3. Results in redundant height calculations",
+        "explanation": "This naive approach checks balance at root, then recursively checks children. But computing heights is O(n), and we do it for each node, giving O(n\u00b2) time. Shown for comparison with the optimal O(n) solution.",
+        "code": "func isBalanced(_ root: TreeNode?) -> Bool {\n    guard let root = root else { return true }\n    \n    let leftHeight = height(root.left)\n    let rightHeight = height(root.right)\n    \n    return abs(leftHeight - rightHeight) <= 1 &&\n           isBalanced(root.left) &&\n           isBalanced(root.right)\n}\n\nfunc height(_ node: TreeNode?) -> Int {\n    guard let node = node else { return 0 }\n    return 1 + max(height(node.left), height(node.right))\n}",
+        "complexity": {
+          "time": "O(n\u00b2)",
+          "space": "O(h)",
+          "timeExplanation": "Height computed at each node, O(n) per call, n calls",
+          "spaceExplanation": "Recursion stack depth"
+        },
+        "testCases": [
+          {
+            "input": "root = [3,9,20,null,null,15,7]",
+            "expectedOutput": "true",
+            "explanation": "Correct but slower than optimal"
+          }
+        ]
+      }
+    ],
+    "relatedProblems": [
+      "maximum-depth-of-binary-tree",
+      "diameter-of-binary-tree"
+    ]
+  },
+  "path-sum": {
+    "summary": "Check if tree has root-to-leaf path with given sum. DFS subtracting node values from target; at leaf, check if remaining target equals leaf value.",
+    "approaches": [
+      {
+        "name": "DFS Recursive",
+        "intuition": "Subtract each node's value from target as we go down. At a leaf, check if remaining target equals 0 (or equivalently, if remaining equals leaf value).",
+        "approach": "1. If root is null, return false\n2. Subtract root.val from targetSum\n3. If root is leaf (no children), return targetSum == 0\n4. Recursively check left OR right subtree",
+        "explanation": "We accumulate the path sum by subtracting from target as we descend. At a leaf, if we've subtracted exactly targetSum total, we've found a valid path. Using subtraction avoids passing accumulated sum as parameter and handles negative values correctly.",
+        "code": "func hasPathSum(_ root: TreeNode?, _ targetSum: Int) -> Bool {\n    guard let root = root else { return false }\n    \n    let remaining = targetSum - root.val\n    \n    // Check if leaf\n    if root.left == nil && root.right == nil {\n        return remaining == 0\n    }\n    \n    // Check children\n    return hasPathSum(root.left, remaining) || hasPathSum(root.right, remaining)\n}",
+        "complexity": {
+          "time": "O(n)",
+          "space": "O(h)",
+          "timeExplanation": "Visit each node at most once",
+          "spaceExplanation": "Recursion depth equals tree height"
+        },
+        "testCases": [
+          {
+            "input": "root = [5,4,8,11,null,13,4,7,2,null,null,null,1], targetSum = 22",
+            "expectedOutput": "true",
+            "explanation": "Path 5\u21924\u219211\u21922 sums to 22"
+          },
+          {
+            "input": "root = [1,2,3], targetSum = 5",
+            "expectedOutput": "false",
+            "explanation": "Paths are 1\u21922=3 and 1\u21923=4. Neither equals 5."
+          },
+          {
+            "input": "root = [], targetSum = 0",
+            "expectedOutput": "false",
+            "explanation": "Empty tree has no paths"
+          }
+        ]
+      },
+      {
+        "name": "Iterative with Stack",
+        "intuition": "Use stack to simulate DFS. Store (node, remaining sum) pairs. At each leaf, check if sum matches.",
+        "approach": "1. Stack of (node, remainingSum) pairs\n2. Push root with targetSum\n3. While stack not empty:\n   a. Pop node and remaining\n   b. If leaf and remaining == node.val, return true\n   c. Push children with remaining - node.val\n4. Return false",
+        "explanation": "This iterative version mimics the recursive approach using an explicit stack. We track the remaining sum needed at each node. When we reach a leaf, we check if the node's value exactly matches the remaining sum (meaning the path sums to target).",
+        "code": "func hasPathSum(_ root: TreeNode?, _ targetSum: Int) -> Bool {\n    guard let root = root else { return false }\n    \n    var stack: [(TreeNode, Int)] = [(root, targetSum)]\n    \n    while !stack.isEmpty {\n        let (node, remaining) = stack.removeLast()\n        \n        // Check if leaf with matching sum\n        if node.left == nil && node.right == nil && remaining == node.val {\n            return true\n        }\n        \n        // Push children\n        if let left = node.left {\n            stack.append((left, remaining - node.val))\n        }\n        if let right = node.right {\n            stack.append((right, remaining - node.val))\n        }\n    }\n    \n    return false\n}",
+        "complexity": {
+          "time": "O(n)",
+          "space": "O(h)",
+          "timeExplanation": "Visit each node once",
+          "spaceExplanation": "Stack holds at most one path worth of nodes"
+        },
+        "testCases": [
+          {
+            "input": "root = [5,4,8,11,null,13,4,7,2,null,null,null,1], targetSum = 22",
+            "expectedOutput": "true",
+            "explanation": "Same result via iteration"
+          }
+        ]
+      }
+    ],
+    "relatedProblems": [
+      "path-sum-ii",
+      "path-sum-iii",
+      "binary-tree-maximum-path-sum"
+    ]
+  },
+  "binary-tree-right-side-view": {
+    "summary": "Return values visible from right side of tree (rightmost node at each level). BFS level-order taking last node per level, or DFS visiting right child first.",
+    "approaches": [
+      {
+        "name": "BFS Level Order",
+        "intuition": "Process tree level by level. The rightmost node at each level is visible from the right side.",
+        "approach": "1. BFS with queue\n2. For each level, record the last node's value\n3. Process all nodes at current level before moving to next",
+        "explanation": "Standard level-order traversal. At each level, we process all nodes in the queue (which represents one complete level). The last node we process at each level is the rightmost one, which we add to our result.",
+        "code": "func rightSideView(_ root: TreeNode?) -> [Int] {\n    guard let root = root else { return [] }\n    \n    var result: [Int] = []\n    var queue: [TreeNode] = [root]\n    \n    while !queue.isEmpty {\n        let levelSize = queue.count\n        for i in 0..<levelSize {\n            let node = queue.removeFirst()\n            if i == levelSize - 1 {\n                result.append(node.val)\n            }\n            if let left = node.left { queue.append(left) }\n            if let right = node.right { queue.append(right) }\n        }\n    }\n    \n    return result\n}",
+        "complexity": {
+          "time": "O(n)",
+          "space": "O(w)",
+          "timeExplanation": "Visit each node once",
+          "spaceExplanation": "Queue holds at most one level, max width w"
+        },
+        "testCases": [
+          {
+            "input": "root = [1,2,3,null,5,null,4]",
+            "expectedOutput": "[1,3,4]",
+            "explanation": "Level 0: 1, Level 1: 3 (rightmost), Level 2: 4 (rightmost)"
+          },
+          {
+            "input": "root = [1,null,3]",
+            "expectedOutput": "[1,3]",
+            "explanation": "Right-skewed tree"
+          }
+        ]
+      },
+      {
+        "name": "DFS Right-First",
+        "intuition": "DFS visiting right child before left. First node we see at each depth is the rightmost.",
+        "approach": "1. Track current depth and result size\n2. If depth == result.size, this is first (rightmost) node at this depth\n3. Visit right child first, then left",
+        "explanation": "By visiting right subtree first, the first node we encounter at each new depth is guaranteed to be the rightmost at that level. We add it to result only when we reach a new depth (result.count == depth).",
+        "code": "func rightSideView(_ root: TreeNode?) -> [Int] {\n    var result: [Int] = []\n    \n    func dfs(_ node: TreeNode?, _ depth: Int) {\n        guard let node = node else { return }\n        \n        if depth == result.count {\n            result.append(node.val)\n        }\n        \n        dfs(node.right, depth + 1)\n        dfs(node.left, depth + 1)\n    }\n    \n    dfs(root, 0)\n    return result\n}",
+        "complexity": {
+          "time": "O(n)",
+          "space": "O(h)",
+          "timeExplanation": "Visit each node once",
+          "spaceExplanation": "Recursion stack depth is tree height"
+        },
+        "testCases": [
+          {
+            "input": "root = [1,2,3,null,5,null,4]",
+            "expectedOutput": "[1,3,4]",
+            "explanation": "DFS right-first finds same nodes"
+          }
+        ]
+      }
+    ],
+    "relatedProblems": [
+      "binary-tree-level-order-traversal",
+      "populating-next-right-pointers-in-each-node"
+    ]
+  }
+}

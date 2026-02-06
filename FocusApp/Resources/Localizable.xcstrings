@@ -4,6 +4,9 @@
     "" : {
 
     },
+    "%@:" : {
+
+    },
     "%@: %@" : {
       "localizations" : {
         "en" : {
@@ -87,7 +90,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Console"
+            "value" : "Results"
           }
         }
       }
@@ -1151,6 +1154,12 @@
         }
       }
     },
+    "Copy %@" : {
+
+    },
+    "Copy log" : {
+
+    },
     "debug.category_all" : {
       "extractionState" : "stale",
       "localizations" : {
@@ -1328,6 +1337,9 @@
       }
     },
     "Delete" : {
+
+    },
+    "Diagnostics" : {
 
     },
     "e.g. Iterative, Recursive, Two pointers" : {

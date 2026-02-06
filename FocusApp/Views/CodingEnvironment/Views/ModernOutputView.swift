@@ -4,21 +4,21 @@ struct ModernOutputView: View {
     let output: String
     let error: String
     let testCases: [TestCase]
+    let diagnostics: [CodeEditorDiagnostic]
     let isRunning: Bool
+    let debugEntries: [DebugLogEntry]
+    let logAnchor: Date?
 
     @State private var selectedTab: OutputTab = .result
 
     enum OutputTab: CaseIterable {
         case result
-        case output
         case debug
 
         var title: String {
             switch self {
             case .result:
                 return L10n.Coding.Output.tabResult
-            case .output:
-                return L10n.Coding.Output.tabOutput
             case .debug:
                 return L10n.Coding.Output.tabDebug
             }
@@ -28,7 +28,7 @@ struct ModernOutputView: View {
     var body: some View {
         VStack(spacing: 0) {
             HStack(spacing: 0) {
-                ForEach(OutputTab.allCases, id: \.self) { tab in
+                ForEach(availableTabs, id: \.self) { tab in
                     Button(action: {
                         selectedTab = tab
                     }, label: {
@@ -75,14 +75,17 @@ struct ModernOutputView: View {
                 switch selectedTab {
                 case .result:
                     resultContent
-                case .output:
-                    outputContent
                 case .debug:
                     debugContent
                 }
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .background(Color.appGray900)
+        }
+        .onChange(of: availableTabs) { _ in
+            if !availableTabs.contains(selectedTab) {
+                selectedTab = .result
+            }
         }
     }
 
@@ -110,5 +113,24 @@ struct ModernOutputView: View {
             return Color.appGreen
         }
         return Color.appAmber
+    }
+
+    private var availableTabs: [OutputTab] {
+        if hasDebugData {
+            return [.result, .debug]
+        }
+        return [.result]
+    }
+
+    private var hasDebugData: Bool {
+        if !error.isEmpty || !diagnostics.isEmpty {
+            return true
+        }
+        if let anchor = logAnchor {
+            return debugEntries.contains { entry in
+                entry.category == .execution && entry.timestamp >= anchor
+            }
+        }
+        return debugEntries.contains { $0.category == .execution }
     }
 }

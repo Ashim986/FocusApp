@@ -8,42 +8,31 @@ extension CodeEditorView {
         var isEditing = false
         var language: ProgrammingLanguage = .swift
         var isInsertingMatchingBracket = false
-        let indentUnit = "    "
+        var indentUnit: String {
+            language == .swift ? "  " : "    "
+        }
         var diagnostics: [CodeEditorDiagnostic] = []
         var executionLine: Int?
+        var bracketHighlightRanges: [NSRange] = []
 
         let colors = SyntaxColors()
 
         var bracketPairs: [Character: Character] {
-            var pairs: [Character: Character] = [
+            [
                 "{": "}",
                 "(": ")",
                 "[": "]",
                 "\"": "\"",
                 "'": "'"
             ]
-
-            if language == .swift {
-                pairs["<"] = ">"
-            }
-
-            return pairs
         }
 
         var closingBrackets: Set<Character> {
-            var set: Set<Character> = ["}", ")", "]", "\"", "'"]
-            if language == .swift {
-                set.insert(">")
-            }
-            return set
+            ["}", ")", "]", "\"", "'"]
         }
 
         var openingBrackets: Set<Character> {
-            var set: Set<Character> = ["{", "(", "["]
-            if language == .swift {
-                set.insert("<")
-            }
-            return set
+            ["{", "(", "["]
         }
 
         struct SyntaxColors {
@@ -77,6 +66,11 @@ extension CodeEditorView {
             parent.code = textView.string
             applySyntaxHighlighting()
             textView.enclosingScrollView?.verticalRulerView?.needsDisplay = true
+        }
+
+        func textViewDidChangeSelection(_ notification: Notification) {
+            guard let textView = notification.object as? NSTextView else { return }
+            updateBracketHighlights(in: textView)
         }
     }
 }

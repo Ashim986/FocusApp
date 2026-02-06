@@ -1,0 +1,549 @@
+{
+  "two-sum": {
+    "summary": "Given an array of integers and a target, return indices of the two numbers that add up to the target. Use a hash map to achieve O(n) time by storing complements.",
+    "approaches": [
+      {
+        "name": "Brute Force",
+        "intuition": "Check every pair of numbers to see if they sum to the target. Simple but inefficient.",
+        "approach": "1. Iterate through each element with index i\n2. For each i, iterate through remaining elements with index j\n3. Check if nums[i] + nums[j] equals target\n4. Return [i, j] when found",
+        "explanation": "We use two nested loops to check all possible pairs. The outer loop picks the first number, and the inner loop checks all numbers after it. This guarantees we find the answer if it exists, but is slow for large arrays.",
+        "code": "func twoSum(_ nums: [Int], _ target: Int) -> [Int] {\n    for i in 0..<nums.count {\n        for j in (i + 1)..<nums.count {\n            if nums[i] + nums[j] == target {\n                return [i, j]\n            }\n        }\n    }\n    return []\n}",
+        "complexity": {
+          "time": "O(n^2)",
+          "space": "O(1)",
+          "timeExplanation": "Two nested loops, each iterating up to n times",
+          "spaceExplanation": "Only using a constant amount of extra space for loop variables"
+        },
+        "testCases": [
+          {
+            "input": "nums = [2,7,11,15], target = 9",
+            "expectedOutput": "[0,1]",
+            "explanation": "nums[0] + nums[1] = 2 + 7 = 9"
+          },
+          {
+            "input": "nums = [3,2,4], target = 6",
+            "expectedOutput": "[1,2]",
+            "explanation": "nums[1] + nums[2] = 2 + 4 = 6"
+          }
+        ]
+      },
+      {
+        "name": "Hash Map (One Pass)",
+        "intuition": "For each number, we need to find if its complement (target - num) exists. A hash map lets us check this in O(1) time.",
+        "approach": "1. Create an empty hash map to store value -> index\n2. Iterate through the array once\n3. For each number, calculate complement = target - num\n4. If complement exists in map, return [map[complement], currentIndex]\n5. Otherwise, store current number and index in map",
+        "explanation": "Instead of looking backward for each element, we build a map as we go. When we see a number, we check if we've already seen its complement. This single pass through the array with O(1) lookups gives us O(n) time complexity.",
+        "code": "func twoSum(_ nums: [Int], _ target: Int) -> [Int] {\n    var map: [Int: Int] = [:]\n    for (i, num) in nums.enumerated() {\n        let complement = target - num\n        if let j = map[complement] {\n            return [j, i]\n        }\n        map[num] = i\n    }\n    return []\n}",
+        "complexity": {
+          "time": "O(n)",
+          "space": "O(n)",
+          "timeExplanation": "Single pass through the array with O(1) hash map operations",
+          "spaceExplanation": "Hash map can store up to n elements in the worst case"
+        },
+        "testCases": [
+          {
+            "input": "nums = [2,7,11,15], target = 9",
+            "expectedOutput": "[0,1]",
+            "explanation": "When we reach 7, complement is 2 which is already in the map at index 0"
+          },
+          {
+            "input": "nums = [3,3], target = 6",
+            "expectedOutput": "[0,1]",
+            "explanation": "When we reach second 3, complement 3 is already in the map at index 0"
+          }
+        ]
+      }
+    ],
+    "relatedProblems": [
+      "three-sum",
+      "two-sum-ii-input-array-is-sorted",
+      "two-sum-iv-input-is-a-bst"
+    ]
+  },
+  "find-minimum-in-rotated-sorted-array": {
+    "summary": "Find the minimum element in a sorted array that has been rotated. The key insight is that the minimum is at the rotation pivot point, and we can use binary search to find it in O(log n) time by checking which half is sorted.",
+    "approaches": [
+      {
+        "name": "Linear Scan",
+        "intuition": "Simply iterate through the array and track the minimum value. This works but doesn't leverage the sorted property of the array.",
+        "approach": "1. Initialize minimum as the first element\n2. Iterate through each element in the array\n3. Update minimum if current element is smaller\n4. Return the minimum value",
+        "explanation": "This brute force approach ignores the sorted and rotated properties of the array. While it always finds the correct answer, it's inefficient for large arrays since we check every element. The sorted nature of the array allows for a much faster binary search solution.",
+        "code": "func findMin(_ nums: [Int]) -> Int {\n    var minVal = nums[0]\n    for num in nums {\n        minVal = min(minVal, num)\n    }\n    return minVal\n}",
+        "complexity": {
+          "time": "O(n)",
+          "space": "O(1)",
+          "timeExplanation": "We iterate through all n elements once",
+          "spaceExplanation": "Only using a single variable to track minimum"
+        },
+        "testCases": [
+          {
+            "input": "nums = [3,4,5,1,2]",
+            "expectedOutput": "1",
+            "explanation": "Original sorted array [1,2,3,4,5] was rotated 3 times. Minimum is 1."
+          },
+          {
+            "input": "nums = [4,5,6,7,0,1,2]",
+            "expectedOutput": "0",
+            "explanation": "Original sorted array [0,1,2,4,5,6,7] was rotated 4 times. Minimum is 0."
+          }
+        ]
+      },
+      {
+        "name": "Binary Search",
+        "intuition": "In a rotated sorted array, the minimum element is at the pivot point where the rotation happened. We can use binary search: if the middle element is greater than the rightmost element, the minimum must be in the right half (the pivot is there). Otherwise, it's in the left half including middle.",
+        "approach": "1. Initialize left = 0 and right = nums.count - 1\n2. While left < right:\n   a. Calculate mid = left + (right - left) / 2\n   b. If nums[mid] > nums[right], minimum is in right half: left = mid + 1\n   c. Else, minimum is in left half (including mid): right = mid\n3. Return nums[left] - this is the minimum",
+        "explanation": "The key observation is that in a rotated sorted array, one half is always properly sorted. If nums[mid] > nums[right], the rotation pivot (minimum) must be in the right half because the left half is sorted but wraps around. If nums[mid] <= nums[right], the right half is sorted, so the minimum is in the left half or at mid. We keep narrowing until left equals right, pointing to the minimum.",
+        "code": "func findMin(_ nums: [Int]) -> Int {\n    var left = 0\n    var right = nums.count - 1\n    \n    while left < right {\n        let mid = left + (right - left) / 2\n        \n        if nums[mid] > nums[right] {\n            // Minimum is in the right half\n            left = mid + 1\n        } else {\n            // Minimum is in the left half (including mid)\n            right = mid\n        }\n    }\n    \n    return nums[left]\n}",
+        "complexity": {
+          "time": "O(log n)",
+          "space": "O(1)",
+          "timeExplanation": "Binary search halves the search space each iteration, giving logarithmic time",
+          "spaceExplanation": "Only using a few pointer variables, constant extra space"
+        },
+        "testCases": [
+          {
+            "input": "nums = [3,4,5,1,2]",
+            "expectedOutput": "1",
+            "explanation": "mid=2 (value 5) > right value 2, so search right. mid=3 (value 1) <= right value 2, narrow to left=right=3. Return nums[3]=1."
+          },
+          {
+            "input": "nums = [4,5,6,7,0,1,2]",
+            "expectedOutput": "0",
+            "explanation": "Binary search finds pivot at index 4 where value drops from 7 to 0."
+          },
+          {
+            "input": "nums = [11,13,15,17]",
+            "expectedOutput": "11",
+            "explanation": "Array not rotated (or rotated n times). nums[mid] <= nums[right] always, converges to index 0."
+          },
+          {
+            "input": "nums = [2,1]",
+            "expectedOutput": "1",
+            "explanation": "Small array rotated once. nums[0]=2 > nums[1]=1, so left becomes 1, return nums[1]=1."
+          }
+        ]
+      }
+    ],
+    "relatedProblems": [
+      "find-minimum-in-rotated-sorted-array-ii",
+      "search-in-rotated-sorted-array",
+      "search-in-rotated-sorted-array-ii"
+    ]
+  },
+  "remove-duplicates-from-sorted-array": {
+    "summary": "Remove duplicates from a sorted array in-place, returning the count of unique elements. Use two pointers: one for the write position of unique elements, one to scan through the array.",
+    "approaches": [
+      {
+        "name": "Two Pointers (In-Place)",
+        "intuition": "Since the array is sorted, duplicates are adjacent. Use a slow pointer to track where to write the next unique element, and a fast pointer to scan through the array.",
+        "approach": "1. Handle empty array edge case\n2. Initialize write pointer at index 1 (first element is always unique)\n3. Scan from index 1 with read pointer\n4. When current element differs from previous, write it and advance write pointer\n5. Return write pointer value (count of unique elements)",
+        "explanation": "The key insight is that in a sorted array, duplicates are consecutive. We maintain a 'write' position where the next unique element should go. As we scan, whenever we find a new value (different from previous), we write it to the write position. The array before the write pointer contains all unique elements.",
+        "code": "func removeDuplicates(_ nums: inout [Int]) -> Int {\n    guard nums.count > 0 else { return 0 }\n    \n    var writeIndex = 1\n    \n    for i in 1..<nums.count {\n        if nums[i] != nums[i - 1] {\n            nums[writeIndex] = nums[i]\n            writeIndex += 1\n        }\n    }\n    \n    return writeIndex\n}",
+        "complexity": {
+          "time": "O(n)",
+          "space": "O(1)",
+          "timeExplanation": "Single pass through the array of n elements",
+          "spaceExplanation": "In-place modification, only using pointer variables"
+        },
+        "testCases": [
+          {
+            "input": "nums = [1,1,2]",
+            "expectedOutput": "2, nums = [1,2,_]",
+            "explanation": "Two unique elements: 1 and 2. Array becomes [1,2,...] with returned length 2."
+          },
+          {
+            "input": "nums = [0,0,1,1,1,2,2,3,3,4]",
+            "expectedOutput": "5, nums = [0,1,2,3,4,_,_,_,_,_]",
+            "explanation": "Five unique elements: 0,1,2,3,4. Each written once to front of array."
+          },
+          {
+            "input": "nums = [1]",
+            "expectedOutput": "1, nums = [1]",
+            "explanation": "Single element is always unique."
+          }
+        ]
+      },
+      {
+        "name": "Two Pointers (Compare with Write Position)",
+        "intuition": "Instead of comparing with the previous element, compare with the last written unique element. This makes the logic cleaner for extensions like allowing k duplicates.",
+        "approach": "1. Handle empty array\n2. Write pointer starts at 0 (first element always kept)\n3. For each element from index 1:\n   a. If different from element at write pointer, increment write pointer and copy\n4. Return write pointer + 1",
+        "explanation": "This variant compares the current element with the last unique element we've written (at writeIndex). This pattern extends naturally to 'Remove Duplicates II' where we allow at most 2 of each - just compare with writeIndex-1 instead.",
+        "code": "func removeDuplicates(_ nums: inout [Int]) -> Int {\n    guard nums.count > 0 else { return 0 }\n    \n    var writeIndex = 0\n    \n    for i in 1..<nums.count {\n        if nums[i] != nums[writeIndex] {\n            writeIndex += 1\n            nums[writeIndex] = nums[i]\n        }\n    }\n    \n    return writeIndex + 1\n}",
+        "complexity": {
+          "time": "O(n)",
+          "space": "O(1)",
+          "timeExplanation": "Single pass through all n elements",
+          "spaceExplanation": "Only using index variables, modification is in-place"
+        },
+        "testCases": [
+          {
+            "input": "nums = [1,1,2]",
+            "expectedOutput": "2, nums = [1,2,_]",
+            "explanation": "writeIndex=0. i=1: nums[1]=1 == nums[0]=1, skip. i=2: nums[2]=2 != nums[0]=1, writeIndex=1, nums[1]=2. Return 2."
+          },
+          {
+            "input": "nums = []",
+            "expectedOutput": "0",
+            "explanation": "Empty array returns 0."
+          },
+          {
+            "input": "nums = [1,2,3]",
+            "expectedOutput": "3, nums = [1,2,3]",
+            "explanation": "All unique, no changes needed. writeIndex moves to 2, return 3."
+          }
+        ]
+      }
+    ],
+    "relatedProblems": [
+      "remove-duplicates-from-sorted-array-ii",
+      "remove-element",
+      "move-zeroes"
+    ]
+  },
+  "move-zeroes": {
+    "summary": "Move all zeros to the end while maintaining the relative order of non-zero elements. Use two pointers: one for the write position of non-zeros, one to scan.",
+    "approaches": [
+      {
+        "name": "Two Pointers (Overwrite + Fill)",
+        "intuition": "Copy all non-zero elements to the front, then fill the rest with zeros. Two passes but very clean logic.",
+        "approach": "1. writeIndex starts at 0\n2. For each non-zero element, write it at writeIndex and increment\n3. Fill remaining positions with zeros",
+        "explanation": "The first pass compacts all non-zero elements to the front, maintaining their relative order. writeIndex ends up at the count of non-zeros. The second pass fills zeros from writeIndex to the end. This is cache-friendly as we write sequentially.",
+        "code": "func moveZeroes(_ nums: inout [Int]) {\n    var writeIndex = 0\n    \n    // Move all non-zeros to front\n    for num in nums {\n        if num != 0 {\n            nums[writeIndex] = num\n            writeIndex += 1\n        }\n    }\n    \n    // Fill rest with zeros\n    while writeIndex < nums.count {\n        nums[writeIndex] = 0\n        writeIndex += 1\n    }\n}",
+        "complexity": {
+          "time": "O(n)",
+          "space": "O(1)",
+          "timeExplanation": "Two passes through the array",
+          "spaceExplanation": "In-place modification with one pointer variable"
+        },
+        "testCases": [
+          {
+            "input": "nums = [0,1,0,3,12]",
+            "expectedOutput": "[1,3,12,0,0]",
+            "explanation": "Non-zeros 1,3,12 moved to front, zeros fill the rest"
+          },
+          {
+            "input": "nums = [0]",
+            "expectedOutput": "[0]",
+            "explanation": "Single zero stays in place"
+          }
+        ]
+      },
+      {
+        "name": "Two Pointers (Swap)",
+        "intuition": "Maintain a slow pointer for the 'non-zero zone' boundary. When we find a non-zero, swap it with the boundary position and expand the zone.",
+        "approach": "1. slow pointer marks end of non-zero zone\n2. fast pointer scans through array\n3. When fast finds non-zero, swap with slow and increment slow\n4. Single pass, minimal writes",
+        "explanation": "The slow pointer always points to the first zero (or end of non-zero section). When fast finds a non-zero, swapping places it at the boundary and moves the boundary forward. This performs fewer writes than the fill approach when there are few zeros.",
+        "code": "func moveZeroes(_ nums: inout [Int]) {\n    var slow = 0\n    \n    for fast in 0..<nums.count {\n        if nums[fast] != 0 {\n            // Swap only if positions differ (avoid self-swap)\n            if slow != fast {\n                nums.swapAt(slow, fast)\n            }\n            slow += 1\n        }\n    }\n}",
+        "complexity": {
+          "time": "O(n)",
+          "space": "O(1)",
+          "timeExplanation": "Single pass through array",
+          "spaceExplanation": "Only using pointer variables"
+        },
+        "testCases": [
+          {
+            "input": "nums = [0,1,0,3,12]",
+            "expectedOutput": "[1,3,12,0,0]",
+            "explanation": "Swap 1\u21940, then 3\u21940, then 12\u21940"
+          },
+          {
+            "input": "nums = [1,2,3]",
+            "expectedOutput": "[1,2,3]",
+            "explanation": "No zeros, no swaps needed (slow==fast always)"
+          },
+          {
+            "input": "nums = [0,0,1]",
+            "expectedOutput": "[1,0,0]",
+            "explanation": "1 swaps with first 0"
+          }
+        ]
+      }
+    ],
+    "relatedProblems": [
+      "remove-element"
+    ]
+  },
+  "rotate-image": {
+    "summary": "Rotate an n\u00d7n matrix 90 degrees clockwise in-place. The key insight is that rotation equals transpose + reverse each row, or you can rotate layer by layer from outside in.",
+    "approaches": [
+      {
+        "name": "Transpose + Reverse",
+        "intuition": "A 90\u00b0 clockwise rotation can be decomposed into two simpler operations: first transpose the matrix (swap rows and columns), then reverse each row. This avoids complex index math.",
+        "approach": "1. Transpose the matrix: swap matrix[i][j] with matrix[j][i] for all i < j\n2. Reverse each row: swap elements from start and end moving inward\n3. The matrix is now rotated 90\u00b0 clockwise",
+        "explanation": "Consider element at position (i, j). After transpose, it moves to (j, i). After reversing the row, it moves to (j, n-1-i). This is exactly where it should be after a 90\u00b0 clockwise rotation. The transpose swaps across the main diagonal, and reversing rows completes the rotation. Both operations are O(n\u00b2) but simple to implement.",
+        "code": "func rotate(_ matrix: inout [[Int]]) {\n    let n = matrix.count\n    \n    // Step 1: Transpose\n    for i in 0..<n {\n        for j in i+1..<n {\n            let temp = matrix[i][j]\n            matrix[i][j] = matrix[j][i]\n            matrix[j][i] = temp\n        }\n    }\n    \n    // Step 2: Reverse each row\n    for i in 0..<n {\n        matrix[i].reverse()\n    }\n}",
+        "complexity": {
+          "time": "O(n\u00b2)",
+          "space": "O(1)",
+          "timeExplanation": "We visit each element twice: once for transpose, once for reverse",
+          "spaceExplanation": "In-place modification, only using temp variable for swaps"
+        },
+        "testCases": [
+          {
+            "input": "matrix = [[1,2,3],[4,5,6],[7,8,9]]",
+            "expectedOutput": "[[7,4,1],[8,5,2],[9,6,3]]",
+            "explanation": "After transpose: [[1,4,7],[2,5,8],[3,6,9]]. After reversing rows: [[7,4,1],[8,5,2],[9,6,3]]"
+          },
+          {
+            "input": "matrix = [[5,1,9,11],[2,4,8,10],[13,3,6,7],[15,14,12,16]]",
+            "expectedOutput": "[[15,13,2,5],[14,3,4,1],[12,6,8,9],[16,7,10,11]]",
+            "explanation": "4x4 matrix rotated 90\u00b0 clockwise"
+          }
+        ]
+      },
+      {
+        "name": "Rotate Four Cells at a Time",
+        "intuition": "Rotate the matrix layer by layer, from the outermost layer inward. For each position in a layer, rotate four cells simultaneously in a cycle.",
+        "approach": "1. Process layers from outside to inside (0 to n/2)\n2. For each layer, rotate elements in groups of 4\n3. For position i in current layer: save top, move left\u2192top, bottom\u2192left, right\u2192bottom, saved\u2192right\n4. Continue until all layers processed",
+        "explanation": "We process the matrix in concentric square layers. For each layer, we rotate 4 elements at a time that form a rotation cycle. Element at top goes to right, right goes to bottom, bottom goes to left, left goes to top. We use one temp variable to facilitate this 4-way swap. This directly implements the rotation without decomposing into simpler operations.",
+        "code": "func rotate(_ matrix: inout [[Int]]) {\n    let n = matrix.count\n    \n    for layer in 0..<n/2 {\n        let first = layer\n        let last = n - 1 - layer\n        \n        for i in first..<last {\n            let offset = i - first\n            \n            // Save top\n            let top = matrix[first][i]\n            \n            // Left -> Top\n            matrix[first][i] = matrix[last - offset][first]\n            \n            // Bottom -> Left\n            matrix[last - offset][first] = matrix[last][last - offset]\n            \n            // Right -> Bottom\n            matrix[last][last - offset] = matrix[i][last]\n            \n            // Top -> Right\n            matrix[i][last] = top\n        }\n    }\n}",
+        "complexity": {
+          "time": "O(n\u00b2)",
+          "space": "O(1)",
+          "timeExplanation": "Each element is moved exactly once",
+          "spaceExplanation": "Only one temp variable regardless of matrix size"
+        },
+        "testCases": [
+          {
+            "input": "matrix = [[1,2],[3,4]]",
+            "expectedOutput": "[[3,1],[4,2]]",
+            "explanation": "2x2 has one layer. Rotate: 1\u2192right, 2\u2192bottom, 4\u2192left, 3\u2192top"
+          },
+          {
+            "input": "matrix = [[1]]",
+            "expectedOutput": "[[1]]",
+            "explanation": "1x1 matrix has no layers to rotate (n/2 = 0)"
+          }
+        ]
+      }
+    ],
+    "relatedProblems": [
+      "rotate-array",
+      "determine-whether-matrix-can-be-obtained-by-rotation"
+    ]
+  },
+  "set-matrix-zeroes": {
+    "summary": "If an element is 0, set its entire row and column to 0. The challenge is doing this in-place without using extra space proportional to matrix size. Use the first row/column as markers.",
+    "approaches": [
+      {
+        "name": "Extra Space with Sets",
+        "intuition": "First pass: record which rows and columns contain zeros. Second pass: set those rows and columns to zero. Simple but uses O(m+n) extra space.",
+        "approach": "1. Create sets to store row and column indices that have zeros\n2. Scan matrix, add row/col indices to sets when we find a zero\n3. Scan matrix again, set cell to 0 if its row or column is in the sets",
+        "explanation": "We separate the 'finding zeros' phase from the 'setting zeros' phase to avoid the cascade problem where newly set zeros would incorrectly trigger more zeros. The sets give us O(1) lookup to check if a row or column should be zeroed.",
+        "code": "func setZeroes(_ matrix: inout [[Int]]) {\n    let m = matrix.count\n    let n = matrix[0].count\n    var zeroRows = Set<Int>()\n    var zeroCols = Set<Int>()\n    \n    // Find zeros\n    for i in 0..<m {\n        for j in 0..<n {\n            if matrix[i][j] == 0 {\n                zeroRows.insert(i)\n                zeroCols.insert(j)\n            }\n        }\n    }\n    \n    // Set zeros\n    for i in 0..<m {\n        for j in 0..<n {\n            if zeroRows.contains(i) || zeroCols.contains(j) {\n                matrix[i][j] = 0\n            }\n        }\n    }\n}",
+        "complexity": {
+          "time": "O(m \u00d7 n)",
+          "space": "O(m + n)",
+          "timeExplanation": "Two passes through all m\u00d7n elements",
+          "spaceExplanation": "Sets can store at most m rows and n columns"
+        },
+        "testCases": [
+          {
+            "input": "matrix = [[1,1,1],[1,0,1],[1,1,1]]",
+            "expectedOutput": "[[1,0,1],[0,0,0],[1,0,1]]",
+            "explanation": "Zero at (1,1) \u2192 row 1 and column 1 become zeros"
+          },
+          {
+            "input": "matrix = [[0,1,2,0],[3,4,5,2],[1,3,1,5]]",
+            "expectedOutput": "[[0,0,0,0],[0,4,5,0],[0,3,1,0]]",
+            "explanation": "Zeros at (0,0) and (0,3) \u2192 row 0, col 0, col 3 become zeros"
+          }
+        ]
+      },
+      {
+        "name": "O(1) Space - First Row/Col as Markers",
+        "intuition": "Use the first row and first column of the matrix itself as markers. This eliminates extra space, but we need special handling for the first row/column themselves.",
+        "approach": "1. Check if first row/column originally have zeros (save this info)\n2. Use first row to mark which columns should be zero\n3. Use first column to mark which rows should be zero\n4. Zero out cells based on markers (skip first row/col)\n5. Finally, zero out first row/column if needed",
+        "explanation": "We repurpose matrix[0][j] to indicate 'column j should be zeroed' and matrix[i][0] to indicate 'row i should be zeroed'. Since these markers share cell (0,0), we use a separate variable for the first column. We process inner cells first, then handle the first row/column last to preserve our markers until they're no longer needed.",
+        "code": "func setZeroes(_ matrix: inout [[Int]]) {\n    let m = matrix.count\n    let n = matrix[0].count\n    var firstColZero = false\n    \n    // Use first row and column as markers\n    for i in 0..<m {\n        if matrix[i][0] == 0 {\n            firstColZero = true\n        }\n        for j in 1..<n {\n            if matrix[i][j] == 0 {\n                matrix[i][0] = 0\n                matrix[0][j] = 0\n            }\n        }\n    }\n    \n    // Zero out cells based on markers (process from bottom-right)\n    for i in (1..<m).reversed() {\n        for j in (1..<n).reversed() {\n            if matrix[i][0] == 0 || matrix[0][j] == 0 {\n                matrix[i][j] = 0\n            }\n        }\n    }\n    \n    // Zero out first row if needed\n    if matrix[0][0] == 0 {\n        for j in 0..<n {\n            matrix[0][j] = 0\n        }\n    }\n    \n    // Zero out first column if needed\n    if firstColZero {\n        for i in 0..<m {\n            matrix[i][0] = 0\n        }\n    }\n}",
+        "complexity": {
+          "time": "O(m \u00d7 n)",
+          "space": "O(1)",
+          "timeExplanation": "Two passes through the matrix",
+          "spaceExplanation": "Only using one boolean variable, markers stored in matrix itself"
+        },
+        "testCases": [
+          {
+            "input": "matrix = [[1,1,1],[1,0,1],[1,1,1]]",
+            "expectedOutput": "[[1,0,1],[0,0,0],[1,0,1]]",
+            "explanation": "matrix[1][0]=0 marks row 1, matrix[0][1]=0 marks col 1"
+          },
+          {
+            "input": "matrix = [[1,0],[0,1]]",
+            "expectedOutput": "[[0,0],[0,0]]",
+            "explanation": "Both rows and columns get zeroed due to diagonal zeros"
+          }
+        ]
+      }
+    ],
+    "relatedProblems": [
+      "game-of-life"
+    ]
+  },
+  "sort-colors": {
+    "summary": "Sort array with values 0, 1, 2 (Dutch National Flag problem). Use three pointers to partition in single pass: low for 0s boundary, high for 2s boundary, mid for scanning.",
+    "approaches": [
+      {
+        "name": "Dutch National Flag (3 Pointers)",
+        "intuition": "Maintain three regions: 0s at the front, 2s at the back, 1s in the middle. Use three pointers to expand these regions.",
+        "approach": "1. low = 0 (boundary for 0s), high = n-1 (boundary for 2s), mid = 0\n2. While mid <= high:\n   a. If nums[mid] == 0: swap with low, increment both low and mid\n   b. If nums[mid] == 1: just increment mid\n   c. If nums[mid] == 2: swap with high, decrement high (don't increment mid!)\n3. Array is sorted",
+        "explanation": "The array is partitioned into 4 regions: [0...low-1] are 0s, [low...mid-1] are 1s, [mid...high] are unknown, [high+1...n-1] are 2s. We scan with mid, placing 0s at low and 2s at high. When swapping with high, we don't advance mid because the swapped element is unknown and needs to be checked.",
+        "code": "func sortColors(_ nums: inout [Int]) {\n    var low = 0\n    var mid = 0\n    var high = nums.count - 1\n    \n    while mid <= high {\n        switch nums[mid] {\n        case 0:\n            nums.swapAt(low, mid)\n            low += 1\n            mid += 1\n        case 1:\n            mid += 1\n        case 2:\n            nums.swapAt(mid, high)\n            high -= 1\n            // Don't increment mid - need to check swapped value\n        default:\n            break\n        }\n    }\n}",
+        "complexity": {
+          "time": "O(n)",
+          "space": "O(1)",
+          "timeExplanation": "Single pass through array",
+          "spaceExplanation": "In-place sorting with just pointer variables"
+        },
+        "testCases": [
+          {
+            "input": "nums = [2,0,2,1,1,0]",
+            "expectedOutput": "[0,0,1,1,2,2]",
+            "explanation": "0s moved to front, 2s to back, 1s in middle"
+          },
+          {
+            "input": "nums = [2,0,1]",
+            "expectedOutput": "[0,1,2]",
+            "explanation": "Simple case with one of each"
+          },
+          {
+            "input": "nums = [0]",
+            "expectedOutput": "[0]",
+            "explanation": "Single element already sorted"
+          }
+        ]
+      },
+      {
+        "name": "Counting Sort",
+        "intuition": "Count occurrences of 0, 1, 2, then overwrite array with that many of each. Two passes but very simple.",
+        "approach": "1. Count how many 0s, 1s, 2s\n2. Fill array: first count0 zeros, then count1 ones, then count2 twos",
+        "explanation": "Since we only have 3 possible values, counting sort is efficient. First pass counts, second pass writes. This uses O(1) extra space (just 3 counters) but requires two passes through the array.",
+        "code": "func sortColors(_ nums: inout [Int]) {\n    var count = [0, 0, 0]\n    \n    for num in nums {\n        count[num] += 1\n    }\n    \n    var index = 0\n    for color in 0..<3 {\n        for _ in 0..<count[color] {\n            nums[index] = color\n            index += 1\n        }\n    }\n}",
+        "complexity": {
+          "time": "O(n)",
+          "space": "O(1)",
+          "timeExplanation": "Two passes through array",
+          "spaceExplanation": "Only 3 counter variables"
+        },
+        "testCases": [
+          {
+            "input": "nums = [2,0,2,1,1,0]",
+            "expectedOutput": "[0,0,1,1,2,2]",
+            "explanation": "Count: [2,2,2]. Write 2 zeros, 2 ones, 2 twos."
+          }
+        ]
+      }
+    ],
+    "relatedProblems": [
+      "sort-list",
+      "wiggle-sort",
+      "wiggle-sort-ii"
+    ]
+  },
+  "search-a-2d-matrix": {
+    "summary": "Search for a target in a sorted 2D matrix (each row sorted, first element of row > last element of previous row). Treat as 1D array and binary search, or do two binary searches.",
+    "approaches": [
+      {
+        "name": "Binary Search (Treat as 1D)",
+        "intuition": "The matrix is essentially a sorted 1D array laid out in rows. Map 1D index to 2D coordinates: row = idx / cols, col = idx % cols.",
+        "approach": "1. Calculate total elements n = rows * cols\n2. Binary search with left = 0, right = n - 1\n3. For mid, convert to matrix[mid / cols][mid % cols]\n4. Standard binary search comparison and bounds update",
+        "explanation": "Since rows are contiguous in sorted order, index i in a flattened array maps to row i/cols, column i%cols. This lets us use standard binary search with O(1) index conversion. The matrix structure is just a visual layout of a sorted array.",
+        "code": "func searchMatrix(_ matrix: [[Int]], _ target: Int) -> Bool {\n    let rows = matrix.count\n    let cols = matrix[0].count\n    var left = 0\n    var right = rows * cols - 1\n    \n    while left <= right {\n        let mid = left + (right - left) / 2\n        let value = matrix[mid / cols][mid % cols]\n        \n        if value == target {\n            return true\n        } else if value < target {\n            left = mid + 1\n        } else {\n            right = mid - 1\n        }\n    }\n    \n    return false\n}",
+        "complexity": {
+          "time": "O(log(m*n))",
+          "space": "O(1)",
+          "timeExplanation": "Binary search over m*n elements",
+          "spaceExplanation": "Only using pointer variables"
+        },
+        "testCases": [
+          {
+            "input": "matrix = [[1,3,5,7],[10,11,16,20],[23,30,34,60]], target = 3",
+            "expectedOutput": "true",
+            "explanation": "3 is at position (0,1)"
+          },
+          {
+            "input": "matrix = [[1,3,5,7],[10,11,16,20],[23,30,34,60]], target = 13",
+            "expectedOutput": "false",
+            "explanation": "13 not in matrix"
+          }
+        ]
+      },
+      {
+        "name": "Two Binary Searches",
+        "intuition": "First binary search to find the correct row (where target could be), then binary search within that row.",
+        "approach": "1. Binary search on first column to find row where row[0] <= target < nextRow[0]\n2. Binary search within that row for target\n3. Return true if found",
+        "explanation": "We use the property that first elements of each row are sorted. First binary search narrows down to the correct row (the last row whose first element <= target). Second binary search finds target within that row. Two O(log n) searches is still O(log(m*n)).",
+        "code": "func searchMatrix(_ matrix: [[Int]], _ target: Int) -> Bool {\n    let rows = matrix.count\n    let cols = matrix[0].count\n    \n    // Binary search for row\n    var top = 0\n    var bottom = rows - 1\n    var targetRow = 0\n    \n    while top <= bottom {\n        let mid = top + (bottom - top) / 2\n        if matrix[mid][0] <= target && (mid == rows - 1 || matrix[mid + 1][0] > target) {\n            targetRow = mid\n            break\n        } else if matrix[mid][0] > target {\n            bottom = mid - 1\n        } else {\n            top = mid + 1\n        }\n    }\n    \n    // Binary search within row\n    var left = 0\n    var right = cols - 1\n    \n    while left <= right {\n        let mid = left + (right - left) / 2\n        if matrix[targetRow][mid] == target {\n            return true\n        } else if matrix[targetRow][mid] < target {\n            left = mid + 1\n        } else {\n            right = mid - 1\n        }\n    }\n    \n    return false\n}",
+        "complexity": {
+          "time": "O(log m + log n)",
+          "space": "O(1)",
+          "timeExplanation": "Two separate binary searches",
+          "spaceExplanation": "Only pointer variables"
+        },
+        "testCases": [
+          {
+            "input": "matrix = [[1,3,5,7],[10,11,16,20],[23,30,34,60]], target = 3",
+            "expectedOutput": "true",
+            "explanation": "Row search finds row 0, column search finds index 1"
+          }
+        ]
+      }
+    ],
+    "relatedProblems": [
+      "search-a-2d-matrix-ii"
+    ]
+  },
+  "squares-of-a-sorted-array": {
+    "summary": "Given sorted array (may have negatives), return array of squares in sorted order. Two pointers from ends, compare absolute values, fill result from back.",
+    "approaches": [
+      {
+        "name": "Two Pointers",
+        "intuition": "Largest squares are at the ends (most negative or most positive). Compare absolute values at both ends, place larger square at end of result, move pointer inward.",
+        "approach": "1. Left pointer at start, right at end\n2. Result array filled from back\n3. Compare abs values at left and right\n4. Place larger square at current result position, move that pointer\n5. Decrement result position",
+        "explanation": "In a sorted array with negatives, the largest absolute values are at the extremes. By using two pointers and filling the result from the end, we efficiently place squares in sorted order without needing to sort afterward.",
+        "code": "func sortedSquares(_ nums: [Int]) -> [Int] {\n    var result = [Int](repeating: 0, count: nums.count)\n    var left = 0\n    var right = nums.count - 1\n    var pos = nums.count - 1\n    \n    while left <= right {\n        let leftSq = nums[left] * nums[left]\n        let rightSq = nums[right] * nums[right]\n        \n        if leftSq > rightSq {\n            result[pos] = leftSq\n            left += 1\n        } else {\n            result[pos] = rightSq\n            right -= 1\n        }\n        pos -= 1\n    }\n    \n    return result\n}",
+        "complexity": {
+          "time": "O(n)",
+          "space": "O(n)",
+          "timeExplanation": "Single pass with two pointers",
+          "spaceExplanation": "Result array of size n"
+        },
+        "testCases": [
+          {
+            "input": "nums = [-4,-1,0,3,10]",
+            "expectedOutput": "[0,1,9,16,100]",
+            "explanation": "Compare |-4|=4 vs |10|=10. 100 goes last. Then |-4| vs |3|, 16 goes next. Etc."
+          },
+          {
+            "input": "nums = [-7,-3,2,3,11]",
+            "expectedOutput": "[4,9,9,49,121]",
+            "explanation": "Two pointers handle negative numbers efficiently"
+          }
+        ]
+      },
+      {
+        "name": "Square and Sort",
+        "intuition": "Simple approach: square all elements, then sort. Less efficient but very straightforward.",
+        "approach": "1. Square each element\n2. Sort the result",
+        "explanation": "This naive approach works but uses O(n log n) time due to sorting. The two-pointer approach is better, but this is simpler to implement and understand.",
+        "code": "func sortedSquares(_ nums: [Int]) -> [Int] {\n    return nums.map { $0 * $0 }.sorted()\n}",
+        "complexity": {
+          "time": "O(n log n)",
+          "space": "O(n)",
+          "timeExplanation": "Sorting dominates",
+          "spaceExplanation": "New array for result"
+        },
+        "testCases": [
+          {
+            "input": "nums = [-4,-1,0,3,10]",
+            "expectedOutput": "[0,1,9,16,100]",
+            "explanation": "Square: [16,1,0,9,100]. Sort: [0,1,9,16,100]"
+          }
+        ]
+      }
+    ],
+    "relatedProblems": [
+      "merge-sorted-array",
+      "sort-an-array"
+    ]
+  }
+}

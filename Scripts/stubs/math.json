@@ -1,0 +1,207 @@
+{
+  "palindrome-number": {
+    "summary": "Determine if an integer reads the same forwards and backwards. The optimal approach reverses half the number and compares, avoiding string conversion and potential overflow.",
+    "approaches": [
+      {
+        "name": "String Conversion",
+        "intuition": "Convert the number to a string and check if it equals its reverse. Simple but uses extra space for the string.",
+        "approach": "1. Handle negative numbers (always false - minus sign)\n2. Convert number to string\n3. Compare string with its reverse\n4. Return true if equal",
+        "explanation": "This approach leverages string manipulation to easily reverse and compare. While intuitive, it requires O(n) extra space for the string representation and is slower due to string operations.",
+        "code": "func isPalindrome(_ x: Int) -> Bool {\n    if x < 0 { return false }\n    let str = String(x)\n    return str == String(str.reversed())\n}",
+        "complexity": {
+          "time": "O(n)",
+          "space": "O(n)",
+          "timeExplanation": "Where n is the number of digits. String conversion and reversal are O(n)",
+          "spaceExplanation": "String representation requires O(n) space for n digits"
+        },
+        "testCases": [
+          {
+            "input": "x = 121",
+            "expectedOutput": "true",
+            "explanation": "121 reads as 121 from left to right and from right to left"
+          },
+          {
+            "input": "x = -121",
+            "expectedOutput": "false",
+            "explanation": "From left to right it reads -121, from right to left it's 121-. Not a palindrome."
+          }
+        ]
+      },
+      {
+        "name": "Reverse Half Number",
+        "intuition": "Instead of reversing the entire number (which could overflow), reverse only half. If it's a palindrome, the first half equals the reversed second half.",
+        "approach": "1. Return false for negative numbers\n2. Return false if number ends in 0 (except 0 itself)\n3. Reverse digits until reversed >= remaining\n4. Compare: for even digits, they should be equal; for odd digits, ignore middle digit",
+        "explanation": "We reverse the second half of the number by repeatedly taking the last digit (x % 10) and building the reversed number. We stop when the reversed number is >= the remaining original. For even-length palindromes, they're equal. For odd-length, we divide reversed by 10 to skip the middle digit.",
+        "code": "func isPalindrome(_ x: Int) -> Bool {\n    // Negative numbers and numbers ending in 0 (except 0) aren't palindromes\n    if x < 0 || (x % 10 == 0 && x != 0) {\n        return false\n    }\n    \n    var num = x\n    var reversed = 0\n    \n    // Reverse half of the number\n    while num > reversed {\n        reversed = reversed * 10 + num % 10\n        num /= 10\n    }\n    \n    // For even length: num == reversed\n    // For odd length: num == reversed / 10 (skip middle digit)\n    return num == reversed || num == reversed / 10\n}",
+        "complexity": {
+          "time": "O(log n)",
+          "space": "O(1)",
+          "timeExplanation": "We process half the digits, and number of digits is log10(n)",
+          "spaceExplanation": "Only using a few integer variables"
+        },
+        "testCases": [
+          {
+            "input": "x = 121",
+            "expectedOutput": "true",
+            "explanation": "After loop: num=1, reversed=12. num == reversed/10 (1 == 1). True."
+          },
+          {
+            "input": "x = 1221",
+            "expectedOutput": "true",
+            "explanation": "After loop: num=12, reversed=12. num == reversed. True."
+          },
+          {
+            "input": "x = 10",
+            "expectedOutput": "false",
+            "explanation": "Ends in 0 but isn't 0, so immediately return false."
+          },
+          {
+            "input": "x = 0",
+            "expectedOutput": "true",
+            "explanation": "0 is a palindrome."
+          }
+        ]
+      }
+    ],
+    "relatedProblems": [
+      "palindrome-linked-list",
+      "valid-palindrome",
+      "valid-palindrome-ii"
+    ]
+  },
+  "plus-one": {
+    "summary": "Add one to a number represented as an array of digits. Handle carry propagation from right to left. Only need a new digit if all digits were 9.",
+    "approaches": [
+      {
+        "name": "Right to Left with Carry",
+        "intuition": "Start from the rightmost digit and add one. If it becomes 10, set to 0 and carry to next digit. Continue until no carry or we reach the front.",
+        "approach": "1. Iterate from right to left\n2. Add 1 to current digit\n3. If digit < 10, we're done (no carry)\n4. If digit == 10, set to 0 and continue (carry)\n5. If we exit loop with carry, prepend 1",
+        "explanation": "The key insight is that we only continue carrying if digit becomes 10 (i.e., was 9). As soon as we add to a non-9 digit, we can return immediately. If all digits were 9 (like 999), we need a new leading 1 (1000).",
+        "code": "func plusOne(_ digits: [Int]) -> [Int] {\n    var digits = digits\n    \n    for i in (0..<digits.count).reversed() {\n        digits[i] += 1\n        if digits[i] < 10 {\n            return digits\n        }\n        digits[i] = 0\n    }\n    \n    // All digits were 9, need new leading 1\n    return [1] + digits\n}",
+        "complexity": {
+          "time": "O(n)",
+          "space": "O(n)",
+          "timeExplanation": "Worst case traverses all n digits (all 9s)",
+          "spaceExplanation": "May need to create new array with n+1 digits"
+        },
+        "testCases": [
+          {
+            "input": "digits = [1,2,3]",
+            "expectedOutput": "[1,2,4]",
+            "explanation": "123 + 1 = 124. Only last digit changes."
+          },
+          {
+            "input": "digits = [4,3,2,1]",
+            "expectedOutput": "[4,3,2,2]",
+            "explanation": "4321 + 1 = 4322"
+          },
+          {
+            "input": "digits = [9,9,9]",
+            "expectedOutput": "[1,0,0,0]",
+            "explanation": "999 + 1 = 1000. Carry propagates through all digits, need new leading 1."
+          },
+          {
+            "input": "digits = [1,9,9]",
+            "expectedOutput": "[2,0,0]",
+            "explanation": "199 + 1 = 200. Carry stops at first digit."
+          }
+        ]
+      },
+      {
+        "name": "Find Rightmost Non-9",
+        "intuition": "Find the rightmost digit that isn't 9, increment it, and set all digits to its right to 0. If all are 9, prepend 1 and set all to 0.",
+        "approach": "1. Find rightmost non-9 digit\n2. If found: increment it, zero out all digits to the right\n3. If not found: all digits are 9, return [1] + array of zeros",
+        "explanation": "This approach explicitly identifies the 'stopping point' of the carry before modifying anything. It's equivalent to the carry approach but thinks about it differently - we're looking for where the increment actually happens.",
+        "code": "func plusOne(_ digits: [Int]) -> [Int] {\n    var digits = digits\n    \n    // Find rightmost non-9\n    var i = digits.count - 1\n    while i >= 0 && digits[i] == 9 {\n        i -= 1\n    }\n    \n    if i < 0 {\n        // All 9s: 999 -> 1000\n        return [1] + Array(repeating: 0, count: digits.count)\n    }\n    \n    // Increment found digit, zero everything to its right\n    digits[i] += 1\n    for j in (i+1)..<digits.count {\n        digits[j] = 0\n    }\n    \n    return digits\n}",
+        "complexity": {
+          "time": "O(n)",
+          "space": "O(n)",
+          "timeExplanation": "Scan for non-9, then potentially zero trailing digits",
+          "spaceExplanation": "Worst case creates new array of n+1 digits"
+        },
+        "testCases": [
+          {
+            "input": "digits = [9]",
+            "expectedOutput": "[1,0]",
+            "explanation": "9 + 1 = 10"
+          },
+          {
+            "input": "digits = [8,9,9]",
+            "expectedOutput": "[9,0,0]",
+            "explanation": "899 + 1 = 900. Rightmost non-9 is 8 at index 0."
+          }
+        ]
+      }
+    ],
+    "relatedProblems": [
+      "add-binary",
+      "add-to-array-form-of-integer",
+      "multiply-strings"
+    ]
+  },
+  "happy-number": {
+    "summary": "Determine if a number is happy: repeatedly replace with sum of squares of digits until it reaches 1 (happy) or loops endlessly (not happy). Detect cycle with Floyd's algorithm or hash set.",
+    "approaches": [
+      {
+        "name": "Hash Set Cycle Detection",
+        "intuition": "If we see the same number twice, we're in a cycle and will never reach 1. Track all seen numbers in a set.",
+        "approach": "1. Create set to store seen numbers\n2. While n != 1 and n not in set:\n   a. Add n to set\n   b. Replace n with sum of digit squares\n3. Return n == 1",
+        "explanation": "The sequence must eventually either reach 1 or enter a cycle (since there are finite possible values). If we detect a cycle before reaching 1, the number isn't happy. The set gives O(1) lookup to detect repeats.",
+        "code": "func isHappy(_ n: Int) -> Bool {\n    var seen = Set<Int>()\n    var num = n\n    \n    while num != 1 && !seen.contains(num) {\n        seen.insert(num)\n        num = sumOfSquares(num)\n    }\n    \n    return num == 1\n}\n\nfunc sumOfSquares(_ n: Int) -> Int {\n    var sum = 0\n    var num = n\n    while num > 0 {\n        let digit = num % 10\n        sum += digit * digit\n        num /= 10\n    }\n    return sum\n}",
+        "complexity": {
+          "time": "O(log n) per step, O(k) steps",
+          "space": "O(k)",
+          "timeExplanation": "Each sum of squares is O(log n) for digit count. Number of steps k is bounded.",
+          "spaceExplanation": "Set stores all numbers in the sequence"
+        },
+        "testCases": [
+          {
+            "input": "n = 19",
+            "expectedOutput": "true",
+            "explanation": "19 \u2192 82 \u2192 68 \u2192 100 \u2192 1. Happy!"
+          },
+          {
+            "input": "n = 2",
+            "expectedOutput": "false",
+            "explanation": "2 \u2192 4 \u2192 16 \u2192 37 \u2192 58 \u2192 89 \u2192 145 \u2192 42 \u2192 20 \u2192 4 (cycle)"
+          }
+        ]
+      },
+      {
+        "name": "Floyd's Cycle Detection (Two Pointers)",
+        "intuition": "Use slow and fast pointers like in linked list cycle detection. If they meet at 1, it's happy. If they meet elsewhere, there's a cycle.",
+        "approach": "1. slow moves one step at a time\n2. fast moves two steps at a time\n3. Continue until fast reaches 1 or slow == fast\n4. Return whether ended at 1",
+        "explanation": "This is the tortoise and hare algorithm. In a sequence that either ends at 1 or cycles, the fast pointer will eventually either reach 1 or catch up to slow (indicating a cycle). This uses O(1) space since we don't store previous numbers.",
+        "code": "func isHappy(_ n: Int) -> Bool {\n    var slow = n\n    var fast = sumOfSquares(n)\n    \n    while fast != 1 && slow != fast {\n        slow = sumOfSquares(slow)\n        fast = sumOfSquares(sumOfSquares(fast))\n    }\n    \n    return fast == 1\n}\n\nfunc sumOfSquares(_ n: Int) -> Int {\n    var sum = 0\n    var num = n\n    while num > 0 {\n        let digit = num % 10\n        sum += digit * digit\n        num /= 10\n    }\n    return sum\n}",
+        "complexity": {
+          "time": "O(log n) per step",
+          "space": "O(1)",
+          "timeExplanation": "Same time complexity, but space-optimized",
+          "spaceExplanation": "Only two pointer variables, no storage of sequence"
+        },
+        "testCases": [
+          {
+            "input": "n = 19",
+            "expectedOutput": "true",
+            "explanation": "Fast reaches 1 before meeting slow"
+          },
+          {
+            "input": "n = 7",
+            "expectedOutput": "true",
+            "explanation": "7 \u2192 49 \u2192 97 \u2192 130 \u2192 10 \u2192 1"
+          },
+          {
+            "input": "n = 116",
+            "expectedOutput": "false",
+            "explanation": "Enters cycle, slow and fast meet before reaching 1"
+          }
+        ]
+      }
+    ],
+    "relatedProblems": [
+      "linked-list-cycle",
+      "add-digits",
+      "ugly-number"
+    ]
+  }
+}

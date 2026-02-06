@@ -57,7 +57,8 @@ extension CodingEnvironmentView {
                 code: $presenter.code,
                 language: presenter.language,
                 diagnostics: presenter.errorDiagnostics,
-                executionLine: presenter.highlightedExecutionLine
+                executionLine: presenter.highlightedExecutionLine,
+                onRun: presenter.runCode
             )
         }
     }
@@ -109,48 +110,21 @@ extension CodingEnvironmentView {
 
     private var bottomPanel: some View {
         VStack(spacing: 0) {
-            HStack {
-                Text(L10n.Coding.consoleTitle)
-                    .font(.system(size: 11, weight: .semibold))
-                    .foregroundColor(.white)
+            VStack(spacing: 0) {
+                ModernTestCaseView(
+                    presenter: presenter,
+                    isCollapsed: $isBottomPanelCollapsed
+                )
 
-                Spacer()
-
-                Button(action: {
-                    isBottomPanelCollapsed.toggle()
-                }, label: {
-                    HStack(spacing: 4) {
-                        Text(isBottomPanelCollapsed
-                             ? L10n.Coding.consoleExpand
-                             : L10n.Coding.consoleCollapse)
-                            .font(.system(size: 10, weight: .medium))
-                            .foregroundColor(Color.appGray400)
-                        Image(systemName: isBottomPanelCollapsed ? "chevron.up" : "chevron.down")
-                            .font(.system(size: 10, weight: .medium))
-                            .foregroundColor(Color.appGray400)
-                    }
-                })
-                .buttonStyle(.plain)
-            }
-            .padding(.horizontal, 12)
-            .padding(.vertical, 8)
-            .background(Color.appGray800)
-            .overlay(
-                Rectangle()
-                    .fill(Color.appGray700)
-                    .frame(height: 1),
-                alignment: .bottom
-            )
-
-            if !isBottomPanelCollapsed {
-                VStack(spacing: 0) {
-                    ModernTestCaseView(presenter: presenter)
-
+                if !isBottomPanelCollapsed {
                     ModernOutputView(
                         output: presenter.compilationOutput,
                         error: presenter.errorOutput,
                         testCases: presenter.testCases,
-                        isRunning: presenter.isRunning
+                        diagnostics: presenter.errorDiagnostics,
+                        isRunning: presenter.isRunning,
+                        debugEntries: debugLogStore.entries,
+                        logAnchor: presenter.executionLogAnchor
                     )
                 }
             }

@@ -1,0 +1,50 @@
+{
+  "design-twitter": {
+    "summary": "Design a simplified Twitter with postTweet, getNewsFeed (10 most recent from self + followees), follow, and unfollow. Use a heap to merge tweets from multiple users for the feed.",
+    "approaches": [
+      {
+        "name": "Hash Maps + Heap Merge",
+        "intuition": "Store each user's tweets with timestamps. For news feed, collect tweets from user and all followees, use a max-heap to get the 10 most recent. Maintain follow relationships in a set.",
+        "approach": "1. tweets: [userId: [(timestamp, tweetId)]]\n2. follows: [userId: Set<followeeId>]\n3. postTweet: append (timestamp, tweetId) to user's list\n4. getNewsFeed: collect tweets from user + followees, heap-merge top 10\n5. follow/unfollow: add/remove from follows set",
+        "explanation": "Each user has a list of tweets in chronological order. For getNewsFeed, we need to merge k sorted lists (user's tweets + followees' tweets) and get top 10. A max-heap efficiently handles this merge operation. We only need to consider recent tweets, so we can optimize by only adding a limited number from each user to the heap.",
+        "code": "class Twitter {\n    private var tweets: [Int: [(Int, Int)]] = [:]  // userId -> [(time, tweetId)]\n    private var follows: [Int: Set<Int>] = [:]      // userId -> Set<followeeId>\n    private var timestamp = 0\n    \n    init() {}\n    \n    func postTweet(_ userId: Int, _ tweetId: Int) {\n        tweets[userId, default: []].append((timestamp, tweetId))\n        timestamp += 1\n    }\n    \n    func getNewsFeed(_ userId: Int) -> [Int] {\n        var allTweets: [(Int, Int)] = []\n        \n        // Get own tweets\n        if let userTweets = tweets[userId] {\n            allTweets.append(contentsOf: userTweets.suffix(10))\n        }\n        \n        // Get followees' tweets\n        for followeeId in follows[userId, default: []] {\n            if let followeeTweets = tweets[followeeId] {\n                allTweets.append(contentsOf: followeeTweets.suffix(10))\n            }\n        }\n        \n        // Sort by timestamp descending and take top 10\n        allTweets.sort { $0.0 > $1.0 }\n        return Array(allTweets.prefix(10).map { $0.1 })\n    }\n    \n    func follow(_ followerId: Int, _ followeeId: Int) {\n        if followerId != followeeId {\n            follows[followerId, default: []].insert(followeeId)\n        }\n    }\n    \n    func unfollow(_ followerId: Int, _ followeeId: Int) {\n        follows[followerId, default: []].remove(followeeId)\n    }\n}",
+        "complexity": {
+          "time": "O(n log n) for getNewsFeed, O(1) for others",
+          "space": "O(users \u00d7 tweets + users \u00d7 follows)",
+          "timeExplanation": "getNewsFeed collects up to 10\u00d7(followees+1) tweets and sorts them",
+          "spaceExplanation": "Store all tweets and follow relationships"
+        },
+        "testCases": [
+          {
+            "input": "postTweet(1,5), getNewsFeed(1), follow(1,2), postTweet(2,6), getNewsFeed(1), unfollow(1,2), getNewsFeed(1)",
+            "expectedOutput": "[5], [6,5], [5]",
+            "explanation": "User 1 posts tweet 5. Feed shows [5]. User 1 follows 2. User 2 posts 6. Feed shows [6,5]. Unfollow, feed shows [5]."
+          }
+        ]
+      },
+      {
+        "name": "Optimized with Min-Heap (k-way merge)",
+        "intuition": "For large followee lists, use a proper k-way merge with a heap. Start with the most recent tweet from each user, pop min, add next tweet from that user.",
+        "approach": "1. Use a max-heap with entries (timestamp, tweetId, userId, tweetIndex)\n2. Add most recent tweet from user and each followee to heap\n3. Pop 10 times, each time adding the next tweet from that user\n4. This efficiently merges k sorted lists",
+        "explanation": "This is the classic k-way merge pattern. We initialize the heap with one tweet from each source (user + followees). After popping the max, we push the next tweet from that same source. This ensures we process tweets in timestamp order without loading all tweets into memory.",
+        "code": "class Twitter {\n    private var tweets: [Int: [(Int, Int)]] = [:]\n    private var follows: [Int: Set<Int>] = [:]\n    private var timestamp = 0\n    \n    init() {}\n    \n    func postTweet(_ userId: Int, _ tweetId: Int) {\n        tweets[userId, default: []].append((timestamp, tweetId))\n        timestamp += 1\n    }\n    \n    func getNewsFeed(_ userId: Int) -> [Int] {\n        // Collect users to check (self + followees)\n        var users = follows[userId, default: []]\n        users.insert(userId)\n        \n        // Build heap: (negTime, tweetId, userId, index)\n        // Using negative time for max-heap behavior with min-heap\n        var heap: [(Int, Int, Int, Int)] = []\n        \n        for uid in users {\n            if let userTweets = tweets[uid], !userTweets.isEmpty {\n                let idx = userTweets.count - 1\n                let (time, tid) = userTweets[idx]\n                heap.append((-time, tid, uid, idx))\n            }\n        }\n        \n        // Heapify\n        heap.sort { $0.0 < $1.0 }\n        \n        var result: [Int] = []\n        while !heap.isEmpty && result.count < 10 {\n            let (_, tweetId, uid, idx) = heap.removeFirst()\n            result.append(tweetId)\n            \n            if idx > 0, let userTweets = tweets[uid] {\n                let newIdx = idx - 1\n                let (time, tid) = userTweets[newIdx]\n                heap.append((-time, tid, uid, newIdx))\n                heap.sort { $0.0 < $1.0 }\n            }\n        }\n        \n        return result\n    }\n    \n    func follow(_ followerId: Int, _ followeeId: Int) {\n        if followerId != followeeId {\n            follows[followerId, default: []].insert(followeeId)\n        }\n    }\n    \n    func unfollow(_ followerId: Int, _ followeeId: Int) {\n        follows[followerId, default: []].remove(followeeId)\n    }\n}",
+        "complexity": {
+          "time": "O(k + 10 log k) for getNewsFeed where k = followees",
+          "space": "O(k) for heap",
+          "timeExplanation": "Initialize heap with k users, then 10 heap operations",
+          "spaceExplanation": "Heap holds at most k entries (one per user)"
+        },
+        "testCases": [
+          {
+            "input": "Multiple users posting and following",
+            "expectedOutput": "Correctly merged feed by timestamp",
+            "explanation": "K-way merge ensures efficient retrieval even with many followees"
+          }
+        ]
+      }
+    ],
+    "relatedProblems": [
+      "design-a-food-rating-system"
+    ]
+  }
+}

@@ -1,0 +1,198 @@
+{
+  "longest-common-prefix": {
+    "summary": "Find the longest common prefix among an array of strings. Compare characters at each position across all strings until a mismatch is found or a string ends.",
+    "approaches": [
+      {
+        "name": "Vertical Scanning",
+        "intuition": "Compare characters column by column (same position across all strings). Stop when we find a mismatch or reach the end of any string.",
+        "approach": "1. Handle empty array edge case\n2. Use first string as reference\n3. For each character position i in first string:\n   a. Check if position i exists in all strings\n   b. Check if all strings have same character at position i\n   c. If mismatch or end, return prefix so far\n4. Return first string if loop completes",
+        "explanation": "We iterate through character positions (columns) rather than strings (rows). At each position, we verify all strings have the same character. This is efficient when the common prefix is short, as we stop early on mismatch.",
+        "code": "func longestCommonPrefix(_ strs: [String]) -> String {\n    guard !strs.isEmpty else { return \"\" }\n    \n    let first = Array(strs[0])\n    \n    for i in 0..<first.count {\n        let char = first[i]\n        for str in strs {\n            let arr = Array(str)\n            if i >= arr.count || arr[i] != char {\n                return String(first[0..<i])\n            }\n        }\n    }\n    \n    return strs[0]\n}",
+        "complexity": {
+          "time": "O(S)",
+          "space": "O(m)",
+          "timeExplanation": "S is the sum of all characters in all strings. Worst case compares all characters.",
+          "spaceExplanation": "Converting first string to array takes O(m) where m is its length"
+        },
+        "testCases": [
+          {
+            "input": "strs = [\"flower\",\"flow\",\"flight\"]",
+            "expectedOutput": "\"fl\"",
+            "explanation": "All start with 'f', then 'l', then differ at position 2 (o vs i)"
+          },
+          {
+            "input": "strs = [\"dog\",\"racecar\",\"car\"]",
+            "expectedOutput": "\"\"",
+            "explanation": "No common prefix - first characters differ (d vs r vs c)"
+          }
+        ]
+      },
+      {
+        "name": "Horizontal Scanning",
+        "intuition": "Start with the first string as the prefix. Iteratively shrink it by comparing with each subsequent string until it matches as a prefix of all strings.",
+        "approach": "1. Start with prefix = first string\n2. For each subsequent string:\n   a. While string doesn't start with prefix\n   b. Remove last character from prefix\n   c. If prefix becomes empty, return \"\"\n3. Return prefix",
+        "explanation": "We assume the entire first string is the common prefix, then trim it down as needed when comparing with each string. If a string doesn't start with our current prefix, we shorten the prefix until it does.",
+        "code": "func longestCommonPrefix(_ strs: [String]) -> String {\n    guard !strs.isEmpty else { return \"\" }\n    \n    var prefix = strs[0]\n    \n    for i in 1..<strs.count {\n        while !strs[i].hasPrefix(prefix) {\n            prefix = String(prefix.dropLast())\n            if prefix.isEmpty { return \"\" }\n        }\n    }\n    \n    return prefix\n}",
+        "complexity": {
+          "time": "O(S)",
+          "space": "O(1)",
+          "timeExplanation": "S is sum of all characters. Worst case: all strings identical, we compare all.",
+          "spaceExplanation": "Only using the prefix variable, no extra data structures"
+        },
+        "testCases": [
+          {
+            "input": "strs = [\"flower\",\"flow\",\"flight\"]",
+            "expectedOutput": "\"fl\"",
+            "explanation": "Start with 'flower'. 'flow' doesn't have prefix 'flower', shrink to 'flowe', 'flow', then matches. 'flight' doesn't have prefix 'flow', shrink to 'flo', 'fl', matches."
+          },
+          {
+            "input": "strs = [\"a\"]",
+            "expectedOutput": "\"a\"",
+            "explanation": "Single string - the entire string is the common prefix"
+          },
+          {
+            "input": "strs = [\"\"]",
+            "expectedOutput": "\"\"",
+            "explanation": "Empty string means no common prefix possible"
+          }
+        ]
+      }
+    ],
+    "relatedProblems": [
+      "longest-common-suffix"
+    ]
+  },
+  "roman-to-integer": {
+    "summary": "Convert a Roman numeral string to an integer. The key insight is that when a smaller value appears before a larger value, we subtract it; otherwise, we add it.",
+    "approaches": [
+      {
+        "name": "Right to Left Scan",
+        "intuition": "Process from right to left, adding values. If current value is less than the previous value we added, subtract instead (handles IV, IX, etc.).",
+        "approach": "1. Create a map of Roman symbols to values\n2. Start from the rightmost character\n3. Track the previous value seen\n4. If current < previous, subtract; else add\n5. Update previous and continue left",
+        "explanation": "Roman numerals are mostly additive (VI = 5+1 = 6), but use subtraction for cases like IV (4) and IX (9). By scanning right to left, whenever we see a smaller value before a larger one, we know to subtract. This elegantly handles all subtraction cases.",
+        "code": "func romanToInt(_ s: String) -> Int {\n    let values: [Character: Int] = [\n        \"I\": 1, \"V\": 5, \"X\": 10, \"L\": 50,\n        \"C\": 100, \"D\": 500, \"M\": 1000\n    ]\n    \n    var result = 0\n    var prev = 0\n    \n    for char in s.reversed() {\n        let curr = values[char, default: 0]\n        if curr < prev {\n            result -= curr\n        } else {\n            result += curr\n        }\n        prev = curr\n    }\n    \n    return result\n}",
+        "complexity": {
+          "time": "O(n)",
+          "space": "O(1)",
+          "timeExplanation": "Single pass through the string of length n",
+          "spaceExplanation": "Fixed-size map and a few variables"
+        },
+        "testCases": [
+          {
+            "input": "s = \"III\"",
+            "expectedOutput": "3",
+            "explanation": "III = 1 + 1 + 1 = 3"
+          },
+          {
+            "input": "s = \"LVIII\"",
+            "expectedOutput": "58",
+            "explanation": "L = 50, V = 5, III = 3. Total = 58"
+          },
+          {
+            "input": "s = \"MCMXCIV\"",
+            "expectedOutput": "1994",
+            "explanation": "M=1000, CM=900, XC=90, IV=4. Total = 1994"
+          }
+        ]
+      },
+      {
+        "name": "Left to Right with Lookahead",
+        "intuition": "Process left to right. Look ahead to the next character - if current is less than next, subtract current; otherwise add it.",
+        "approach": "1. Create value map\n2. Iterate through string with index\n3. If current value < next value, subtract current\n4. Otherwise add current\n5. Return total",
+        "explanation": "This approach is more intuitive as it processes the string in reading order. We peek at the next character to decide whether to add or subtract. When we see 'I' followed by 'V', we know it's 4 (subtract 1), not 6 (add 1).",
+        "code": "func romanToInt(_ s: String) -> Int {\n    let values: [Character: Int] = [\n        \"I\": 1, \"V\": 5, \"X\": 10, \"L\": 50,\n        \"C\": 100, \"D\": 500, \"M\": 1000\n    ]\n    \n    let chars = Array(s)\n    var result = 0\n    \n    for i in 0..<chars.count {\n        let curr = values[chars[i], default: 0]\n        let next = i + 1 < chars.count ? values[chars[i + 1], default: 0] : 0\n        \n        if curr < next {\n            result -= curr\n        } else {\n            result += curr\n        }\n    }\n    \n    return result\n}",
+        "complexity": {
+          "time": "O(n)",
+          "space": "O(n)",
+          "timeExplanation": "Single pass through the string",
+          "spaceExplanation": "Converting string to array takes O(n) space"
+        },
+        "testCases": [
+          {
+            "input": "s = \"IV\"",
+            "expectedOutput": "4",
+            "explanation": "I(1) < V(5), so subtract 1, then add 5. Result: -1 + 5 = 4"
+          },
+          {
+            "input": "s = \"IX\"",
+            "expectedOutput": "9",
+            "explanation": "I(1) < X(10), so -1 + 10 = 9"
+          },
+          {
+            "input": "s = \"XLII\"",
+            "expectedOutput": "42",
+            "explanation": "X < L, so -10. L > I, so +50. I < I? No, +1. I, +1. Total: -10+50+1+1 = 42"
+          }
+        ]
+      }
+    ],
+    "relatedProblems": [
+      "integer-to-roman"
+    ]
+  },
+  "longest-repeating-character-replacement": {
+    "summary": "Find the length of the longest substring where you can replace at most k characters to make all characters the same. Use sliding window: expand right, track most frequent character, shrink left when replacements needed exceed k.",
+    "approaches": [
+      {
+        "name": "Sliding Window with Frequency Count",
+        "intuition": "Maintain a window where (window size - count of most frequent char) <= k. This means we can replace the non-majority characters to make them all the same. Expand right, shrink left when invalid.",
+        "approach": "1. Use a frequency map for characters in current window\n2. Track the max frequency of any character in current window\n3. Expand window by moving right pointer\n4. If (window size - maxFreq) > k, shrink from left\n5. Update result with current window size\n6. Return maximum window size found",
+        "explanation": "The key insight is that for any window, the minimum replacements needed equals (window length - frequency of most common character). If this exceeds k, the window is invalid. We don't need to decrease maxFreq when shrinking because we only care about finding a larger valid window - if maxFreq was achieved before, we need at least that many of one character to beat our current best.",
+        "code": "func characterReplacement(_ s: String, _ k: Int) -> Int {\n    let chars = Array(s)\n    var freq: [Character: Int] = [:]\n    var maxFreq = 0\n    var left = 0\n    var result = 0\n    \n    for right in 0..<chars.count {\n        // Add right character to window\n        freq[chars[right], default: 0] += 1\n        maxFreq = max(maxFreq, freq[chars[right]]!)\n        \n        // Window size - maxFreq = chars we need to replace\n        // If > k, shrink window from left\n        while (right - left + 1) - maxFreq > k {\n            freq[chars[left]]! -= 1\n            left += 1\n        }\n        \n        result = max(result, right - left + 1)\n    }\n    \n    return result\n}",
+        "complexity": {
+          "time": "O(n)",
+          "space": "O(1)",
+          "timeExplanation": "Each character is added and removed from window at most once",
+          "spaceExplanation": "Frequency map has at most 26 entries (uppercase letters)"
+        },
+        "testCases": [
+          {
+            "input": "s = \"ABAB\", k = 2",
+            "expectedOutput": "4",
+            "explanation": "Replace both A's with B's (or vice versa) to get \"BBBB\" or \"AAAA\". Length = 4."
+          },
+          {
+            "input": "s = \"AABABBA\", k = 1",
+            "expectedOutput": "4",
+            "explanation": "Replace the B at index 3 to get \"AAAAABA\". Longest same-char substring is \"AAAA\" with length 4."
+          }
+        ]
+      },
+      {
+        "name": "Sliding Window (Optimized - No Shrink Loop)",
+        "intuition": "We can skip the while loop by only ever growing or shifting the window, never shrinking it. Since we want the maximum window, once we find a valid window of size w, we only care about windows of size > w.",
+        "approach": "1. Same frequency tracking and maxFreq\n2. When window becomes invalid, shift both left and right (window size stays same)\n3. Only update result when window is valid\n4. Return final window size",
+        "explanation": "This optimization works because we're looking for the maximum window. Once we achieve a window of size w, there's no point checking smaller windows. When invalid, we slide the entire window right (maintaining size) rather than shrinking. The window only grows when we find a better maxFreq.",
+        "code": "func characterReplacement(_ s: String, _ k: Int) -> Int {\n    let chars = Array(s)\n    var freq: [Character: Int] = [:]\n    var maxFreq = 0\n    var left = 0\n    \n    for right in 0..<chars.count {\n        freq[chars[right], default: 0] += 1\n        maxFreq = max(maxFreq, freq[chars[right]]!)\n        \n        // If invalid, slide window (don't shrink, just shift)\n        if (right - left + 1) - maxFreq > k {\n            freq[chars[left]]! -= 1\n            left += 1\n        }\n    }\n    \n    // Final window size is our answer\n    return chars.count - left\n}",
+        "complexity": {
+          "time": "O(n)",
+          "space": "O(1)",
+          "timeExplanation": "Single pass, no inner loop - each pointer moves at most n times",
+          "spaceExplanation": "Frequency map bounded by alphabet size (26)"
+        },
+        "testCases": [
+          {
+            "input": "s = \"ABAB\", k = 2",
+            "expectedOutput": "4",
+            "explanation": "Window grows to size 4 and stays valid throughout."
+          },
+          {
+            "input": "s = \"AAAA\", k = 0",
+            "expectedOutput": "4",
+            "explanation": "All same characters, no replacement needed. Window = entire string."
+          },
+          {
+            "input": "s = \"ABCD\", k = 0",
+            "expectedOutput": "1",
+            "explanation": "With k=0, can't replace anything. Best is single character."
+          }
+        ]
+      }
+    ],
+    "relatedProblems": [
+      "longest-substring-without-repeating-characters",
+      "longest-substring-with-at-most-k-distinct-characters",
+      "max-consecutive-ones-iii"
+    ]
+  }
+}

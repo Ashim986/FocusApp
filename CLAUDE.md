@@ -4,7 +4,7 @@
 
 FocusApp is a native macOS study companion app for Data Structures & Algorithms preparation. It helps track a 13-day core plan plus a 2-day priority sprint (25 problems), daily habits, and provides focus tools. The app automatically syncs with your LeetCode account to track solved problems.
 
-Bundled solution write-ups live in `FocusApp/Resources/Solutions.json` (85 problems spanning the core plan and sprint list).
+Bundled solution write-ups live in `FocusApp/Resources/Solutions.json` (103 problems spanning the core plan and sprint list).
 
 ## Project Structure
 
@@ -41,8 +41,10 @@ FocusApp/
 │   │   ├── LeetCodeErrors.swift
 │   │   ├── LeetCodeModels.swift
 │   │   ├── LeetCodeConstants.swift
+│   │   ├── LeetCodeProblemFetcher.swift  # GraphQL fetcher for problem manifest
 │   │   ├── LeetCodeSyncScheduler.swift
 │   │   ├── LeetCodeSlugExtractor.swift
+│   │   ├── ProblemManifestStore.swift    # Manifest-backed topic planning
 │   │   ├── TestCase.swift           # Test case model, ProgrammingLanguage enum, ExecutionResult
 │   │   ├── CodeExecutionService.swift   # Main code execution coordinator
 │   │   ├── ProcessRunner.swift      # Low-level process execution with timeout
@@ -161,12 +163,16 @@ FocusApp/
 │   │   └── AppStrings.swift         # Localized string helpers
 │   ├── Resources/
 │   │   ├── Localizable.xcstrings    # Localization strings catalog
+│   │   ├── problem-manifest.json    # LeetCode problem manifest
 │   │   └── Solutions.json           # Bundled solutions content
 │   └── Shared/
 │       ├── SharedDataStore.swift    # PlanCalendar, AppConstants, legacy FileAppStorage
 │       └── SwiftDataStorage.swift   # SwiftData persistence (AppDataRecord, SwiftDataAppStorage)
 ├── Scripts/
-│   └── swiftlint.sh                 # SwiftLint build phase script
+│   ├── swiftlint.sh                 # SwiftLint build phase script
+│   ├── fetch_problems.swift         # Manifest fetcher (GraphQL)
+│   ├── generate_solution.swift      # Solution template generator
+│   └── solution_generator.swift     # AI/stub solution generator
 ├── DerivedData/                     # Build artifacts (gitignored)
 ├── .swiftlint.yml                   # SwiftLint configuration
 ├── SWIFTLINT.md                     # SwiftLint setup guide

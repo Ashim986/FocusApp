@@ -34,13 +34,14 @@ extension DebugLogView {
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
                 .background(Color.appGray900)
             } else {
-                List {
-                    ForEach(filtered) { entry in
-                        DebugLogRow(entry: entry)
-                            .listRowBackground(Color.clear)
+                ScrollView {
+                    LazyVStack(alignment: .leading, spacing: 10) {
+                        ForEach(filtered) { entry in
+                            DebugLogRow(entry: entry)
+                        }
                     }
+                    .padding(12)
                 }
-                .listStyle(.plain)
                 .background(Color.appGray900)
             }
         }

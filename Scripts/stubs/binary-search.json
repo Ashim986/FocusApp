@@ -1,0 +1,62 @@
+{
+  "koko-eating-bananas": {
+    "summary": "Find minimum eating speed k to finish all banana piles within h hours. Binary search on k: for each k, calculate total hours needed. Find smallest k where hours <= h.",
+    "approaches": [
+      {
+        "name": "Binary Search on Speed",
+        "intuition": "The answer k is in range [1, max(piles)]. Higher k means fewer hours. Binary search to find minimum k where we can finish in time.",
+        "approach": "1. left = 1, right = max(piles)\n2. Binary search:\n   a. Calculate hours needed at mid speed\n   b. If hours <= h, try smaller k (right = mid)\n   c. If hours > h, need faster k (left = mid + 1)\n3. Return left",
+        "explanation": "At speed k, pile of size p takes ceil(p/k) hours. Sum all pile times. If total <= h, k works but maybe a smaller k also works. If total > h, k is too slow. We binary search to find the minimum working k. Using left = mid when feasible ensures we find the minimum.",
+        "code": "func minEatingSpeed(_ piles: [Int], _ h: Int) -> Int {\n    var left = 1\n    var right = piles.max()!\n    \n    while left < right {\n        let mid = left + (right - left) / 2\n        let hours = hoursNeeded(piles, mid)\n        \n        if hours <= h {\n            right = mid  // mid works, try smaller\n        } else {\n            left = mid + 1  // mid too slow\n        }\n    }\n    \n    return left\n}\n\nfunc hoursNeeded(_ piles: [Int], _ k: Int) -> Int {\n    var hours = 0\n    for pile in piles {\n        hours += (pile + k - 1) / k  // Ceiling division\n    }\n    return hours\n}",
+        "complexity": {
+          "time": "O(n log m)",
+          "space": "O(1)",
+          "timeExplanation": "Binary search O(log m) on max pile size, each iteration O(n) to sum hours",
+          "spaceExplanation": "Only using variables"
+        },
+        "testCases": [
+          {
+            "input": "piles = [3,6,7,11], h = 8",
+            "expectedOutput": "4",
+            "explanation": "At k=4: 1+2+2+3=8 hours. At k=3: 1+2+3+4=10 hours (too slow)."
+          },
+          {
+            "input": "piles = [30,11,23,4,20], h = 5",
+            "expectedOutput": "30",
+            "explanation": "With 5 piles and 5 hours, need to eat each pile in 1 hour. Max pile is 30."
+          },
+          {
+            "input": "piles = [30,11,23,4,20], h = 6",
+            "expectedOutput": "23",
+            "explanation": "Can split largest pile across 2 hours. k=23 gives 2+1+1+1+1=6 hours."
+          }
+        ]
+      },
+      {
+        "name": "Binary Search (Explicit Bounds)",
+        "intuition": "Same algorithm but with clearer reasoning about bounds. Minimum possible k is 1 (though may not finish in time). Maximum useful k is max pile (anything higher is wasteful).",
+        "approach": "1. min_k = 1, max_k = max(piles)\n2. Binary search to find leftmost k where canFinish(k, h)\n3. canFinish checks if sum of ceil(pile/k) <= h",
+        "explanation": "This version explicitly defines the feasibility function canFinish. We're looking for the minimum k in the 'feasible' region. The transition from infeasible to feasible happens exactly once as k increases, making binary search applicable.",
+        "code": "func minEatingSpeed(_ piles: [Int], _ h: Int) -> Int {\n    func canFinish(_ k: Int) -> Bool {\n        var totalHours = 0\n        for pile in piles {\n            totalHours += (pile + k - 1) / k\n            if totalHours > h { return false }  // Early exit\n        }\n        return true\n    }\n    \n    var left = 1\n    var right = piles.max()!\n    \n    while left < right {\n        let mid = left + (right - left) / 2\n        if canFinish(mid) {\n            right = mid\n        } else {\n            left = mid + 1\n        }\n    }\n    \n    return left\n}",
+        "complexity": {
+          "time": "O(n log m)",
+          "space": "O(1)",
+          "timeExplanation": "Same complexity with potential early exit optimization",
+          "spaceExplanation": "Constant extra space"
+        },
+        "testCases": [
+          {
+            "input": "piles = [3,6,7,11], h = 8",
+            "expectedOutput": "4",
+            "explanation": "canFinish(4)=true, canFinish(3)=false, so answer is 4"
+          }
+        ]
+      }
+    ],
+    "relatedProblems": [
+      "minimize-max-distance-to-gas-station",
+      "capacity-to-ship-packages-within-d-days",
+      "split-array-largest-sum"
+    ]
+  }
+}

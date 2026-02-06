@@ -1,0 +1,3810 @@
+{
+  "lastUpdated" : "2026-02-06",
+  "problemIndex" : {
+    "01-matrix" : {
+      "difficulty" : "medium",
+      "number" : 542,
+      "topic" : "dynamic-programming"
+    },
+    "1-bit-and-2-bit-characters" : {
+      "difficulty" : "easy",
+      "number" : 717,
+      "topic" : "arrays-hashing"
+    },
+    "132-pattern" : {
+      "difficulty" : "medium",
+      "number" : 456,
+      "topic" : "binary-search"
+    },
+    "2-keys-keyboard" : {
+      "difficulty" : "medium",
+      "number" : 650,
+      "topic" : "math-geometry"
+    },
+    "3sum" : {
+      "difficulty" : "medium",
+      "number" : 15,
+      "topic" : "two-pointers"
+    },
+    "3sum-closest" : {
+      "difficulty" : "medium",
+      "number" : 16,
+      "topic" : "two-pointers"
+    },
+    "3sum-with-multiplicity" : {
+      "difficulty" : "medium",
+      "number" : 923,
+      "topic" : "two-pointers"
+    },
+    "4sum" : {
+      "difficulty" : "medium",
+      "number" : 18,
+      "topic" : "two-pointers"
+    },
+    "4sum-ii" : {
+      "difficulty" : "medium",
+      "number" : 454,
+      "topic" : "arrays-hashing"
+    },
+    "accounts-merge" : {
+      "difficulty" : "medium",
+      "number" : 721,
+      "topic" : "graphs"
+    },
+    "add-binary" : {
+      "difficulty" : "easy",
+      "number" : 67,
+      "topic" : "math-geometry"
+    },
+    "add-digits" : {
+      "difficulty" : "easy",
+      "number" : 258,
+      "topic" : "math-geometry"
+    },
+    "add-one-row-to-tree" : {
+      "difficulty" : "medium",
+      "number" : 623,
+      "topic" : "trees"
+    },
+    "add-strings" : {
+      "difficulty" : "easy",
+      "number" : 415,
+      "topic" : "math-geometry"
+    },
+    "add-to-array-form-of-integer" : {
+      "difficulty" : "easy",
+      "number" : 989,
+      "topic" : "math-geometry"
+    },
+    "add-two-numbers" : {
+      "difficulty" : "medium",
+      "number" : 2,
+      "topic" : "linked-list"
+    },
+    "add-two-numbers-ii" : {
+      "difficulty" : "medium",
+      "number" : 445,
+      "topic" : "linked-list"
+    },
+    "additive-number" : {
+      "difficulty" : "medium",
+      "number" : 306,
+      "topic" : "backtracking"
+    },
+    "advantage-shuffle" : {
+      "difficulty" : "medium",
+      "number" : 870,
+      "topic" : "two-pointers"
+    },
+    "alien-dictionary" : {
+      "topic" : "misc"
+    },
+    "all-nodes-distance-k-in-binary-tree" : {
+      "difficulty" : "medium",
+      "number" : 863,
+      "topic" : "trees"
+    },
+    "all-paths-from-source-to-target" : {
+      "difficulty" : "medium",
+      "number" : 797,
+      "topic" : "backtracking"
+    },
+    "all-possible-full-binary-trees" : {
+      "difficulty" : "medium",
+      "number" : 894,
+      "topic" : "dynamic-programming"
+    },
+    "ambiguous-coordinates" : {
+      "difficulty" : "medium",
+      "number" : 816,
+      "topic" : "backtracking"
+    },
+    "arithmetic-slices" : {
+      "difficulty" : "medium",
+      "number" : 413,
+      "topic" : "dynamic-programming"
+    },
+    "arranging-coins" : {
+      "difficulty" : "easy",
+      "number" : 441,
+      "topic" : "math-geometry"
+    },
+    "array-nesting" : {
+      "difficulty" : "medium",
+      "number" : 565,
+      "topic" : "arrays-hashing"
+    },
+    "array-of-doubled-pairs" : {
+      "difficulty" : "medium",
+      "number" : 954,
+      "topic" : "greedy"
+    },
+    "array-partition" : {
+      "difficulty" : "easy",
+      "number" : 561,
+      "topic" : "greedy"
+    },
+    "assign-cookies" : {
+      "difficulty" : "easy",
+      "number" : 455,
+      "topic" : "two-pointers"
+    },
+    "asteroid-collision" : {
+      "difficulty" : "medium",
+      "number" : 735,
+      "topic" : "stack"
+    },
+    "available-captures-for-rook" : {
+      "difficulty" : "easy",
+      "number" : 999,
+      "topic" : "arrays-hashing"
+    },
+    "average-of-levels-in-binary-tree" : {
+      "difficulty" : "easy",
+      "number" : 637,
+      "topic" : "trees"
+    },
+    "backspace-string-compare" : {
+      "difficulty" : "easy",
+      "number" : 844,
+      "topic" : "two-pointers"
+    },
+    "bag-of-tokens" : {
+      "difficulty" : "medium",
+      "number" : 948,
+      "topic" : "two-pointers"
+    },
+    "balanced-binary-tree" : {
+      "difficulty" : "easy",
+      "number" : 110,
+      "topic" : "trees"
+    },
+    "base-7" : {
+      "difficulty" : "easy",
+      "number" : 504,
+      "topic" : "math-geometry"
+    },
+    "baseball-game" : {
+      "difficulty" : "easy",
+      "number" : 682,
+      "topic" : "stack"
+    },
+    "basic-calculator" : {
+      "topic" : "stack"
+    },
+    "basic-calculator-ii" : {
+      "difficulty" : "medium",
+      "number" : 227,
+      "topic" : "stack"
+    },
+    "battleships-in-a-board" : {
+      "difficulty" : "medium",
+      "number" : 419,
+      "topic" : "arrays-hashing"
+    },
+    "beautiful-arrangement" : {
+      "difficulty" : "medium",
+      "number" : 526,
+      "topic" : "dynamic-programming"
+    },
+    "beautiful-arrangement-ii" : {
+      "difficulty" : "medium",
+      "number" : 667,
+      "topic" : "math-geometry"
+    },
+    "beautiful-array" : {
+      "difficulty" : "medium",
+      "number" : 932,
+      "topic" : "math-geometry"
+    },
+    "best-sightseeing-pair" : {
+      "difficulty" : "medium",
+      "number" : 1014,
+      "topic" : "dynamic-programming"
+    },
+    "best-time-to-buy-and-sell-stock" : {
+      "difficulty" : "easy",
+      "number" : 121,
+      "topic" : "dynamic-programming"
+    },
+    "best-time-to-buy-and-sell-stock-ii" : {
+      "difficulty" : "medium",
+      "number" : 122,
+      "topic" : "dynamic-programming"
+    },
+    "best-time-to-buy-and-sell-stock-with-cooldown" : {
+      "difficulty" : "medium",
+      "number" : 309,
+      "topic" : "dynamic-programming"
+    },
+    "best-time-to-buy-and-sell-stock-with-transaction-fee" : {
+      "difficulty" : "medium",
+      "number" : 714,
+      "topic" : "dynamic-programming"
+    },
+    "big-countries" : {
+      "difficulty" : "easy",
+      "number" : 595,
+      "topic" : "misc"
+    },
+    "biggest-single-number" : {
+      "difficulty" : "easy",
+      "number" : 619,
+      "topic" : "misc"
+    },
+    "binary-gap" : {
+      "difficulty" : "easy",
+      "number" : 868,
+      "topic" : "bit-manipulation"
+    },
+    "binary-number-with-alternating-bits" : {
+      "difficulty" : "easy",
+      "number" : 693,
+      "topic" : "bit-manipulation"
+    },
+    "binary-prefix-divisible-by-5" : {
+      "difficulty" : "easy",
+      "number" : 1018,
+      "topic" : "bit-manipulation"
+    },
+    "binary-search" : {
+      "difficulty" : "easy",
+      "number" : 704,
+      "topic" : "binary-search"
+    },
+    "binary-search-tree-iterator" : {
+      "difficulty" : "medium",
+      "number" : 173,
+      "topic" : "stack"
+    },
+    "binary-string-with-substrings-representing-1-to-n" : {
+      "difficulty" : "medium",
+      "number" : 1016,
+      "topic" : "bit-manipulation"
+    },
+    "binary-subarrays-with-sum" : {
+      "difficulty" : "medium",
+      "number" : 930,
+      "topic" : "sliding-window"
+    },
+    "binary-tree-inorder-traversal" : {
+      "difficulty" : "easy",
+      "number" : 94,
+      "topic" : "stack"
+    },
+    "binary-tree-level-order-traversal" : {
+      "difficulty" : "medium",
+      "number" : 102,
+      "topic" : "trees"
+    },
+    "binary-tree-level-order-traversal-ii" : {
+      "difficulty" : "medium",
+      "number" : 107,
+      "topic" : "trees"
+    },
+    "binary-tree-maximum-path-sum" : {
+      "topic" : "misc"
+    },
+    "binary-tree-paths" : {
+      "difficulty" : "easy",
+      "number" : 257,
+      "topic" : "backtracking"
+    },
+    "binary-tree-postorder-traversal" : {
+      "difficulty" : "easy",
+      "number" : 145,
+      "topic" : "stack"
+    },
+    "binary-tree-preorder-traversal" : {
+      "difficulty" : "easy",
+      "number" : 144,
+      "topic" : "stack"
+    },
+    "binary-tree-pruning" : {
+      "difficulty" : "medium",
+      "number" : 814,
+      "topic" : "trees"
+    },
+    "binary-tree-right-side-view" : {
+      "difficulty" : "medium",
+      "number" : 199,
+      "topic" : "trees"
+    },
+    "binary-tree-tilt" : {
+      "difficulty" : "easy",
+      "number" : 563,
+      "topic" : "trees"
+    },
+    "binary-tree-zigzag-level-order-traversal" : {
+      "difficulty" : "medium",
+      "number" : 103,
+      "topic" : "trees"
+    },
+    "binary-trees-with-factors" : {
+      "difficulty" : "medium",
+      "number" : 823,
+      "topic" : "dynamic-programming"
+    },
+    "binary-watch" : {
+      "difficulty" : "easy",
+      "number" : 401,
+      "topic" : "backtracking"
+    },
+    "bitwise-and-of-numbers-range" : {
+      "difficulty" : "medium",
+      "number" : 201,
+      "topic" : "bit-manipulation"
+    },
+    "bitwise-ors-of-subarrays" : {
+      "difficulty" : "medium",
+      "number" : 898,
+      "topic" : "dynamic-programming"
+    },
+    "boats-to-save-people" : {
+      "difficulty" : "medium",
+      "number" : 881,
+      "topic" : "two-pointers"
+    },
+    "brick-wall" : {
+      "difficulty" : "medium",
+      "number" : 554,
+      "topic" : "arrays-hashing"
+    },
+    "broken-calculator" : {
+      "difficulty" : "medium",
+      "number" : 991,
+      "topic" : "math-geometry"
+    },
+    "buddy-strings" : {
+      "difficulty" : "easy",
+      "number" : 859,
+      "topic" : "arrays-hashing"
+    },
+    "bulb-switcher" : {
+      "difficulty" : "medium",
+      "number" : 319,
+      "topic" : "math-geometry"
+    },
+    "bulb-switcher-ii" : {
+      "difficulty" : "medium",
+      "number" : 672,
+      "topic" : "math-geometry"
+    },
+    "bulls-and-cows" : {
+      "difficulty" : "medium",
+      "number" : 299,
+      "topic" : "arrays-hashing"
+    },
+    "bus-routes" : {
+      "topic" : "misc"
+    },
+    "camelcase-matching" : {
+      "difficulty" : "medium",
+      "number" : 1023,
+      "topic" : "two-pointers"
+    },
+    "can-i-win" : {
+      "difficulty" : "medium",
+      "number" : 464,
+      "topic" : "math-geometry"
+    },
+    "can-place-flowers" : {
+      "difficulty" : "easy",
+      "number" : 605,
+      "topic" : "greedy"
+    },
+    "capacity-to-ship-packages-within-d-days" : {
+      "difficulty" : "medium",
+      "number" : 1011,
+      "topic" : "binary-search"
+    },
+    "car-fleet" : {
+      "difficulty" : "medium",
+      "number" : 853,
+      "topic" : "stack"
+    },
+    "card-flipping-game" : {
+      "difficulty" : "medium",
+      "number" : 822,
+      "topic" : "arrays-hashing"
+    },
+    "champagne-tower" : {
+      "difficulty" : "medium",
+      "number" : 799,
+      "topic" : "dynamic-programming"
+    },
+    "cheapest-flights-within-k-stops" : {
+      "difficulty" : "medium",
+      "number" : 787,
+      "topic" : "dynamic-programming"
+    },
+    "check-completeness-of-a-binary-tree" : {
+      "difficulty" : "medium",
+      "number" : 958,
+      "topic" : "trees"
+    },
+    "check-if-word-is-valid-after-substitutions" : {
+      "difficulty" : "medium",
+      "number" : 1003,
+      "topic" : "stack"
+    },
+    "circular-array-loop" : {
+      "difficulty" : "medium",
+      "number" : 457,
+      "topic" : "two-pointers"
+    },
+    "classes-with-at-least-5-students" : {
+      "difficulty" : "easy",
+      "number" : 596,
+      "topic" : "misc"
+    },
+    "climbing-stairs" : {
+      "difficulty" : "easy",
+      "number" : 70,
+      "topic" : "dynamic-programming"
+    },
+    "clone-graph" : {
+      "difficulty" : "medium",
+      "number" : 133,
+      "topic" : "graphs"
+    },
+    "clumsy-factorial" : {
+      "difficulty" : "medium",
+      "number" : 1006,
+      "topic" : "math-geometry"
+    },
+    "coin-change" : {
+      "difficulty" : "medium",
+      "number" : 322,
+      "topic" : "dynamic-programming"
+    },
+    "coin-change-2" : {
+      "topic" : "dynamic-programming"
+    },
+    "coin-change-ii" : {
+      "difficulty" : "medium",
+      "number" : 518,
+      "topic" : "dynamic-programming"
+    },
+    "combination-sum" : {
+      "difficulty" : "medium",
+      "number" : 39,
+      "topic" : "backtracking"
+    },
+    "combination-sum-ii" : {
+      "difficulty" : "medium",
+      "number" : 40,
+      "topic" : "backtracking"
+    },
+    "combination-sum-iii" : {
+      "difficulty" : "medium",
+      "number" : 216,
+      "topic" : "backtracking"
+    },
+    "combination-sum-iv" : {
+      "difficulty" : "medium",
+      "number" : 377,
+      "topic" : "dynamic-programming"
+    },
+    "combinations" : {
+      "difficulty" : "medium",
+      "number" : 77,
+      "topic" : "backtracking"
+    },
+    "combine-two-tables" : {
+      "difficulty" : "easy",
+      "number" : 175,
+      "topic" : "misc"
+    },
+    "compare-version-numbers" : {
+      "difficulty" : "medium",
+      "number" : 165,
+      "topic" : "two-pointers"
+    },
+    "complement-of-base-10-integer" : {
+      "difficulty" : "easy",
+      "number" : 1009,
+      "topic" : "bit-manipulation"
+    },
+    "complete-binary-tree-inserter" : {
+      "difficulty" : "medium",
+      "number" : 919,
+      "topic" : "trees"
+    },
+    "complex-number-multiplication" : {
+      "difficulty" : "medium",
+      "number" : 537,
+      "topic" : "math-geometry"
+    },
+    "consecutive-numbers" : {
+      "difficulty" : "medium",
+      "number" : 180,
+      "topic" : "misc"
+    },
+    "construct-binary-search-tree-from-preorder-traversal" : {
+      "difficulty" : "medium",
+      "number" : 1008,
+      "topic" : "stack"
+    },
+    "construct-binary-tree-from-inorder-and-postorder-traversal" : {
+      "difficulty" : "medium",
+      "number" : 106,
+      "topic" : "trees"
+    },
+    "construct-binary-tree-from-preorder-and-inorder-traversal" : {
+      "difficulty" : "medium",
+      "number" : 105,
+      "topic" : "trees"
+    },
+    "construct-binary-tree-from-preorder-and-postorder-traversal" : {
+      "difficulty" : "medium",
+      "number" : 889,
+      "topic" : "trees"
+    },
+    "construct-quad-tree" : {
+      "difficulty" : "medium",
+      "number" : 427,
+      "topic" : "trees"
+    },
+    "construct-string-from-binary-tree" : {
+      "difficulty" : "medium",
+      "number" : 606,
+      "topic" : "trees"
+    },
+    "construct-the-rectangle" : {
+      "difficulty" : "easy",
+      "number" : 492,
+      "topic" : "math-geometry"
+    },
+    "container-with-most-water" : {
+      "difficulty" : "medium",
+      "number" : 11,
+      "topic" : "two-pointers"
+    },
+    "contains-duplicate" : {
+      "difficulty" : "easy",
+      "number" : 217,
+      "topic" : "arrays-hashing"
+    },
+    "contains-duplicate-ii" : {
+      "difficulty" : "easy",
+      "number" : 219,
+      "topic" : "sliding-window"
+    },
+    "contiguous-array" : {
+      "difficulty" : "medium",
+      "number" : 525,
+      "topic" : "arrays-hashing"
+    },
+    "continuous-subarray-sum" : {
+      "difficulty" : "medium",
+      "number" : 523,
+      "topic" : "math-geometry"
+    },
+    "convert-a-number-to-hexadecimal" : {
+      "difficulty" : "easy",
+      "number" : 405,
+      "topic" : "math-geometry"
+    },
+    "convert-bst-to-greater-tree" : {
+      "difficulty" : "medium",
+      "number" : 538,
+      "topic" : "trees"
+    },
+    "convert-sorted-array-to-binary-search-tree" : {
+      "difficulty" : "easy",
+      "number" : 108,
+      "topic" : "trees"
+    },
+    "convert-sorted-list-to-binary-search-tree" : {
+      "difficulty" : "medium",
+      "number" : 109,
+      "topic" : "linked-list"
+    },
+    "convert-to-base-2" : {
+      "difficulty" : "medium",
+      "number" : 1017,
+      "topic" : "math-geometry"
+    },
+    "copy-list-with-random-pointer" : {
+      "difficulty" : "medium",
+      "number" : 138,
+      "topic" : "linked-list"
+    },
+    "count-and-say" : {
+      "difficulty" : "medium",
+      "number" : 38,
+      "topic" : "misc"
+    },
+    "count-binary-substrings" : {
+      "difficulty" : "easy",
+      "number" : 696,
+      "topic" : "two-pointers"
+    },
+    "count-complete-tree-nodes" : {
+      "difficulty" : "easy",
+      "number" : 222,
+      "topic" : "binary-search"
+    },
+    "count-good-nodes-in-binary-tree" : {
+      "difficulty" : "medium",
+      "number" : 1448,
+      "topic" : "trees"
+    },
+    "count-numbers-with-unique-digits" : {
+      "difficulty" : "medium",
+      "number" : 357,
+      "topic" : "math-geometry"
+    },
+    "count-primes" : {
+      "difficulty" : "medium",
+      "number" : 204,
+      "topic" : "math-geometry"
+    },
+    "counting-bits" : {
+      "difficulty" : "easy",
+      "number" : 338,
+      "topic" : "dynamic-programming"
+    },
+    "course-schedule" : {
+      "difficulty" : "medium",
+      "number" : 207,
+      "topic" : "graphs"
+    },
+    "course-schedule-ii" : {
+      "difficulty" : "medium",
+      "number" : 210,
+      "topic" : "graphs"
+    },
+    "cousins-in-binary-tree" : {
+      "difficulty" : "easy",
+      "number" : 993,
+      "topic" : "trees"
+    },
+    "custom-sort-string" : {
+      "difficulty" : "medium",
+      "number" : 791,
+      "topic" : "arrays-hashing"
+    },
+    "customer-placing-the-largest-number-of-orders" : {
+      "difficulty" : "easy",
+      "number" : 586,
+      "topic" : "misc"
+    },
+    "customers-who-never-order" : {
+      "difficulty" : "easy",
+      "number" : 183,
+      "topic" : "misc"
+    },
+    "daily-temperatures" : {
+      "difficulty" : "medium",
+      "number" : 739,
+      "topic" : "stack"
+    },
+    "decode-string" : {
+      "difficulty" : "medium",
+      "number" : 394,
+      "topic" : "stack"
+    },
+    "decode-ways" : {
+      "difficulty" : "medium",
+      "number" : 91,
+      "topic" : "dynamic-programming"
+    },
+    "decoded-string-at-index" : {
+      "difficulty" : "medium",
+      "number" : 880,
+      "topic" : "stack"
+    },
+    "degree-of-an-array" : {
+      "difficulty" : "easy",
+      "number" : 697,
+      "topic" : "arrays-hashing"
+    },
+    "delete-and-earn" : {
+      "difficulty" : "medium",
+      "number" : 740,
+      "topic" : "dynamic-programming"
+    },
+    "delete-columns-to-make-sorted" : {
+      "difficulty" : "easy",
+      "number" : 944,
+      "topic" : "arrays-hashing"
+    },
+    "delete-columns-to-make-sorted-ii" : {
+      "difficulty" : "medium",
+      "number" : 955,
+      "topic" : "greedy"
+    },
+    "delete-duplicate-emails" : {
+      "difficulty" : "easy",
+      "number" : 196,
+      "topic" : "misc"
+    },
+    "delete-node-in-a-bst" : {
+      "difficulty" : "medium",
+      "number" : 450,
+      "topic" : "trees"
+    },
+    "delete-node-in-a-linked-list" : {
+      "difficulty" : "medium",
+      "number" : 237,
+      "topic" : "linked-list"
+    },
+    "delete-operation-for-two-strings" : {
+      "difficulty" : "medium",
+      "number" : 583,
+      "topic" : "dynamic-programming"
+    },
+    "department-highest-salary" : {
+      "difficulty" : "medium",
+      "number" : 184,
+      "topic" : "misc"
+    },
+    "design-add-and-search-words-data-structure" : {
+      "difficulty" : "medium",
+      "number" : 211,
+      "topic" : "tries"
+    },
+    "design-circular-deque" : {
+      "difficulty" : "medium",
+      "number" : 641,
+      "topic" : "linked-list"
+    },
+    "design-circular-queue" : {
+      "difficulty" : "medium",
+      "number" : 622,
+      "topic" : "linked-list"
+    },
+    "design-hashmap" : {
+      "difficulty" : "easy",
+      "number" : 706,
+      "topic" : "linked-list"
+    },
+    "design-hashset" : {
+      "difficulty" : "easy",
+      "number" : 705,
+      "topic" : "linked-list"
+    },
+    "design-linked-list" : {
+      "difficulty" : "medium",
+      "number" : 707,
+      "topic" : "linked-list"
+    },
+    "design-twitter" : {
+      "difficulty" : "medium",
+      "number" : 355,
+      "topic" : "heap-priority-queue"
+    },
+    "detect-capital" : {
+      "difficulty" : "easy",
+      "number" : 520,
+      "topic" : "misc"
+    },
+    "detect-squares" : {
+      "difficulty" : "medium",
+      "number" : 2013,
+      "topic" : "arrays-hashing"
+    },
+    "di-string-match" : {
+      "difficulty" : "easy",
+      "number" : 942,
+      "topic" : "two-pointers"
+    },
+    "diagonal-traverse" : {
+      "difficulty" : "medium",
+      "number" : 498,
+      "topic" : "arrays-hashing"
+    },
+    "diameter-of-binary-tree" : {
+      "difficulty" : "easy",
+      "number" : 543,
+      "topic" : "trees"
+    },
+    "different-ways-to-add-parentheses" : {
+      "difficulty" : "medium",
+      "number" : 241,
+      "topic" : "math-geometry"
+    },
+    "distribute-candies" : {
+      "difficulty" : "easy",
+      "number" : 575,
+      "topic" : "arrays-hashing"
+    },
+    "distribute-coins-in-binary-tree" : {
+      "difficulty" : "medium",
+      "number" : 979,
+      "topic" : "trees"
+    },
+    "divide-two-integers" : {
+      "difficulty" : "medium",
+      "number" : 29,
+      "topic" : "math-geometry"
+    },
+    "divisor-game" : {
+      "difficulty" : "easy",
+      "number" : 1025,
+      "topic" : "math-geometry"
+    },
+    "domino-and-tromino-tiling" : {
+      "difficulty" : "medium",
+      "number" : 790,
+      "topic" : "dynamic-programming"
+    },
+    "dota2-senate" : {
+      "difficulty" : "medium",
+      "number" : 649,
+      "topic" : "greedy"
+    },
+    "duplicate-emails" : {
+      "difficulty" : "easy",
+      "number" : 182,
+      "topic" : "misc"
+    },
+    "edit-distance" : {
+      "difficulty" : "medium",
+      "number" : 72,
+      "topic" : "dynamic-programming"
+    },
+    "elimination-game" : {
+      "difficulty" : "medium",
+      "number" : 390,
+      "topic" : "math-geometry"
+    },
+    "employee-bonus" : {
+      "difficulty" : "easy",
+      "number" : 577,
+      "topic" : "misc"
+    },
+    "employee-importance" : {
+      "difficulty" : "medium",
+      "number" : 690,
+      "topic" : "trees"
+    },
+    "employees-earning-more-than-their-managers" : {
+      "difficulty" : "easy",
+      "number" : 181,
+      "topic" : "misc"
+    },
+    "encode-and-decode-tinyurl" : {
+      "difficulty" : "medium",
+      "number" : 535,
+      "topic" : "arrays-hashing"
+    },
+    "escape-the-ghosts" : {
+      "difficulty" : "medium",
+      "number" : 789,
+      "topic" : "math-geometry"
+    },
+    "evaluate-division" : {
+      "difficulty" : "medium",
+      "number" : 399,
+      "topic" : "graphs"
+    },
+    "evaluate-reverse-polish-notation" : {
+      "difficulty" : "medium",
+      "number" : 150,
+      "topic" : "stack"
+    },
+    "exam-room" : {
+      "difficulty" : "medium",
+      "number" : 855,
+      "topic" : "heap-priority-queue"
+    },
+    "excel-sheet-column-number" : {
+      "difficulty" : "easy",
+      "number" : 171,
+      "topic" : "math-geometry"
+    },
+    "excel-sheet-column-title" : {
+      "difficulty" : "easy",
+      "number" : 168,
+      "topic" : "math-geometry"
+    },
+    "exchange-seats" : {
+      "difficulty" : "medium",
+      "number" : 626,
+      "topic" : "misc"
+    },
+    "exclusive-time-of-functions" : {
+      "difficulty" : "medium",
+      "number" : 636,
+      "topic" : "stack"
+    },
+    "expressive-words" : {
+      "difficulty" : "medium",
+      "number" : 809,
+      "topic" : "two-pointers"
+    },
+    "factorial-trailing-zeroes" : {
+      "difficulty" : "medium",
+      "number" : 172,
+      "topic" : "math-geometry"
+    },
+    "fair-candy-swap" : {
+      "difficulty" : "easy",
+      "number" : 888,
+      "topic" : "binary-search"
+    },
+    "fibonacci-number" : {
+      "difficulty" : "easy",
+      "number" : 509,
+      "topic" : "math-geometry"
+    },
+    "find-all-anagrams-in-a-string" : {
+      "difficulty" : "medium",
+      "number" : 438,
+      "topic" : "sliding-window"
+    },
+    "find-all-duplicates-in-an-array" : {
+      "difficulty" : "medium",
+      "number" : 442,
+      "topic" : "arrays-hashing"
+    },
+    "find-all-numbers-disappeared-in-an-array" : {
+      "difficulty" : "easy",
+      "number" : 448,
+      "topic" : "arrays-hashing"
+    },
+    "find-and-replace-in-string" : {
+      "difficulty" : "medium",
+      "number" : 833,
+      "topic" : "arrays-hashing"
+    },
+    "find-and-replace-pattern" : {
+      "difficulty" : "medium",
+      "number" : 890,
+      "topic" : "arrays-hashing"
+    },
+    "find-bottom-left-tree-value" : {
+      "difficulty" : "medium",
+      "number" : 513,
+      "topic" : "trees"
+    },
+    "find-common-characters" : {
+      "difficulty" : "easy",
+      "number" : 1002,
+      "topic" : "arrays-hashing"
+    },
+    "find-customer-referee" : {
+      "difficulty" : "easy",
+      "number" : 584,
+      "topic" : "misc"
+    },
+    "find-duplicate-file-in-system" : {
+      "difficulty" : "medium",
+      "number" : 609,
+      "topic" : "arrays-hashing"
+    },
+    "find-duplicate-subtrees" : {
+      "difficulty" : "medium",
+      "number" : 652,
+      "topic" : "trees"
+    },
+    "find-eventual-safe-states" : {
+      "difficulty" : "medium",
+      "number" : 802,
+      "topic" : "graphs"
+    },
+    "find-first-and-last-position-of-element-in-sorted-array" : {
+      "difficulty" : "medium",
+      "number" : 34,
+      "topic" : "binary-search"
+    },
+    "find-k-closest-elements" : {
+      "difficulty" : "medium",
+      "number" : 658,
+      "topic" : "two-pointers"
+    },
+    "find-k-pairs-with-smallest-sums" : {
+      "difficulty" : "medium",
+      "number" : 373,
+      "topic" : "heap-priority-queue"
+    },
+    "find-largest-value-in-each-tree-row" : {
+      "difficulty" : "medium",
+      "number" : 515,
+      "topic" : "trees"
+    },
+    "find-median-from-data-stream" : {
+      "topic" : "heap-priority-queue"
+    },
+    "find-minimum-in-rotated-sorted-array" : {
+      "difficulty" : "medium",
+      "number" : 153,
+      "topic" : "binary-search"
+    },
+    "find-minimum-in-rotated-sorted-array-ii" : {
+      "topic" : "misc"
+    },
+    "find-mode-in-binary-search-tree" : {
+      "difficulty" : "easy",
+      "number" : 501,
+      "topic" : "trees"
+    },
+    "find-peak-element" : {
+      "difficulty" : "medium",
+      "number" : 162,
+      "topic" : "binary-search"
+    },
+    "find-pivot-index" : {
+      "difficulty" : "easy",
+      "number" : 724,
+      "topic" : "arrays-hashing"
+    },
+    "find-right-interval" : {
+      "difficulty" : "medium",
+      "number" : 436,
+      "topic" : "binary-search"
+    },
+    "find-smallest-letter-greater-than-target" : {
+      "difficulty" : "easy",
+      "number" : 744,
+      "topic" : "binary-search"
+    },
+    "find-the-difference" : {
+      "difficulty" : "easy",
+      "number" : 389,
+      "topic" : "bit-manipulation"
+    },
+    "find-the-duplicate-number" : {
+      "difficulty" : "medium",
+      "number" : 287,
+      "topic" : "two-pointers"
+    },
+    "find-the-index-of-the-first-occurrence-in-a-string" : {
+      "difficulty" : "easy",
+      "number" : 28,
+      "topic" : "two-pointers"
+    },
+    "find-the-town-judge" : {
+      "difficulty" : "easy",
+      "number" : 997,
+      "topic" : "arrays-hashing"
+    },
+    "first-bad-version" : {
+      "difficulty" : "easy",
+      "number" : 278,
+      "topic" : "binary-search"
+    },
+    "first-missing-positive" : {
+      "topic" : "arrays-hashing"
+    },
+    "first-unique-character-in-a-string" : {
+      "difficulty" : "easy",
+      "number" : 387,
+      "topic" : "arrays-hashing"
+    },
+    "fizz-buzz" : {
+      "difficulty" : "easy",
+      "number" : 412,
+      "topic" : "math-geometry"
+    },
+    "flatten-a-multilevel-doubly-linked-list" : {
+      "difficulty" : "medium",
+      "number" : 430,
+      "topic" : "linked-list"
+    },
+    "flatten-binary-tree-to-linked-list" : {
+      "difficulty" : "medium",
+      "number" : 114,
+      "topic" : "linked-list"
+    },
+    "flatten-nested-list-iterator" : {
+      "difficulty" : "medium",
+      "number" : 341,
+      "topic" : "stack"
+    },
+    "flip-binary-tree-to-match-preorder-traversal" : {
+      "difficulty" : "medium",
+      "number" : 971,
+      "topic" : "trees"
+    },
+    "flip-equivalent-binary-trees" : {
+      "difficulty" : "medium",
+      "number" : 951,
+      "topic" : "trees"
+    },
+    "flip-string-to-monotone-increasing" : {
+      "difficulty" : "medium",
+      "number" : 926,
+      "topic" : "dynamic-programming"
+    },
+    "flipping-an-image" : {
+      "difficulty" : "easy",
+      "number" : 832,
+      "topic" : "two-pointers"
+    },
+    "flood-fill" : {
+      "difficulty" : "easy",
+      "number" : 733,
+      "topic" : "graphs"
+    },
+    "fraction-addition-and-subtraction" : {
+      "difficulty" : "medium",
+      "number" : 592,
+      "topic" : "math-geometry"
+    },
+    "fraction-to-recurring-decimal" : {
+      "difficulty" : "medium",
+      "number" : 166,
+      "topic" : "math-geometry"
+    },
+    "friend-requests-ii-who-has-the-most-friends" : {
+      "difficulty" : "medium",
+      "number" : 602,
+      "topic" : "misc"
+    },
+    "friends-of-appropriate-ages" : {
+      "difficulty" : "medium",
+      "number" : 825,
+      "topic" : "two-pointers"
+    },
+    "fruit-into-baskets" : {
+      "difficulty" : "medium",
+      "number" : 904,
+      "topic" : "sliding-window"
+    },
+    "game-of-life" : {
+      "difficulty" : "medium",
+      "number" : 289,
+      "topic" : "arrays-hashing"
+    },
+    "game-play-analysis-i" : {
+      "difficulty" : "easy",
+      "number" : 511,
+      "topic" : "misc"
+    },
+    "game-play-analysis-iv" : {
+      "difficulty" : "medium",
+      "number" : 550,
+      "topic" : "misc"
+    },
+    "gas-station" : {
+      "difficulty" : "medium",
+      "number" : 134,
+      "topic" : "greedy"
+    },
+    "generate-parentheses" : {
+      "difficulty" : "medium",
+      "number" : 22,
+      "topic" : "backtracking"
+    },
+    "generate-random-point-in-a-circle" : {
+      "difficulty" : "medium",
+      "number" : 478,
+      "topic" : "math-geometry"
+    },
+    "global-and-local-inversions" : {
+      "difficulty" : "medium",
+      "number" : 775,
+      "topic" : "math-geometry"
+    },
+    "goat-latin" : {
+      "difficulty" : "easy",
+      "number" : 824,
+      "topic" : "misc"
+    },
+    "graph-valid-tree" : {
+      "topic" : "misc"
+    },
+    "gray-code" : {
+      "difficulty" : "medium",
+      "number" : 89,
+      "topic" : "math-geometry"
+    },
+    "group-anagrams" : {
+      "difficulty" : "medium",
+      "number" : 49,
+      "topic" : "arrays-hashing"
+    },
+    "groups-of-special-equivalent-strings" : {
+      "difficulty" : "medium",
+      "number" : 893,
+      "topic" : "arrays-hashing"
+    },
+    "guess-number-higher-or-lower" : {
+      "difficulty" : "easy",
+      "number" : 374,
+      "topic" : "binary-search"
+    },
+    "guess-number-higher-or-lower-ii" : {
+      "difficulty" : "medium",
+      "number" : 375,
+      "topic" : "math-geometry"
+    },
+    "h-index" : {
+      "difficulty" : "medium",
+      "number" : 274,
+      "topic" : "arrays-hashing"
+    },
+    "h-index-ii" : {
+      "difficulty" : "medium",
+      "number" : 275,
+      "topic" : "binary-search"
+    },
+    "hamming-distance" : {
+      "difficulty" : "easy",
+      "number" : 461,
+      "topic" : "bit-manipulation"
+    },
+    "hand-of-straights" : {
+      "difficulty" : "medium",
+      "number" : 846,
+      "topic" : "greedy"
+    },
+    "happy-number" : {
+      "difficulty" : "easy",
+      "number" : 202,
+      "topic" : "math-geometry"
+    },
+    "heaters" : {
+      "difficulty" : "medium",
+      "number" : 475,
+      "topic" : "two-pointers"
+    },
+    "house-robber" : {
+      "difficulty" : "medium",
+      "number" : 198,
+      "topic" : "dynamic-programming"
+    },
+    "house-robber-ii" : {
+      "difficulty" : "medium",
+      "number" : 213,
+      "topic" : "dynamic-programming"
+    },
+    "house-robber-iii" : {
+      "difficulty" : "medium",
+      "number" : 337,
+      "topic" : "dynamic-programming"
+    },
+    "image-overlap" : {
+      "difficulty" : "medium",
+      "number" : 835,
+      "topic" : "arrays-hashing"
+    },
+    "image-smoother" : {
+      "difficulty" : "easy",
+      "number" : 661,
+      "topic" : "arrays-hashing"
+    },
+    "implement-magic-dictionary" : {
+      "difficulty" : "medium",
+      "number" : 676,
+      "topic" : "tries"
+    },
+    "implement-queue-using-stacks" : {
+      "difficulty" : "easy",
+      "number" : 232,
+      "topic" : "stack"
+    },
+    "implement-rand10-using-rand7" : {
+      "difficulty" : "medium",
+      "number" : 470,
+      "topic" : "math-geometry"
+    },
+    "implement-stack-using-queues" : {
+      "difficulty" : "easy",
+      "number" : 225,
+      "topic" : "stack"
+    },
+    "implement-trie-prefix-tree" : {
+      "difficulty" : "medium",
+      "number" : 208,
+      "topic" : "tries"
+    },
+    "increasing-order-search-tree" : {
+      "difficulty" : "easy",
+      "number" : 897,
+      "topic" : "stack"
+    },
+    "increasing-triplet-subsequence" : {
+      "difficulty" : "medium",
+      "number" : 334,
+      "topic" : "greedy"
+    },
+    "insert-delete-getrandom-o1" : {
+      "difficulty" : "medium",
+      "number" : 380,
+      "topic" : "math-geometry"
+    },
+    "insert-interval" : {
+      "difficulty" : "medium",
+      "number" : 57,
+      "topic" : "intervals"
+    },
+    "insert-into-a-binary-search-tree" : {
+      "difficulty" : "medium",
+      "number" : 701,
+      "topic" : "trees"
+    },
+    "insertion-sort-list" : {
+      "difficulty" : "medium",
+      "number" : 147,
+      "topic" : "linked-list"
+    },
+    "integer-break" : {
+      "difficulty" : "medium",
+      "number" : 343,
+      "topic" : "math-geometry"
+    },
+    "integer-replacement" : {
+      "difficulty" : "medium",
+      "number" : 397,
+      "topic" : "dynamic-programming"
+    },
+    "integer-to-roman" : {
+      "difficulty" : "medium",
+      "number" : 12,
+      "topic" : "math-geometry"
+    },
+    "interleaving-string" : {
+      "difficulty" : "medium",
+      "number" : 97,
+      "topic" : "dynamic-programming"
+    },
+    "intersection-of-two-arrays" : {
+      "difficulty" : "easy",
+      "number" : 349,
+      "topic" : "two-pointers"
+    },
+    "intersection-of-two-arrays-ii" : {
+      "difficulty" : "easy",
+      "number" : 350,
+      "topic" : "two-pointers"
+    },
+    "intersection-of-two-linked-lists" : {
+      "difficulty" : "easy",
+      "number" : 160,
+      "topic" : "linked-list"
+    },
+    "interval-list-intersections" : {
+      "difficulty" : "medium",
+      "number" : 986,
+      "topic" : "two-pointers"
+    },
+    "invert-binary-tree" : {
+      "difficulty" : "easy",
+      "number" : 226,
+      "topic" : "trees"
+    },
+    "investments-in-2016" : {
+      "difficulty" : "medium",
+      "number" : 585,
+      "topic" : "misc"
+    },
+    "is-graph-bipartite" : {
+      "difficulty" : "medium",
+      "number" : 785,
+      "topic" : "graphs"
+    },
+    "is-subsequence" : {
+      "difficulty" : "easy",
+      "number" : 392,
+      "topic" : "two-pointers"
+    },
+    "island-perimeter" : {
+      "difficulty" : "easy",
+      "number" : 463,
+      "topic" : "arrays-hashing"
+    },
+    "isomorphic-strings" : {
+      "difficulty" : "easy",
+      "number" : 205,
+      "topic" : "arrays-hashing"
+    },
+    "jewels-and-stones" : {
+      "difficulty" : "easy",
+      "number" : 771,
+      "topic" : "arrays-hashing"
+    },
+    "jump-game" : {
+      "difficulty" : "medium",
+      "number" : 55,
+      "topic" : "dynamic-programming"
+    },
+    "jump-game-ii" : {
+      "difficulty" : "medium",
+      "number" : 45,
+      "topic" : "dynamic-programming"
+    },
+    "k-closest-points-to-origin" : {
+      "difficulty" : "medium",
+      "number" : 973,
+      "topic" : "heap-priority-queue"
+    },
+    "k-diff-pairs-in-an-array" : {
+      "difficulty" : "medium",
+      "number" : 532,
+      "topic" : "two-pointers"
+    },
+    "k-th-smallest-prime-fraction" : {
+      "difficulty" : "medium",
+      "number" : 786,
+      "topic" : "two-pointers"
+    },
+    "k-th-symbol-in-grammar" : {
+      "difficulty" : "medium",
+      "number" : 779,
+      "topic" : "math-geometry"
+    },
+    "keyboard-row" : {
+      "difficulty" : "easy",
+      "number" : 500,
+      "topic" : "arrays-hashing"
+    },
+    "keys-and-rooms" : {
+      "difficulty" : "medium",
+      "number" : 841,
+      "topic" : "graphs"
+    },
+    "knight-dialer" : {
+      "difficulty" : "medium",
+      "number" : 935,
+      "topic" : "dynamic-programming"
+    },
+    "knight-probability-in-chessboard" : {
+      "difficulty" : "medium",
+      "number" : 688,
+      "topic" : "dynamic-programming"
+    },
+    "koko-eating-bananas" : {
+      "difficulty" : "medium",
+      "number" : 875,
+      "topic" : "binary-search"
+    },
+    "kth-largest-element-in-a-stream" : {
+      "difficulty" : "easy",
+      "number" : 703,
+      "topic" : "heap-priority-queue"
+    },
+    "kth-largest-element-in-an-array" : {
+      "difficulty" : "medium",
+      "number" : 215,
+      "topic" : "heap-priority-queue"
+    },
+    "kth-smallest-element-in-a-bst" : {
+      "difficulty" : "medium",
+      "number" : 230,
+      "topic" : "trees"
+    },
+    "kth-smallest-element-in-a-sorted-matrix" : {
+      "difficulty" : "medium",
+      "number" : 378,
+      "topic" : "binary-search"
+    },
+    "largest-divisible-subset" : {
+      "difficulty" : "medium",
+      "number" : 368,
+      "topic" : "math-geometry"
+    },
+    "largest-number" : {
+      "difficulty" : "medium",
+      "number" : 179,
+      "topic" : "greedy"
+    },
+    "largest-number-at-least-twice-of-others" : {
+      "difficulty" : "easy",
+      "number" : 747,
+      "topic" : "arrays-hashing"
+    },
+    "largest-perimeter-triangle" : {
+      "difficulty" : "easy",
+      "number" : 976,
+      "topic" : "math-geometry"
+    },
+    "largest-plus-sign" : {
+      "difficulty" : "medium",
+      "number" : 764,
+      "topic" : "dynamic-programming"
+    },
+    "largest-rectangle-in-histogram" : {
+      "topic" : "stack"
+    },
+    "largest-sum-of-averages" : {
+      "difficulty" : "medium",
+      "number" : 813,
+      "topic" : "dynamic-programming"
+    },
+    "largest-time-for-given-digits" : {
+      "difficulty" : "medium",
+      "number" : 949,
+      "topic" : "backtracking"
+    },
+    "largest-triangle-area" : {
+      "difficulty" : "easy",
+      "number" : 812,
+      "topic" : "math-geometry"
+    },
+    "last-stone-weight" : {
+      "difficulty" : "easy",
+      "number" : 1046,
+      "topic" : "heap-priority-queue"
+    },
+    "leaf-similar-trees" : {
+      "difficulty" : "easy",
+      "number" : 872,
+      "topic" : "trees"
+    },
+    "lemonade-change" : {
+      "difficulty" : "easy",
+      "number" : 860,
+      "topic" : "greedy"
+    },
+    "length-of-last-word" : {
+      "difficulty" : "easy",
+      "number" : 58,
+      "topic" : "misc"
+    },
+    "length-of-longest-fibonacci-subsequence" : {
+      "difficulty" : "medium",
+      "number" : 873,
+      "topic" : "dynamic-programming"
+    },
+    "letter-case-permutation" : {
+      "difficulty" : "medium",
+      "number" : 784,
+      "topic" : "backtracking"
+    },
+    "letter-combinations-of-a-phone-number" : {
+      "difficulty" : "medium",
+      "number" : 17,
+      "topic" : "backtracking"
+    },
+    "lexicographical-numbers" : {
+      "difficulty" : "medium",
+      "number" : 386,
+      "topic" : "tries"
+    },
+    "license-key-formatting" : {
+      "difficulty" : "easy",
+      "number" : 482,
+      "topic" : "misc"
+    },
+    "linked-list-components" : {
+      "difficulty" : "medium",
+      "number" : 817,
+      "topic" : "linked-list"
+    },
+    "linked-list-cycle" : {
+      "difficulty" : "easy",
+      "number" : 141,
+      "topic" : "linked-list"
+    },
+    "linked-list-cycle-ii" : {
+      "difficulty" : "medium",
+      "number" : 142,
+      "topic" : "linked-list"
+    },
+    "linked-list-random-node" : {
+      "difficulty" : "medium",
+      "number" : 382,
+      "topic" : "linked-list"
+    },
+    "logical-or-of-two-binary-grids-represented-as-quad-trees" : {
+      "difficulty" : "medium",
+      "number" : 558,
+      "topic" : "trees"
+    },
+    "long-pressed-name" : {
+      "difficulty" : "easy",
+      "number" : 925,
+      "topic" : "two-pointers"
+    },
+    "longest-absolute-file-path" : {
+      "difficulty" : "medium",
+      "number" : 388,
+      "topic" : "stack"
+    },
+    "longest-common-prefix" : {
+      "difficulty" : "easy",
+      "number" : 14,
+      "topic" : "arrays-hashing"
+    },
+    "longest-common-subsequence" : {
+      "difficulty" : "medium",
+      "number" : 1143,
+      "topic" : "dynamic-programming"
+    },
+    "longest-consecutive-sequence" : {
+      "difficulty" : "medium",
+      "number" : 128,
+      "topic" : "arrays-hashing"
+    },
+    "longest-continuous-increasing-subsequence" : {
+      "difficulty" : "easy",
+      "number" : 674,
+      "topic" : "arrays-hashing"
+    },
+    "longest-harmonious-subsequence" : {
+      "difficulty" : "easy",
+      "number" : 594,
+      "topic" : "sliding-window"
+    },
+    "longest-increasing-subsequence" : {
+      "difficulty" : "medium",
+      "number" : 300,
+      "topic" : "dynamic-programming"
+    },
+    "longest-mountain-in-array" : {
+      "difficulty" : "medium",
+      "number" : 845,
+      "topic" : "two-pointers"
+    },
+    "longest-palindrome" : {
+      "difficulty" : "easy",
+      "number" : 409,
+      "topic" : "greedy"
+    },
+    "longest-palindromic-subsequence" : {
+      "difficulty" : "medium",
+      "number" : 516,
+      "topic" : "dynamic-programming"
+    },
+    "longest-palindromic-substring" : {
+      "difficulty" : "medium",
+      "number" : 5,
+      "topic" : "two-pointers"
+    },
+    "longest-repeating-character-replacement" : {
+      "difficulty" : "medium",
+      "number" : 424,
+      "topic" : "sliding-window"
+    },
+    "longest-substring-with-at-least-k-repeating-characters" : {
+      "difficulty" : "medium",
+      "number" : 395,
+      "topic" : "sliding-window"
+    },
+    "longest-substring-without-repeating-characters" : {
+      "difficulty" : "medium",
+      "number" : 3,
+      "topic" : "sliding-window"
+    },
+    "longest-turbulent-subarray" : {
+      "difficulty" : "medium",
+      "number" : 978,
+      "topic" : "dynamic-programming"
+    },
+    "longest-uncommon-subsequence-i" : {
+      "difficulty" : "easy",
+      "number" : 521,
+      "topic" : "misc"
+    },
+    "longest-uncommon-subsequence-ii" : {
+      "difficulty" : "medium",
+      "number" : 522,
+      "topic" : "two-pointers"
+    },
+    "longest-univalue-path" : {
+      "difficulty" : "medium",
+      "number" : 687,
+      "topic" : "trees"
+    },
+    "longest-word-in-dictionary" : {
+      "difficulty" : "medium",
+      "number" : 720,
+      "topic" : "tries"
+    },
+    "longest-word-in-dictionary-through-deleting" : {
+      "difficulty" : "medium",
+      "number" : 524,
+      "topic" : "two-pointers"
+    },
+    "loud-and-rich" : {
+      "difficulty" : "medium",
+      "number" : 851,
+      "topic" : "graphs"
+    },
+    "lowest-common-ancestor-of-a-binary-search-tree" : {
+      "difficulty" : "medium",
+      "number" : 235,
+      "topic" : "trees"
+    },
+    "lowest-common-ancestor-of-a-binary-tree" : {
+      "difficulty" : "medium",
+      "number" : 236,
+      "topic" : "trees"
+    },
+    "lru-cache" : {
+      "difficulty" : "medium",
+      "number" : 146,
+      "topic" : "linked-list"
+    },
+    "magic-squares-in-grid" : {
+      "difficulty" : "medium",
+      "number" : 840,
+      "topic" : "math-geometry"
+    },
+    "magical-string" : {
+      "difficulty" : "medium",
+      "number" : 481,
+      "topic" : "two-pointers"
+    },
+    "majority-element" : {
+      "difficulty" : "easy",
+      "number" : 169,
+      "topic" : "arrays-hashing"
+    },
+    "majority-element-ii" : {
+      "difficulty" : "medium",
+      "number" : 229,
+      "topic" : "arrays-hashing"
+    },
+    "managers-with-at-least-5-direct-reports" : {
+      "difficulty" : "medium",
+      "number" : 570,
+      "topic" : "misc"
+    },
+    "map-sum-pairs" : {
+      "difficulty" : "medium",
+      "number" : 677,
+      "topic" : "tries"
+    },
+    "masking-personal-information" : {
+      "difficulty" : "medium",
+      "number" : 831,
+      "topic" : "misc"
+    },
+    "matchsticks-to-square" : {
+      "difficulty" : "medium",
+      "number" : 473,
+      "topic" : "dynamic-programming"
+    },
+    "max-area-of-island" : {
+      "difficulty" : "medium",
+      "number" : 695,
+      "topic" : "graphs"
+    },
+    "max-chunks-to-make-sorted" : {
+      "difficulty" : "medium",
+      "number" : 769,
+      "topic" : "stack"
+    },
+    "max-consecutive-ones" : {
+      "difficulty" : "easy",
+      "number" : 485,
+      "topic" : "arrays-hashing"
+    },
+    "max-consecutive-ones-iii" : {
+      "difficulty" : "medium",
+      "number" : 1004,
+      "topic" : "binary-search"
+    },
+    "max-increase-to-keep-city-skyline" : {
+      "difficulty" : "medium",
+      "number" : 807,
+      "topic" : "greedy"
+    },
+    "maximal-rectangle" : {
+      "topic" : "misc"
+    },
+    "maximal-square" : {
+      "difficulty" : "medium",
+      "number" : 221,
+      "topic" : "dynamic-programming"
+    },
+    "maximize-distance-to-closest-person" : {
+      "difficulty" : "medium",
+      "number" : 849,
+      "topic" : "arrays-hashing"
+    },
+    "maximize-sum-of-array-after-k-negations" : {
+      "difficulty" : "easy",
+      "number" : 1005,
+      "topic" : "greedy"
+    },
+    "maximum-average-subarray-i" : {
+      "difficulty" : "easy",
+      "number" : 643,
+      "topic" : "sliding-window"
+    },
+    "maximum-binary-tree" : {
+      "difficulty" : "medium",
+      "number" : 654,
+      "topic" : "stack"
+    },
+    "maximum-binary-tree-ii" : {
+      "difficulty" : "medium",
+      "number" : 998,
+      "topic" : "trees"
+    },
+    "maximum-depth-of-binary-tree" : {
+      "difficulty" : "easy",
+      "number" : 104,
+      "topic" : "trees"
+    },
+    "maximum-depth-of-n-ary-tree" : {
+      "difficulty" : "easy",
+      "number" : 559,
+      "topic" : "trees"
+    },
+    "maximum-difference-between-node-and-ancestor" : {
+      "difficulty" : "medium",
+      "number" : 1026,
+      "topic" : "trees"
+    },
+    "maximum-distance-in-arrays" : {
+      "difficulty" : "medium",
+      "number" : 624,
+      "topic" : "greedy"
+    },
+    "maximum-gap" : {
+      "difficulty" : "medium",
+      "number" : 164,
+      "topic" : "arrays-hashing"
+    },
+    "maximum-length-of-pair-chain" : {
+      "difficulty" : "medium",
+      "number" : 646,
+      "topic" : "dynamic-programming"
+    },
+    "maximum-length-of-repeated-subarray" : {
+      "difficulty" : "medium",
+      "number" : 718,
+      "topic" : "binary-search"
+    },
+    "maximum-product-of-three-numbers" : {
+      "difficulty" : "easy",
+      "number" : 628,
+      "topic" : "math-geometry"
+    },
+    "maximum-product-of-word-lengths" : {
+      "difficulty" : "medium",
+      "number" : 318,
+      "topic" : "bit-manipulation"
+    },
+    "maximum-product-subarray" : {
+      "difficulty" : "medium",
+      "number" : 152,
+      "topic" : "dynamic-programming"
+    },
+    "maximum-subarray" : {
+      "difficulty" : "medium",
+      "number" : 53,
+      "topic" : "dynamic-programming"
+    },
+    "maximum-sum-circular-subarray" : {
+      "difficulty" : "medium",
+      "number" : 918,
+      "topic" : "dynamic-programming"
+    },
+    "maximum-swap" : {
+      "difficulty" : "medium",
+      "number" : 670,
+      "topic" : "math-geometry"
+    },
+    "maximum-width-of-binary-tree" : {
+      "difficulty" : "medium",
+      "number" : 662,
+      "topic" : "trees"
+    },
+    "maximum-width-ramp" : {
+      "difficulty" : "medium",
+      "number" : 962,
+      "topic" : "two-pointers"
+    },
+    "maximum-xor-of-two-numbers-in-an-array" : {
+      "difficulty" : "medium",
+      "number" : 421,
+      "topic" : "bit-manipulation"
+    },
+    "meeting-rooms" : {
+      "topic" : "intervals"
+    },
+    "meeting-rooms-ii" : {
+      "topic" : "intervals"
+    },
+    "merge-intervals" : {
+      "difficulty" : "medium",
+      "number" : 56,
+      "topic" : "intervals"
+    },
+    "merge-k-sorted-lists" : {
+      "topic" : "misc"
+    },
+    "merge-sorted-array" : {
+      "difficulty" : "easy",
+      "number" : 88,
+      "topic" : "two-pointers"
+    },
+    "merge-two-binary-trees" : {
+      "difficulty" : "easy",
+      "number" : 617,
+      "topic" : "trees"
+    },
+    "merge-two-sorted-lists" : {
+      "difficulty" : "easy",
+      "number" : 21,
+      "topic" : "linked-list"
+    },
+    "middle-of-the-linked-list" : {
+      "difficulty" : "easy",
+      "number" : 876,
+      "topic" : "linked-list"
+    },
+    "min-cost-climbing-stairs" : {
+      "difficulty" : "easy",
+      "number" : 746,
+      "topic" : "dynamic-programming"
+    },
+    "min-cost-to-connect-all-points" : {
+      "difficulty" : "medium",
+      "number" : 1584,
+      "topic" : "arrays-hashing"
+    },
+    "min-stack" : {
+      "difficulty" : "medium",
+      "number" : 155,
+      "topic" : "stack"
+    },
+    "minesweeper" : {
+      "difficulty" : "medium",
+      "number" : 529,
+      "topic" : "arrays-hashing"
+    },
+    "mini-parser" : {
+      "difficulty" : "medium",
+      "number" : 385,
+      "topic" : "stack"
+    },
+    "minimum-absolute-difference-in-bst" : {
+      "difficulty" : "easy",
+      "number" : 530,
+      "topic" : "trees"
+    },
+    "minimum-add-to-make-parentheses-valid" : {
+      "difficulty" : "medium",
+      "number" : 921,
+      "topic" : "stack"
+    },
+    "minimum-area-rectangle" : {
+      "difficulty" : "medium",
+      "number" : 939,
+      "topic" : "math-geometry"
+    },
+    "minimum-area-rectangle-ii" : {
+      "difficulty" : "medium",
+      "number" : 963,
+      "topic" : "math-geometry"
+    },
+    "minimum-ascii-delete-sum-for-two-strings" : {
+      "difficulty" : "medium",
+      "number" : 712,
+      "topic" : "dynamic-programming"
+    },
+    "minimum-cost-for-tickets" : {
+      "difficulty" : "medium",
+      "number" : 983,
+      "topic" : "dynamic-programming"
+    },
+    "minimum-depth-of-binary-tree" : {
+      "difficulty" : "easy",
+      "number" : 111,
+      "topic" : "trees"
+    },
+    "minimum-distance-between-bst-nodes" : {
+      "difficulty" : "easy",
+      "number" : 783,
+      "topic" : "trees"
+    },
+    "minimum-domino-rotations-for-equal-row" : {
+      "difficulty" : "medium",
+      "number" : 1007,
+      "topic" : "greedy"
+    },
+    "minimum-falling-path-sum" : {
+      "difficulty" : "medium",
+      "number" : 931,
+      "topic" : "dynamic-programming"
+    },
+    "minimum-genetic-mutation" : {
+      "difficulty" : "medium",
+      "number" : 433,
+      "topic" : "graphs"
+    },
+    "minimum-height-trees" : {
+      "difficulty" : "medium",
+      "number" : 310,
+      "topic" : "graphs"
+    },
+    "minimum-increment-to-make-array-unique" : {
+      "difficulty" : "medium",
+      "number" : 945,
+      "topic" : "greedy"
+    },
+    "minimum-index-sum-of-two-lists" : {
+      "difficulty" : "easy",
+      "number" : 599,
+      "topic" : "arrays-hashing"
+    },
+    "minimum-moves-to-equal-array-elements" : {
+      "difficulty" : "medium",
+      "number" : 453,
+      "topic" : "math-geometry"
+    },
+    "minimum-moves-to-equal-array-elements-ii" : {
+      "difficulty" : "medium",
+      "number" : 462,
+      "topic" : "math-geometry"
+    },
+    "minimum-number-of-arrows-to-burst-balloons" : {
+      "difficulty" : "medium",
+      "number" : 452,
+      "topic" : "greedy"
+    },
+    "minimum-path-sum" : {
+      "difficulty" : "medium",
+      "number" : 64,
+      "topic" : "dynamic-programming"
+    },
+    "minimum-size-subarray-sum" : {
+      "difficulty" : "medium",
+      "number" : 209,
+      "topic" : "binary-search"
+    },
+    "minimum-time-difference" : {
+      "difficulty" : "medium",
+      "number" : 539,
+      "topic" : "math-geometry"
+    },
+    "minimum-window-substring" : {
+      "topic" : "sliding-window"
+    },
+    "mirror-reflection" : {
+      "difficulty" : "medium",
+      "number" : 858,
+      "topic" : "math-geometry"
+    },
+    "missing-number" : {
+      "difficulty" : "easy",
+      "number" : 268,
+      "topic" : "math-geometry"
+    },
+    "monotone-increasing-digits" : {
+      "difficulty" : "medium",
+      "number" : 738,
+      "topic" : "math-geometry"
+    },
+    "monotonic-array" : {
+      "difficulty" : "easy",
+      "number" : 896,
+      "topic" : "arrays-hashing"
+    },
+    "most-common-word" : {
+      "difficulty" : "easy",
+      "number" : 819,
+      "topic" : "arrays-hashing"
+    },
+    "most-frequent-subtree-sum" : {
+      "difficulty" : "medium",
+      "number" : 508,
+      "topic" : "trees"
+    },
+    "most-profit-assigning-work" : {
+      "difficulty" : "medium",
+      "number" : 826,
+      "topic" : "two-pointers"
+    },
+    "most-stones-removed-with-same-row-or-column" : {
+      "difficulty" : "medium",
+      "number" : 947,
+      "topic" : "arrays-hashing"
+    },
+    "move-zeroes" : {
+      "difficulty" : "easy",
+      "number" : 283,
+      "topic" : "two-pointers"
+    },
+    "multiply-strings" : {
+      "difficulty" : "medium",
+      "number" : 43,
+      "topic" : "math-geometry"
+    },
+    "my-calendar-i" : {
+      "difficulty" : "medium",
+      "number" : 729,
+      "topic" : "binary-search"
+    },
+    "my-calendar-ii" : {
+      "difficulty" : "medium",
+      "number" : 731,
+      "topic" : "binary-search"
+    },
+    "n-ary-tree-level-order-traversal" : {
+      "difficulty" : "medium",
+      "number" : 429,
+      "topic" : "trees"
+    },
+    "n-ary-tree-postorder-traversal" : {
+      "difficulty" : "easy",
+      "number" : 590,
+      "topic" : "stack"
+    },
+    "n-ary-tree-preorder-traversal" : {
+      "difficulty" : "easy",
+      "number" : 589,
+      "topic" : "stack"
+    },
+    "n-queens" : {
+      "topic" : "backtracking"
+    },
+    "n-repeated-element-in-size-2n-array" : {
+      "difficulty" : "easy",
+      "number" : 961,
+      "topic" : "arrays-hashing"
+    },
+    "network-delay-time" : {
+      "difficulty" : "medium",
+      "number" : 743,
+      "topic" : "heap-priority-queue"
+    },
+    "new-21-game" : {
+      "difficulty" : "medium",
+      "number" : 837,
+      "topic" : "math-geometry"
+    },
+    "next-greater-element-i" : {
+      "difficulty" : "easy",
+      "number" : 496,
+      "topic" : "stack"
+    },
+    "next-greater-element-ii" : {
+      "difficulty" : "medium",
+      "number" : 503,
+      "topic" : "stack"
+    },
+    "next-greater-element-iii" : {
+      "difficulty" : "medium",
+      "number" : 556,
+      "topic" : "math-geometry"
+    },
+    "next-greater-node-in-linked-list" : {
+      "difficulty" : "medium",
+      "number" : 1019,
+      "topic" : "linked-list"
+    },
+    "next-permutation" : {
+      "difficulty" : "medium",
+      "number" : 31,
+      "topic" : "two-pointers"
+    },
+    "nim-game" : {
+      "difficulty" : "easy",
+      "number" : 292,
+      "topic" : "math-geometry"
+    },
+    "non-decreasing-array" : {
+      "difficulty" : "medium",
+      "number" : 665,
+      "topic" : "arrays-hashing"
+    },
+    "non-decreasing-subsequences" : {
+      "difficulty" : "medium",
+      "number" : 491,
+      "topic" : "backtracking"
+    },
+    "non-overlapping-intervals" : {
+      "difficulty" : "medium",
+      "number" : 435,
+      "topic" : "intervals"
+    },
+    "not-boring-movies" : {
+      "difficulty" : "easy",
+      "number" : 620,
+      "topic" : "misc"
+    },
+    "nth-digit" : {
+      "difficulty" : "medium",
+      "number" : 400,
+      "topic" : "math-geometry"
+    },
+    "nth-highest-salary" : {
+      "difficulty" : "medium",
+      "number" : 177,
+      "topic" : "misc"
+    },
+    "number-complement" : {
+      "difficulty" : "easy",
+      "number" : 476,
+      "topic" : "bit-manipulation"
+    },
+    "number-of-1-bits" : {
+      "difficulty" : "easy",
+      "number" : 191,
+      "topic" : "bit-manipulation"
+    },
+    "number-of-boomerangs" : {
+      "difficulty" : "medium",
+      "number" : 447,
+      "topic" : "math-geometry"
+    },
+    "number-of-connected-components-in-an-undirected-graph" : {
+      "topic" : "misc"
+    },
+    "number-of-enclaves" : {
+      "difficulty" : "medium",
+      "number" : 1020,
+      "topic" : "arrays-hashing"
+    },
+    "number-of-islands" : {
+      "difficulty" : "medium",
+      "number" : 200,
+      "topic" : "graphs"
+    },
+    "number-of-lines-to-write-string" : {
+      "difficulty" : "easy",
+      "number" : 806,
+      "topic" : "arrays-hashing"
+    },
+    "number-of-longest-increasing-subsequence" : {
+      "difficulty" : "medium",
+      "number" : 673,
+      "topic" : "dynamic-programming"
+    },
+    "number-of-matching-subsequences" : {
+      "difficulty" : "medium",
+      "number" : 792,
+      "topic" : "binary-search"
+    },
+    "number-of-provinces" : {
+      "difficulty" : "medium",
+      "number" : 547,
+      "topic" : "graphs"
+    },
+    "number-of-recent-calls" : {
+      "difficulty" : "easy",
+      "number" : 933,
+      "topic" : "misc"
+    },
+    "number-of-segments-in-a-string" : {
+      "difficulty" : "easy",
+      "number" : 434,
+      "topic" : "misc"
+    },
+    "number-of-subarrays-with-bounded-maximum" : {
+      "difficulty" : "medium",
+      "number" : 795,
+      "topic" : "two-pointers"
+    },
+    "numbers-with-same-consecutive-differences" : {
+      "difficulty" : "medium",
+      "number" : 967,
+      "topic" : "backtracking"
+    },
+    "odd-even-linked-list" : {
+      "difficulty" : "medium",
+      "number" : 328,
+      "topic" : "linked-list"
+    },
+    "ones-and-zeroes" : {
+      "difficulty" : "medium",
+      "number" : 474,
+      "topic" : "dynamic-programming"
+    },
+    "online-election" : {
+      "difficulty" : "medium",
+      "number" : 911,
+      "topic" : "binary-search"
+    },
+    "online-stock-span" : {
+      "difficulty" : "medium",
+      "number" : 901,
+      "topic" : "stack"
+    },
+    "open-the-lock" : {
+      "difficulty" : "medium",
+      "number" : 752,
+      "topic" : "arrays-hashing"
+    },
+    "optimal-division" : {
+      "difficulty" : "medium",
+      "number" : 553,
+      "topic" : "math-geometry"
+    },
+    "out-of-boundary-paths" : {
+      "difficulty" : "medium",
+      "number" : 576,
+      "topic" : "dynamic-programming"
+    },
+    "pacific-atlantic-water-flow" : {
+      "difficulty" : "medium",
+      "number" : 417,
+      "topic" : "graphs"
+    },
+    "pairs-of-songs-with-total-durations-divisible-by-60" : {
+      "difficulty" : "medium",
+      "number" : 1010,
+      "topic" : "arrays-hashing"
+    },
+    "palindrome-linked-list" : {
+      "difficulty" : "easy",
+      "number" : 234,
+      "topic" : "linked-list"
+    },
+    "palindrome-number" : {
+      "difficulty" : "easy",
+      "number" : 9,
+      "topic" : "math-geometry"
+    },
+    "palindrome-partitioning" : {
+      "difficulty" : "medium",
+      "number" : 131,
+      "topic" : "backtracking"
+    },
+    "palindromic-substrings" : {
+      "difficulty" : "medium",
+      "number" : 647,
+      "topic" : "two-pointers"
+    },
+    "pancake-sorting" : {
+      "difficulty" : "medium",
+      "number" : 969,
+      "topic" : "two-pointers"
+    },
+    "partition-array-into-disjoint-intervals" : {
+      "difficulty" : "medium",
+      "number" : 915,
+      "topic" : "arrays-hashing"
+    },
+    "partition-array-into-three-parts-with-equal-sum" : {
+      "difficulty" : "easy",
+      "number" : 1013,
+      "topic" : "greedy"
+    },
+    "partition-equal-subset-sum" : {
+      "difficulty" : "medium",
+      "number" : 416,
+      "topic" : "dynamic-programming"
+    },
+    "partition-labels" : {
+      "difficulty" : "medium",
+      "number" : 763,
+      "topic" : "greedy"
+    },
+    "partition-list" : {
+      "difficulty" : "medium",
+      "number" : 86,
+      "topic" : "linked-list"
+    },
+    "partition-to-k-equal-sum-subsets" : {
+      "difficulty" : "medium",
+      "number" : 698,
+      "topic" : "dynamic-programming"
+    },
+    "pascals-triangle" : {
+      "difficulty" : "easy",
+      "number" : 118,
+      "topic" : "dynamic-programming"
+    },
+    "pascals-triangle-ii" : {
+      "difficulty" : "easy",
+      "number" : 119,
+      "topic" : "dynamic-programming"
+    },
+    "path-sum" : {
+      "difficulty" : "easy",
+      "number" : 112,
+      "topic" : "trees"
+    },
+    "path-sum-ii" : {
+      "difficulty" : "medium",
+      "number" : 113,
+      "topic" : "backtracking"
+    },
+    "path-sum-iii" : {
+      "difficulty" : "medium",
+      "number" : 437,
+      "topic" : "trees"
+    },
+    "path-with-maximum-probability" : {
+      "difficulty" : "medium",
+      "number" : 1514,
+      "topic" : "graphs"
+    },
+    "peak-index-in-a-mountain-array" : {
+      "difficulty" : "medium",
+      "number" : 852,
+      "topic" : "binary-search"
+    },
+    "peeking-iterator" : {
+      "difficulty" : "medium",
+      "number" : 284,
+      "topic" : "arrays-hashing"
+    },
+    "perfect-number" : {
+      "difficulty" : "easy",
+      "number" : 507,
+      "topic" : "math-geometry"
+    },
+    "perfect-squares" : {
+      "difficulty" : "medium",
+      "number" : 279,
+      "topic" : "dynamic-programming"
+    },
+    "permutation-in-string" : {
+      "difficulty" : "medium",
+      "number" : 567,
+      "topic" : "sliding-window"
+    },
+    "permutations" : {
+      "difficulty" : "medium",
+      "number" : 46,
+      "topic" : "backtracking"
+    },
+    "permutations-ii" : {
+      "difficulty" : "medium",
+      "number" : 47,
+      "topic" : "backtracking"
+    },
+    "plus-one" : {
+      "difficulty" : "easy",
+      "number" : 66,
+      "topic" : "math-geometry"
+    },
+    "populating-next-right-pointers-in-each-node" : {
+      "difficulty" : "medium",
+      "number" : 116,
+      "topic" : "linked-list"
+    },
+    "populating-next-right-pointers-in-each-node-ii" : {
+      "difficulty" : "medium",
+      "number" : 117,
+      "topic" : "linked-list"
+    },
+    "positions-of-large-groups" : {
+      "difficulty" : "easy",
+      "number" : 830,
+      "topic" : "misc"
+    },
+    "possible-bipartition" : {
+      "difficulty" : "medium",
+      "number" : 886,
+      "topic" : "graphs"
+    },
+    "pow-x-n" : {
+      "topic" : "misc"
+    },
+    "power-of-four" : {
+      "difficulty" : "easy",
+      "number" : 342,
+      "topic" : "math-geometry"
+    },
+    "power-of-three" : {
+      "difficulty" : "easy",
+      "number" : 326,
+      "topic" : "math-geometry"
+    },
+    "power-of-two" : {
+      "difficulty" : "easy",
+      "number" : 231,
+      "topic" : "math-geometry"
+    },
+    "powerful-integers" : {
+      "difficulty" : "medium",
+      "number" : 970,
+      "topic" : "math-geometry"
+    },
+    "powx-n" : {
+      "difficulty" : "medium",
+      "number" : 50,
+      "topic" : "math-geometry"
+    },
+    "predict-the-winner" : {
+      "difficulty" : "medium",
+      "number" : 486,
+      "topic" : "math-geometry"
+    },
+    "prime-number-of-set-bits-in-binary-representation" : {
+      "difficulty" : "easy",
+      "number" : 762,
+      "topic" : "math-geometry"
+    },
+    "prime-palindrome" : {
+      "difficulty" : "medium",
+      "number" : 866,
+      "topic" : "math-geometry"
+    },
+    "print-binary-tree" : {
+      "difficulty" : "medium",
+      "number" : 655,
+      "topic" : "trees"
+    },
+    "prison-cells-after-n-days" : {
+      "difficulty" : "medium",
+      "number" : 957,
+      "topic" : "math-geometry"
+    },
+    "product-of-array-except-self" : {
+      "difficulty" : "medium",
+      "number" : 238,
+      "topic" : "arrays-hashing"
+    },
+    "projection-area-of-3d-shapes" : {
+      "difficulty" : "easy",
+      "number" : 883,
+      "topic" : "math-geometry"
+    },
+    "push-dominoes" : {
+      "difficulty" : "medium",
+      "number" : 838,
+      "topic" : "two-pointers"
+    },
+    "pyramid-transition-matrix" : {
+      "difficulty" : "medium",
+      "number" : 756,
+      "topic" : "backtracking"
+    },
+    "queue-reconstruction-by-height" : {
+      "difficulty" : "medium",
+      "number" : 406,
+      "topic" : "arrays-hashing"
+    },
+    "rabbits-in-forest" : {
+      "difficulty" : "medium",
+      "number" : 781,
+      "topic" : "math-geometry"
+    },
+    "random-flip-matrix" : {
+      "difficulty" : "medium",
+      "number" : 519,
+      "topic" : "math-geometry"
+    },
+    "random-pick-index" : {
+      "difficulty" : "medium",
+      "number" : 398,
+      "topic" : "math-geometry"
+    },
+    "random-pick-with-weight" : {
+      "difficulty" : "medium",
+      "number" : 528,
+      "topic" : "math-geometry"
+    },
+    "random-point-in-non-overlapping-rectangles" : {
+      "difficulty" : "medium",
+      "number" : 497,
+      "topic" : "math-geometry"
+    },
+    "range-addition-ii" : {
+      "difficulty" : "easy",
+      "number" : 598,
+      "topic" : "math-geometry"
+    },
+    "range-sum-of-bst" : {
+      "difficulty" : "easy",
+      "number" : 938,
+      "topic" : "trees"
+    },
+    "range-sum-query-2d-immutable" : {
+      "difficulty" : "medium",
+      "number" : 304,
+      "topic" : "dynamic-programming"
+    },
+    "range-sum-query-immutable" : {
+      "difficulty" : "easy",
+      "number" : 303,
+      "topic" : "dynamic-programming"
+    },
+    "range-sum-query-mutable" : {
+      "difficulty" : "medium",
+      "number" : 307,
+      "topic" : "arrays-hashing"
+    },
+    "rank-scores" : {
+      "difficulty" : "medium",
+      "number" : 178,
+      "topic" : "misc"
+    },
+    "ransom-note" : {
+      "difficulty" : "easy",
+      "number" : 383,
+      "topic" : "arrays-hashing"
+    },
+    "reach-a-number" : {
+      "difficulty" : "medium",
+      "number" : 754,
+      "topic" : "math-geometry"
+    },
+    "reconstruct-itinerary" : {
+      "topic" : "misc"
+    },
+    "reconstruct-original-digits-from-english" : {
+      "difficulty" : "medium",
+      "number" : 423,
+      "topic" : "math-geometry"
+    },
+    "recover-binary-search-tree" : {
+      "difficulty" : "medium",
+      "number" : 99,
+      "topic" : "trees"
+    },
+    "rectangle-area" : {
+      "difficulty" : "medium",
+      "number" : 223,
+      "topic" : "math-geometry"
+    },
+    "rectangle-overlap" : {
+      "difficulty" : "easy",
+      "number" : 836,
+      "topic" : "math-geometry"
+    },
+    "redundant-connection" : {
+      "difficulty" : "medium",
+      "number" : 684,
+      "topic" : "graphs"
+    },
+    "regions-cut-by-slashes" : {
+      "difficulty" : "medium",
+      "number" : 959,
+      "topic" : "arrays-hashing"
+    },
+    "relative-ranks" : {
+      "difficulty" : "easy",
+      "number" : 506,
+      "topic" : "heap-priority-queue"
+    },
+    "remove-comments" : {
+      "difficulty" : "medium",
+      "number" : 722,
+      "topic" : "arrays-hashing"
+    },
+    "remove-duplicate-letters" : {
+      "difficulty" : "medium",
+      "number" : 316,
+      "topic" : "stack"
+    },
+    "remove-duplicates-from-sorted-array" : {
+      "difficulty" : "easy",
+      "number" : 26,
+      "topic" : "two-pointers"
+    },
+    "remove-duplicates-from-sorted-array-ii" : {
+      "difficulty" : "medium",
+      "number" : 80,
+      "topic" : "two-pointers"
+    },
+    "remove-duplicates-from-sorted-list" : {
+      "difficulty" : "easy",
+      "number" : 83,
+      "topic" : "linked-list"
+    },
+    "remove-duplicates-from-sorted-list-ii" : {
+      "difficulty" : "medium",
+      "number" : 82,
+      "topic" : "linked-list"
+    },
+    "remove-element" : {
+      "difficulty" : "easy",
+      "number" : 27,
+      "topic" : "two-pointers"
+    },
+    "remove-k-digits" : {
+      "difficulty" : "medium",
+      "number" : 402,
+      "topic" : "stack"
+    },
+    "remove-linked-list-elements" : {
+      "difficulty" : "easy",
+      "number" : 203,
+      "topic" : "linked-list"
+    },
+    "remove-nth-node-from-end-of-list" : {
+      "difficulty" : "medium",
+      "number" : 19,
+      "topic" : "linked-list"
+    },
+    "remove-outermost-parentheses" : {
+      "difficulty" : "easy",
+      "number" : 1021,
+      "topic" : "stack"
+    },
+    "reorder-data-in-log-files" : {
+      "difficulty" : "medium",
+      "number" : 937,
+      "topic" : "arrays-hashing"
+    },
+    "reorder-list" : {
+      "difficulty" : "medium",
+      "number" : 143,
+      "topic" : "linked-list"
+    },
+    "reordered-power-of-2" : {
+      "difficulty" : "medium",
+      "number" : 869,
+      "topic" : "math-geometry"
+    },
+    "reorganize-string" : {
+      "difficulty" : "medium",
+      "number" : 767,
+      "topic" : "heap-priority-queue"
+    },
+    "repeated-dna-sequences" : {
+      "difficulty" : "medium",
+      "number" : 187,
+      "topic" : "bit-manipulation"
+    },
+    "repeated-string-match" : {
+      "difficulty" : "medium",
+      "number" : 686,
+      "topic" : "misc"
+    },
+    "repeated-substring-pattern" : {
+      "difficulty" : "easy",
+      "number" : 459,
+      "topic" : "misc"
+    },
+    "replace-words" : {
+      "difficulty" : "medium",
+      "number" : 648,
+      "topic" : "tries"
+    },
+    "reshape-the-matrix" : {
+      "difficulty" : "easy",
+      "number" : 566,
+      "topic" : "arrays-hashing"
+    },
+    "restore-ip-addresses" : {
+      "difficulty" : "medium",
+      "number" : 93,
+      "topic" : "backtracking"
+    },
+    "reveal-cards-in-increasing-order" : {
+      "difficulty" : "medium",
+      "number" : 950,
+      "topic" : "arrays-hashing"
+    },
+    "reverse-bits" : {
+      "difficulty" : "easy",
+      "number" : 190,
+      "topic" : "bit-manipulation"
+    },
+    "reverse-integer" : {
+      "difficulty" : "medium",
+      "number" : 7,
+      "topic" : "math-geometry"
+    },
+    "reverse-linked-list" : {
+      "difficulty" : "easy",
+      "number" : 206,
+      "topic" : "linked-list"
+    },
+    "reverse-linked-list-ii" : {
+      "difficulty" : "medium",
+      "number" : 92,
+      "topic" : "linked-list"
+    },
+    "reverse-nodes-in-k-group" : {
+      "topic" : "misc"
+    },
+    "reverse-only-letters" : {
+      "difficulty" : "easy",
+      "number" : 917,
+      "topic" : "two-pointers"
+    },
+    "reverse-string" : {
+      "difficulty" : "easy",
+      "number" : 344,
+      "topic" : "two-pointers"
+    },
+    "reverse-string-ii" : {
+      "difficulty" : "easy",
+      "number" : 541,
+      "topic" : "two-pointers"
+    },
+    "reverse-vowels-of-a-string" : {
+      "difficulty" : "easy",
+      "number" : 345,
+      "topic" : "two-pointers"
+    },
+    "reverse-words-in-a-string" : {
+      "difficulty" : "medium",
+      "number" : 151,
+      "topic" : "two-pointers"
+    },
+    "reverse-words-in-a-string-iii" : {
+      "difficulty" : "easy",
+      "number" : 557,
+      "topic" : "two-pointers"
+    },
+    "rising-temperature" : {
+      "difficulty" : "easy",
+      "number" : 197,
+      "topic" : "misc"
+    },
+    "rle-iterator" : {
+      "difficulty" : "medium",
+      "number" : 900,
+      "topic" : "arrays-hashing"
+    },
+    "robot-return-to-origin" : {
+      "difficulty" : "easy",
+      "number" : 657,
+      "topic" : "misc"
+    },
+    "roman-to-integer" : {
+      "difficulty" : "easy",
+      "number" : 13,
+      "topic" : "math-geometry"
+    },
+    "rotate-array" : {
+      "difficulty" : "medium",
+      "number" : 189,
+      "topic" : "two-pointers"
+    },
+    "rotate-function" : {
+      "difficulty" : "medium",
+      "number" : 396,
+      "topic" : "math-geometry"
+    },
+    "rotate-image" : {
+      "difficulty" : "medium",
+      "number" : 48,
+      "topic" : "arrays-hashing"
+    },
+    "rotate-list" : {
+      "difficulty" : "medium",
+      "number" : 61,
+      "topic" : "linked-list"
+    },
+    "rotate-string" : {
+      "difficulty" : "easy",
+      "number" : 796,
+      "topic" : "misc"
+    },
+    "rotated-digits" : {
+      "difficulty" : "medium",
+      "number" : 788,
+      "topic" : "math-geometry"
+    },
+    "rotting-oranges" : {
+      "difficulty" : "medium",
+      "number" : 994,
+      "topic" : "graphs"
+    },
+    "sales-person" : {
+      "difficulty" : "easy",
+      "number" : 607,
+      "topic" : "misc"
+    },
+    "same-tree" : {
+      "difficulty" : "easy",
+      "number" : 100,
+      "topic" : "trees"
+    },
+    "satisfiability-of-equality-equations" : {
+      "difficulty" : "medium",
+      "number" : 990,
+      "topic" : "arrays-hashing"
+    },
+    "score-after-flipping-matrix" : {
+      "difficulty" : "medium",
+      "number" : 861,
+      "topic" : "greedy"
+    },
+    "score-of-parentheses" : {
+      "difficulty" : "medium",
+      "number" : 856,
+      "topic" : "stack"
+    },
+    "search-a-2d-matrix" : {
+      "difficulty" : "medium",
+      "number" : 74,
+      "topic" : "binary-search"
+    },
+    "search-a-2d-matrix-ii" : {
+      "difficulty" : "medium",
+      "number" : 240,
+      "topic" : "binary-search"
+    },
+    "search-in-a-binary-search-tree" : {
+      "difficulty" : "easy",
+      "number" : 700,
+      "topic" : "trees"
+    },
+    "search-in-rotated-sorted-array" : {
+      "difficulty" : "medium",
+      "number" : 33,
+      "topic" : "binary-search"
+    },
+    "search-in-rotated-sorted-array-ii" : {
+      "difficulty" : "medium",
+      "number" : 81,
+      "topic" : "binary-search"
+    },
+    "search-insert-position" : {
+      "difficulty" : "easy",
+      "number" : 35,
+      "topic" : "binary-search"
+    },
+    "second-highest-salary" : {
+      "difficulty" : "medium",
+      "number" : 176,
+      "topic" : "misc"
+    },
+    "second-minimum-node-in-a-binary-tree" : {
+      "difficulty" : "easy",
+      "number" : 671,
+      "topic" : "trees"
+    },
+    "self-dividing-numbers" : {
+      "difficulty" : "easy",
+      "number" : 728,
+      "topic" : "math-geometry"
+    },
+    "serialize-and-deserialize-binary-tree" : {
+      "topic" : "misc"
+    },
+    "serialize-and-deserialize-bst" : {
+      "difficulty" : "medium",
+      "number" : 449,
+      "topic" : "trees"
+    },
+    "set-matrix-zeroes" : {
+      "difficulty" : "medium",
+      "number" : 73,
+      "topic" : "arrays-hashing"
+    },
+    "set-mismatch" : {
+      "difficulty" : "easy",
+      "number" : 645,
+      "topic" : "bit-manipulation"
+    },
+    "shifting-letters" : {
+      "difficulty" : "medium",
+      "number" : 848,
+      "topic" : "arrays-hashing"
+    },
+    "shopping-offers" : {
+      "difficulty" : "medium",
+      "number" : 638,
+      "topic" : "dynamic-programming"
+    },
+    "short-encoding-of-words" : {
+      "difficulty" : "medium",
+      "number" : 820,
+      "topic" : "tries"
+    },
+    "shortest-bridge" : {
+      "difficulty" : "medium",
+      "number" : 934,
+      "topic" : "arrays-hashing"
+    },
+    "shortest-completing-word" : {
+      "difficulty" : "easy",
+      "number" : 748,
+      "topic" : "arrays-hashing"
+    },
+    "shortest-distance-to-a-character" : {
+      "difficulty" : "easy",
+      "number" : 821,
+      "topic" : "two-pointers"
+    },
+    "shortest-unsorted-continuous-subarray" : {
+      "difficulty" : "medium",
+      "number" : 581,
+      "topic" : "two-pointers"
+    },
+    "shuffle-an-array" : {
+      "difficulty" : "medium",
+      "number" : 384,
+      "topic" : "math-geometry"
+    },
+    "simplify-path" : {
+      "difficulty" : "medium",
+      "number" : 71,
+      "topic" : "stack"
+    },
+    "single-element-in-a-sorted-array" : {
+      "difficulty" : "medium",
+      "number" : 540,
+      "topic" : "binary-search"
+    },
+    "single-number" : {
+      "difficulty" : "easy",
+      "number" : 136,
+      "topic" : "bit-manipulation"
+    },
+    "single-number-ii" : {
+      "difficulty" : "medium",
+      "number" : 137,
+      "topic" : "bit-manipulation"
+    },
+    "single-number-iii" : {
+      "difficulty" : "medium",
+      "number" : 260,
+      "topic" : "bit-manipulation"
+    },
+    "sliding-window-maximum" : {
+      "topic" : "sliding-window"
+    },
+    "smallest-integer-divisible-by-k" : {
+      "difficulty" : "medium",
+      "number" : 1015,
+      "topic" : "math-geometry"
+    },
+    "smallest-range-i" : {
+      "difficulty" : "easy",
+      "number" : 908,
+      "topic" : "math-geometry"
+    },
+    "smallest-range-ii" : {
+      "difficulty" : "medium",
+      "number" : 910,
+      "topic" : "math-geometry"
+    },
+    "smallest-string-starting-from-leaf" : {
+      "difficulty" : "medium",
+      "number" : 988,
+      "topic" : "backtracking"
+    },
+    "smallest-subtree-with-all-the-deepest-nodes" : {
+      "difficulty" : "medium",
+      "number" : 865,
+      "topic" : "trees"
+    },
+    "snakes-and-ladders" : {
+      "difficulty" : "medium",
+      "number" : 909,
+      "topic" : "graphs"
+    },
+    "solve-the-equation" : {
+      "difficulty" : "medium",
+      "number" : 640,
+      "topic" : "math-geometry"
+    },
+    "sort-an-array" : {
+      "difficulty" : "medium",
+      "number" : 912,
+      "topic" : "heap-priority-queue"
+    },
+    "sort-array-by-parity" : {
+      "difficulty" : "easy",
+      "number" : 905,
+      "topic" : "two-pointers"
+    },
+    "sort-array-by-parity-ii" : {
+      "difficulty" : "easy",
+      "number" : 922,
+      "topic" : "two-pointers"
+    },
+    "sort-characters-by-frequency" : {
+      "difficulty" : "medium",
+      "number" : 451,
+      "topic" : "heap-priority-queue"
+    },
+    "sort-colors" : {
+      "difficulty" : "medium",
+      "number" : 75,
+      "topic" : "two-pointers"
+    },
+    "sort-list" : {
+      "difficulty" : "medium",
+      "number" : 148,
+      "topic" : "linked-list"
+    },
+    "soup-servings" : {
+      "difficulty" : "medium",
+      "number" : 808,
+      "topic" : "math-geometry"
+    },
+    "spiral-matrix" : {
+      "difficulty" : "medium",
+      "number" : 54,
+      "topic" : "arrays-hashing"
+    },
+    "spiral-matrix-ii" : {
+      "difficulty" : "medium",
+      "number" : 59,
+      "topic" : "arrays-hashing"
+    },
+    "spiral-matrix-iii" : {
+      "difficulty" : "medium",
+      "number" : 885,
+      "topic" : "arrays-hashing"
+    },
+    "split-array-into-consecutive-subsequences" : {
+      "difficulty" : "medium",
+      "number" : 659,
+      "topic" : "greedy"
+    },
+    "split-array-into-fibonacci-sequence" : {
+      "difficulty" : "medium",
+      "number" : 842,
+      "topic" : "backtracking"
+    },
+    "split-linked-list-in-parts" : {
+      "difficulty" : "medium",
+      "number" : 725,
+      "topic" : "linked-list"
+    },
+    "sqrt-x" : {
+      "topic" : "binary-search"
+    },
+    "sqrtx" : {
+      "difficulty" : "easy",
+      "number" : 69,
+      "topic" : "math-geometry"
+    },
+    "squares-of-a-sorted-array" : {
+      "difficulty" : "easy",
+      "number" : 977,
+      "topic" : "two-pointers"
+    },
+    "stone-game" : {
+      "difficulty" : "medium",
+      "number" : 877,
+      "topic" : "math-geometry"
+    },
+    "string-compression" : {
+      "difficulty" : "medium",
+      "number" : 443,
+      "topic" : "two-pointers"
+    },
+    "string-to-integer-atoi" : {
+      "difficulty" : "medium",
+      "number" : 8,
+      "topic" : "misc"
+    },
+    "string-without-aaa-or-bbb" : {
+      "difficulty" : "medium",
+      "number" : 984,
+      "topic" : "greedy"
+    },
+    "student-attendance-record-i" : {
+      "difficulty" : "easy",
+      "number" : 551,
+      "topic" : "misc"
+    },
+    "subarray-product-less-than-k" : {
+      "difficulty" : "medium",
+      "number" : 713,
+      "topic" : "binary-search"
+    },
+    "subarray-sum-equals-k" : {
+      "difficulty" : "medium",
+      "number" : 560,
+      "topic" : "arrays-hashing"
+    },
+    "subarray-sums-divisible-by-k" : {
+      "difficulty" : "medium",
+      "number" : 974,
+      "topic" : "arrays-hashing"
+    },
+    "subdomain-visit-count" : {
+      "difficulty" : "medium",
+      "number" : 811,
+      "topic" : "arrays-hashing"
+    },
+    "subsets" : {
+      "difficulty" : "medium",
+      "number" : 78,
+      "topic" : "backtracking"
+    },
+    "subsets-ii" : {
+      "difficulty" : "medium",
+      "number" : 90,
+      "topic" : "backtracking"
+    },
+    "subtree-of-another-tree" : {
+      "difficulty" : "easy",
+      "number" : 572,
+      "topic" : "trees"
+    },
+    "sum-of-even-numbers-after-queries" : {
+      "difficulty" : "medium",
+      "number" : 985,
+      "topic" : "arrays-hashing"
+    },
+    "sum-of-left-leaves" : {
+      "difficulty" : "easy",
+      "number" : 404,
+      "topic" : "trees"
+    },
+    "sum-of-root-to-leaf-binary-numbers" : {
+      "difficulty" : "easy",
+      "number" : 1022,
+      "topic" : "trees"
+    },
+    "sum-of-square-numbers" : {
+      "difficulty" : "medium",
+      "number" : 633,
+      "topic" : "math-geometry"
+    },
+    "sum-of-subarray-minimums" : {
+      "difficulty" : "medium",
+      "number" : 907,
+      "topic" : "dynamic-programming"
+    },
+    "sum-of-two-integers" : {
+      "difficulty" : "medium",
+      "number" : 371,
+      "topic" : "math-geometry"
+    },
+    "sum-root-to-leaf-numbers" : {
+      "difficulty" : "medium",
+      "number" : 129,
+      "topic" : "trees"
+    },
+    "summary-ranges" : {
+      "difficulty" : "easy",
+      "number" : 228,
+      "topic" : "arrays-hashing"
+    },
+    "super-pow" : {
+      "difficulty" : "medium",
+      "number" : 372,
+      "topic" : "math-geometry"
+    },
+    "super-ugly-number" : {
+      "difficulty" : "medium",
+      "number" : 313,
+      "topic" : "math-geometry"
+    },
+    "surface-area-of-3d-shapes" : {
+      "difficulty" : "easy",
+      "number" : 892,
+      "topic" : "math-geometry"
+    },
+    "surrounded-regions" : {
+      "difficulty" : "medium",
+      "number" : 130,
+      "topic" : "graphs"
+    },
+    "swap-adjacent-in-lr-string" : {
+      "difficulty" : "medium",
+      "number" : 777,
+      "topic" : "two-pointers"
+    },
+    "swap-nodes-in-pairs" : {
+      "difficulty" : "medium",
+      "number" : 24,
+      "topic" : "linked-list"
+    },
+    "swap-sex-of-employees" : {
+      "difficulty" : "easy",
+      "number" : 627,
+      "topic" : "misc"
+    },
+    "swim-in-rising-water" : {
+      "topic" : "misc"
+    },
+    "symmetric-tree" : {
+      "difficulty" : "easy",
+      "number" : 101,
+      "topic" : "trees"
+    },
+    "target-sum" : {
+      "difficulty" : "medium",
+      "number" : 494,
+      "topic" : "dynamic-programming"
+    },
+    "task-scheduler" : {
+      "difficulty" : "medium",
+      "number" : 621,
+      "topic" : "heap-priority-queue"
+    },
+    "teemo-attacking" : {
+      "difficulty" : "easy",
+      "number" : 495,
+      "topic" : "arrays-hashing"
+    },
+    "tenth-line" : {
+      "difficulty" : "easy",
+      "number" : 195,
+      "topic" : "misc"
+    },
+    "third-maximum-number" : {
+      "difficulty" : "easy",
+      "number" : 414,
+      "topic" : "arrays-hashing"
+    },
+    "time-based-key-value-store" : {
+      "difficulty" : "medium",
+      "number" : 981,
+      "topic" : "binary-search"
+    },
+    "time-needed-to-inform-all-employees" : {
+      "difficulty" : "medium",
+      "number" : 1376,
+      "topic" : "trees"
+    },
+    "to-lower-case" : {
+      "difficulty" : "easy",
+      "number" : 709,
+      "topic" : "misc"
+    },
+    "toeplitz-matrix" : {
+      "difficulty" : "easy",
+      "number" : 766,
+      "topic" : "arrays-hashing"
+    },
+    "top-k-frequent-elements" : {
+      "difficulty" : "medium",
+      "number" : 347,
+      "topic" : "heap-priority-queue"
+    },
+    "top-k-frequent-words" : {
+      "difficulty" : "medium",
+      "number" : 692,
+      "topic" : "tries"
+    },
+    "total-hamming-distance" : {
+      "difficulty" : "medium",
+      "number" : 477,
+      "topic" : "math-geometry"
+    },
+    "transpose-file" : {
+      "difficulty" : "medium",
+      "number" : 194,
+      "topic" : "misc"
+    },
+    "transpose-matrix" : {
+      "difficulty" : "easy",
+      "number" : 867,
+      "topic" : "arrays-hashing"
+    },
+    "trapping-rain-water" : {
+      "topic" : "two-pointers"
+    },
+    "tree-node" : {
+      "difficulty" : "medium",
+      "number" : 608,
+      "topic" : "misc"
+    },
+    "triangle" : {
+      "difficulty" : "medium",
+      "number" : 120,
+      "topic" : "dynamic-programming"
+    },
+    "triangle-judgement" : {
+      "difficulty" : "easy",
+      "number" : 610,
+      "topic" : "misc"
+    },
+    "trim-a-binary-search-tree" : {
+      "difficulty" : "medium",
+      "number" : 669,
+      "topic" : "trees"
+    },
+    "two-sum" : {
+      "difficulty" : "easy",
+      "number" : 1,
+      "topic" : "arrays-hashing"
+    },
+    "two-sum-ii-input-array-is-sorted" : {
+      "difficulty" : "medium",
+      "number" : 167,
+      "topic" : "two-pointers"
+    },
+    "two-sum-iv-input-is-a-bst" : {
+      "difficulty" : "easy",
+      "number" : 653,
+      "topic" : "two-pointers"
+    },
+    "ugly-number" : {
+      "difficulty" : "easy",
+      "number" : 263,
+      "topic" : "math-geometry"
+    },
+    "ugly-number-ii" : {
+      "difficulty" : "medium",
+      "number" : 264,
+      "topic" : "math-geometry"
+    },
+    "uncommon-words-from-two-sentences" : {
+      "difficulty" : "easy",
+      "number" : 884,
+      "topic" : "arrays-hashing"
+    },
+    "unique-binary-search-trees" : {
+      "difficulty" : "medium",
+      "number" : 96,
+      "topic" : "math-geometry"
+    },
+    "unique-binary-search-trees-ii" : {
+      "difficulty" : "medium",
+      "number" : 95,
+      "topic" : "dynamic-programming"
+    },
+    "unique-email-addresses" : {
+      "difficulty" : "easy",
+      "number" : 929,
+      "topic" : "arrays-hashing"
+    },
+    "unique-morse-code-words" : {
+      "difficulty" : "easy",
+      "number" : 804,
+      "topic" : "arrays-hashing"
+    },
+    "unique-paths" : {
+      "difficulty" : "medium",
+      "number" : 62,
+      "topic" : "dynamic-programming"
+    },
+    "unique-paths-ii" : {
+      "difficulty" : "medium",
+      "number" : 63,
+      "topic" : "dynamic-programming"
+    },
+    "unique-substrings-in-wraparound-string" : {
+      "difficulty" : "medium",
+      "number" : 467,
+      "topic" : "dynamic-programming"
+    },
+    "univalued-binary-tree" : {
+      "difficulty" : "easy",
+      "number" : 965,
+      "topic" : "trees"
+    },
+    "utf-8-validation" : {
+      "difficulty" : "medium",
+      "number" : 393,
+      "topic" : "bit-manipulation"
+    },
+    "valid-anagram" : {
+      "difficulty" : "easy",
+      "number" : 242,
+      "topic" : "arrays-hashing"
+    },
+    "valid-mountain-array" : {
+      "difficulty" : "easy",
+      "number" : 941,
+      "topic" : "arrays-hashing"
+    },
+    "valid-palindrome" : {
+      "difficulty" : "easy",
+      "number" : 125,
+      "topic" : "two-pointers"
+    },
+    "valid-palindrome-ii" : {
+      "difficulty" : "easy",
+      "number" : 680,
+      "topic" : "two-pointers"
+    },
+    "valid-parentheses" : {
+      "difficulty" : "easy",
+      "number" : 20,
+      "topic" : "stack"
+    },
+    "valid-parenthesis-string" : {
+      "difficulty" : "medium",
+      "number" : 678,
+      "topic" : "dynamic-programming"
+    },
+    "valid-perfect-square" : {
+      "difficulty" : "easy",
+      "number" : 367,
+      "topic" : "math-geometry"
+    },
+    "valid-phone-numbers" : {
+      "difficulty" : "easy",
+      "number" : 193,
+      "topic" : "misc"
+    },
+    "valid-square" : {
+      "difficulty" : "medium",
+      "number" : 593,
+      "topic" : "math-geometry"
+    },
+    "valid-sudoku" : {
+      "difficulty" : "medium",
+      "number" : 36,
+      "topic" : "arrays-hashing"
+    },
+    "valid-tic-tac-toe-state" : {
+      "difficulty" : "medium",
+      "number" : 794,
+      "topic" : "arrays-hashing"
+    },
+    "valid-triangle-number" : {
+      "difficulty" : "medium",
+      "number" : 611,
+      "topic" : "two-pointers"
+    },
+    "validate-binary-search-tree" : {
+      "difficulty" : "medium",
+      "number" : 98,
+      "topic" : "trees"
+    },
+    "validate-ip-address" : {
+      "difficulty" : "medium",
+      "number" : 468,
+      "topic" : "misc"
+    },
+    "validate-stack-sequences" : {
+      "difficulty" : "medium",
+      "number" : 946,
+      "topic" : "stack"
+    },
+    "verify-preorder-serialization-of-a-binary-tree" : {
+      "difficulty" : "medium",
+      "number" : 331,
+      "topic" : "stack"
+    },
+    "verifying-an-alien-dictionary" : {
+      "difficulty" : "easy",
+      "number" : 953,
+      "topic" : "arrays-hashing"
+    },
+    "video-stitching" : {
+      "difficulty" : "medium",
+      "number" : 1024,
+      "topic" : "dynamic-programming"
+    },
+    "vowel-spellchecker" : {
+      "difficulty" : "medium",
+      "number" : 966,
+      "topic" : "arrays-hashing"
+    },
+    "walking-robot-simulation" : {
+      "difficulty" : "medium",
+      "number" : 874,
+      "topic" : "arrays-hashing"
+    },
+    "walls-and-gates" : {
+      "topic" : "misc"
+    },
+    "water-and-jug-problem" : {
+      "difficulty" : "medium",
+      "number" : 365,
+      "topic" : "math-geometry"
+    },
+    "wiggle-sort-ii" : {
+      "difficulty" : "medium",
+      "number" : 324,
+      "topic" : "greedy"
+    },
+    "wiggle-subsequence" : {
+      "difficulty" : "medium",
+      "number" : 376,
+      "topic" : "dynamic-programming"
+    },
+    "word-break" : {
+      "difficulty" : "medium",
+      "number" : 139,
+      "topic" : "dynamic-programming"
+    },
+    "word-frequency" : {
+      "difficulty" : "medium",
+      "number" : 192,
+      "topic" : "misc"
+    },
+    "word-ladder" : {
+      "topic" : "misc"
+    },
+    "word-ladder-ii" : {
+      "topic" : "misc"
+    },
+    "word-pattern" : {
+      "difficulty" : "easy",
+      "number" : 290,
+      "topic" : "arrays-hashing"
+    },
+    "word-search" : {
+      "difficulty" : "medium",
+      "number" : 79,
+      "topic" : "backtracking"
+    },
+    "word-search-ii" : {
+      "topic" : "tries"
+    },
+    "word-subsets" : {
+      "difficulty" : "medium",
+      "number" : 916,
+      "topic" : "arrays-hashing"
+    },
+    "x-of-a-kind-in-a-deck-of-cards" : {
+      "difficulty" : "easy",
+      "number" : 914,
+      "topic" : "math-geometry"
+    },
+    "zigzag-conversion" : {
+      "difficulty" : "medium",
+      "number" : 6,
+      "topic" : "misc"
+    }
+  },
+  "topics" : [
+    {
+      "difficulties" : {
+        "easy" : 43,
+        "medium" : 58,
+        "unknown" : 1
+      },
+      "file" : "arrays-hashing.json",
+      "id" : "arrays-hashing",
+      "name" : "Arrays & Hashing",
+      "problemCount" : 102
+    },
+    {
+      "difficulties" : {
+        "easy" : 26,
+        "medium" : 40,
+        "unknown" : 1
+      },
+      "file" : "two-pointers.json",
+      "id" : "two-pointers",
+      "name" : "Two Pointers",
+      "problemCount" : 67
+    },
+    {
+      "difficulties" : {
+        "easy" : 3,
+        "medium" : 7,
+        "unknown" : 2
+      },
+      "file" : "sliding-window.json",
+      "id" : "sliding-window",
+      "name" : "Sliding Window",
+      "problemCount" : 12
+    },
+    {
+      "difficulties" : {
+        "easy" : 12,
+        "medium" : 26,
+        "unknown" : 2
+      },
+      "file" : "stack.json",
+      "id" : "stack",
+      "name" : "Stack",
+      "problemCount" : 40
+    },
+    {
+      "difficulties" : {
+        "medium" : 9,
+        "unknown" : 1
+      },
+      "file" : "tries.json",
+      "id" : "tries",
+      "name" : "Tries",
+      "problemCount" : 10
+    },
+    {
+      "difficulties" : {
+        "easy" : 7,
+        "medium" : 24,
+        "unknown" : 1
+      },
+      "file" : "binary-search.json",
+      "id" : "binary-search",
+      "name" : "Binary Search",
+      "problemCount" : 32
+    },
+    {
+      "difficulties" : {
+        "easy" : 6,
+        "medium" : 17
+      },
+      "file" : "greedy.json",
+      "id" : "greedy",
+      "name" : "Greedy",
+      "problemCount" : 23
+    },
+    {
+      "difficulties" : {
+        "easy" : 10,
+        "medium" : 28
+      },
+      "file" : "linked-list.json",
+      "id" : "linked-list",
+      "name" : "Linked List",
+      "problemCount" : 38
+    },
+    {
+      "difficulties" : {
+        "medium" : 3,
+        "unknown" : 2
+      },
+      "file" : "intervals.json",
+      "id" : "intervals",
+      "name" : "Intervals",
+      "problemCount" : 5
+    },
+    {
+      "difficulties" : {
+        "easy" : 25,
+        "medium" : 44
+      },
+      "file" : "trees.json",
+      "id" : "trees",
+      "name" : "Trees",
+      "problemCount" : 69
+    },
+    {
+      "difficulties" : {
+        "easy" : 3,
+        "medium" : 11,
+        "unknown" : 1
+      },
+      "file" : "heap-priority-queue.json",
+      "id" : "heap-priority-queue",
+      "name" : "Heap \/ Priority Queue",
+      "problemCount" : 15
+    },
+    {
+      "difficulties" : {
+        "easy" : 2,
+        "medium" : 24,
+        "unknown" : 1
+      },
+      "file" : "backtracking.json",
+      "id" : "backtracking",
+      "name" : "Backtracking",
+      "problemCount" : 27
+    },
+    {
+      "difficulties" : {
+        "easy" : 1,
+        "medium" : 21
+      },
+      "file" : "graphs.json",
+      "id" : "graphs",
+      "name" : "Graphs",
+      "problemCount" : 22
+    },
+    {
+      "difficulties" : {
+        "easy" : 7,
+        "medium" : 66,
+        "unknown" : 1
+      },
+      "file" : "dynamic-programming.json",
+      "id" : "dynamic-programming",
+      "name" : "Dynamic Programming",
+      "problemCount" : 74
+    },
+    {
+      "difficulties" : {
+        "easy" : 37,
+        "medium" : 77
+      },
+      "file" : "math-geometry.json",
+      "id" : "math-geometry",
+      "name" : "Math & Geometry",
+      "problemCount" : 114
+    },
+    {
+      "difficulties" : {
+        "easy" : 11,
+        "medium" : 8
+      },
+      "file" : "bit-manipulation.json",
+      "id" : "bit-manipulation",
+      "name" : "Bit Manipulation",
+      "problemCount" : 19
+    },
+    {
+      "difficulties" : {
+        "easy" : 32,
+        "medium" : 19,
+        "unknown" : 16
+      },
+      "file" : "misc.json",
+      "id" : "misc",
+      "name" : "Miscellaneous",
+      "problemCount" : 67
+    }
+  ],
+  "totalProblems" : 736,
+  "version" : "2.0.0"
+}

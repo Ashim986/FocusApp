@@ -1,4 +1,7 @@
 import SwiftUI
+#if canImport(AppKit)
+import AppKit
+#endif
 
 struct ConsoleOutputView: View {
     let output: String
@@ -127,6 +130,14 @@ struct ConsoleLineView: View {
                 .textSelection(.enabled)
 
             Spacer(minLength: 0)
+
+            Button(action: copyLine) {
+                Image(systemName: "doc.on.doc")
+                    .font(.system(size: 9))
+                    .foregroundColor(Color.appGray500)
+            }
+            .buttonStyle(.plain)
+            .padding(.leading, 8)
         }
         .padding(.vertical, 2)
         .background(
@@ -134,5 +145,12 @@ struct ConsoleLineView: View {
             line.type == .warning ? Color.appAmber.opacity(0.1) :
             Color.clear
         )
+    }
+
+    private func copyLine() {
+        #if canImport(AppKit)
+        NSPasteboard.general.clearContents()
+        NSPasteboard.general.setString(line.content, forType: .string)
+        #endif
     }
 }

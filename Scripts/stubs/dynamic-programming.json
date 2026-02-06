@@ -1,0 +1,172 @@
+{
+  "minimum-path-sum": {
+    "summary": "Find the minimum sum path from top-left to bottom-right in a grid, moving only right or down. Classic 2D dynamic programming - each cell's minimum sum is its value plus min of top or left cell.",
+    "approaches": [
+      {
+        "name": "2D Dynamic Programming",
+        "intuition": "For each cell, the minimum path sum to reach it is the cell's value plus the minimum of the path sum from above or from the left. Build the solution bottom-up.",
+        "approach": "1. Create a dp table same size as grid\n2. Initialize dp[0][0] = grid[0][0]\n3. Fill first row (can only come from left)\n4. Fill first column (can only come from above)\n5. For other cells: dp[i][j] = grid[i][j] + min(dp[i-1][j], dp[i][j-1])\n6. Return dp[m-1][n-1]",
+        "explanation": "Since we can only move right or down, each cell can only be reached from the cell above or to the left. We compute the minimum cumulative sum for each cell. The first row and column are special cases since they have only one possible path. The answer is the value in the bottom-right cell of our dp table.",
+        "code": "func minPathSum(_ grid: [[Int]]) -> Int {\n    let m = grid.count\n    let n = grid[0].count\n    var dp = Array(repeating: Array(repeating: 0, count: n), count: m)\n    \n    dp[0][0] = grid[0][0]\n    \n    // Fill first row\n    for j in 1..<n {\n        dp[0][j] = dp[0][j-1] + grid[0][j]\n    }\n    \n    // Fill first column\n    for i in 1..<m {\n        dp[i][0] = dp[i-1][0] + grid[i][0]\n    }\n    \n    // Fill rest\n    for i in 1..<m {\n        for j in 1..<n {\n            dp[i][j] = grid[i][j] + min(dp[i-1][j], dp[i][j-1])\n        }\n    }\n    \n    return dp[m-1][n-1]\n}",
+        "complexity": {
+          "time": "O(m \u00d7 n)",
+          "space": "O(m \u00d7 n)",
+          "timeExplanation": "Visit each cell exactly once",
+          "spaceExplanation": "DP table has same dimensions as input grid"
+        },
+        "testCases": [
+          {
+            "input": "grid = [[1,3,1],[1,5,1],[4,2,1]]",
+            "expectedOutput": "7",
+            "explanation": "Path 1\u21923\u21921\u21921\u21921 = 7. Path goes right, right, down, down."
+          },
+          {
+            "input": "grid = [[1,2,3],[4,5,6]]",
+            "expectedOutput": "12",
+            "explanation": "Path 1\u21922\u21923\u21926 = 12"
+          }
+        ]
+      },
+      {
+        "name": "Space-Optimized DP (1D Array)",
+        "intuition": "We only need the previous row to compute the current row. Use a 1D array and update it in-place, reducing space from O(m\u00d7n) to O(n).",
+        "approach": "1. Use a 1D dp array of size n\n2. Initialize with first row's cumulative sums\n3. For each subsequent row, update dp left-to-right\n4. dp[j] = grid[i][j] + min(dp[j], dp[j-1])\n5. Return dp[n-1]",
+        "explanation": "When computing dp[i][j], we need dp[i-1][j] (above) and dp[i][j-1] (left). In our 1D array, dp[j] still holds the value from the previous row (above), and dp[j-1] was just updated for the current row (left). By processing left-to-right, we always have both values available.",
+        "code": "func minPathSum(_ grid: [[Int]]) -> Int {\n    let m = grid.count\n    let n = grid[0].count\n    var dp = [Int](repeating: 0, count: n)\n    \n    // Initialize with first row\n    dp[0] = grid[0][0]\n    for j in 1..<n {\n        dp[j] = dp[j-1] + grid[0][j]\n    }\n    \n    // Process remaining rows\n    for i in 1..<m {\n        dp[0] += grid[i][0]  // First column: only from above\n        for j in 1..<n {\n            dp[j] = grid[i][j] + min(dp[j], dp[j-1])\n        }\n    }\n    \n    return dp[n-1]\n}",
+        "complexity": {
+          "time": "O(m \u00d7 n)",
+          "space": "O(n)",
+          "timeExplanation": "Still visit each cell once",
+          "spaceExplanation": "Only store one row at a time"
+        },
+        "testCases": [
+          {
+            "input": "grid = [[1,3,1],[1,5,1],[4,2,1]]",
+            "expectedOutput": "7",
+            "explanation": "Same result with optimized space"
+          },
+          {
+            "input": "grid = [[1]]",
+            "expectedOutput": "1",
+            "explanation": "Single cell grid"
+          }
+        ]
+      }
+    ],
+    "relatedProblems": [
+      "unique-paths",
+      "unique-paths-ii",
+      "dungeon-game",
+      "cherry-pickup"
+    ]
+  },
+  "target-sum": {
+    "summary": "Find number of ways to assign + or - to elements to reach target sum. Use DP: convert to subset sum problem where we find subsets summing to (total + target) / 2.",
+    "approaches": [
+      {
+        "name": "2D DP (Subset Sum)",
+        "intuition": "If we assign + to some numbers and - to others: P - N = target, P + N = total. So P = (total + target) / 2. Count subsets summing to P.",
+        "approach": "1. Calculate sum = (total + target) / 2\n2. If (total + target) is odd or target > total, return 0\n3. dp[i][j] = ways to get sum j using first i elements\n4. dp[i][j] = dp[i-1][j] + dp[i-1][j-nums[i]] (exclude or include)\n5. Return dp[n][sum]",
+        "explanation": "We transform the problem: instead of +/- signs, find a subset P where sum(P) = (total + target)/2. The remaining elements form N = total - P. Then P - N = 2P - total = target. This is a classic 0/1 knapsack counting problem.",
+        "code": "func findTargetSumWays(_ nums: [Int], _ target: Int) -> Int {\n    let total = nums.reduce(0, +)\n    if (total + target) % 2 != 0 || abs(target) > total {\n        return 0\n    }\n    \n    let sum = (total + target) / 2\n    var dp = [Int](repeating: 0, count: sum + 1)\n    dp[0] = 1\n    \n    for num in nums {\n        for j in stride(from: sum, through: num, by: -1) {\n            dp[j] += dp[j - num]\n        }\n    }\n    \n    return dp[sum]\n}",
+        "complexity": {
+          "time": "O(n \u00d7 sum)",
+          "space": "O(sum)",
+          "timeExplanation": "Process each number against all possible sums",
+          "spaceExplanation": "1D DP array of size sum+1"
+        },
+        "testCases": [
+          {
+            "input": "nums = [1,1,1,1,1], target = 3",
+            "expectedOutput": "5",
+            "explanation": "5 ways: -1+1+1+1+1, +1-1+1+1+1, etc."
+          },
+          {
+            "input": "nums = [1], target = 1",
+            "expectedOutput": "1",
+            "explanation": "Only +1 = 1"
+          }
+        ]
+      },
+      {
+        "name": "Memoized DFS",
+        "intuition": "Try both + and - for each number. Memoize (index, currentSum) to avoid recomputation.",
+        "approach": "1. DFS with parameters (index, currentSum)\n2. Base case: if index == n, return 1 if sum == target, else 0\n3. Try adding and subtracting nums[index]\n4. Memoize results",
+        "explanation": "Direct simulation of the problem. At each step, we can add or subtract the current number. Memoization prevents exponential blowup by caching results for (index, sum) pairs we've seen.",
+        "code": "func findTargetSumWays(_ nums: [Int], _ target: Int) -> Int {\n    var memo: [String: Int] = [:]\n    \n    func dfs(_ i: Int, _ sum: Int) -> Int {\n        if i == nums.count {\n            return sum == target ? 1 : 0\n        }\n        \n        let key = \"\\(i),\\(sum)\"\n        if let cached = memo[key] { return cached }\n        \n        let result = dfs(i + 1, sum + nums[i]) + dfs(i + 1, sum - nums[i])\n        memo[key] = result\n        return result\n    }\n    \n    return dfs(0, 0)\n}",
+        "complexity": {
+          "time": "O(n \u00d7 totalSum)",
+          "space": "O(n \u00d7 totalSum)",
+          "timeExplanation": "Each (index, sum) pair computed once",
+          "spaceExplanation": "Memoization table for all states"
+        },
+        "testCases": [
+          {
+            "input": "nums = [1,1,1,1,1], target = 3",
+            "expectedOutput": "5",
+            "explanation": "Same result via memoized recursion"
+          }
+        ]
+      }
+    ],
+    "relatedProblems": [
+      "partition-equal-subset-sum",
+      "last-stone-weight-ii"
+    ]
+  },
+  "partition-equal-subset-sum": {
+    "summary": "Determine if array can be partitioned into two subsets with equal sum. This is subset sum problem: can we find subset summing to total/2?",
+    "approaches": [
+      {
+        "name": "DP (Subset Sum)",
+        "intuition": "If total sum is odd, impossible. Otherwise, find if any subset sums to total/2. Classic 0/1 knapsack.",
+        "approach": "1. If sum is odd, return false\n2. target = sum / 2\n3. dp[j] = true if we can make sum j\n4. For each num, update dp from right to left\n5. Return dp[target]",
+        "explanation": "We need to find if a subset sums to exactly half the total. dp[j] represents whether sum j is achievable. For each number, we update achievable sums by including it. Process right-to-left to avoid using same number twice.",
+        "code": "func canPartition(_ nums: [Int]) -> Bool {\n    let total = nums.reduce(0, +)\n    if total % 2 != 0 { return false }\n    \n    let target = total / 2\n    var dp = [Bool](repeating: false, count: target + 1)\n    dp[0] = true\n    \n    for num in nums {\n        for j in stride(from: target, through: num, by: -1) {\n            dp[j] = dp[j] || dp[j - num]\n        }\n    }\n    \n    return dp[target]\n}",
+        "complexity": {
+          "time": "O(n \u00d7 sum)",
+          "space": "O(sum)",
+          "timeExplanation": "Process each number against possible sums",
+          "spaceExplanation": "Boolean array of size sum/2"
+        },
+        "testCases": [
+          {
+            "input": "nums = [1,5,11,5]",
+            "expectedOutput": "true",
+            "explanation": "Partition: [1,5,5] and [11], both sum to 11"
+          },
+          {
+            "input": "nums = [1,2,3,5]",
+            "expectedOutput": "false",
+            "explanation": "Total is 11 (odd), can't split equally"
+          }
+        ]
+      },
+      {
+        "name": "Bitset Optimization",
+        "intuition": "Use bitset where bit j is set if sum j is achievable. Shift and OR to update all sums at once.",
+        "approach": "1. Use integer/bitset where bit j means sum j achievable\n2. For each num, bits |= bits << num\n3. Check if target bit is set",
+        "explanation": "This is a clever optimization. If bits represents achievable sums, then bits << num shifts all achievable sums up by num. ORing with original gives all sums achievable with or without including num. Very fast in practice.",
+        "code": "func canPartition(_ nums: [Int]) -> Bool {\n    let total = nums.reduce(0, +)\n    if total % 2 != 0 { return false }\n    \n    let target = total / 2\n    var bits = Set<Int>([0])\n    \n    for num in nums {\n        var newBits = Set<Int>()\n        for b in bits {\n            let newSum = b + num\n            if newSum <= target {\n                newBits.insert(newSum)\n            }\n        }\n        bits.formUnion(newBits)\n        if bits.contains(target) { return true }\n    }\n    \n    return bits.contains(target)\n}",
+        "complexity": {
+          "time": "O(n \u00d7 sum)",
+          "space": "O(sum)",
+          "timeExplanation": "Similar to DP but with set operations",
+          "spaceExplanation": "Set of achievable sums"
+        },
+        "testCases": [
+          {
+            "input": "nums = [1,5,11,5]",
+            "expectedOutput": "true",
+            "explanation": "Early exit when target found"
+          }
+        ]
+      }
+    ],
+    "relatedProblems": [
+      "target-sum",
+      "last-stone-weight-ii",
+      "partition-to-k-equal-sum-subsets"
+    ]
+  }
+}

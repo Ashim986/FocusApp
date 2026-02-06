@@ -15,30 +15,112 @@ extension DataJourneyStructureCanvasView {
         var fallback: TraceStructure?
         for key in keys {
             guard let value = event.values[key] else { continue }
-            if case .list(let list) = value {
-                lists.append(NamedTraceList(name: key, list: list))
-                continue
-            }
-            if case .array(let items) = value {
-                if let listArray = listArrayStructure(from: items) {
-                    return .listArray(listArray)
-                }
-                if let adjacency = graphAdjacency(from: items) {
-                    fallback = fallback ?? .graph(adjacency)
-                } else {
-                    fallback = fallback ?? .array(items)
-                }
-                continue
-            }
-            if case .tree(let tree) = value {
-                fallback = fallback ?? .tree(tree)
-                continue
-            }
-            if case .object(let map) = value {
-                fallback = fallback ?? .dictionary(dictionaryEntries(from: map))
-            }
+            if handleList(value: value, name: key, lists: &lists) { continue }
+            if handleTyped(value: value, fallback: &fallback) { continue }
+            if handleArray(value: value, name: key, fallback: &fallback) { continue }
+            if handleTree(value: value, fallback: &fallback) { continue }
+            if handleObject(value: value, fallback: &fallback) { continue }
+            if handleString(value: value, fallback: &fallback) { continue }
         }
         return finalizeStructure(lists: lists, fallback: fallback)
+    }
+
+    private static func handleList(
+        value: TraceValue,
+        name: String,
+        lists: inout [NamedTraceList]
+    ) -> Bool {
+        guard case .list(let list) = value else { return false }
+        lists.append(NamedTraceList(name: name, list: list))
+        return true
+    }
+
+    private static func handleTyped(
+        value: TraceValue,
+        fallback: inout TraceStructure?
+    ) -> Bool {
+        guard case .typed(let type, let inner) = value,
+              let typedItems = typedSequenceItems(from: inner) else { return false }
+        let lowered = type.lowercased()
+        if lowered == "set" {
+            fallback = fallback ?? .set(typedItems)
+            return true
+        }
+        if lowered == "stack" {
+            fallback = fallback ?? .stack(typedItems)
+            return true
+        }
+        if lowered == "queue" {
+            fallback = fallback ?? .queue(typedItems)
+            return true
+        }
+        return false
+    }
+
+    private static func handleArray(
+        value: TraceValue,
+        name: String,
+        fallback: inout TraceStructure?
+    ) -> Bool {
+        guard case .array(let items) = value else { return false }
+        let loweredName = name.lowercased()
+        if loweredName.contains("stack") {
+            fallback = fallback ?? .stack(items)
+            return true
+        }
+        if loweredName.contains("queue") {
+            fallback = fallback ?? .queue(items)
+            return true
+        }
+        if let listArray = listArrayStructure(from: items) {
+            fallback = .listArray(listArray)
+            return true
+        }
+        if let adjacency = graphAdjacency(from: items) {
+            fallback = fallback ?? .graph(adjacency)
+        } else {
+            fallback = fallback ?? .array(items)
+        }
+        return true
+    }
+
+    private static func handleTree(
+        value: TraceValue,
+        fallback: inout TraceStructure?
+    ) -> Bool {
+        guard case .tree(let tree) = value else { return false }
+        fallback = fallback ?? .tree(tree)
+        return true
+    }
+
+    private static func handleObject(
+        value: TraceValue,
+        fallback: inout TraceStructure?
+    ) -> Bool {
+        guard case .object(let map) = value else { return false }
+        fallback = fallback ?? .dictionary(dictionaryEntries(from: map))
+        return true
+    }
+
+    private static func handleString(
+        value: TraceValue,
+        fallback: inout TraceStructure?
+    ) -> Bool {
+        guard case .string(let stringValue) = value else { return false }
+        let items = stringValue.map { TraceValue.string(String($0)) }
+        fallback = fallback ?? .array(items)
+        return true
+    }
+
+    private static func typedSequenceItems(from value: TraceValue) -> [TraceValue]? {
+        switch value {
+        case .array(let items):
+            return items
+        case .list(let list):
+            return list.nodes.map(\.value)
+        default:
+            return nil
+        }
     }
 
     private static func finalizeStructure(

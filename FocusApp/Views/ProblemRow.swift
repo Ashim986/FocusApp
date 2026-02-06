@@ -30,10 +30,18 @@ struct ProblemRow: View {
 
             // Problem name (clickable)
             Button(action: onSelect, label: {
-                Text(problem.displayName)
-                    .font(.system(size: 14))
-                    .foregroundColor(isCompleted ? Color.appGray400 : Color.appGray700)
-                    .strikethrough(isCompleted, color: Color.appGray400)
+                HStack(spacing: 4) {
+                    Text(problem.displayName)
+                        .font(.system(size: 14))
+                        .foregroundColor(isCompleted ? Color.appGray500 : Color.appGray700)
+                        .lineLimit(1)
+                        .truncationMode(.tail)
+                        .layoutPriority(1)
+
+                    Image(systemName: "chevron.right")
+                        .font(.system(size: 9, weight: .semibold))
+                        .foregroundColor(Color.appGray500)
+                }
             })
             .buttonStyle(.plain)
             .onHover { hovering in

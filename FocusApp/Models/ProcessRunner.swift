@@ -209,7 +209,7 @@ final class ProcessRunner: ProcessRunning {
 
     private func truncateIfNeeded(_ text: String) -> String {
         if text.count > maxOutputLength {
-            return String(text.prefix(maxOutputLength)) + "\n... (output truncated)"
+            return String(text.prefix(maxOutputLength)) + "\n[FocusApp] Output truncated (exceeded limit)"
         }
         return text
     }

@@ -70,7 +70,13 @@ final class AppDataTests: XCTestCase {
         data.leetCodeUsername = "testuser"
         data.savedSolutions["key|swift"] = "code"
         data.submissions["two-sum"] = [
-            CodeSubmission(id: UUID(), languageSlug: "swift", code: "class Solution {}", createdAt: Date(), algorithmTag: "Two pointers")
+            CodeSubmission(
+                id: UUID(),
+                languageSlug: "swift",
+                code: "class Solution {}",
+                createdAt: Date(),
+                algorithmTag: "Two pointers"
+            )
         ]
 
         let encoded = try JSONEncoder().encode(data)

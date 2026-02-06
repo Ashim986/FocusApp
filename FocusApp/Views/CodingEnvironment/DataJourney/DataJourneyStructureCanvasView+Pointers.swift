@@ -14,6 +14,8 @@ extension DataJourneyStructureCanvasView {
             return treePointers(in: selectedEvent)
         case .array(let items):
             return arrayPointers(in: selectedEvent, items: items)
+        case .matrix:
+            return []
         case .graph(let adjacency):
             return graphPointers(in: selectedEvent, adjacency: adjacency)
         case .dictionary(let entries):
@@ -270,5 +272,26 @@ extension DataJourneyStructureCanvasView {
             PointerMarker(name: "front", index: firstIndex),
             PointerMarker(name: "back", index: lastIndex)
         ]
+    }
+
+    // MARK: - Matrix Pointers
+
+    func matrixPointerCell() -> MatrixPointerCell? {
+        guard let selectedEvent else { return nil }
+        let rowNames = ["i", "r", "row", "x"]
+        let colNames = ["j", "c", "col", "y"]
+        var row: Int?
+        var col: Int?
+        for (key, value) in selectedEvent.values {
+            guard case .number(let number, let isInt) = value, isInt else { continue }
+            let lowered = key.lowercased()
+            if row == nil, rowNames.contains(lowered) {
+                row = Int(number)
+            } else if col == nil, colNames.contains(lowered) {
+                col = Int(number)
+            }
+        }
+        guard let row, let col else { return nil }
+        return MatrixPointerCell(row: row, col: col)
     }
 }

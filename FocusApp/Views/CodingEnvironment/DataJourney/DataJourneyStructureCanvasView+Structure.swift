@@ -76,6 +76,10 @@ extension DataJourneyStructureCanvasView {
             fallback = .listArray(listArray)
             return true
         }
+        if let grid = matrixStructure(from: items, name: loweredName) {
+            fallback = fallback ?? .matrix(grid)
+            return true
+        }
         if let adjacency = graphAdjacency(from: items) {
             fallback = fallback ?? .graph(adjacency)
         } else {
@@ -189,6 +193,48 @@ extension DataJourneyStructureCanvasView {
         map.keys.sorted().compactMap { key in
             guard let value = map[key] else { return nil }
             return DictionaryEntry(key: key, value: value)
+        }
+    }
+
+    // MARK: - Matrix Detection
+
+    static func matrixStructure(
+        from items: [TraceValue],
+        name: String
+    ) -> [[TraceValue]]? {
+        guard items.count >= 2 else { return nil }
+        var rows: [[TraceValue]] = []
+        for item in items {
+            guard case .array(let inner) = item, !inner.isEmpty else { return nil }
+            rows.append(inner)
+        }
+        let colCount = rows[0].count
+        guard rows.allSatisfy({ $0.count == colCount }) else { return nil }
+        let matrixNames = ["grid", "board", "matrix", "dp", "table", "maze", "map"]
+        let nameHint = matrixNames.contains(where: { name.contains($0) })
+        if nameHint { return rows }
+        let allPrimitive = rows.allSatisfy { row in
+            row.allSatisfy { isPrimitive($0) }
+        }
+        guard allPrimitive else { return nil }
+        let allBinaryInt = rows.allSatisfy { row in
+            row.allSatisfy { value in
+                guard case .number(let num, let isInt) = value, isInt else { return false }
+                return num == 0 || num == 1
+            }
+        }
+        if allBinaryInt && colCount == rows.count {
+            return nil
+        }
+        return rows
+    }
+
+    private static func isPrimitive(_ value: TraceValue) -> Bool {
+        switch value {
+        case .null, .bool, .number, .string:
+            return true
+        default:
+            return false
         }
     }
 }

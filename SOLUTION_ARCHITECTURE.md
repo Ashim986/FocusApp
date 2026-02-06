@@ -2,11 +2,16 @@
 
 ## Overview
 
-This document outlines the architecture for storing and serving 2000+ LeetCode problem solutions with comprehensive explanations, multiple approaches, and complexity analysis.
+This document outlines the architecture for storing and serving LeetCode problem solutions with comprehensive explanations, multiple approaches, and complexity analysis.
+
+**Current bundle metadata (2026-02-06):**
+- Version: `2.0.0`
+- Total problems: `736`
+- Topics: `17` (see `FocusApp/Resources/Solutions/index.json`)
 
 ## Goals
 
-1. **Scalability**: Support 800+ Easy and 1500+ Medium problems
+1. **Scalability**: Support hundreds of problems with room to grow
 2. **Performance**: Fast load times, lazy loading on demand
 3. **Maintainability**: Easy to add/update solutions
 4. **Offline Support**: Solutions available without internet
@@ -41,7 +46,7 @@ FocusApp/Resources/Solutions/
 └── misc.json                     # Uncategorized
 ```
 
-**Estimated Total Size**: 8-12 MB (compressed in app bundle)
+**Current Total**: 736 problems across 17 topics (see `index.json`).
 
 ### Layer 2: SwiftData Cache (Runtime Performance)
 
@@ -103,8 +108,8 @@ class SolutionIndex {
 // index.json
 {
   "version": "2.0.0",
-  "lastUpdated": "2026-02-05",
-  "totalProblems": 2300,
+  "lastUpdated": "2026-02-06",
+  "totalProblems": 736,
   "topics": [
     {
       "id": "arrays-hashing",
@@ -233,7 +238,7 @@ class SolutionIndex {
 | Intervals | 28 | 230 KB |
 | Math & Geometry | 42 | 350 KB |
 | Bit Manipulation | 32 | 260 KB |
-| **Total** | **~900** | **~7 MB** |
+| **Total** | **~736** | **~7 MB** |
 
 ---
 

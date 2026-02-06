@@ -127,19 +127,28 @@ extension CodingEnvironmentPresenter {
                     } else {
                         let normalizedExpected = testCase.expectedOutput
                             .trimmingCharacters(in: .whitespacesAndNewlines)
-                        let normalizedActual = self.normalizeOutputForComparison(
+                        let normalized = self.normalizeOutputForComparison(
                             parsed.cleanOutput,
                             expected: normalizedExpected
                         )
-                        updatedTestCases[index].actualOutput = normalizedActual
-                        updatedTestCases[index].passed = normalizedActual == normalizedExpected
+                        updatedTestCases[index].actualOutput = normalized.displayValue
+                        if normalizedExpected.isEmpty {
+                            updatedTestCases[index].passed = nil
+                        } else {
+                            updatedTestCases[index].passed = normalized.comparisonValue == normalizedExpected
+                        }
                     }
                     if updatedTestCases[index].passed != true {
                         allPassed = false
                     }
                     self.testCases = updatedTestCases
-                    if index == 0, result.isSuccess, !parsed.events.isEmpty {
-                        self.updateJourney(parsed.events, truncated: parsed.isTruncated)
+                    if result.isSuccess, !parsed.events.isEmpty {
+                        self.traceEventsByTestCase[index] = (
+                            events: parsed.events, truncated: parsed.isTruncated
+                        )
+                        if index == 0 {
+                            self.updateJourney(parsed.events, truncated: parsed.isTruncated)
+                        }
                     }
                 }
 

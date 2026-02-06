@@ -13,12 +13,12 @@ extension LeetCodeExecutionWrapper {
         """
     }
 
-    private static let swiftRunnerPreludeBody = """
+    private static let swiftRunnerPreludeBody = #"""
         func parseQuotedString(_ input: String) -> String? {
             let trimmed = input.trimmingCharacters(in: .whitespacesAndNewlines)
             guard trimmed.count >= 2,
-                  trimmed.first == "\\\"",
-                  trimmed.last == "\\\"" else { return nil }
+                  trimmed.first == "\"",
+                  trimmed.last == "\"" else { return nil }
             let inner = String(trimmed.dropFirst().dropLast())
             var result = ""
             var isEscaping = false
@@ -26,15 +26,15 @@ extension LeetCodeExecutionWrapper {
                 if isEscaping {
                     switch char {
                     case "n":
-                        result.append("\\n")
+                        result.append("\n")
                     case "r":
-                        result.append("\\r")
+                        result.append("\r")
                     case "t":
-                        result.append("\\t")
+                        result.append("\t")
                     case "\"":
-                        result.append("\\\"")
+                        result.append("\"")
                     case "\\":
-                        result.append("\\\\")
+                        result.append("\\")
                     default:
                         result.append(char)
                     }
@@ -65,7 +65,7 @@ extension LeetCodeExecutionWrapper {
 
         func parseKeyValueInput(_ input: String, paramNames: [String]) -> [String: Any] {
             guard !paramNames.isEmpty else { return [:] }
-            let pattern = "\\\\b([A-Za-z_][A-Za-z0-9_]*)\\\\b\\\\s*="
+            let pattern = "\\b([A-Za-z_][A-Za-z0-9_]*)\\b\\s*="
             guard let regex = try? NSRegularExpression(pattern: pattern, options: []) else { return [:] }
             let nsInput = input as NSString
             let matches = regex.matches(in: input, range: NSRange(location: 0, length: nsInput.length))
@@ -146,7 +146,7 @@ extension LeetCodeExecutionWrapper {
             let trimmed = input.trimmingCharacters(in: .whitespacesAndNewlines)
             guard !trimmed.isEmpty else { return nil }
 
-            let keyPattern = "\\\\bpos\\\\b\\\\s*=\\\\s*([^,\\n\\r]+)"
+            let keyPattern = "\\bpos\\b\\s*=\\s*([^,\\n\\r]+)"
             if let regex = try? NSRegularExpression(pattern: keyPattern, options: []) {
                 let nsInput = trimmed as NSString
                 let searchRange = NSRange(location: 0, length: nsInput.length)
@@ -190,7 +190,7 @@ extension LeetCodeExecutionWrapper {
             guard args.indices.contains(index) else { return NSNull() }
             return args[index]
         }
-        """
+        """#
 
     static func swiftRunnerConversions(listNodeHelpers: String, treeNodeHelpers: String) -> String {
         """

@@ -6,7 +6,11 @@ final class LeetCodeRestClientTests: XCTestCase {
         let builder = CapturingRequestBuilder()
         let executor = StubRequestExecutor()
         executor.data = Data("{\"username\":\"valid\"}".utf8)
-        let client = LeetCodeRestClient(baseURL: URL(string: "https://example.com")!, requestBuilder: builder, executor: executor)
+        let client = LeetCodeRestClient(
+            baseURL: try XCTUnwrap(URL(string: "https://example.com")),
+            requestBuilder: builder,
+            executor: executor
+        )
 
         let isValid = try await client.validateUsername("valid")
 
@@ -18,7 +22,11 @@ final class LeetCodeRestClientTests: XCTestCase {
         let builder = CapturingRequestBuilder()
         let executor = StubRequestExecutor()
         executor.data = Data("{\"username\":\"\"}".utf8)
-        let client = LeetCodeRestClient(baseURL: URL(string: "https://example.com")!, requestBuilder: builder, executor: executor)
+        let client = LeetCodeRestClient(
+            baseURL: try XCTUnwrap(URL(string: "https://example.com")),
+            requestBuilder: builder,
+            executor: executor
+        )
 
         let isValid = try await client.validateUsername("empty")
 
@@ -28,8 +36,14 @@ final class LeetCodeRestClientTests: XCTestCase {
     func testFetchSolvedSlugsIncludesLimitQuery() async throws {
         let builder = CapturingRequestBuilder()
         let executor = StubRequestExecutor()
-        executor.data = Data("{\"submission\":[{\"titleSlug\":\"a\"},{\"titleSlug\":\"b\"},{\"titleSlug\":\"a\"}]}".utf8)
-        let client = LeetCodeRestClient(baseURL: URL(string: "https://example.com")!, requestBuilder: builder, executor: executor)
+        executor.data = Data(
+            "{\"submission\":[{\"titleSlug\":\"a\"},{\"titleSlug\":\"b\"},{\"titleSlug\":\"a\"}]}".utf8
+        )
+        let client = LeetCodeRestClient(
+            baseURL: try XCTUnwrap(URL(string: "https://example.com")),
+            requestBuilder: builder,
+            executor: executor
+        )
 
         let slugs = try await client.fetchSolvedSlugs(username: "user", limit: 20)
 
@@ -48,7 +62,7 @@ final class LeetCodeRestClientTests: XCTestCase {
             Data(graphQLResponse.utf8)
         ])
         let client = LeetCodeRestClient(
-            baseURL: URL(string: "https://example.com")!,
+            baseURL: try XCTUnwrap(URL(string: "https://example.com")),
             graphQLURL: LeetCodeConstants.graphQLBaseURL,
             requestBuilder: builder,
             executor: executor
@@ -67,11 +81,21 @@ final class LeetCodeRestClientTests: XCTestCase {
         let builder = CapturingRequestBuilder()
         let executor = StubRequestExecutor()
         let json = """
-        {"title":"","content":"<p>Body</p>","exampleTestcases":"1","sampleTestCase":"1","difficulty":"Medium",
-        "codeSnippets":[{"langSlug":"python3","code":"print(1)"}]}
+        {
+          "title":"",
+          "content":"<p>Body</p>",
+          "exampleTestcases":"1",
+          "sampleTestCase":"1",
+          "difficulty":"Medium",
+          "codeSnippets":[{"langSlug":"python3","code":"print(1)"}]
+        }
         """
         executor.data = Data(json.utf8)
-        let client = LeetCodeRestClient(baseURL: URL(string: "https://example.com")!, requestBuilder: builder, executor: executor)
+        let client = LeetCodeRestClient(
+            baseURL: try XCTUnwrap(URL(string: "https://example.com")),
+            requestBuilder: builder,
+            executor: executor
+        )
 
         let content = try await client.fetchProblemContent(slug: "two-sum")
 

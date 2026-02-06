@@ -38,8 +38,8 @@ final class SharedDataStoreTests: XCTestCase {
         XCTAssertEqual(loaded.dayOffset, 0)
     }
 
-    func testNotificationSettingsStoreDefaults() {
-        let defaults = UserDefaults(suiteName: "FocusAppTests-\(UUID().uuidString)")!
+    func testNotificationSettingsStoreDefaults() throws {
+        let defaults = try XCTUnwrap(UserDefaults(suiteName: "FocusAppTests-\(UUID().uuidString)"))
         let store = UserDefaultsNotificationSettingsStore(userDefaults: defaults)
         let settings = store.loadSettings()
 
@@ -49,8 +49,8 @@ final class SharedDataStoreTests: XCTestCase {
         XCTAssertEqual(Calendar.current.component(.hour, from: settings.habitReminderTime), 20)
     }
 
-    func testNotificationSettingsStoreSavesAndLoads() {
-        let defaults = UserDefaults(suiteName: "FocusAppTests-\(UUID().uuidString)")!
+    func testNotificationSettingsStoreSavesAndLoads() throws {
+        let defaults = try XCTUnwrap(UserDefaults(suiteName: "FocusAppTests-\(UUID().uuidString)"))
         let store = UserDefaultsNotificationSettingsStore(userDefaults: defaults)
         let studyDate = Calendar.current.date(from: DateComponents(hour: 7, minute: 30)) ?? Date()
         let habitDate = Calendar.current.date(from: DateComponents(hour: 19, minute: 0)) ?? Date()
@@ -70,11 +70,11 @@ final class SharedDataStoreTests: XCTestCase {
         XCTAssertEqual(Calendar.current.component(.hour, from: loaded.habitReminderTime), 19)
     }
 
-    func testColorHexParsing() {
-        let short = NSColor(Color(hex: "#fff")).usingColorSpace(.deviceRGB)!
-        let full = NSColor(Color(hex: "#112233")).usingColorSpace(.deviceRGB)!
-        let argb = NSColor(Color(hex: "#FF336699")).usingColorSpace(.deviceRGB)!
-        let invalid = NSColor(Color(hex: "#zz")).usingColorSpace(.deviceRGB)!
+    func testColorHexParsing() throws {
+        let short = try XCTUnwrap(NSColor(Color(hex: "#fff")).usingColorSpace(.deviceRGB))
+        let full = try XCTUnwrap(NSColor(Color(hex: "#112233")).usingColorSpace(.deviceRGB))
+        let argb = try XCTUnwrap(NSColor(Color(hex: "#FF336699")).usingColorSpace(.deviceRGB))
+        let invalid = try XCTUnwrap(NSColor(Color(hex: "#zz")).usingColorSpace(.deviceRGB))
 
         XCTAssertEqual(short.redComponent, 1.0, accuracy: 0.01)
         XCTAssertEqual(full.greenComponent, 0x22 / 255.0, accuracy: 0.01)

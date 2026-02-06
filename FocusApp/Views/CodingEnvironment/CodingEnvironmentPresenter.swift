@@ -32,12 +32,18 @@ final class CodingEnvironmentPresenter: ObservableObject {
     @Published var selectedJourneyEventID: UUID?
     @Published var highlightedExecutionLine: Int?
     @Published private(set) var isJourneyTruncated = false
+    var traceEventsByTestCase: [Int: (events: [DataJourneyEvent], truncated: Bool)] = [:]
     @Published var codeResetNotice: String?
     @Published var executionLogAnchor: Date?
 
     let interactor: CodingEnvironmentInteractor
     let logger: DebugLogRecording?
-    var problemContentCache: [String: QuestionContent] = [:]
+    struct CachedContent {
+        let content: QuestionContent
+        let timestamp: Date
+    }
+    static let cacheTTL: TimeInterval = 24 * 60 * 60  // 24 hours
+    var problemContentCache: [String: CachedContent] = [:]
     var codeSaveTask: Task<Void, Never>?
     var isApplyingExternalCode: Bool = false
     var runTask: Task<Void, Never>?
@@ -172,6 +178,7 @@ final class CodingEnvironmentPresenter: ObservableObject {
         selectedJourneyEventID = nil
         highlightedExecutionLine = nil
         isJourneyTruncated = false
+        traceEventsByTestCase = [:]
     }
 
     func updateJourney(_ events: [DataJourneyEvent], truncated: Bool = false) {
@@ -186,6 +193,17 @@ final class CodingEnvironmentPresenter: ObservableObject {
         } else {
             selectedJourneyEventID = nil
             highlightedExecutionLine = nil
+        }
+    }
+
+    func showJourneyForTestCase(_ index: Int) {
+        if let stored = traceEventsByTestCase[index] {
+            updateJourney(stored.events, truncated: stored.truncated)
+        } else {
+            dataJourney = []
+            selectedJourneyEventID = nil
+            highlightedExecutionLine = nil
+            isJourneyTruncated = false
         }
     }
 

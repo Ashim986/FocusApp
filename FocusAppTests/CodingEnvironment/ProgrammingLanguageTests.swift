@@ -13,8 +13,13 @@ final class ProgrammingLanguageTests: XCTestCase {
     }
 
     func testDefaultTemplatesNotEmpty() {
-        XCTAssertFalse(ProgrammingLanguage.swift.defaultTemplate.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
-        XCTAssertFalse(ProgrammingLanguage.python.defaultTemplate.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
+        let swiftTemplate = ProgrammingLanguage.swift.defaultTemplate
+            .trimmingCharacters(in: .whitespacesAndNewlines)
+        let pythonTemplate = ProgrammingLanguage.python.defaultTemplate
+            .trimmingCharacters(in: .whitespacesAndNewlines)
+
+        XCTAssertFalse(swiftTemplate.isEmpty)
+        XCTAssertFalse(pythonTemplate.isEmpty)
     }
 
     func testFileExtensions() {
@@ -57,19 +62,49 @@ final class ProgrammingLanguageTests: XCTestCase {
     }
 
     func testExecutionResultIsSuccessConditions() {
-        let success = ExecutionResult(output: "ok", error: "", exitCode: 0, timedOut: false, wasCancelled: false)
+        let success = ExecutionResult(
+            output: "ok",
+            error: "",
+            exitCode: 0,
+            timedOut: false,
+            wasCancelled: false
+        )
         XCTAssertTrue(success.isSuccess)
 
-        let withError = ExecutionResult(output: "ok", error: "warning", exitCode: 0, timedOut: false, wasCancelled: false)
+        let withError = ExecutionResult(
+            output: "ok",
+            error: "warning",
+            exitCode: 0,
+            timedOut: false,
+            wasCancelled: false
+        )
         XCTAssertFalse(withError.isSuccess)
 
-        let badExitCode = ExecutionResult(output: "ok", error: "", exitCode: 1, timedOut: false, wasCancelled: false)
+        let badExitCode = ExecutionResult(
+            output: "ok",
+            error: "",
+            exitCode: 1,
+            timedOut: false,
+            wasCancelled: false
+        )
         XCTAssertFalse(badExitCode.isSuccess)
 
-        let timedOut = ExecutionResult(output: "ok", error: "", exitCode: 0, timedOut: true, wasCancelled: false)
+        let timedOut = ExecutionResult(
+            output: "ok",
+            error: "",
+            exitCode: 0,
+            timedOut: true,
+            wasCancelled: false
+        )
         XCTAssertFalse(timedOut.isSuccess)
 
-        let cancelled = ExecutionResult(output: "ok", error: "", exitCode: 0, timedOut: false, wasCancelled: true)
+        let cancelled = ExecutionResult(
+            output: "ok",
+            error: "",
+            exitCode: 0,
+            timedOut: false,
+            wasCancelled: true
+        )
         XCTAssertFalse(cancelled.isSuccess)
     }
 

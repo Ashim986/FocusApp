@@ -8,6 +8,9 @@ struct AppData: Codable {
     var leetCodeUsername: String  // LeetCode username for syncing
     var savedSolutions: [String: String]  // "problemKey|langSlug": code
     var submissions: [String: [CodeSubmission]]  // "problemSlug": submissions
+    var aiProviderKind: String  // "groq" or "gemini"
+    var aiProviderApiKey: String  // API key for the selected provider
+    var aiProviderModel: String  // Model identifier (e.g. "llama-3.3-70b-versatile")
 
     init() {
         self.progress = [:]
@@ -17,6 +20,9 @@ struct AppData: Codable {
         self.leetCodeUsername = "ashim986"  // Default username
         self.savedSolutions = [:]
         self.submissions = [:]
+        self.aiProviderKind = "groq"
+        self.aiProviderApiKey = ""
+        self.aiProviderModel = ""
     }
 
     // Custom decoder to handle missing fields in old data files
@@ -29,6 +35,9 @@ struct AppData: Codable {
         leetCodeUsername = try container.decodeIfPresent(String.self, forKey: .leetCodeUsername) ?? "ashim986"
         savedSolutions = try container.decodeIfPresent([String: String].self, forKey: .savedSolutions) ?? [:]
         submissions = try container.decodeIfPresent([String: [CodeSubmission]].self, forKey: .submissions) ?? [:]
+        aiProviderKind = try container.decodeIfPresent(String.self, forKey: .aiProviderKind) ?? "groq"
+        aiProviderApiKey = try container.decodeIfPresent(String.self, forKey: .aiProviderApiKey) ?? ""
+        aiProviderModel = try container.decodeIfPresent(String.self, forKey: .aiProviderModel) ?? ""
     }
 
     // Get completion status for a specific problem

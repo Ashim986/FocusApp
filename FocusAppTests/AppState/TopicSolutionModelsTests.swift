@@ -1,5 +1,5 @@
-import XCTest
 @testable import FocusApp
+import XCTest
 
 final class TopicSolutionModelsTests: XCTestCase {
     // MARK: - SolutionIndexTopic Tests
@@ -114,7 +114,7 @@ final class TopicSolutionModelsTests: XCTestCase {
                     file: "linked-list.json",
                     problemCount: 1,
                     difficulties: ["easy": 1]
-                ),
+                )
             ],
             problemIndex: [
                 "reverse-linked-list": SolutionIndexEntry(
@@ -126,7 +126,7 @@ final class TopicSolutionModelsTests: XCTestCase {
                     topic: "arrays-hashing",
                     number: 1,
                     difficulty: "easy"
-                ),
+                )
             ]
         )
 
@@ -153,7 +153,7 @@ final class TopicSolutionModelsTests: XCTestCase {
                     problemSlug: "reverse-linked-list",
                     summary: "Reverse pointers",
                     approaches: []
-                ),
+                )
             ]
         )
 

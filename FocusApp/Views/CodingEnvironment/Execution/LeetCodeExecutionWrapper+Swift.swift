@@ -63,11 +63,17 @@ extension LeetCodeExecutionWrapper {
         \(runner)
         """
 
+        let instrumentedCode = AutoInstrumenter.instrument(
+            code: code,
+            language: .swift,
+            paramNames: params.compactMap { $0.name }
+        )
+
         return """
         import Foundation
 
         #sourceLocation(file: "Solution.swift", line: 1)
-        \(code)
+        \(instrumentedCode)
         #sourceLocation()
 
         \(wrapper)

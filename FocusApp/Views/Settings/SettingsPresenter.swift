@@ -15,6 +15,9 @@ final class SettingsPresenter: ObservableObject {
     @Published var isValidatingUsername: Bool = false
     @Published var usernameValidationState: UsernameValidationState = .none
     @Published var planStartDate: Date
+    @Published var aiProviderKind: AIProviderKind
+    @Published var aiProviderApiKey: String
+    @Published var aiProviderModel: String
 
     private let interactor: SettingsInteractor
 
@@ -23,6 +26,9 @@ final class SettingsPresenter: ObservableObject {
         self.settings = interactor.loadSettings()
         self.leetCodeUsername = interactor.currentUsername()
         self.planStartDate = interactor.currentPlanStartDate()
+        self.aiProviderKind = interactor.currentAIProviderKind()
+        self.aiProviderApiKey = interactor.currentAIProviderApiKey()
+        self.aiProviderModel = interactor.currentAIProviderModel()
     }
 
     func onAppear() {
@@ -75,6 +81,22 @@ final class SettingsPresenter: ObservableObject {
         let today = Date()
         planStartDate = today
         interactor.updatePlanStartDate(today)
+    }
+
+    func updateAIProvider(kind: AIProviderKind) {
+        aiProviderKind = kind
+        if aiProviderModel.isEmpty || !kind.modelOptions.contains(aiProviderModel) {
+            aiProviderModel = kind.defaultModel
+        }
+        saveAIProviderSettings()
+    }
+
+    func saveAIProviderSettings() {
+        interactor.updateAIProviderSettings(
+            kind: aiProviderKind,
+            apiKey: aiProviderApiKey,
+            model: aiProviderModel
+        )
     }
 
     private func scheduleValidationReset() {

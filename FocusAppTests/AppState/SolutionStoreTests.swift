@@ -1,5 +1,5 @@
-import XCTest
 @testable import FocusApp
+import XCTest
 
 final class SolutionStoreTests: XCTestCase {
     // MARK: - InMemorySolutionStore Tests
@@ -79,7 +79,7 @@ final class SolutionStoreTests: XCTestCase {
 
     func testSolutionProvidingProtocol() {
         let store: SolutionProviding = InMemorySolutionStore(solutions: [
-            ProblemSolution(problemSlug: "test", summary: "Test", approaches: []),
+            ProblemSolution(problemSlug: "test", summary: "Test", approaches: [])
         ])
 
         XCTAssertEqual(store.solutionCount, 1)

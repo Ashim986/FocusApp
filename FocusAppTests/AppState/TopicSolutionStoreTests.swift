@@ -1,5 +1,5 @@
-import XCTest
 @testable import FocusApp
+import XCTest
 
 final class TopicSolutionStoreTests: XCTestCase {
     // MARK: - Bundle Integration Tests

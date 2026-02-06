@@ -89,6 +89,7 @@ struct ModernTestCaseView: View {
 
         return Button(action: {
             selectedTestIndex = index
+            presenter.showJourneyForTestCase(index)
         }, label: {
             HStack(spacing: 4) {
                 if let passed = testCase.passed {
@@ -141,9 +142,18 @@ struct ModernTestCaseView: View {
                 }
 
                 VStack(alignment: .leading, spacing: 4) {
-                Text(L10n.Coding.Testcase.expectedLabel)
-                        .font(.system(size: 10, weight: .medium))
-                        .foregroundColor(Color.appGray500)
+                    HStack(spacing: 4) {
+                        Text(L10n.Coding.Testcase.expectedLabel)
+                            .font(.system(size: 10, weight: .medium))
+                            .foregroundColor(Color.appGray500)
+
+                        if testCase.expectedOutput.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+                            Text("(unavailable)")
+                                .font(.system(size: 10, weight: .regular))
+                                .foregroundColor(Color.appGray600)
+                                .italic()
+                        }
+                    }
 
                     TextField("Enter expected output...", text: Binding(
                         get: { testCase.expectedOutput },

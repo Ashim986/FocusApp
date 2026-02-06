@@ -81,6 +81,13 @@ final class AppStateStore: ObservableObject {
         save()
     }
 
+    func updateAIProviderSettings(kind: String, apiKey: String, model: String) {
+        data.aiProviderKind = kind
+        data.aiProviderApiKey = apiKey.trimmingCharacters(in: .whitespacesAndNewlines)
+        data.aiProviderModel = model.trimmingCharacters(in: .whitespacesAndNewlines)
+        save()
+    }
+
     func solutionCode(for key: String) -> String? {
         data.savedSolutions[key]
     }

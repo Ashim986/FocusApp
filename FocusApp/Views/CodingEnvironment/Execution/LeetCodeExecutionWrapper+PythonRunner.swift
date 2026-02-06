@@ -83,6 +83,38 @@ extension LeetCodeExecutionWrapper {
                 if expected_count and len(values) > expected_count:
                     return values[:expected_count]
                 return values
+
+        def _parse_cycle_pos(raw):
+            import re
+            raw = raw.strip()
+            if not raw:
+                return None
+            m = re.search(r"\\bpos\\b\\s*=\\s*([^,\\n\\r]+)", raw)
+            if m:
+                cleaned = m.group(1).strip()
+                try:
+                    return int(json.loads(cleaned))
+                except (json.JSONDecodeError, ValueError, TypeError):
+                    try:
+                        return int(cleaned)
+                    except ValueError:
+                        pass
+            lines = [l for l in raw.splitlines() if l.strip()]
+            if len(lines) >= 2 and lines[0].strip().startswith("["):
+                try:
+                    return int(json.loads(lines[1].strip()))
+                except (json.JSONDecodeError, ValueError, TypeError):
+                    try:
+                        return int(lines[1].strip())
+                    except ValueError:
+                        pass
+            try:
+                data = json.loads(raw)
+                if isinstance(data, list) and len(data) >= 2 and isinstance(data[0], list):
+                    return int(data[1])
+            except (json.JSONDecodeError, ValueError, TypeError):
+                pass
+            return None
         """
     }
     // swiftlint:enable function_body_length
@@ -139,9 +171,13 @@ extension LeetCodeExecutionWrapper {
         paramsCount: Int,
         arguments: [String],
         callLine: String,
-        outputExpression: String
+        outputExpression: String,
+        setupLines: [String] = [],
+        paramNamesLiteral: String = ""
     ) -> String {
         let argumentsString = arguments.joined(separator: "\n")
+        let setupString = setupLines.joined(separator: "\n")
+        let traceArgList = (0..<paramsCount).map { "arg\($0)" }.joined(separator: ", ")
         return """
 
         def _serialize_output(value):
@@ -149,11 +185,17 @@ extension LeetCodeExecutionWrapper {
 
         def _run():
             raw = sys.stdin.read()
+            _has_input = bool(raw.strip())
             args = _parse_args(raw, \(paramsCount))
             solution = Solution()
+        \(setupString)
         \(argumentsString)
+            if _has_input:
+                _Trace.input([\(paramNamesLiteral)], [\(traceArgList)])
         \(callLine)
             output = \(outputExpression)
+            if _has_input:
+                _Trace.output(result)
             print(json.dumps(output))
 
         if __name__ == "__main__":

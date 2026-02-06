@@ -24,7 +24,12 @@ final class CodingEnvironmentPresenterTests: XCTestCase {
         )
         let executor = FakeCodeExecutor()
         let solutionStore = FakeSolutionStore()
-        let interactor = CodingEnvironmentInteractor(appStore: store, leetCodeClient: client, executionService: executor, solutionStore: solutionStore)
+        let interactor = CodingEnvironmentInteractor(
+            appStore: store,
+            leetCodeClient: client,
+            executionService: executor,
+            solutionStore: solutionStore
+        )
         let presenter = CodingEnvironmentPresenter(interactor: interactor)
 
         let location = problemLocation(for: "reverse-linked-list")
@@ -56,7 +61,12 @@ final class CodingEnvironmentPresenterTests: XCTestCase {
         )
         let executor = FakeCodeExecutor()
         let solutionStore = FakeSolutionStore()
-        let interactor = CodingEnvironmentInteractor(appStore: store, leetCodeClient: client, executionService: executor, solutionStore: solutionStore)
+        let interactor = CodingEnvironmentInteractor(
+            appStore: store,
+            leetCodeClient: client,
+            executionService: executor,
+            solutionStore: solutionStore
+        )
         let presenter = CodingEnvironmentPresenter(interactor: interactor)
 
         let location = problemLocation(for: "reverse-linked-list")
@@ -272,7 +282,8 @@ final class CodingEnvironmentExecutionTests: XCTestCase {
 
         let normalized = presenter.normalizeOutputForComparison("Answer\n5", expected: "5")
 
-        XCTAssertEqual(normalized, "5")
+        XCTAssertEqual(normalized.displayValue, "Answer\n5")
+        XCTAssertEqual(normalized.comparisonValue, "5")
     }
 }
 
@@ -298,7 +309,9 @@ final class CodingEnvironmentProblemLoadingTests: XCTestCase {
                 returnType: "ListNode"
             )
         )
-        presenter.problemContentCache["reverse-linked-list"] = cached
+        presenter.problemContentCache["reverse-linked-list"] = CodingEnvironmentPresenter.CachedContent(
+            content: cached, timestamp: Date()
+        )
         presenter.setCode("")
 
         await presenter.loadProblemContent(for: problem)
@@ -331,7 +344,7 @@ final class CodingEnvironmentProblemLoadingTests: XCTestCase {
         await presenter.loadProblemContent(for: problem)
 
         XCTAssertEqual(presenter.problemContent?.title, "Reverse Linked List")
-        XCTAssertEqual(presenter.problemContentCache["reverse-linked-list"]?.title, "Reverse Linked List")
+        XCTAssertEqual(presenter.problemContentCache["reverse-linked-list"]?.content.title, "Reverse Linked List")
         XCTAssertFalse(presenter.isLoadingProblem)
     }
 
@@ -428,7 +441,7 @@ final class CodingEnvironmentProblemLoadingTests: XCTestCase {
 
         XCTAssertEqual(presenter.testCases.count, 1)
         XCTAssertEqual(presenter.testCases.first?.input, "1\n2\n3")
-        XCTAssertEqual(presenter.testCases.first?.expectedOutput, "Expected output")
+        XCTAssertEqual(presenter.testCases.first?.expectedOutput, "")
     }
 
     @MainActor
@@ -441,6 +454,22 @@ final class CodingEnvironmentProblemLoadingTests: XCTestCase {
         )
 
         XCTAssertEqual(outputs, ["1", "[2,3]"])
+    }
+
+    @MainActor
+    func testParseOutputsFromHTMLDoesNotSpillIntoNextExample() {
+        let harness = makeHarness()
+        let presenter = harness.presenter
+
+        let outputs = presenter.parseOutputsFromHTML(
+            """
+            <p><strong>Output:</strong> [1,2]</p>
+            <p><strong>Example 2:</strong></p>
+            <p><strong>Output:</strong> [1]</p>
+            """
+        )
+
+        XCTAssertEqual(outputs, ["[1,2]", "[1]"])
     }
 }
 
@@ -474,14 +503,17 @@ final class CodingEnvironmentPresenterStateTests: XCTestCase {
         let presenter = harness.presenter
         let problem = problemWithSlug("reverse-linked-list")
         presenter.selectedProblem = problem
-        presenter.problemContentCache["reverse-linked-list"] = QuestionContent(
-            title: "Reverse Linked List",
-            content: "",
-            exampleTestcases: "",
-            sampleTestCase: "",
-            difficulty: "Easy",
-            codeSnippets: ["python3": "def solve():\n    pass"],
-            metaData: nil
+        presenter.problemContentCache["reverse-linked-list"] = CodingEnvironmentPresenter.CachedContent(
+            content: QuestionContent(
+                title: "Reverse Linked List",
+                content: "",
+                exampleTestcases: "",
+                sampleTestCase: "",
+                difficulty: "Easy",
+                codeSnippets: ["python3": "def solve():\n    pass"],
+                metaData: nil
+            ),
+            timestamp: Date()
         )
         presenter.setCode("print(\"old\")")
 
@@ -546,8 +578,9 @@ final class CodingEnvironmentPresenterStateTests: XCTestCase {
 
         presenter.code = "print(\"saved\")"
 
+        let solutionKey = presenter.solutionKey(for: problem, language: presenter.language)
         let saved = await waitFor({
-            store.solutionCode(for: presenter.solutionKey(for: problem, language: presenter.language)) == "print(\"saved\")"
+            store.solutionCode(for: solutionKey) == "print(\"saved\")"
         }, timeout: 1.5)
         XCTAssertTrue(saved)
     }
@@ -592,13 +625,25 @@ final class CodingEnvironmentPresenterStateTests: XCTestCase {
 
 // MARK: - Helpers
 
+private struct ExecutionRequest {
+    let code: String
+    let language: ProgrammingLanguage
+    let input: String
+}
+
+private struct CodingHarness {
+    let presenter: CodingEnvironmentPresenter
+    let store: AppStateStore
+    let executor: QueueCodeExecutor
+}
+
 private final class QueueCodeExecutor: CodeExecuting {
-    var requests: [(code: String, language: ProgrammingLanguage, input: String)] = []
+    var requests: [ExecutionRequest] = []
     var results: [ExecutionResult] = []
     var cancelCalled = false
 
     func execute(code: String, language: ProgrammingLanguage, input: String) async -> ExecutionResult {
-        requests.append((code, language, input))
+        requests.append(ExecutionRequest(code: code, language: language, input: input))
         if results.isEmpty {
             return ExecutionResult.failure("Not configured")
         }
@@ -625,7 +670,7 @@ private func makeHarness(
     executor: QueueCodeExecutor = QueueCodeExecutor(),
     client: LeetCodeClientProtocol = FakeLeetCodeClient(),
     logger: DebugLogStore? = nil
-) -> (presenter: CodingEnvironmentPresenter, store: AppStateStore, executor: QueueCodeExecutor) {
+) -> CodingHarness {
     let start = makeDate(year: 2026, month: 2, day: 3)
     let store = AppStateStore(
         storage: InMemoryAppStorage(),
@@ -639,7 +684,7 @@ private func makeHarness(
         solutionStore: FakeSolutionStore()
     )
     let presenter = CodingEnvironmentPresenter(interactor: interactor, logger: logger)
-    return (presenter, store, executor)
+    return CodingHarness(presenter: presenter, store: store, executor: executor)
 }
 
 @MainActor

@@ -135,8 +135,8 @@ final class TodayInteractorTests: XCTestCase {
         )
 
         // Complete all but one problem in day 1
-        for i in 0..<10 {
-            store.toggleProblem(day: 1, problemIndex: i)
+        for problemIndex in 0..<10 {
+            store.toggleProblem(day: 1, problemIndex: problemIndex)
         }
 
         // Complete the last problem

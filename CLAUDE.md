@@ -52,7 +52,8 @@ FocusApp/
 │   │   ├── SwiftExecutor.swift      # Swift compilation and execution
 │   │   ├── PythonExecutor.swift     # Python interpreter execution
 │   │   ├── SolutionModels.swift     # Bundled solution data models
-│   │   └── SolutionStore.swift      # Solution loader (Solutions.json)
+│   │   ├── SolutionStore.swift      # Solution loader (Solutions.json)
+│   │   └── SolutionAIService.swift  # AI solution providers (Groq, Gemini)
 │   ├── Views/
 │   │   ├── Content/
 │   │   │   ├── ContentView.swift        # Main tabbed interface
@@ -172,7 +173,7 @@ FocusApp/
 │   ├── swiftlint.sh                 # SwiftLint build phase script
 │   ├── fetch_problems.swift         # Manifest fetcher (GraphQL)
 │   ├── generate_solution.swift      # Solution template generator
-│   └── solution_generator.swift     # AI/stub solution generator
+│   └── partition_solutions.swift    # Splits Solutions.json into topic files
 ├── DerivedData/                     # Build artifacts (gitignored)
 ├── .swiftlint.yml                   # SwiftLint configuration
 ├── SWIFTLINT.md                     # SwiftLint setup guide
@@ -338,6 +339,7 @@ The app uses a **Clean Architecture / VIPER-inspired** pattern with clear separa
 | `NotificationScheduler` | `Models/NotificationScheduler.swift` | Scheduling + permissions for reminders |
 | `AppStrings` | `Helpers/AppStrings.swift` | Localized string helpers |
 | `CodeEditorLineNumberRulerView` | `Views/CodeEditorLineNumberRulerView.swift` | Line numbers with diagnostic markers |
+| `SolutionAIProviding` | `Models/SolutionAIService.swift` | AI provider protocol + Groq/Gemini implementations |
 
 ### Presenter/Interactor Pattern
 

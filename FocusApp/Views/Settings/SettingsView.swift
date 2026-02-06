@@ -150,6 +150,50 @@ struct SettingsView: View {
             }
 
             Section {
+                VStack(alignment: .leading, spacing: 8) {
+                    Text(L10n.Settings.aiProviderLabel)
+                        .font(.subheadline)
+
+                    Picker(L10n.Settings.aiProviderLabel, selection: aiProviderKind) {
+                        ForEach(AIProviderKind.allCases, id: \.self) { kind in
+                            Text(kind.displayName).tag(kind)
+                        }
+                    }
+                    .pickerStyle(.segmented)
+                }
+
+                VStack(alignment: .leading, spacing: 8) {
+                    Text(L10n.Settings.aiApiKeyLabel)
+                        .font(.subheadline)
+
+                    SecureField(
+                        L10n.Settings.aiApiKeyPlaceholder,
+                        text: $presenter.aiProviderApiKey
+                    )
+                    .textFieldStyle(.roundedBorder)
+                    .onChange(of: presenter.aiProviderApiKey) { _, _ in
+                        presenter.saveAIProviderSettings()
+                    }
+                }
+
+                VStack(alignment: .leading, spacing: 8) {
+                    Text(L10n.Settings.aiModelLabel)
+                        .font(.subheadline)
+
+                    Picker(L10n.Settings.aiModelLabel, selection: aiProviderModel) {
+                        ForEach(presenter.aiProviderKind.modelOptions, id: \.self) { model in
+                            Text(model).tag(model)
+                        }
+                    }
+                    .labelsHidden()
+                }
+            } header: {
+                Text(L10n.Settings.aiHeader)
+            } footer: {
+                Text(L10n.Settings.aiFooter)
+            }
+
+            Section {
                 VStack(alignment: .leading, spacing: 4) {
                     Text(L10n.Settings.appName)
                         .font(.headline)

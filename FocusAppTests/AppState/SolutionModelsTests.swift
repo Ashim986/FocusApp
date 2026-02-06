@@ -1,5 +1,5 @@
-import XCTest
 @testable import FocusApp
+import XCTest
 
 final class SolutionModelsTests: XCTestCase {
     // MARK: - ComplexityAnalysis Tests
@@ -78,7 +78,7 @@ final class SolutionModelsTests: XCTestCase {
             code: "func twoSum(_ nums: [Int]) -> [Int] { return [] }",
             complexity: ComplexityAnalysis(time: "O(n)", space: "O(1)"),
             testCases: [
-                SolutionTestCase(input: "[1,2]", expectedOutput: "[0,1]"),
+                SolutionTestCase(input: "[1,2]", expectedOutput: "[0,1]")
             ]
         )
 
@@ -123,7 +123,7 @@ final class SolutionModelsTests: XCTestCase {
                     explanation: "O(n) solution",
                     code: "func twoSum() {}",
                     complexity: ComplexityAnalysis(time: "O(n)", space: "O(n)")
-                ),
+                )
             ],
             relatedProblems: ["three-sum", "four-sum"]
         )
@@ -173,7 +173,7 @@ final class SolutionModelsTests: XCTestCase {
                     explanation: "",
                     code: "",
                     complexity: ComplexityAnalysis(time: "O(1)", space: "O(1)")
-                ),
+                )
             ]
         )
 
@@ -193,7 +193,7 @@ final class SolutionModelsTests: XCTestCase {
                     problemSlug: "reverse-linked-list",
                     summary: "Reverse pointers",
                     approaches: []
-                ),
+                )
             ]
         )
 

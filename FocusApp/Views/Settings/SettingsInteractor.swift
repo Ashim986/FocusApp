@@ -57,4 +57,20 @@ final class SettingsInteractor {
     func updatePlanStartDate(_ date: Date) {
         appStore.updatePlanStartDate(date)
     }
+
+    func currentAIProviderKind() -> AIProviderKind {
+        AIProviderKind(rawValue: appStore.data.aiProviderKind) ?? .groq
+    }
+
+    func currentAIProviderApiKey() -> String {
+        appStore.data.aiProviderApiKey
+    }
+
+    func currentAIProviderModel() -> String {
+        appStore.data.aiProviderModel
+    }
+
+    func updateAIProviderSettings(kind: AIProviderKind, apiKey: String, model: String) {
+        appStore.updateAIProviderSettings(kind: kind.rawValue, apiKey: apiKey, model: model)
+    }
 }

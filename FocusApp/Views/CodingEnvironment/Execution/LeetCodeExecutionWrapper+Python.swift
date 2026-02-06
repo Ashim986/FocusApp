@@ -16,10 +16,14 @@ extension LeetCodeExecutionWrapper {
 
         let listNodeHelpers = needsListNode ? pythonListNodeHelpers : ""
         let treeNodeHelpers = needsTreeNode ? pythonTreeNodeHelpers : ""
+        let isSingleListNode = params.count == 1 && LeetCodeValueType(raw: params[0].type) == .listNode
 
         let argLines = params.enumerated().map { index, param -> String in
             let type = LeetCodeValueType(raw: param.type)
             let valueExpr = "args[\(index)]"
+            if isSingleListNode, type == .listNode {
+                return "    arg\(index) = _to_listnode(\(valueExpr), pos=cycle_pos)"
+            }
             return "    arg\(index) = \(pythonConversionExpression(type, valueExpr: valueExpr))"
         }
         let callArgs = params.indices.map { "arg\($0)" }.joined(separator: ", ")
@@ -27,15 +31,21 @@ extension LeetCodeExecutionWrapper {
         let callLine = "    result = solution.\(methodName)(\(callArgs))"
         let outputExpression = pythonOutputExpression(for: returnType)
         let paramNamesLiteral = pythonParamNamesLiteral(params)
+        let setupLines = isSingleListNode ? ["    cycle_pos = _parse_cycle_pos(raw)"] : []
+
+        let traceModule = pythonTraceModule(needsListNode: needsListNode, needsTreeNode: needsTreeNode)
 
         let runner = [
             pythonRunnerPrelude(paramNamesLiteral: paramNamesLiteral),
             pythonRunnerConversions(listNodeHelpers: listNodeHelpers, treeNodeHelpers: treeNodeHelpers),
+            traceModule,
             pythonRunnerMain(
                 paramsCount: params.count,
                 arguments: argLines,
                 callLine: callLine,
-                outputExpression: outputExpression
+                outputExpression: outputExpression,
+                setupLines: setupLines,
+                paramNamesLiteral: paramNamesLiteral
             )
         ].joined()
 
@@ -44,7 +54,13 @@ extension LeetCodeExecutionWrapper {
         \(runner)
         """
 
-        return "\(code)\n\(wrapper)"
+        let instrumentedCode = AutoInstrumenter.instrument(
+            code: code,
+            language: .python,
+            paramNames: params.compactMap { $0.name }
+        )
+
+        return "\(instrumentedCode)\n\(wrapper)"
     }
 
     private static func pythonParamNamesLiteral(_ params: [LeetCodeMetaParam]) -> String {
@@ -57,22 +73,56 @@ extension LeetCodeExecutionWrapper {
     }
 
     private static let pythonListNodeHelpers = """
-        def _to_listnode(value):
-            if not isinstance(value, list):
+        def _listnode_payload(value):
+            if isinstance(value, dict):
+                head = value.get("head") or value.get("list") or value.get("values")
+                pos_value = value.get("pos") or value.get("index")
+                if isinstance(head, list):
+                    pos = _to_int(pos_value) if pos_value is not None else None
+                    return head, pos
+            if isinstance(value, list):
+                if len(value) >= 2 and isinstance(value[0], list):
+                    return value[0], _to_int(value[1])
+                return value, None
+            return [], None
+
+        def _to_listnode(value, pos=None):
+            if isinstance(value, list):
+                arr = value
+                resolved_pos = pos
+            else:
+                arr, payload_pos = _listnode_payload(value)
+                resolved_pos = pos if pos is not None else payload_pos
+            if not arr:
                 return None
             dummy = ListNode(0)
             current = dummy
-            for item in value:
-                current.next = ListNode(_to_int(item))
-                current = current.next
+            tail = None
+            cycle_target = None
+            for idx, item in enumerate(arr):
+                node = ListNode(_to_int(item))
+                current.next = node
+                current = node
+                tail = node
+                if resolved_pos is not None and resolved_pos >= 0 and idx == resolved_pos:
+                    cycle_target = node
+            if cycle_target is not None and tail is not None:
+                tail.next = cycle_target
             return dummy.next
 
-        def _listnode_to_list(node):
+        def _listnode_to_list(node, max_nodes=10000):
             result = []
             current = node
-            while current:
+            visited = set()
+            count = 0
+            while current and count < max_nodes:
+                node_id = id(current)
+                if node_id in visited:
+                    break
+                visited.add(node_id)
                 result.append(current.val)
                 current = current.next
+                count += 1
             return result
         """
 

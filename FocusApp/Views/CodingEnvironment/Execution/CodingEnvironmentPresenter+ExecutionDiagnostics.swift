@@ -28,11 +28,11 @@ extension CodingEnvironmentPresenter {
     }
 
     private func parseSwiftDiagnostics(_ errorOutput: String, collector: inout DiagnosticCollector) {
-        let pattern = "([^\\s:]+\\.swift):(\\d+):(\\d+):\\s*error:\\s*(.+)"
+        let pattern = "([^\\s:]+\\.swift):(\\d+):(\\d+):\\s*(?:error|warning):\\s*(.+)"
         guard let regex = try? NSRegularExpression(pattern: pattern, options: []) else { return }
         let range = NSRange(location: 0, length: (errorOutput as NSString).length)
         for match in regex.matches(in: errorOutput, range: range) {
-            guard match.numberOfRanges >= 4 else { continue }
+            guard match.numberOfRanges >= 5 else { continue }
             let lineString = (errorOutput as NSString).substring(with: match.range(at: 2))
             let columnString = (errorOutput as NSString).substring(with: match.range(at: 3))
             let message = (errorOutput as NSString).substring(with: match.range(at: 4))

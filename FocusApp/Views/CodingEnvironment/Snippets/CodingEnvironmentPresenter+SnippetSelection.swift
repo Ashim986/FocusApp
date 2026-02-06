@@ -11,7 +11,7 @@ extension CodingEnvironmentPresenter {
             let defaultTrimmed = language.defaultTemplate.trimmingCharacters(in: .whitespacesAndNewlines)
             if trimmed != defaultTrimmed {
                 if let slug = LeetCodeSlugExtractor.extractSlug(from: problem.url),
-                   let cached = problemContentCache[slug],
+                   let cached = problemContentCache[slug]?.content,
                    !isStoredCodeCompatible(storedCode, with: cached, language: language) {
                     // Ignore stale code that doesn't match the current problem signature.
                 } else {
@@ -21,13 +21,13 @@ extension CodingEnvironmentPresenter {
         }
 
         if let slug = LeetCodeSlugExtractor.extractSlug(from: problem.url),
-           let cached = problemContentCache[slug],
+           let cached = problemContentCache[slug]?.content,
            let snippet = snippetForLanguage(language, from: cached) {
             return snippet
         }
 
         if let slug = LeetCodeSlugExtractor.extractSlug(from: problem.url),
-           let cached = problemContentCache[slug],
+           let cached = problemContentCache[slug]?.content,
            let template = LeetCodeTemplateBuilder.template(for: cached, language: language) {
             return template
         }

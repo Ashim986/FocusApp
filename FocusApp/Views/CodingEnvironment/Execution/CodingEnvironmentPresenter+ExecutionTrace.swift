@@ -22,17 +22,40 @@ extension CodingEnvironmentPresenter {
             let line = String(rawLine)
             if line.hasPrefix(prefix) {
                 let jsonString = String(line.dropFirst(prefix.count))
-                if let data = jsonString.data(using: String.Encoding.utf8),
-                   var json = try? JSONSerialization.jsonObject(with: data) as? [String: Any] {
-                    if var values = json["values"] as? [String: Any] {
-                        if let truncated = values["__trace_truncated"] as? Bool, truncated {
-                            sawTraceTruncation = true
+                if let data = jsonString.data(using: String.Encoding.utf8) {
+                    do {
+                        guard var json = try JSONSerialization.jsonObject(with: data) as? [String: Any] else {
+                            logger?.recordAsync(
+                                DebugLogEntry(
+                                    level: .warning,
+                                    category: .app,
+                                    title: "Trace parse: unexpected type",
+                                    message: "Trace JSON is not a dictionary",
+                                    metadata: ["raw": String(jsonString.prefix(200))]
+                                )
+                            )
+                            continue
                         }
-                        values.removeValue(forKey: "__trace_truncated")
-                        json["values"] = values
-                    }
-                    if let event = DataJourneyEvent.from(json: json) {
-                        events.append(event)
+                        if var values = json["values"] as? [String: Any] {
+                            if let truncated = values["__trace_truncated"] as? Bool, truncated {
+                                sawTraceTruncation = true
+                            }
+                            values.removeValue(forKey: "__trace_truncated")
+                            json["values"] = values
+                        }
+                        if let event = DataJourneyEvent.from(json: json) {
+                            events.append(event)
+                        }
+                    } catch {
+                        logger?.recordAsync(
+                            DebugLogEntry(
+                                level: .warning,
+                                category: .app,
+                                title: "Trace parse failed",
+                                message: error.localizedDescription,
+                                metadata: ["raw": String(jsonString.prefix(200))]
+                            )
+                        )
                     }
                 }
             } else {

@@ -59,6 +59,10 @@ extension DataJourneyView {
         style: ValuesSectionStyle = .standard
     ) -> some View {
         let listContexts = resolvedListContexts()
+        let changedKeys = TraceValueDiff.changedKeys(
+            previous: previousPlaybackEvent,
+            current: event
+        )
         let isCompact = style == .compact
         let verticalPadding: CGFloat = isCompact ? 8 : 10
         let rowSpacing: CGFloat = isCompact ? 6 : 10
@@ -78,14 +82,25 @@ extension DataJourneyView {
                 VStack(alignment: .leading, spacing: rowSpacing) {
                     ForEach(event.values.keys.sorted(), id: \.self) { key in
                         if let value = event.values[key] {
+                            let isChanged = changedKeys.contains(key)
                             HStack(alignment: .center, spacing: 10) {
                                 Text(key)
                                     .font(.system(size: infoSize, weight: .semibold))
-                                    .foregroundColor(Color.appGray300)
+                                    .foregroundColor(
+                                        isChanged ? Color.appCyan : Color.appGray300
+                                    )
                                     .frame(width: keyWidth, alignment: .leading)
 
                                 valueView(for: value, listContexts: listContexts)
                             }
+                            .padding(.vertical, 2)
+                            .padding(.horizontal, 4)
+                            .background(
+                                isChanged
+                                    ? RoundedRectangle(cornerRadius: 4)
+                                        .fill(Color.appCyan.opacity(0.08))
+                                    : nil
+                            )
                         }
                     }
                 }

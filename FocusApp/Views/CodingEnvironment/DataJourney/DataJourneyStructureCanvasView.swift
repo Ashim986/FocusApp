@@ -6,11 +6,13 @@ enum TraceStructure {
     case listArray(ListArrayStructure)
     case tree(TraceTree)
     case array([TraceValue])
+    case matrix([[TraceValue]])
     case graph([[Int]])
     case dictionary([DictionaryEntry])
     case set([TraceValue])
     case stack([TraceValue])
     case queue([TraceValue])
+    case heap([TraceValue], isMinHeap: Bool)
 }
 
 struct NamedTraceList: Identifiable {
@@ -243,10 +245,12 @@ struct DataJourneyStructureCanvasView: View {
                     }
                 case .tree(let tree):
                     let motions = treePointerMotions(from: previousEvent, to: selectedEvent)
+                    let treeHighlights = structureTreeHighlights
                     TreeGraphView(
                         tree: tree,
                         pointers: pointerMarkers,
                         pointerMotions: motions,
+                        highlightedNodeIds: treeHighlights,
                         bubbleStyle: .solid,
                         nodeSize: structureBubbleSize,
                         pointerFontSize: structurePointerFontSize,
@@ -254,6 +258,7 @@ struct DataJourneyStructureCanvasView: View {
                         pointerVerticalPadding: structurePointerVerticalPadding
                     )
                 case .array(let items):
+                    let arrayHighlights = structureArrayHighlights(items: items)
                     SequenceBubbleRow(
                         items: items,
                         showIndices: true,
@@ -261,11 +266,20 @@ struct DataJourneyStructureCanvasView: View {
                         isTruncated: false,
                         isDoubly: false,
                         pointers: pointerMarkers,
+                        highlightedIndices: arrayHighlights,
                         bubbleStyle: .solid,
                         bubbleSize: structureBubbleSize,
                         pointerFontSize: structurePointerFontSize,
                         pointerHorizontalPadding: structurePointerHorizontalPadding,
                         pointerVerticalPadding: structurePointerVerticalPadding
+                    )
+                case .matrix(let grid):
+                    let matrixHighlights = structureMatrixHighlights
+                    MatrixGridView(
+                        grid: grid,
+                        pointers: matrixPointerCell(),
+                        highlightedCells: matrixHighlights,
+                        bubbleSize: structureBubbleSize
                     )
                 case .graph(let adjacency):
                     GraphView(
@@ -346,4 +360,57 @@ struct DataJourneyStructureCanvasView: View {
         )
     }
 
+    // MARK: - Diff Highlighting Helpers
+
+    /// Finds the primary structure value from an event for diff computation.
+    private func primaryStructureValue(
+        in event: DataJourneyEvent?
+    ) -> TraceValue? {
+        guard let event else { return nil }
+        for key in event.values.keys.sorted() {
+            guard let value = event.values[key] else { continue }
+            switch value {
+            case .array, .list, .tree, .object, .typed:
+                return value
+            default:
+                continue
+            }
+        }
+        return nil
+    }
+
+    /// Highlighted array indices from diff between previous and current.
+    private func structureArrayHighlights(
+        items: [TraceValue]
+    ) -> Set<Int> {
+        guard previousEvent != nil else { return [] }
+        let prevValue = primaryStructureValue(in: previousEvent)
+        let currValue = primaryStructureValue(in: selectedEvent)
+        return TraceValueDiff.changedIndices(
+            previous: prevValue,
+            current: currValue
+        )
+    }
+
+    /// Highlighted tree node IDs from diff between previous and current.
+    private var structureTreeHighlights: Set<String> {
+        guard previousEvent != nil else { return [] }
+        let prevValue = primaryStructureValue(in: previousEvent)
+        let currValue = primaryStructureValue(in: selectedEvent)
+        return TraceValueDiff.changedTreeNodeIds(
+            previous: prevValue,
+            current: currValue
+        )
+    }
+
+    /// Highlighted matrix cells from diff between previous and current.
+    private var structureMatrixHighlights: Set<MatrixCell> {
+        guard previousEvent != nil else { return [] }
+        let prevValue = primaryStructureValue(in: previousEvent)
+        let currValue = primaryStructureValue(in: selectedEvent)
+        return TraceValueDiff.changedMatrixCells(
+            previous: prevValue,
+            current: currValue
+        )
+    }
 }

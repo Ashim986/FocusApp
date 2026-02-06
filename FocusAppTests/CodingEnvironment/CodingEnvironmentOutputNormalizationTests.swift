@@ -7,7 +7,8 @@ final class CodingEnvironmentOutputNormalizationTests: XCTestCase {
         let presenter = makeCodingPresenter()
         let normalized = presenter.normalizeOutputForComparison("  output  \n", expected: "")
 
-        XCTAssertEqual(normalized, "output")
+        XCTAssertEqual(normalized.displayValue, "output")
+        XCTAssertEqual(normalized.comparisonValue, "output")
     }
 
     @MainActor
@@ -15,7 +16,9 @@ final class CodingEnvironmentOutputNormalizationTests: XCTestCase {
         let presenter = makeCodingPresenter()
         let normalized = presenter.normalizeOutputForComparison("debug\n42", expected: "42")
 
-        XCTAssertEqual(normalized, "42")
+        // Display should show full raw output, comparison should extract the expected suffix
+        XCTAssertEqual(normalized.displayValue, "debug\n42")
+        XCTAssertEqual(normalized.comparisonValue, "42")
     }
 
     @MainActor
@@ -23,6 +26,8 @@ final class CodingEnvironmentOutputNormalizationTests: XCTestCase {
         let presenter = makeCodingPresenter()
         let normalized = presenter.normalizeOutputForComparison("log\nvalue", expected: "value")
 
-        XCTAssertEqual(normalized, "value")
+        // Display should show full raw output, comparison should use last line
+        XCTAssertEqual(normalized.displayValue, "log\nvalue")
+        XCTAssertEqual(normalized.comparisonValue, "value")
     }
 }

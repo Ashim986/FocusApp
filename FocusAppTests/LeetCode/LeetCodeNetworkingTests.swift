@@ -2,9 +2,14 @@
 import XCTest
 
 final class LeetCodeNetworkingTests: XCTestCase {
-    func testDefaultRequestBuilderSetsFields() {
-        let url = URL(string: "https://example.com")!
-        let endpoint = NetworkEndpoint(url: url, method: .post, headers: ["X-Test": "1"], body: Data("hi".utf8))
+    func testDefaultRequestBuilderSetsFields() throws {
+        let url = try XCTUnwrap(URL(string: "https://example.com"))
+        let endpoint = NetworkEndpoint(
+            url: url,
+            method: .post,
+            headers: ["X-Test": "1"],
+            body: Data("hi".utf8)
+        )
 
         let request = DefaultRequestBuilder().buildRequest(for: endpoint)
 
@@ -18,17 +23,31 @@ final class LeetCodeNetworkingTests: XCTestCase {
         config.protocolClasses = [URLProtocolStub.self]
         let session = URLSession(configuration: config)
         let executor = URLSessionRequestExecutor(session: session)
-        let url = URL(string: "https://example.com")!
+        let url = try XCTUnwrap(URL(string: "https://example.com"))
 
         URLProtocolStub.handler = { request in
-            let response = HTTPURLResponse(url: request.url!, statusCode: 200, httpVersion: nil, headerFields: nil)!
+            let requestURL = try XCTUnwrap(request.url)
+            let response = try XCTUnwrap(
+                HTTPURLResponse(
+                    url: requestURL,
+                    statusCode: 200,
+                    httpVersion: nil,
+                    headerFields: nil
+                )
+            )
             return (response, Data("ok".utf8))
         }
         let okData = try await executor.execute(URLRequest(url: url))
         XCTAssertEqual(String(data: okData, encoding: .utf8), "ok")
 
         URLProtocolStub.handler = { request in
-            let response = URLResponse(url: request.url!, mimeType: nil, expectedContentLength: 0, textEncodingName: nil)
+            let requestURL = try XCTUnwrap(request.url)
+            let response = URLResponse(
+                url: requestURL,
+                mimeType: nil,
+                expectedContentLength: 0,
+                textEncodingName: nil
+            )
             return (response, Data())
         }
         await assertThrowsNetworkError(NetworkError.invalidResponse) {
@@ -36,7 +55,15 @@ final class LeetCodeNetworkingTests: XCTestCase {
         }
 
         URLProtocolStub.handler = { request in
-            let response = HTTPURLResponse(url: request.url!, statusCode: 500, httpVersion: nil, headerFields: nil)!
+            let requestURL = try XCTUnwrap(request.url)
+            let response = try XCTUnwrap(
+                HTTPURLResponse(
+                    url: requestURL,
+                    statusCode: 500,
+                    httpVersion: nil,
+                    headerFields: nil
+                )
+            )
             return (response, Data())
         }
         await assertThrowsNetworkError(NetworkError.httpStatus(500)) {
@@ -44,7 +71,10 @@ final class LeetCodeNetworkingTests: XCTestCase {
         }
     }
 
-    private func assertThrowsNetworkError(_ expected: NetworkError, _ block: @escaping () async throws -> Void) async {
+    private func assertThrowsNetworkError(
+        _ expected: NetworkError,
+        _ block: @escaping () async throws -> Void
+    ) async {
         do {
             try await block()
             XCTFail("Expected error")
@@ -63,7 +93,7 @@ final class LeetCodeNetworkingTests: XCTestCase {
     }
 }
 
-private final class URLProtocolStub: URLProtocol {
+private class URLProtocolStub: URLProtocol {
     static var handler: ((URLRequest) throws -> (URLResponse, Data))?
 
     override class func canInit(with request: URLRequest) -> Bool { true }

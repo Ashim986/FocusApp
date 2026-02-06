@@ -5,7 +5,10 @@ final class CodingEnvironmentTraceParsingTests: XCTestCase {
     @MainActor
     func testParseTraceOutputExtractsEventsAndCleansOutput() {
         let presenter = makeCodingPresenter()
-        let traceLine = "__focus_trace__{\"kind\":\"input\",\"values\":{\"nums\":[1,2],\"flag\":true}}"
+        let tracePayload = """
+        {"kind":"input","values":{"nums":[1,2],"flag":true}}
+        """
+        let traceLine = "__focus_trace__" + tracePayload
         let output = [traceLine, "result"].joined(separator: "\n")
 
         let parsed = presenter.parseTraceOutput(output)
@@ -31,11 +34,20 @@ final class CodingEnvironmentTraceParsingTests: XCTestCase {
     func testCapTraceEventsLimitsStepCount() {
         let presenter = makeCodingPresenter()
         var events: [DataJourneyEvent] = []
-        events.append(DataJourneyEvent(kind: .input, line: nil, label: nil, values: ["input": .null]))
+        events.append(
+            DataJourneyEvent(kind: .input, line: nil, label: nil, values: ["input": .null])
+        )
         for index in 0..<45 {
             events.append(DataJourneyEvent(kind: .step, line: index, label: "step", values: [:]))
         }
-        events.append(DataJourneyEvent(kind: .output, line: nil, label: nil, values: ["result": .number(1, isInt: true)]))
+        events.append(
+            DataJourneyEvent(
+                kind: .output,
+                line: nil,
+                label: nil,
+                values: ["result": .number(1, isInt: true)]
+            )
+        )
 
         let capped = presenter.capTraceEvents(events)
 

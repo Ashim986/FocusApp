@@ -33,7 +33,9 @@ final class CodingEnvironmentSnippetSelectionTests: XCTestCase {
             codeSnippets: ["swift": "class Solution { }"],
             metaData: nil
         )
-        presenter.problemContentCache["reverse-linked-list"] = cached
+        presenter.problemContentCache["reverse-linked-list"] = CodingEnvironmentPresenter.CachedContent(
+            content: cached, timestamp: Date()
+        )
 
         let code = presenter.initialCode(for: problem, language: .swift)
 
@@ -57,7 +59,9 @@ final class CodingEnvironmentSnippetSelectionTests: XCTestCase {
             codeSnippets: [:],
             metaData: meta
         )
-        presenter.problemContentCache["two-sum"] = cached
+        presenter.problemContentCache["two-sum"] = CodingEnvironmentPresenter.CachedContent(
+            content: cached, timestamp: Date()
+        )
 
         let problem = Problem(name: "Two Sum", difficulty: .easy, url: "https://leetcode.com/problems/two-sum/")
         let code = presenter.initialCode(for: problem, language: .swift)
@@ -126,7 +130,8 @@ final class CodingEnvironmentSnippetSelectionTests: XCTestCase {
             metaData: nil
         )
 
-        let snippet = CodingEnvironmentPresenter(interactor: makeCodingInteractor()).snippetForLanguage(.python, from: content)
+        let presenter = CodingEnvironmentPresenter(interactor: makeCodingInteractor())
+        let snippet = presenter.snippetForLanguage(.python, from: content)
 
         XCTAssertEqual(snippet, "print('py3')")
     }

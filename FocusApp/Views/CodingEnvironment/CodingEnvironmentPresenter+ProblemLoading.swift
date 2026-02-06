@@ -22,12 +22,13 @@ extension CodingEnvironmentPresenter {
             return
         }
 
-        if let cached = problemContentCache[slug] {
+        if let cached = problemContentCache[slug],
+           Date().timeIntervalSince(cached.timestamp) < Self.cacheTTL {
             await MainActor.run {
                 guard shouldApplyContent(slug: slug, requestID: requestID) else { return }
-                self.problemContent = cached
-                self.parseTestCases(from: cached)
-                self.applySnippetIfNeeded(from: cached)
+                self.problemContent = cached.content
+                self.parseTestCases(from: cached.content)
+                self.applySnippetIfNeeded(from: cached.content)
                 self.isLoadingProblem = false
             }
             return
@@ -41,7 +42,7 @@ extension CodingEnvironmentPresenter {
         do {
             let content = try await interactor.fetchProblemContent(slug: slug)
             if let content {
-                problemContentCache[slug] = content
+                problemContentCache[slug] = CachedContent(content: content, timestamp: Date())
             } else {
                 logger?.recordAsync(
                     DebugLogEntry(
@@ -92,19 +93,19 @@ extension CodingEnvironmentPresenter {
             let groupedInputs = groupInputs(inputs, size: meta.primaryParams.count)
             for index in 0..<min(groupedInputs.count, max(outputs.count, 1)) {
                 let input = groupedInputs.indices.contains(index) ? groupedInputs[index] : ""
-                let output = outputs.indices.contains(index) ? outputs[index] : "Expected output"
+                let output = outputs.indices.contains(index) ? outputs[index] : ""
                 cases.append(TestCase(input: input, expectedOutput: output))
             }
         } else {
             for index in 0..<min(inputs.count, max(outputs.count, 1)) {
                 let input = inputs.indices.contains(index) ? inputs[index] : ""
-                let output = outputs.indices.contains(index) ? outputs[index] : "Expected output"
+                let output = outputs.indices.contains(index) ? outputs[index] : ""
                 cases.append(TestCase(input: input, expectedOutput: output))
             }
         }
 
         if cases.isEmpty && !content.sampleTestCase.isEmpty {
-            cases.append(TestCase(input: content.sampleTestCase, expectedOutput: "Expected output"))
+            cases.append(TestCase(input: content.sampleTestCase, expectedOutput: ""))
         }
 
         testCases = cases
@@ -147,8 +148,7 @@ extension CodingEnvironmentPresenter {
     }
 
     private func isMissingOutput(_ output: String) -> Bool {
-        let trimmed = output.trimmingCharacters(in: .whitespacesAndNewlines)
-        return trimmed.isEmpty || trimmed == "Expected output"
+        output.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
     }
 
     private func groupInputs(_ inputs: [String], size: Int) -> [String] {
@@ -157,31 +157,129 @@ extension CodingEnvironmentPresenter {
         var index = 0
         while index < inputs.count {
             let endIndex = min(index + size, inputs.count)
-            let group = inputs[index..<endIndex]
-            if group.count < size { break }
-            grouped.append(group.joined(separator: "\n"))
+            let group = Array(inputs[index..<endIndex])
+            if group.count < size {
+                // Pad incomplete last group with empty strings instead of dropping it
+                let padded = group + Array(repeating: "", count: size - group.count)
+                grouped.append(padded.joined(separator: "\n"))
+            } else {
+                grouped.append(group.joined(separator: "\n"))
+            }
             index = endIndex
         }
         return grouped
     }
 
     func parseOutputsFromHTML(_ html: String) -> [String] {
-        var outputs: [String] = []
-
-        let pattern = "<strong>Output:</strong>\\s*([^<]+)"
-        guard let regex = try? NSRegularExpression(pattern: pattern, options: []) else {
-            return outputs
+        let pattern = [
+            "<strong>Output:</strong>\\s*",
+            "(?:<pre[^>]*>\\s*<code[^>]*>|<pre[^>]*>|<code[^>]*>)?\\s*",
+            "([\\s\\S]*?)\\s*",
+            "(?:</code>\\s*</pre>|</pre>|</code>|</p>|<strong>|$)"
+        ].joined()
+        guard let regex = try? NSRegularExpression(pattern: pattern, options: [.caseInsensitive]) else {
+            return []
         }
 
+        var outputs: [String] = []
         let matches = regex.matches(in: html, range: NSRange(html.startIndex..., in: html))
         for match in matches {
             if let range = Range(match.range(at: 1), in: html) {
-                let output = String(html[range]).trimmingCharacters(in: .whitespacesAndNewlines)
-                outputs.append(output)
+                let raw = String(html[range])
+                let stripped = stripHTMLTags(raw)
+                let decoded = decodeHTMLEntities(stripped)
+                let trimmed = decoded.trimmingCharacters(in: .whitespacesAndNewlines)
+                if !trimmed.isEmpty {
+                    outputs.append(trimmed)
+                }
             }
         }
 
+        if !outputs.isEmpty {
+            return outputs
+        }
+
+        return parseOutputsFromPlainText(html)
+    }
+
+    private func decodeHTMLEntities(_ text: String) -> String {
+        var result = text
+        let entities: [(String, String)] = [
+            ("&amp;", "&"),
+            ("&lt;", "<"),
+            ("&gt;", ">"),
+            ("&quot;", "\""),
+            ("&#39;", "'"),
+            ("&apos;", "'"),
+            ("&nbsp;", " ")
+        ]
+        for (entity, replacement) in entities {
+            result = result.replacingOccurrences(of: entity, with: replacement)
+        }
+        // Decode numeric entities like &#123;
+        if let numericRegex = try? NSRegularExpression(pattern: "&#(\\d+);", options: []) {
+            let nsResult = result as NSString
+            let matches = numericRegex.matches(in: result, range: NSRange(location: 0, length: nsResult.length))
+            for match in matches.reversed() {
+                let codeString = nsResult.substring(with: match.range(at: 1))
+                if let code = Int(codeString), let scalar = Unicode.Scalar(code) {
+                    result = (result as NSString).replacingCharacters(
+                        in: match.range,
+                        with: String(Character(scalar))
+                    )
+                }
+            }
+        }
+        return result
+    }
+
+    private func parseOutputsFromPlainText(_ html: String) -> [String] {
+        let plain = decodeHTMLEntities(stripHTMLTags(html))
+        let lines = plain.components(separatedBy: .newlines)
+        var outputs: [String] = []
+
+        var index = 0
+        while index < lines.count {
+            let line = lines[index].trimmingCharacters(in: .whitespacesAndNewlines)
+            if line.lowercased().hasPrefix("output:") {
+                var value = line.dropFirst("output:".count)
+                    .trimmingCharacters(in: .whitespacesAndNewlines)
+                if value.isEmpty {
+                    var nextIndex = index + 1
+                    while nextIndex < lines.count {
+                        let nextLine = lines[nextIndex].trimmingCharacters(in: .whitespacesAndNewlines)
+                        if !nextLine.isEmpty {
+                            value = nextLine
+                            index = nextIndex
+                            break
+                        }
+                        nextIndex += 1
+                    }
+                }
+                if !value.isEmpty {
+                    outputs.append(value)
+                }
+            }
+            index += 1
+        }
+
         return outputs
+    }
+
+    private func stripHTMLTags(_ text: String) -> String {
+        let withLineBreaks = text.replacingOccurrences(
+            of: "<br\\s*/?>",
+            with: "\n",
+            options: .regularExpression
+        )
+        guard let regex = try? NSRegularExpression(pattern: "<[^>]+>", options: []) else {
+            return withLineBreaks
+        }
+        return regex.stringByReplacingMatches(
+            in: withLineBreaks,
+            range: NSRange(withLineBreaks.startIndex..., in: withLineBreaks),
+            withTemplate: ""
+        )
     }
 
     private func shouldApplyContent(slug: String, requestID: UUID) -> Bool {

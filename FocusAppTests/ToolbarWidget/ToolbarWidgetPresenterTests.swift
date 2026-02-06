@@ -56,8 +56,8 @@ final class ToolbarWidgetPresenterTests: XCTestCase {
         let presenter = ToolbarWidgetPresenter(interactor: interactor)
 
         // Mark 5 problems as solved
-        for i in 0..<5 {
-            store.toggleProblem(day: 1, problemIndex: i)
+        for problemIndex in 0..<5 {
+            store.toggleProblem(day: 1, problemIndex: problemIndex)
         }
 
         try? await Task.sleep(nanoseconds: 100_000_000)

@@ -599,6 +599,24 @@ enum L10n {
         static var aboutHeader: String {
             tr("settings.about_header")
         }
+        static var aiApiKeyLabel: String {
+            tr("settings.ai_api_key_label")
+        }
+        static var aiApiKeyPlaceholder: String {
+            tr("settings.ai_api_key_placeholder")
+        }
+        static var aiFooter: String {
+            tr("settings.ai_footer")
+        }
+        static var aiHeader: String {
+            tr("settings.ai_header")
+        }
+        static var aiModelLabel: String {
+            tr("settings.ai_model_label")
+        }
+        static var aiProviderLabel: String {
+            tr("settings.ai_provider_label")
+        }
         static var allHabitsDone: String {
             tr("settings.all_habits_done")
         }

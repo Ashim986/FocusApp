@@ -45,4 +45,23 @@ extension SettingsView {
             }
         )
     }
+
+    var aiProviderKind: Binding<AIProviderKind> {
+        Binding(
+            get: { presenter.aiProviderKind },
+            set: { value in
+                presenter.updateAIProvider(kind: value)
+            }
+        )
+    }
+
+    var aiProviderModel: Binding<String> {
+        Binding(
+            get: { presenter.aiProviderModel },
+            set: { value in
+                presenter.aiProviderModel = value
+                presenter.saveAIProviderSettings()
+            }
+        )
+    }
 }

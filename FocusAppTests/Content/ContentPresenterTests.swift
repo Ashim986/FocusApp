@@ -54,8 +54,8 @@ final class ContentPresenterTests: XCTestCase {
         XCTAssertEqual(presenter.progressPercent, 0)
 
         // Mark all problems in day 1 as solved (5 problems)
-        for i in 0..<5 {
-            store.toggleProblem(day: 1, problemIndex: i)
+        for problemIndex in 0..<5 {
+            store.toggleProblem(day: 1, problemIndex: problemIndex)
         }
 
         try? await Task.sleep(nanoseconds: 100_000_000)

@@ -10,7 +10,6 @@ excluded:
   - fastlane
   - Generated
   - "**/*.generated.swift"
-  - FocusAppTests
   - FocusApp/Helpers/L10n.swift
   - FocusApp/Views/CodingEnvironment/CodingEnvironmentPresenter+Snippets.swift
 

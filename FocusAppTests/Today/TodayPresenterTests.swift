@@ -150,10 +150,10 @@ final class TodayPresenterTests: XCTestCase {
     }
 
     @MainActor
-    func testCarryoverProblemsAppearWhenIncomplete() async {
+    func testCarryoverProblemsAppearWhenIncomplete() async throws {
         let start = makeDate(year: 2026, month: 2, day: 3)
         // Move to day 2 so day 1 becomes a past day
-        let day2 = Calendar.current.date(byAdding: .day, value: 1, to: start)!
+        let day2 = try XCTUnwrap(Calendar.current.date(byAdding: .day, value: 1, to: start))
         let store = AppStateStore(
             storage: InMemoryAppStorage(),
             calendar: PlanCalendar(startDate: start),
@@ -179,10 +179,10 @@ final class TodayPresenterTests: XCTestCase {
     }
 
     @MainActor
-    func testCompletedPastDaysAreHidden() async {
+    func testCompletedPastDaysAreHidden() async throws {
         let start = makeDate(year: 2026, month: 2, day: 3)
         // Move to day 2 so day 1 becomes a past day
-        let day2 = Calendar.current.date(byAdding: .day, value: 1, to: start)!
+        let day2 = try XCTUnwrap(Calendar.current.date(byAdding: .day, value: 1, to: start))
         let store = AppStateStore(
             storage: InMemoryAppStorage(),
             calendar: PlanCalendar(startDate: start),
@@ -190,8 +190,8 @@ final class TodayPresenterTests: XCTestCase {
         )
 
         // Complete all problems in day 1
-        for i in 0..<11 {
-            store.toggleProblem(day: 1, problemIndex: i)
+        for problemIndex in 0..<11 {
+            store.toggleProblem(day: 1, problemIndex: problemIndex)
         }
 
         let notificationManager = FakeNotificationManager()

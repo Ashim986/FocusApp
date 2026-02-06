@@ -10,6 +10,7 @@ struct SequenceBubbleRow: View {
     let pointerMotions: [PointerMotion]
     let sequenceLinks: [SequenceLink]
     let gapIndices: Set<Int>
+    let highlightedIndices: Set<Int>
     let bubbleStyle: TraceBubble.Style
 
     let bubbleSize: CGFloat
@@ -45,6 +46,7 @@ struct SequenceBubbleRow: View {
         pointerMotions: [PointerMotion] = [],
         sequenceLinks: [SequenceLink] = [],
         gapIndices: Set<Int> = [],
+        highlightedIndices: Set<Int> = [],
         bubbleStyle: TraceBubble.Style = .solid,
         bubbleSize: CGFloat = 30,
         pointerFontSize: CGFloat = 8,
@@ -61,6 +63,7 @@ struct SequenceBubbleRow: View {
         self.pointerMotions = pointerMotions
         self.sequenceLinks = sequenceLinks
         self.gapIndices = gapIndices
+        self.highlightedIndices = highlightedIndices
         self.bubbleStyle = bubbleStyle
         self.bubbleSize = bubbleSize
         self.pointerFontSize = pointerFontSize
@@ -185,9 +188,16 @@ struct SequenceBubbleRow: View {
                 ForEach(Array(bubbleItems.enumerated()), id: \.element.id) { index, item in
                     let model = TraceBubbleModel.from(item.value)
                     let fill = model.fill
+                    let isHighlighted = highlightedIndices.contains(index)
                     ZStack(alignment: .top) {
                         VStack(spacing: showIndices ? labelSpacing : 0) {
-                            TraceBubble(text: model.text, fill: fill, size: bubbleSize, style: bubbleStyle)
+                            TraceBubble(
+                                text: model.text,
+                                fill: fill,
+                                size: bubbleSize,
+                                style: bubbleStyle,
+                                highlighted: isHighlighted
+                            )
                             if showIndices {
                                 Text("\(index)")
                                     .font(.system(size: max(8, bubbleSize * 0.28), weight: .semibold))

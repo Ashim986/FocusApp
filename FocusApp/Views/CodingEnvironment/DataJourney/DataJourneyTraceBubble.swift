@@ -9,12 +9,20 @@ struct TraceBubble: View {
     let fill: Color
     let size: CGFloat
     let style: Style
+    let highlighted: Bool
 
-    init(text: String, fill: Color, size: CGFloat = 30, style: Style = .solid) {
+    init(
+        text: String,
+        fill: Color,
+        size: CGFloat = 30,
+        style: Style = .solid,
+        highlighted: Bool = false
+    ) {
         self.text = text
         self.fill = fill
         self.size = size
         self.style = style
+        self.highlighted = highlighted
     }
 
     var body: some View {
@@ -28,6 +36,7 @@ struct TraceBubble: View {
                 .padding(.horizontal, 4)
         }
         .frame(width: size, height: size)
+        .overlay(highlightOverlay)
     }
 
     @ViewBuilder
@@ -36,6 +45,15 @@ struct TraceBubble: View {
         case .solid:
             Circle()
                 .fill(fill)
+        }
+    }
+
+    @ViewBuilder
+    private var highlightOverlay: some View {
+        if highlighted {
+            Circle()
+                .stroke(Color.appCyan, lineWidth: 2)
+                .shadow(color: Color.appCyan.opacity(0.6), radius: 4)
         }
     }
 }

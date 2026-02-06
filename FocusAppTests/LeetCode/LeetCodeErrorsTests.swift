@@ -19,12 +19,12 @@ final class LeetCodeErrorsTests: XCTestCase {
         XCTAssertTrue(error.errorDescription?.contains("403") == true)
     }
 
-    func testLeetCodeErrorCasesAreDifferent() {
+    func testLeetCodeErrorCasesAreDifferent() throws {
         let allCases: [LeetCodeError] = [.invalidURL, .noData, .decodingError, .invalidPayload]
 
         for error in allCases {
-            XCTAssertNotNil(error.errorDescription)
-            XCTAssertFalse(error.errorDescription!.isEmpty)
+            let description = try XCTUnwrap(error.errorDescription)
+            XCTAssertFalse(description.isEmpty)
         }
 
         XCTAssertEqual(allCases.count, 4)

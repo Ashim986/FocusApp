@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		C6D2A91F4E3F78068E5FC3D2 /* DataJourneyDiffTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5A1B82C3D4E69015F3E9D6B /* DataJourneyDiffTests.swift */; };
+		D4F6A81C5D9B72034G5FB3D1 /* AutoInstrumenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3E5D72B4C8A61023F4E7A9C /* AutoInstrumenter.swift */; };
+		A2C3B91E4D2E68057E4FB2C1 /* DataJourneyDiff.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1D4F82A3B7C59014F2E8D5A /* DataJourneyDiff.swift */; };
+		D4F6C82E1A3B79054F2E8C3A /* PythonTraceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7E3A91F4C2D58067E3FA1B2 /* PythonTraceTests.swift */; };
 		03937CED56E14BF681F06586 /* LeetCodeRestClient+Requests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2D70A846ECA406EAD5C00EA /* LeetCodeRestClient+Requests.swift */; };
 		074E2BCBD6F74E9B99BF53E4 /* CodingEnvironmentPresenterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29FB46B09F3E414695FCE546 /* CodingEnvironmentPresenterTests.swift */; };
 		083FCCE4C2EE974E745D0F9C /* ProblemManifestStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F9FB7FF7D18DD14E20106F2 /* ProblemManifestStore.swift */; };
@@ -16,6 +20,7 @@
 		0C10B0596DC14FCC8EC377F2 /* LeetCodeTemplateBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29631B7C8972461E8CFE5A4C /* LeetCodeTemplateBuilder.swift */; };
 		0D21E50514854C87A3369D72 /* CodingEnvironmentPages.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0097B6043D24A8BBA0E5495 /* CodingEnvironmentPages.swift */; };
 		0F871AE1ABD84FF1841AD8A6 /* DataJourneyTreeGraphView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0587D0FFC3444B3BAF623ED6 /* DataJourneyTreeGraphView.swift */; };
+		FAE34936781FB08DD3BC6A94 /* DataJourneyMatrixGridView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 053517450BF8C23F9B24B4F2 /* DataJourneyMatrixGridView.swift */; };
 		111A709F246047A6AB319D04 /* CodingEnvironmentPresenter+ExecutionDiagnostics.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB829ACA59D542A1BAFB7E98 /* CodingEnvironmentPresenter+ExecutionDiagnostics.swift */; };
 		19D175AD93CC47759E0F6BCA /* ProcessRunState.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2C628C5EB52415F9AB50D7E /* ProcessRunState.swift */; };
 		1C9332DFB01F4B57805EC9A6 /* ExecutorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2C29BF0F588499DBE85FD5D /* ExecutorTests.swift */; };
@@ -23,6 +28,7 @@
 		1D57E79208E74453BD0275FC /* DataJourneyStructureDetectionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54AF08543519447B87977A9E /* DataJourneyStructureDetectionTests.swift */; };
 		1FDAC8DA41B44813A6128FF4 /* LeetCodeModelsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84B888743F7248DBA5F3A94F /* LeetCodeModelsTests.swift */; };
 		213754056157F7C69749A0C4 /* LeetCodeExecutionWrapperTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00747953C3ED4D3784EA4B98 /* LeetCodeExecutionWrapperTests.swift */; };
+		26B2211C5D33315D24B3D008 /* LeetCodeExecutionWrapperEdgeCaseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 867FE0756AF39CB9438B1288 /* LeetCodeExecutionWrapperEdgeCaseTests.swift */; };
 		21D1539A6F4B4DEEBC6A1924 /* CodingEnvironmentPresenter+ExecutionTrace.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8668759D89D46E6AFEFDB91 /* CodingEnvironmentPresenter+ExecutionTrace.swift */; };
 		299C1DCB1B9A47B7A808C51A /* SolutionApproachView+TestCases.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3990D61D6ADE47A184465754 /* SolutionApproachView+TestCases.swift */; };
 		345ABF38D5A6403F98251750 /* DebugLogView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 442A3E5BF10148F0B6B191C1 /* DebugLogView.swift */; };
@@ -44,6 +50,7 @@
 		55C3B4ADCD3C450593E4212C /* NotificationManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65251E426E5243F79306F201 /* NotificationManagerTests.swift */; };
 		571D3D46E3FAFB7887E0E410 /* LeetCodeTemplateBuilderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7771295A59E81FAD37E80A4E /* LeetCodeTemplateBuilderTests.swift */; };
 		572EA792E3E940E0AC6DFC34 /* LeetCodeExecutionWrapper+PythonRunner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39FCBCC646DF4102AFB6EB95 /* LeetCodeExecutionWrapper+PythonRunner.swift */; };
+		3DBF10CF797F5158640DB139 /* LeetCodeExecutionWrapper+PythonTrace.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61EBAF88E89C2265C6E96CBA /* LeetCodeExecutionWrapper+PythonTrace.swift */; };
 		58F2001E816D4775D81926F7 /* CodingEnvironmentOutputNormalizationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 547FCC10780C70175DB6A578 /* CodingEnvironmentOutputNormalizationTests.swift */; };
 		5AD100ED084B4A999AEE1AA4 /* SwiftExecutor+Logging.swift in Sources */ = {isa = PBXBuildFile; fileRef = C47F33827B1A4CAAAF7ACC2C /* SwiftExecutor+Logging.swift */; };
 		5B87C0B6275146F8B726CA73 /* LeetCodeExecutionWrapper+Swift.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40DF70BDE518480BA3A08BE4 /* LeetCodeExecutionWrapper+Swift.swift */; };
@@ -232,6 +239,7 @@
 		RT001001 /* ContentRouterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = RT002001 /* ContentRouterTests.swift */; };
 		33350B941D8818A1F0B6046F /* TopicSolutionModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = B28A8462CA30A176A921BB7B /* TopicSolutionModels.swift */; };
 		0B3BB5B771124F47756486F7 /* TopicSolutionStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAB28E8181C60EBCBD3A980F /* TopicSolutionStore.swift */; };
+		A7F3B2C1D8E9F0A1B2C3D4E5 /* SolutionAIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7F3B2C1D8E9F0A1B2C3D4E6 /* SolutionAIService.swift */; };
 		D1DE7AFB63DC55F9DC102042 /* index.json in Resources */ = {isa = PBXBuildFile; fileRef = C707308BDCC0CA175F9CA73E /* index.json */; };
 		B99E2DBA62D1949CBCCC7E64 /* arrays-hashing.json in Resources */ = {isa = PBXBuildFile; fileRef = 2A6D6D5B7FB656D067770817 /* arrays-hashing.json */; };
 		C47A67B33D1E3182880018FA /* two-pointers.json in Resources */ = {isa = PBXBuildFile; fileRef = C47F4F9B2A62B792A9E9012D /* two-pointers.json */; };
@@ -263,7 +271,10 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		B3E5D72B4C8A61023F4E7A9C /* AutoInstrumenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutoInstrumenter.swift; sourceTree = "<group>"; };
+		E1D4F82A3B7C59014F2E8D5A /* DataJourneyDiff.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataJourneyDiff.swift; sourceTree = "<group>"; };
 		00747953C3ED4D3784EA4B98 /* LeetCodeExecutionWrapperTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeetCodeExecutionWrapperTests.swift; sourceTree = "<group>"; };
+		867FE0756AF39CB9438B1288 /* LeetCodeExecutionWrapperEdgeCaseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeetCodeExecutionWrapperEdgeCaseTests.swift; sourceTree = "<group>"; };
 		048A8082F2A440128C75C769 /* ProblemDetailTab.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProblemDetailTab.swift; sourceTree = "<group>"; };
 		0587D0FFC3444B3BAF623ED6 /* DataJourneyTreeGraphView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataJourneyTreeGraphView.swift; sourceTree = "<group>"; };
 		085FEBCD150F43019CE9B529 /* ProcessRunnerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProcessRunnerTests.swift; sourceTree = "<group>"; };
@@ -280,6 +291,7 @@
 		29FB46B09F3E414695FCE546 /* CodingEnvironmentPresenterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodingEnvironmentPresenterTests.swift; sourceTree = "<group>"; };
 		3990D61D6ADE47A184465754 /* SolutionApproachView+TestCases.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SolutionApproachView+TestCases.swift"; sourceTree = "<group>"; };
 		39FCBCC646DF4102AFB6EB95 /* LeetCodeExecutionWrapper+PythonRunner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LeetCodeExecutionWrapper+PythonRunner.swift"; sourceTree = "<group>"; };
+		61EBAF88E89C2265C6E96CBA /* LeetCodeExecutionWrapper+PythonTrace.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LeetCodeExecutionWrapper+PythonTrace.swift"; sourceTree = "<group>"; };
 		3C16AAEDECD6437486584DA0 /* LeetCodeTemplateBuilder+Swift.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LeetCodeTemplateBuilder+Swift.swift"; sourceTree = "<group>"; };
 		3D6F90158D1A49A4B723EC53 /* Fixtures.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Fixtures.swift; sourceTree = "<group>"; };
 		40DF70BDE518480BA3A08BE4 /* LeetCodeExecutionWrapper+Swift.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LeetCodeExecutionWrapper+Swift.swift"; sourceTree = "<group>"; };
@@ -304,6 +316,7 @@
 		6E30623F430E4A7F84DE5C39 /* DebugLogView+Styles.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DebugLogView+Styles.swift"; sourceTree = "<group>"; };
 		7268D1DCFE4143A88A1746F9 /* DataJourneyStructureCanvasView+CombinedList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DataJourneyStructureCanvasView+CombinedList.swift"; sourceTree = "<group>"; };
 		72999C0BC3F3402687B3BB9E /* ProgrammingLanguageTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgrammingLanguageTests.swift; sourceTree = "<group>"; };
+		B7E3A91F4C2D58067E3FA1B2 /* PythonTraceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PythonTraceTests.swift; sourceTree = "<group>"; };
 		73DD0E92E41BEC71C5DC5CBE /* CodingEnvironmentTraceParsingTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodingEnvironmentTraceParsingTests.swift; sourceTree = "<group>"; };
 		7693146EF45044699B367836 /* CodingEnvironmentPresenter+SnippetSelection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CodingEnvironmentPresenter+SnippetSelection.swift"; sourceTree = "<group>"; };
 		77109ADB4E7D49D79A7EAE35 /* LeetCodeValueType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeetCodeValueType.swift; sourceTree = "<group>"; };
@@ -448,6 +461,7 @@
 		B41BDEB1E3F242098830391D /* LeetCodeExecutionWrapper+SwiftTrace.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LeetCodeExecutionWrapper+SwiftTrace.swift"; sourceTree = "<group>"; };
 		B8668759D89D46E6AFEFDB91 /* CodingEnvironmentPresenter+ExecutionTrace.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CodingEnvironmentPresenter+ExecutionTrace.swift"; sourceTree = "<group>"; };
 		BBFB63DC75C1BF86F68057A0 /* DataJourneyModelsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataJourneyModelsTests.swift; sourceTree = "<group>"; };
+		F5A1B82C3D4E69015F3E9D6B /* DataJourneyDiffTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataJourneyDiffTests.swift; sourceTree = "<group>"; };
 		BCC76528BB9347DA886CDFBD /* LeetCodeSlugExtractorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeetCodeSlugExtractorTests.swift; sourceTree = "<group>"; };
 		C132E5EEF912453BBDC5AF07 /* DebugLogView+Metrics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DebugLogView+Metrics.swift"; sourceTree = "<group>"; };
 		C2C628C5EB52415F9AB50D7E /* ProcessRunState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProcessRunState.swift; sourceTree = "<group>"; };
@@ -457,6 +471,7 @@
 		C970BACB7D254352948CFF1A /* CodeEditorView+CoordinatorHighlightingSwift.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CodeEditorView+CoordinatorHighlightingSwift.swift"; sourceTree = "<group>"; };
 		C981502C4EC54673BA39B39A /* LeetCodeRestClientTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeetCodeRestClientTests.swift; sourceTree = "<group>"; };
 		CC393A6615DF41B0AA863A6E /* DataJourneyGraphView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataJourneyGraphView.swift; sourceTree = "<group>"; };
+		053517450BF8C23F9B24B4F2 /* DataJourneyMatrixGridView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataJourneyMatrixGridView.swift; sourceTree = "<group>"; };
 		D0097B6043D24A8BBA0E5495 /* CodingEnvironmentPages.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodingEnvironmentPages.swift; sourceTree = "<group>"; };
 		D2D70A846ECA406EAD5C00EA /* LeetCodeRestClient+Requests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LeetCodeRestClient+Requests.swift"; sourceTree = "<group>"; };
 		D6C8B7E1F0A44B2F9C11A1D1 /* DataJourneyPointerModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataJourneyPointerModels.swift; sourceTree = "<group>"; };
@@ -491,6 +506,7 @@
 		RT002001 /* ContentRouterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentRouterTests.swift; sourceTree = "<group>"; };
 		B28A8462CA30A176A921BB7B /* TopicSolutionModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopicSolutionModels.swift; sourceTree = "<group>"; };
 		EAB28E8181C60EBCBD3A980F /* TopicSolutionStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopicSolutionStore.swift; sourceTree = "<group>"; };
+		A7F3B2C1D8E9F0A1B2C3D4E6 /* SolutionAIService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SolutionAIService.swift; sourceTree = "<group>"; };
 		C707308BDCC0CA175F9CA73E /* index.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = index.json; sourceTree = "<group>"; };
 		2A6D6D5B7FB656D067770817 /* arrays-hashing.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = arrays-hashing.json; sourceTree = "<group>"; };
 		C47F4F9B2A62B792A9E9012D /* two-pointers.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = two-pointers.json; sourceTree = "<group>"; };
@@ -545,6 +561,7 @@
 				577B7342AFEB4588BF7030CB /* DataJourneyView+Playback.swift */,
 				4209C8FF6FF7461BBDC6412C /* DataJourneyView+Selection.swift */,
 				B1D2C3D4E5F6A7B8C9D0E1F9 /* DataJourneyModels.swift */,
+				E1D4F82A3B7C59014F2E8D5A /* DataJourneyDiff.swift */,
 				D6C8B7E1F0A44B2F9C11A1D1 /* DataJourneyPointerModels.swift */,
 				F16BF57E1EEC4D76BA0E66B2 /* DataJourneyTraceValueView.swift */,
 				1F87412C2357454BB94E8138 /* DataJourneySequenceBubbleRow.swift */,
@@ -558,6 +575,7 @@
 				FEB3C86A7CC34CB9B7365800 /* DataJourneyStructureCanvasView+Labels.swift */,
 				FC770C1132534029922B331B /* DataJourneyDictionaryStructureRow.swift */,
 				CC393A6615DF41B0AA863A6E /* DataJourneyGraphView.swift */,
+				053517450BF8C23F9B24B4F2 /* DataJourneyMatrixGridView.swift */,
 			);
 			path = DataJourney;
 			sourceTree = "<group>";
@@ -702,7 +720,9 @@
 				B41BDEB1E3F242098830391D /* LeetCodeExecutionWrapper+SwiftTrace.swift */,
 				11B1220325C143EAA1510779 /* LeetCodeExecutionWrapper+SignatureParsing.swift */,
 				A6BCD363384E4C13B37495DE /* LeetCodeExecutionWrapper+Python.swift */,
+				B3E5D72B4C8A61023F4E7A9C /* AutoInstrumenter.swift */,
 				39FCBCC646DF4102AFB6EB95 /* LeetCodeExecutionWrapper+PythonRunner.swift */,
+				61EBAF88E89C2265C6E96CBA /* LeetCodeExecutionWrapper+PythonTrace.swift */,
 				91545BFE73ED44268B3DC9E8 /* LeetCodeExecutionWrapper+TypeParsing.swift */,
 			);
 			path = Execution;
@@ -719,15 +739,18 @@
 				73DD0E92E41BEC71C5DC5CBE /* CodingEnvironmentTraceParsingTests.swift */,
 				547FCC10780C70175DB6A578 /* CodingEnvironmentOutputNormalizationTests.swift */,
 				BBFB63DC75C1BF86F68057A0 /* DataJourneyModelsTests.swift */,
+				F5A1B82C3D4E69015F3E9D6B /* DataJourneyDiffTests.swift */,
 				54AF08543519447B87977A9E /* DataJourneyStructureDetectionTests.swift */,
 				6C42E1B6E2A84B9E9D4E7D23 /* DataJourneyPointerMotionTests.swift */,
 				00747953C3ED4D3784EA4B98 /* LeetCodeExecutionWrapperTests.swift */,
+				867FE0756AF39CB9438B1288 /* LeetCodeExecutionWrapperEdgeCaseTests.swift */,
 				7771295A59E81FAD37E80A4E /* LeetCodeTemplateBuilderTests.swift */,
 				09B826590C1C4423B22A0B64 /* CodeExecutionServiceTests.swift */,
 				DSAT002003 /* ExecutionConfigTests.swift */,
 				A2C29BF0F588499DBE85FD5D /* ExecutorTests.swift */,
 				085FEBCD150F43019CE9B529 /* ProcessRunnerTests.swift */,
 				72999C0BC3F3402687B3BB9E /* ProgrammingLanguageTests.swift */,
+				B7E3A91F4C2D58067E3FA1B2 /* PythonTraceTests.swift */,
 			);
 			path = CodingEnvironment;
 			sourceTree = "<group>";
@@ -804,6 +827,7 @@
 				0F9FB7FF7D18DD14E20106F2 /* ProblemManifestStore.swift */,
 				B28A8462CA30A176A921BB7B /* TopicSolutionModels.swift */,
 				EAB28E8181C60EBCBD3A980F /* TopicSolutionStore.swift */,
+				A7F3B2C1D8E9F0A1B2C3D4E6 /* SolutionAIService.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -1312,6 +1336,7 @@
 				A1000107B /* CodingEnvironmentView+ProblemPicker.swift in Sources */,
 				CB0805C549E94B40B1CE6960 /* CodingEnvironmentProblemModels.swift in Sources */,
 				B1D2C3D4E5F6A7B8C9D0E1F7 /* DataJourneyModels.swift in Sources */,
+				A2C3B91E4D2E68057E4FB2C1 /* DataJourneyDiff.swift in Sources */,
 				B1D2C3D4E5F6A7B8C9D0E1F8 /* DataJourneyView.swift in Sources */,
 				D6C8B7E1F0A44B2F9C11A1D2 /* DataJourneyPointerModels.swift in Sources */,
 				D6C8B7E1F0A44B2F9C11A1D4 /* DataJourneyStructureCanvasView.swift in Sources */,
@@ -1341,7 +1366,9 @@
 				ACEFDAC310824100961E48F0 /* LeetCodeExecutionWrapper+SwiftTrace.swift in Sources */,
 				665139E8C51F498995BE1303 /* LeetCodeExecutionWrapper+SignatureParsing.swift in Sources */,
 				7D1847D18492434F83E7148A /* LeetCodeExecutionWrapper+Python.swift in Sources */,
+				D4F6A81C5D9B72034G5FB3D1 /* AutoInstrumenter.swift in Sources */,
 				572EA792E3E940E0AC6DFC34 /* LeetCodeExecutionWrapper+PythonRunner.swift in Sources */,
+				3DBF10CF797F5158640DB139 /* LeetCodeExecutionWrapper+PythonTrace.swift in Sources */,
 				3593EBC0C2634B2E949F8AC3 /* LeetCodeExecutionWrapper+TypeParsing.swift in Sources */,
 				4C00121006CA4BA8AA4CB6ED /* DataJourneyGraphView.swift in Sources */,
 				FDA5DE4E59854F6EA8DD7C86 /* DataJourneySequenceBubbleRow.swift in Sources */,
@@ -1352,12 +1379,14 @@
 				F12BB13EE8394916BEA7150D /* DataJourneyView+Layout.swift in Sources */,
 				BAF6DBF89171499D947621DE /* DataJourneyView+Playback.swift in Sources */,
 				AC5E3A8CA8E344E4BC8DBC67 /* DataJourneyView+Selection.swift in Sources */,
+				FAE34936781FB08DD3BC6A94 /* DataJourneyMatrixGridView.swift in Sources */,
 				3B6C3674D3C641F59EFAA0F4 /* CodingEnvironmentView+SidebarRows.swift in Sources */,
 				D54D3C6A91FC412DA4C9AC74 /* ProblemDetailTab.swift in Sources */,
 				299C1DCB1B9A47B7A808C51A /* SolutionApproachView+TestCases.swift in Sources */,
 				083FCCE4C2EE974E745D0F9C /* ProblemManifestStore.swift in Sources */,
 				33350B941D8818A1F0B6046F /* TopicSolutionModels.swift in Sources */,
 				0B3BB5B771124F47756486F7 /* TopicSolutionStore.swift in Sources */,
+				A7F3B2C1D8E9F0A1B2C3D4E5 /* SolutionAIService.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1388,9 +1417,12 @@
 				A30AF7E21FB62F3F28515335 /* CodingEnvironmentTraceParsingTests.swift in Sources */,
 				58F2001E816D4775D81926F7 /* CodingEnvironmentOutputNormalizationTests.swift in Sources */,
 				C7720954D2BECE71047F4F81 /* DataJourneyModelsTests.swift in Sources */,
+				C6D2A91F4E3F78068E5FC3D2 /* DataJourneyDiffTests.swift in Sources */,
 				1D57E79208E74453BD0275FC /* DataJourneyStructureDetectionTests.swift in Sources */,
 				3A7F0B1E6B7E4B5A9A6F3E12 /* DataJourneyPointerMotionTests.swift in Sources */,
 				213754056157F7C69749A0C4 /* LeetCodeExecutionWrapperTests.swift in Sources */,
+				26B2211C5D33315D24B3D008 /* LeetCodeExecutionWrapperEdgeCaseTests.swift in Sources */,
+				D4F6C82E1A3B79054F2E8C3A /* PythonTraceTests.swift in Sources */,
 				571D3D46E3FAFB7887E0E410 /* LeetCodeTemplateBuilderTests.swift in Sources */,
 				C7D8E9F0A1B2C3D4E5F60709 /* LeetCodeSyncSchedulerTests.swift in Sources */,
 				DSAT001001 /* DSAPlanTests.swift in Sources */,

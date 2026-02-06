@@ -4,6 +4,7 @@ struct TreeGraphView: View {
     let tree: TraceTree
     let pointers: [PointerMarker]
     let pointerMotions: [TreePointerMotion]
+    let highlightedNodeIds: Set<String>
     let nodeSize: CGFloat
     let pointerFontSize: CGFloat
     let pointerHorizontalPadding: CGFloat
@@ -18,6 +19,7 @@ struct TreeGraphView: View {
         tree: TraceTree,
         pointers: [PointerMarker],
         pointerMotions: [TreePointerMotion] = [],
+        highlightedNodeIds: Set<String> = [],
         bubbleStyle: TraceBubble.Style = .solid,
         nodeSize: CGFloat = 30,
         pointerFontSize: CGFloat = 8,
@@ -27,6 +29,7 @@ struct TreeGraphView: View {
         self.tree = tree
         self.pointers = pointers
         self.pointerMotions = pointerMotions
+        self.highlightedNodeIds = highlightedNodeIds
         self.nodeSize = nodeSize
         self.pointerFontSize = pointerFontSize
         self.pointerHorizontalPadding = pointerHorizontalPadding
@@ -79,7 +82,12 @@ struct TreeGraphView: View {
 
                 ForEach(layout.nodes) { node in
                     ZStack(alignment: .top) {
-                        TraceValueNode(value: node.value, size: nodeSize, style: bubbleStyle)
+                        TraceValueNode(
+                            value: node.value,
+                            size: nodeSize,
+                            style: bubbleStyle,
+                            highlighted: highlightedNodeIds.contains(node.id)
+                        )
                         if let pointerStack = pointersById[node.id] {
                             let stackHeight = CGFloat(pointerStack.count) * pointerHeight +
                                 CGFloat(max(pointerStack.count - 1, 0)) * pointerSpacing
@@ -171,16 +179,29 @@ struct TraceValueNode: View {
     let value: TraceValue
     let size: CGFloat
     let style: TraceBubble.Style
+    let highlighted: Bool
 
-    init(value: TraceValue, size: CGFloat = 30, style: TraceBubble.Style = .solid) {
+    init(
+        value: TraceValue,
+        size: CGFloat = 30,
+        style: TraceBubble.Style = .solid,
+        highlighted: Bool = false
+    ) {
         self.value = value
         self.size = size
         self.style = style
+        self.highlighted = highlighted
     }
 
     var body: some View {
         let model = TraceBubbleModel.from(value, compact: true)
-        return TraceBubble(text: model.text, fill: model.fill, size: size, style: style)
+        return TraceBubble(
+            text: model.text,
+            fill: model.fill,
+            size: size,
+            style: style,
+            highlighted: highlighted
+        )
     }
 }
 

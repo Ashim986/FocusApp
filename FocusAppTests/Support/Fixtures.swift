@@ -96,11 +96,17 @@ final class FakeLeetCodeClient: LeetCodeClientProtocol {
 }
 
 final class FakeCodeExecutor: CodeExecuting {
-    var lastRequest: (code: String, language: ProgrammingLanguage, input: String)?
+    struct Request {
+        let code: String
+        let language: ProgrammingLanguage
+        let input: String
+    }
+
+    var lastRequest: Request?
     var result: ExecutionResult = .failure("Not configured")
 
     func execute(code: String, language: ProgrammingLanguage, input: String) async -> ExecutionResult {
-        lastRequest = (code, language, input)
+        lastRequest = Request(code: code, language: language, input: input)
         return result
     }
 
@@ -148,7 +154,12 @@ func makeDate(year: Int, month: Int, day: Int) -> Date {
 // MARK: - Fake Notification Manager
 
 final class FakeNotificationManager: NotificationManaging {
-    var storedSettings = NotificationSettings(studyReminderEnabled: false, studyReminderTime: Date(), habitReminderEnabled: false, habitReminderTime: Date())
+    var storedSettings = NotificationSettings(
+        studyReminderEnabled: false,
+        studyReminderTime: Date(),
+        habitReminderEnabled: false,
+        habitReminderTime: Date()
+    )
     var authorizationStatus: Bool = false
     var requestAuthorizationCalled = false
     var checkAuthorizationCalled = false

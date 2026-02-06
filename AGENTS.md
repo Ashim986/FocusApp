@@ -117,7 +117,23 @@ FocusApp/
 │   │   │   ├── CodingEnvironmentView+Sidebar.swift
 │   │   │   ├── CodingEnvironmentView+DetailContent.swift
 │   │   │   ├── DataJourneyModels.swift
+│   │   │   ├── DataJourneyPointerModels.swift
+│   │   │   ├── DataJourneyTraceBubble.swift
+│   │   │   ├── DataJourneyTraceValueView.swift
+│   │   │   ├── DataJourneySequenceBubbleRow.swift
+│   │   │   ├── DataJourneySequenceBubbleRow+Layout.swift
+│   │   │   ├── DataJourneyStructureCanvasView.swift
+│   │   │   ├── DataJourneyStructureCanvasView+Structure.swift
+│   │   │   ├── DataJourneyStructureCanvasView+Pointers.swift
+│   │   │   ├── DataJourneyStructureCanvasView+CombinedList.swift
+│   │   │   ├── DataJourneyStructureCanvasView+Labels.swift
+│   │   │   ├── DataJourneyDictionaryStructureRow.swift
+│   │   │   ├── DataJourneyTreeGraphView.swift
+│   │   │   ├── DataJourneyGraphView.swift
 │   │   │   ├── DataJourneyView.swift
+│   │   │   ├── DataJourneyView+Layout.swift
+│   │   │   ├── DataJourneyView+Playback.swift
+│   │   │   ├── DataJourneyView+Selection.swift
 │   │   │   ├── ModernTestCaseView.swift
 │   │   │   ├── ModernOutputView.swift
 │   │   │   ├── ModernOutputView+Sections.swift
@@ -179,5 +195,8 @@ xcodebuild -project FocusApp.xcodeproj -scheme FocusApp -configuration Debug bui
 - Update `AGENTS.md` and `CLAUDE.md` whenever the app structure changes.
 
 ## Testing
-- No automated tests configured.
-- Manual testing in Xcode.
+- Run unit tests with:
+  ```bash
+  xcodebuild test -project FocusApp.xcodeproj -scheme FocusApp -destination 'platform=macOS'
+  ```
+- Tests live in `FocusAppTests/` (grouped by feature).

@@ -44,14 +44,17 @@ fi
 
 ```bash
 # Lint the project
-swiftlint lint
+swiftlint lint --config .swiftlint.yml --cache-path .swiftlint-cache
 
 # Auto-fix correctable issues
-swiftlint lint --fix
+swiftlint lint --fix --config .swiftlint.yml --cache-path .swiftlint-cache
 
 # Analyze for unused code (slower)
 swiftlint analyze --compiler-log-path /path/to/compile_commands.json
 ```
+
+If you hit permission errors with SwiftLint caches, always pass `--cache-path .swiftlint-cache`
+(or use `SWIFTLINT_CACHE_PATH`), and keep the cache inside the repo.
 
 ### In Xcode
 

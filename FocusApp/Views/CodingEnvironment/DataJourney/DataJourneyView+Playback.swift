@@ -48,7 +48,7 @@ extension DataJourneyView {
                     Image(systemName: "exclamationmark.triangle.fill")
                         .font(.system(size: textSize, weight: .semibold))
                         .foregroundColor(Color.appAmber)
-                    Text("Showing first 40 steps or truncated data. Reduce `Trace.step` calls or input size to see more.")
+                    Text(truncationMessage)
                         .font(.system(size: isEmbedded ? 8 : 9, weight: .medium))
                         .foregroundColor(Color.appAmber)
                 }
@@ -134,7 +134,7 @@ extension DataJourneyView {
                     Image(systemName: "exclamationmark.triangle.fill")
                         .font(.system(size: textSize, weight: .semibold))
                         .foregroundColor(Color.appAmber)
-                    Text("Showing first 40 steps or truncated data. Reduce `Trace.step` calls or input size to see more.")
+                    Text(truncationMessage)
                         .font(.system(size: isEmbedded ? 8 : 9, weight: .medium))
                         .foregroundColor(Color.appAmber)
                 }
@@ -288,5 +288,10 @@ extension DataJourneyView {
             }
             selectNext()
         }
+    }
+
+    private var truncationMessage: String {
+        "Showing first 40 steps or truncated data. " +
+        "Reduce `Trace.step` calls or input size to see more."
     }
 }

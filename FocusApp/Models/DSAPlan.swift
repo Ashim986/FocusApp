@@ -106,31 +106,25 @@ private let fallbackPlanData = PlanData(
         Problem(name: "Subtree of Another Tree", difficulty: .easy, url: "https://leetcode.com/problems/subtree-of-another-tree/", leetcodeNumber: 572),
         Problem(name: "Lowest Common Ancestor of BST", difficulty: .medium, url: "https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-search-tree/", leetcodeNumber: 235)
     ]),
-    Day(id: 4, date: "Feb 6", topic: "Trees (cont.)", problems: [
-        Problem(name: "Binary Tree Level Order Traversal", difficulty: .medium, url: "https://leetcode.com/problems/binary-tree-level-order-traversal/", leetcodeNumber: 102),
-        Problem(name: "Validate Binary Search Tree", difficulty: .medium, url: "https://leetcode.com/problems/validate-binary-search-tree/", leetcodeNumber: 98),
-        Problem(name: "Kth Smallest Element in BST", difficulty: .medium, url: "https://leetcode.com/problems/kth-smallest-element-in-a-bst/", leetcodeNumber: 230),
+    Day(id: 4, date: "Feb 6", topic: "Priority Practice I", problems: [
+        Problem(name: "Two Sum", difficulty: .easy, url: "https://leetcode.com/problems/two-sum/", leetcodeNumber: 1),
+        Problem(name: "Valid Parentheses", difficulty: .easy, url: "https://leetcode.com/problems/valid-parentheses/", leetcodeNumber: 20),
+        Problem(name: "Reverse Linked List", difficulty: .easy, url: "https://leetcode.com/problems/reverse-linked-list/", leetcodeNumber: 206)
+    ]),
+    Day(id: 5, date: "Feb 7", topic: "Priority Practice II", problems: [
         Problem(
-            name: "Construct Binary Tree from Preorder and Inorder",
+            name: "Longest Substring Without Repeating Characters",
             difficulty: .medium,
-            url: "https://leetcode.com/problems/construct-binary-tree-from-preorder-and-inorder-traversal/",
-            leetcodeNumber: 105
+            url: "https://leetcode.com/problems/longest-substring-without-repeating-characters/",
+            leetcodeNumber: 3
         ),
-        Problem(name: "Binary Tree Maximum Path Sum", difficulty: .medium, url: "https://leetcode.com/problems/binary-tree-maximum-path-sum/", leetcodeNumber: 124)
+        Problem(name: "Top K Frequent Elements", difficulty: .medium, url: "https://leetcode.com/problems/top-k-frequent-elements/", leetcodeNumber: 347),
+        Problem(name: "Search in Rotated Sorted Array", difficulty: .medium, url: "https://leetcode.com/problems/search-in-rotated-sorted-array/", leetcodeNumber: 33)
     ]),
-    Day(id: 5, date: "Feb 7", topic: "Tries", problems: [
-        Problem(name: "Implement Trie (Prefix Tree)", difficulty: .medium, url: "https://leetcode.com/problems/implement-trie-prefix-tree/", leetcodeNumber: 208),
-        Problem(name: "Design Add and Search Words Data Structure", difficulty: .medium, url: "https://leetcode.com/problems/design-add-and-search-words-data-structure/", leetcodeNumber: 211),
-        Problem(name: "Word Search II", difficulty: .medium, url: "https://leetcode.com/problems/word-search-ii/", leetcodeNumber: 212),
-        Problem(name: "Count Good Nodes in Binary Tree", difficulty: .medium, url: "https://leetcode.com/problems/count-good-nodes-in-binary-tree/", leetcodeNumber: 1448),
-        Problem(name: "Serialize and Deserialize Binary Tree", difficulty: .medium, url: "https://leetcode.com/problems/serialize-and-deserialize-binary-tree/", leetcodeNumber: 297)
-    ]),
-    Day(id: 6, date: "Feb 8", topic: "Heap / Priority Queue", problems: [
-        Problem(name: "Kth Largest Element in a Stream", difficulty: .easy, url: "https://leetcode.com/problems/kth-largest-element-in-a-stream/", leetcodeNumber: 703),
-        Problem(name: "Last Stone Weight", difficulty: .easy, url: "https://leetcode.com/problems/last-stone-weight/", leetcodeNumber: 1046),
-        Problem(name: "K Closest Points to Origin", difficulty: .medium, url: "https://leetcode.com/problems/k-closest-points-to-origin/", leetcodeNumber: 973),
-        Problem(name: "Task Scheduler", difficulty: .medium, url: "https://leetcode.com/problems/task-scheduler/", leetcodeNumber: 621),
-        Problem(name: "Design Twitter", difficulty: .medium, url: "https://leetcode.com/problems/design-twitter/", leetcodeNumber: 355)
+    Day(id: 6, date: "Feb 8", topic: "Priority Practice III", problems: [
+        Problem(name: "Spiral Matrix", difficulty: .medium, url: "https://leetcode.com/problems/spiral-matrix/", leetcodeNumber: 54),
+        Problem(name: "Reverse Linked List II", difficulty: .medium, url: "https://leetcode.com/problems/reverse-linked-list-ii/", leetcodeNumber: 92),
+        Problem(name: "Coin Change", difficulty: .medium, url: "https://leetcode.com/problems/coin-change/", leetcodeNumber: 322)
     ]),
     Day(id: 7, date: "Feb 9", topic: "Heap (cont.) + Backtracking", problems: [
         Problem(name: "Find Median from Data Stream", difficulty: .medium, url: "https://leetcode.com/problems/find-median-from-data-stream/", leetcodeNumber: 295),

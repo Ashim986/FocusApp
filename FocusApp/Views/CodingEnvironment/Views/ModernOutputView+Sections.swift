@@ -8,7 +8,7 @@ extension ModernOutputView {
                 Image(systemName: "play.circle")
                     .font(.system(size: 28))
                     .foregroundColor(Color.appGray600)
-            Text(L10n.Coding.Output.empty)
+                Text(L10n.Coding.Output.empty)
                     .font(.system(size: 12))
                     .foregroundColor(Color.appGray500)
             }
@@ -16,21 +16,27 @@ extension ModernOutputView {
         } else if hasTestResults {
             ScrollView {
                 VStack(alignment: .leading, spacing: 12) {
-                    let statusColor = hasFailures ? Color.appRed : (allTestsPassed ? Color.appGreen : Color.appAmber)
+                    let statusColor = hasFailures
+                        ? Color.appRed
+                        : (allTestsPassed ? Color.appGreen : Color.appAmber)
+                    let statusIcon = hasFailures
+                        ? "xmark.circle.fill"
+                        : (allTestsPassed ? "checkmark.circle.fill" : "clock.fill")
+                    let statusText = hasFailures
+                        ? L10n.Coding.Output.wrongAnswer
+                        : (allTestsPassed ? L10n.Coding.Output.accepted : L10n.Coding.Output.running)
                     HStack(spacing: 10) {
-                        Image(systemName: hasFailures ? "xmark.circle.fill" : (allTestsPassed ? "checkmark.circle.fill" : "clock.fill"))
+                        Image(systemName: statusIcon)
                             .font(.system(size: 24))
                             .foregroundColor(statusColor)
 
                         VStack(alignment: .leading, spacing: 2) {
-                        Text(hasFailures
-                            ? L10n.Coding.Output.wrongAnswer
-                            : (allTestsPassed ? L10n.Coding.Output.accepted : L10n.Coding.Output.running))
+                            Text(statusText)
                                 .font(.system(size: 14, weight: .semibold))
                                 .foregroundColor(statusColor)
 
                             let passedCount = testCases.filter { $0.passed == true }.count
-                        Text(L10n.Coding.Output.testsPassed(passedCount, testCases.count))
+                            Text(L10n.Coding.Output.testsPassed(passedCount, testCases.count))
                                 .font(.system(size: 11))
                                 .foregroundColor(Color.appGray500)
                         }
@@ -57,7 +63,7 @@ extension ModernOutputView {
                     HStack(spacing: 6) {
                         Image(systemName: "exclamationmark.triangle.fill")
                             .foregroundColor(Color.appRed)
-                    Text(L10n.Coding.Output.compilationError)
+                        Text(L10n.Coding.Output.compilationError)
                             .font(.system(size: 12, weight: .semibold))
                             .foregroundColor(Color.appRed)
                     }
@@ -81,7 +87,7 @@ extension ModernOutputView {
                     .font(.system(size: 12))
                     .foregroundColor(passed ? Color.appGreen : Color.appRed)
 
-            Text(L10n.Coding.Output.testFormat( index + 1))
+                Text(L10n.Coding.Output.testFormat(index + 1))
                     .font(.system(size: 11, weight: .medium))
                     .foregroundColor(.white)
 
@@ -97,7 +103,7 @@ extension ModernOutputView {
             if !passed {
                 VStack(alignment: .leading, spacing: 6) {
                     HStack(alignment: .top, spacing: 4) {
-                            Text(L10n.Coding.Output.inputLabel)
+                        Text(L10n.Coding.Output.inputLabel)
                             .font(.system(size: 10))
                             .foregroundColor(Color.appGray500)
                             .frame(width: 60, alignment: .leading)
@@ -107,7 +113,7 @@ extension ModernOutputView {
                     }
 
                     HStack(alignment: .top, spacing: 4) {
-                            Text(L10n.Coding.Output.expectedLabel)
+                        Text(L10n.Coding.Output.expectedLabel)
                             .font(.system(size: 10))
                             .foregroundColor(Color.appGray500)
                             .frame(width: 60, alignment: .leading)
@@ -147,7 +153,7 @@ extension ModernOutputView {
                 Image(systemName: "terminal")
                     .font(.system(size: 28))
                     .foregroundColor(Color.appGray600)
-            Text(L10n.Coding.Output.noOutput)
+                Text(L10n.Coding.Output.noOutput)
                     .font(.system(size: 12))
                     .foregroundColor(Color.appGray500)
             }
@@ -171,7 +177,7 @@ extension ModernOutputView {
                 Image(systemName: "ladybug")
                     .font(.system(size: 26))
                     .foregroundColor(Color.appGray600)
-            Text(L10n.Coding.Output.noDebug)
+                Text(L10n.Coding.Output.noDebug)
                     .font(.system(size: 12))
                     .foregroundColor(Color.appGray500)
             }

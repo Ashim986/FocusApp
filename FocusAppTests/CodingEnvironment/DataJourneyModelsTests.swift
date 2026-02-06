@@ -21,14 +21,14 @@ final class DataJourneyModelsTests: XCTestCase {
     }
 
     func testTraceValueFromJSONHandlesTypedValues() {
-        let json: [String: Any] = ["__type": "list", "value": [1, 2]]
+        let json: [String: Any] = ["__type": "custom", "value": [1, 2]]
         let value = TraceValue.from(json: json)
 
         guard case .typed(let type, let inner) = value else {
             XCTFail("Expected typed value")
             return
         }
-        XCTAssertEqual(type, "list")
+        XCTAssertEqual(type, "custom")
         if case .array(let items) = inner {
             XCTAssertEqual(items.count, 2)
         } else {

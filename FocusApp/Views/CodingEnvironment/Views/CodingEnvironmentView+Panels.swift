@@ -35,11 +35,11 @@ extension CodingEnvironmentView {
                         .font(.system(size: 11, weight: .medium))
                         .foregroundColor(Color.appGray200)
                     Spacer()
-                    Button(action: { presenter.codeResetNotice = nil }) {
+                    Button(action: { presenter.codeResetNotice = nil }, label: {
                         Image(systemName: "xmark.circle.fill")
                             .font(.system(size: 12))
                             .foregroundColor(Color.appGray500)
-                    }
+                    })
                     .buttonStyle(.plain)
                 }
                 .padding(.horizontal, 12)

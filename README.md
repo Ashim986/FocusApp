@@ -13,7 +13,7 @@ FocusApp is a native macOS study companion for Data Structures & Algorithms prep
 - Daily habits and progress tracking
 - Focus timer indicator in the editor header
 - Tomorrow preview and auto-carryover for unsolved problems
-- Data journey visualization (arrays, lists, trees, graphs) with pointer tracking
+- Data journey visualization (lists, list groups, arrays, dictionaries, trees, graphs) with pointer tracking
 
 ## Requirements
 - macOS 14.0+
@@ -57,6 +57,7 @@ Currently supported:
 - Graph (adjacency list)
 - Pointer motion (step-to-step)
 - Output sequence links for combined lists
+- Combined list structure view with gap indices and pointer routing
 
 Known gaps / partial support:
 - Sets (treated as arrays/objects)

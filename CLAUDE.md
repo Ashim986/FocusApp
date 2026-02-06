@@ -118,7 +118,23 @@ FocusApp/
 │   │   │   ├── CodingEnvironmentView+Sidebar.swift
 │   │   │   ├── CodingEnvironmentView+DetailContent.swift
 │   │   │   ├── DataJourneyModels.swift
+│   │   │   ├── DataJourneyPointerModels.swift
+│   │   │   ├── DataJourneyTraceBubble.swift
+│   │   │   ├── DataJourneyTraceValueView.swift
+│   │   │   ├── DataJourneySequenceBubbleRow.swift
+│   │   │   ├── DataJourneySequenceBubbleRow+Layout.swift
+│   │   │   ├── DataJourneyStructureCanvasView.swift
+│   │   │   ├── DataJourneyStructureCanvasView+Structure.swift
+│   │   │   ├── DataJourneyStructureCanvasView+Pointers.swift
+│   │   │   ├── DataJourneyStructureCanvasView+CombinedList.swift
+│   │   │   ├── DataJourneyStructureCanvasView+Labels.swift
+│   │   │   ├── DataJourneyDictionaryStructureRow.swift
+│   │   │   ├── DataJourneyTreeGraphView.swift
+│   │   │   ├── DataJourneyGraphView.swift
 │   │   │   ├── DataJourneyView.swift
+│   │   │   ├── DataJourneyView+Layout.swift
+│   │   │   ├── DataJourneyView+Playback.swift
+│   │   │   ├── DataJourneyView+Selection.swift
 │   │   │   ├── SolutionTabView.swift
 │   │   │   ├── SolutionApproachView.swift
 │   │   │   ├── ModernTestCaseView.swift
@@ -199,6 +215,7 @@ Current coverage:
 - Graph (adjacency list)
 - Pointer motion (step-to-step)
 - Output sequence links for combined lists
+- Combined list structure view with gap indices and pointer routing
 
 Partial / gaps:
 - Sets (treated as arrays/objects)

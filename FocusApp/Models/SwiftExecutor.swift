@@ -40,20 +40,46 @@ final class SwiftExecutor: LanguageExecutor {
             try? fileManager.removeItem(at: executableFile)
         }
 
-        // Write source file
+        if let writeFailure = writeSourceFile(code: code, to: sourceFile) {
+            return writeFailure
+        }
+
+        if let compileFailure = await compileSource(sourceFile: sourceFile, outputFile: executableFile) {
+            return compileFailure
+        }
+
+        if let validationFailure = validateExecutable(at: executableFile) {
+            return validationFailure
+        }
+
+        // Run
+        log(
+            level: .info,
+            title: "Swift run",
+            message: "Running \(executableFile.lastPathComponent)",
+            metadata: ["input_bytes": "\(input.utf8.count)"]
+        )
+        let runResult = await run(executableFile: executableFile, input: input)
+        logResult(title: "Swift run finished", result: runResult)
+        return runResult
+    }
+
+    private func writeSourceFile(code: String, to url: URL) -> ExecutionResult? {
         do {
-            try code.write(to: sourceFile, atomically: true, encoding: .utf8)
+            try code.write(to: url, atomically: true, encoding: .utf8)
+            return nil
         } catch {
             log(
                 level: .error,
                 title: "Swift write failed",
                 message: error.localizedDescription,
-                metadata: ["file": sourceFile.path]
+                metadata: ["file": url.path]
             )
             return .failure(AppUserMessage.failedToWriteSource(error.localizedDescription).text)
         }
+    }
 
-        // Compile
+    private func compileSource(sourceFile: URL, outputFile: URL) async -> ExecutionResult? {
         log(
             level: .info,
             title: "Swift compile",
@@ -63,7 +89,7 @@ final class SwiftExecutor: LanguageExecutor {
                 "sdk": sdkPath ?? "default"
             ]
         )
-        let compileResult = await compile(sourceFile: sourceFile, outputFile: executableFile)
+        let compileResult = await compile(sourceFile: sourceFile, outputFile: outputFile)
         if compileResult.timedOut {
             logResult(title: "Swift compile timed out", result: compileResult)
             return compileResult
@@ -97,41 +123,34 @@ final class SwiftExecutor: LanguageExecutor {
         } else {
             logResult(title: "Swift compile finished", result: compileResult)
         }
+        return nil
+    }
 
+    private func validateExecutable(at url: URL) -> ExecutionResult? {
         var isDirectory: ObjCBool = false
-        let exists = fileManager.fileExists(atPath: executableFile.path, isDirectory: &isDirectory)
+        let exists = fileManager.fileExists(atPath: url.path, isDirectory: &isDirectory)
         if !exists || isDirectory.boolValue {
             log(
                 level: .error,
                 title: "Executable missing",
                 message: "Swift compiler did not produce output binary.",
                 metadata: [
-                    "output": executableFile.path
+                    "output": url.path
                 ]
             )
             return .failure(AppUserMessage.failedToRunProcess("Compiled executable is missing.").text)
         }
-        if !fileManager.isExecutableFile(atPath: executableFile.path) {
+        if !fileManager.isExecutableFile(atPath: url.path) {
             log(
                 level: .warning,
                 title: "Executable not marked",
                 message: "Output binary is not marked executable.",
                 metadata: [
-                    "output": executableFile.path
+                    "output": url.path
                 ]
             )
         }
-
-        // Run
-        log(
-            level: .info,
-            title: "Swift run",
-            message: "Running \(executableFile.lastPathComponent)",
-            metadata: ["input_bytes": "\(input.utf8.count)"]
-        )
-        let runResult = await run(executableFile: executableFile, input: input)
-        logResult(title: "Swift run finished", result: runResult)
-        return runResult
+        return nil
     }
 
     private func compile(sourceFile: URL, outputFile: URL) async -> ExecutionResult {

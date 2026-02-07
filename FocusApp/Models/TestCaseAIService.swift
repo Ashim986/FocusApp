@@ -21,6 +21,8 @@ struct GeneratedTestCaseComplete: Codable, Sendable {
 struct GeneratedTestCaseItem: Codable, Sendable {
     let input: String
     let expectedOutput: String
+    /// AI indicates whether output order matters. Nil means AI didn't specify (default to true).
+    let orderMatters: Bool?
 }
 
 enum TestCaseGenerationError: Error, CustomStringConvertible {
@@ -51,16 +53,22 @@ enum TestCasePromptBuilder {
         let exampleBlock = exampleInputs.prefix(2).joined(separator: "\n---\n")
         let sampleBlock = sampleInput?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
 
+        let returnType = meta?.returnType?.type ?? "unknown"
+
         return """
-        Generate \(count) diverse test cases (input AND expected output) for the LeetCode problem:
+        Generate \(count) diverse test cases for the LeetCode problem:
         \(problem.title) (\(problem.slug), \(problem.difficulty))
         Topics: \(problem.topics.joined(separator: ", "))
+        Return type: \(returnType)
 
-        Input format requirements:
-        - Each test case has an "input" and an "expectedOutput".
+        Requirements:
+        - Each test case has "input", "expectedOutput", and "orderMatters" (boolean).
         - "input" uses newline-separated parameter values in the EXACT order:
           \(params)
         - "expectedOutput" is the correct result as a string (e.g. "[0,1]", "true", "5").
+        - "orderMatters": set to false ONLY when the problem explicitly says the answer \
+        can be returned in any order (e.g. "return in any order", "order does not matter"). \
+        Set to true for sorted outputs, sequences, traversals, or when order is significant.
         - Keep values within typical LeetCode constraints.
         - Include edge cases: empty inputs, single elements, duplicates, negatives, etc.
         - Ensure all expected outputs are CORRECT.
@@ -74,8 +82,8 @@ enum TestCasePromptBuilder {
         Return ONLY JSON in this exact schema:
         {
           "testCases": [
-            {"input": "<input-1>", "expectedOutput": "<output-1>"},
-            {"input": "<input-2>", "expectedOutput": "<output-2>"}
+            {"input": "<val>", "expectedOutput": "<val>", "orderMatters": true},
+            {"input": "<val>", "expectedOutput": "<val>", "orderMatters": false}
           ]
         }
         """
@@ -233,7 +241,8 @@ private func sanitizeTestCases(
     return Array(unique.prefix(targetCount)).map {
         SolutionTestCase(
             input: $0.input.trimmingCharacters(in: .whitespacesAndNewlines),
-            expectedOutput: $0.expectedOutput.trimmingCharacters(in: .whitespacesAndNewlines)
+            expectedOutput: $0.expectedOutput.trimmingCharacters(in: .whitespacesAndNewlines),
+            orderMatters: $0.orderMatters ?? true
         )
     }
 }

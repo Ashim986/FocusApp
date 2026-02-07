@@ -3,6 +3,7 @@ import Foundation
 enum Difficulty: String, Codable, CaseIterable {
     case easy = "Easy"
     case medium = "Medium"
+    case hard = "Hard"
 }
 
 struct Problem: Identifiable, Codable {

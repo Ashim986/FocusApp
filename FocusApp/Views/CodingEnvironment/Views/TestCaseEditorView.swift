@@ -1,14 +1,16 @@
+import FocusDesignSystem
 import SwiftUI
 
 struct TestCaseEditorView: View {
     @ObservedObject var presenter: CodingEnvironmentPresenter
+    @Environment(\.dsTheme) private var theme
 
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
             HStack {
             Text(L10n.Coding.TestEditor.title)
                     .font(.system(size: 12, weight: .semibold))
-                    .foregroundColor(.white)
+                    .foregroundColor(theme.colors.textPrimary)
 
                 Spacer()
 
@@ -18,7 +20,7 @@ struct TestCaseEditorView: View {
                         Text(L10n.Coding.TestEditor.add)
                     }
                     .font(.system(size: 11))
-                    .foregroundColor(Color.appPurple)
+                    .foregroundColor(theme.colors.primary)
                 }
                 .buttonStyle(.plain)
             }
@@ -26,7 +28,7 @@ struct TestCaseEditorView: View {
             if presenter.testCases.isEmpty {
             Text(L10n.Coding.TestEditor.empty)
                     .font(.system(size: 11))
-                    .foregroundColor(Color.appGray500)
+                    .foregroundColor(theme.colors.textSecondary)
                     .padding(.vertical, 8)
             } else {
                 ForEach(Array(presenter.testCases.enumerated()), id: \.element.id) { index, testCase in
@@ -41,7 +43,7 @@ struct TestCaseEditorView: View {
             HStack {
                 Text(L10n.Coding.TestEditor.testFormat(index + 1))
                     .font(.system(size: 11, weight: .medium))
-                    .foregroundColor(Color.appGray400)
+                    .foregroundColor(theme.colors.textSecondary)
 
                 Spacer()
 
@@ -50,7 +52,7 @@ struct TestCaseEditorView: View {
                 }, label: {
                     Image(systemName: "trash")
                         .font(.system(size: 10))
-                        .foregroundColor(Color.appGray500)
+                        .foregroundColor(theme.colors.textSecondary)
                 })
                 .buttonStyle(.plain)
             }
@@ -59,7 +61,7 @@ struct TestCaseEditorView: View {
                 VStack(alignment: .leading, spacing: 2) {
                     Text(L10n.Coding.TestEditor.inputLabel)
                         .font(.system(size: 10))
-                        .foregroundColor(Color.appGray500)
+                        .foregroundColor(theme.colors.textSecondary)
 
                     TextField("", text: Binding(
                         get: { testCase.input },
@@ -67,16 +69,16 @@ struct TestCaseEditorView: View {
                     ))
                     .textFieldStyle(.plain)
                     .font(.system(size: 11, design: .monospaced))
-                    .foregroundColor(.white)
+                    .foregroundColor(theme.colors.textPrimary)
                     .padding(6)
-                    .background(Color.appGray800)
+                    .background(theme.colors.surfaceElevated)
                     .cornerRadius(4)
                 }
 
                 VStack(alignment: .leading, spacing: 2) {
                 Text(L10n.Coding.TestEditor.expectedLabel)
                         .font(.system(size: 10))
-                        .foregroundColor(Color.appGray500)
+                        .foregroundColor(theme.colors.textSecondary)
 
                     TextField("", text: Binding(
                         get: { testCase.expectedOutput },
@@ -84,9 +86,9 @@ struct TestCaseEditorView: View {
                     ))
                     .textFieldStyle(.plain)
                     .font(.system(size: 11, design: .monospaced))
-                    .foregroundColor(.white)
+                    .foregroundColor(theme.colors.textPrimary)
                     .padding(6)
-                    .background(Color.appGray800)
+                    .background(theme.colors.surfaceElevated)
                     .cornerRadius(4)
                 }
             }
@@ -94,7 +96,7 @@ struct TestCaseEditorView: View {
         .padding(8)
         .background(
             RoundedRectangle(cornerRadius: 6)
-                .fill(Color.appGray800.opacity(0.3))
+                .fill(theme.colors.surfaceElevated.opacity(0.4))
         )
     }
 }

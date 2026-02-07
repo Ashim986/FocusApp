@@ -1,10 +1,13 @@
 import AppKit
+import FocusDesignSystem
 import SwiftUI
 
 extension CodeEditorView {
     class Coordinator: NSObject, NSTextViewDelegate {
         var parent: CodeEditorView
         weak var textView: NSTextView?
+        var editorColors: CodeEditorThemeColors
+        var themeKind: DSThemeKind
         var isEditing = false
         var language: ProgrammingLanguage = .swift
         var isInsertingMatchingBracket = false
@@ -49,8 +52,10 @@ extension CodeEditorView {
             let executionHighlight = NSColor(calibratedRed: 0.138526, green: 0.146864, blue: 0.169283, alpha: 1.0)
         }
 
-        init(_ parent: CodeEditorView) {
+        init(_ parent: CodeEditorView, editorColors: CodeEditorThemeColors, themeKind: DSThemeKind) {
             self.parent = parent
+            self.editorColors = editorColors
+            self.themeKind = themeKind
         }
 
         func textDidBeginEditing(_ notification: Notification) {

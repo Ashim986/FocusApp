@@ -1,14 +1,10 @@
 import AppKit
-import SwiftUI
 
 final class CodeEditorLineNumberRulerView: NSRulerView {
     private weak var textView: NSTextView?
     private let font = NSFont.monospacedSystemFont(ofSize: 11, weight: .regular)
-    private let textColor = NSColor(Color.appGray500)
-    private let dividerColor = NSColor(Color.appGray700)
     private let gutterPadding: CGFloat = 6
-    private let markerColor = NSColor(Color.appRed)
-    private let executionColor = NSColor(Color.appPurple)
+    private var palette: CodeEditorThemeColors
     private var toolTipMessages: [NSView.ToolTipTag: String] = [:]
 
     var diagnostics: [CodeEditorDiagnostic] = [] {
@@ -23,13 +19,14 @@ final class CodeEditorLineNumberRulerView: NSRulerView {
         }
     }
 
-    init(textView: NSTextView) {
+    init(textView: NSTextView, palette: CodeEditorThemeColors) {
         self.textView = textView
+        self.palette = palette
         super.init(scrollView: textView.enclosingScrollView ?? NSScrollView(), orientation: .verticalRuler)
         self.clientView = textView
         self.ruleThickness = 44
         self.wantsLayer = true
-        self.layer?.backgroundColor = NSColor(Color.appGray900).cgColor
+        self.layer?.backgroundColor = palette.background.cgColor
     }
 
     required init(coder: NSCoder) {
@@ -74,7 +71,7 @@ final class CodeEditorLineNumberRulerView: NSRulerView {
                 let lineNumberString = "\(lineNumber)" as NSString
                 let attributes: [NSAttributedString.Key: Any] = [
                     .font: font,
-                    .foregroundColor: lineNumber == currentExecutionLine ? executionColor : textColor
+                    .foregroundColor: lineNumber == currentExecutionLine ? palette.execution : palette.lineNumber
                 ]
                 let size = lineNumberString.size(withAttributes: attributes)
                 let x = ruleThickness - size.width - gutterPadding
@@ -86,7 +83,7 @@ final class CodeEditorLineNumberRulerView: NSRulerView {
                     let markerY = yPosition + (lineRect.height - markerSize) / 2
                     let markerRect = NSRect(x: markerX, y: markerY, width: markerSize, height: markerSize)
                     let markerPath = NSBezierPath(ovalIn: markerRect)
-                    markerColor.setFill()
+                    palette.marker.setFill()
                     markerPath.fill()
 
                     let message = diagnosticsForLine
@@ -107,7 +104,7 @@ final class CodeEditorLineNumberRulerView: NSRulerView {
         let x = ruleThickness - 1
         dividerPath.move(to: NSPoint(x: x, y: rect.minY))
         dividerPath.line(to: NSPoint(x: x, y: rect.maxY))
-        dividerColor.setStroke()
+        palette.divider.setStroke()
         dividerPath.lineWidth = 1
         dividerPath.stroke()
 
@@ -115,7 +112,7 @@ final class CodeEditorLineNumberRulerView: NSRulerView {
             let lineNumberString = "1" as NSString
             let attributes: [NSAttributedString.Key: Any] = [
                 .font: font,
-                .foregroundColor: textColor
+                .foregroundColor: palette.lineNumber
             ]
             let size = lineNumberString.size(withAttributes: attributes)
             let xPosition = ruleThickness - size.width - gutterPadding
@@ -124,6 +121,12 @@ final class CodeEditorLineNumberRulerView: NSRulerView {
                 withAttributes: attributes
             )
         }
+    }
+
+    func updatePalette(_ palette: CodeEditorThemeColors) {
+        self.palette = palette
+        layer?.backgroundColor = palette.background.cgColor
+        needsDisplay = true
     }
 
     @objc func view(

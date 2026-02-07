@@ -81,7 +81,7 @@ enum AutoInstrumenter {
         let stripped = LeetCodeExecutionWrapper.stripCommentsAndStrings(from: code)
         let isRecursive = detectSwiftRecursion(stripped: stripped)
         var didInstrumentRecursion = false
-        let funcLevelVars = extractFunctionLevelVars(lines: lines)
+        let funcLevelDecls = extractFunctionLevelDecls(lines: lines)
 
         for lineIndex in 0..<lines.count {
             let line = lines[lineIndex]
@@ -89,13 +89,18 @@ enum AutoInstrumenter {
 
             let trimmed = line.trimmingCharacters(in: .whitespaces)
 
+            // Only include func-level vars declared BEFORE this line
+            let visibleVars = funcLevelDecls
+                .filter { $0.line < lineIndex }
+                .map(\.name)
+
             // Detect loop openings: for...{, while...{, repeat {
             if isSwiftLoopOpening(trimmed: trimmed, stripped: stripped, line: line) {
                 let indent = leadingWhitespace(line) + "    "
                 let loopVars = extractSwiftLoopVars(trimmed: trimmed)
                 let captureDict = swiftScopedCapture(
                     paramNames: paramNames,
-                    funcLevelVars: funcLevelVars,
+                    funcLevelVars: visibleVars,
                     loopVars: loopVars
                 )
                 result.append("\(indent)Trace.step(\"loop\", \(captureDict))")
@@ -107,7 +112,7 @@ enum AutoInstrumenter {
                 let indent = leadingWhitespace(line) + "    "
                 let captureDict = swiftScopedCapture(
                     paramNames: paramNames,
-                    funcLevelVars: funcLevelVars,
+                    funcLevelVars: visibleVars,
                     loopVars: []
                 )
                 result.append("\(indent)Trace.step(\"recurse\", \(captureDict))")
@@ -176,84 +181,6 @@ enum AutoInstrumenter {
             "\"\(name)\": \(name) as Any"
         }
         return "[\(pairs.joined(separator: ", "))]"
-    }
-
-    /// Extracts variable names declared at the function body level
-    /// (one indent level inside `class Solution`). These are safe to
-    /// capture from any point inside the function.
-    private static func extractFunctionLevelVars(lines: [String]) -> [String] {
-        // Function-body level is typically 8 spaces (class indent 4 + func indent 4)
-        // or 2 tabs. We detect lines that start a var/let at the same indent
-        // as other function-body statements.
-        var funcBodyIndent: Int?
-        var vars: [String] = []
-        let declPattern = "^(var|let)\\s+(\\w+)"
-
-        for line in lines {
-            let trimmed = line.trimmingCharacters(in: .whitespaces)
-
-            // Find the function body indent from the first var/let/return
-            if funcBodyIndent == nil {
-                if trimmed.hasPrefix("var ") || trimmed.hasPrefix("let ")
-                    || trimmed.hasPrefix("return ") || trimmed.hasPrefix("guard ") {
-                    let indent = line.prefix(while: { $0 == " " || $0 == "\t" }).count
-                    // Must be inside a function (indent > 0)
-                    if indent > 0 { funcBodyIndent = indent }
-                }
-            }
-
-            guard let bodyIndent = funcBodyIndent else { continue }
-            let lineIndent = line.prefix(while: { $0 == " " || $0 == "\t" }).count
-
-            // Only declarations at the function body indent level
-            guard lineIndent == bodyIndent else { continue }
-            guard let regex = try? NSRegularExpression(pattern: declPattern),
-                  let match = regex.firstMatch(
-                    in: trimmed,
-                    range: NSRange(trimmed.startIndex..., in: trimmed)
-                  ),
-                  let nameRange = Range(match.range(at: 2), in: trimmed) else {
-                continue
-            }
-            let name = String(trimmed[nameRange])
-            if commonSwiftVars.contains(name) {
-                vars.append(name)
-            }
-        }
-        return vars
-    }
-
-    /// Extracts binding variable names from a Swift `for` loop header.
-    /// Handles: `for x in ...`, `for (x, y) in ...`, `for (_, y) in ...`
-    private static func extractSwiftLoopVars(trimmed: String) -> [String] {
-        // Match the binding between "for" and "in"
-        let pattern = "^for\\s+(.+?)\\s+in\\s+"
-        guard let regex = try? NSRegularExpression(pattern: pattern),
-              let match = regex.firstMatch(
-                in: trimmed,
-                range: NSRange(trimmed.startIndex..., in: trimmed)
-              ),
-              let bindingRange = Range(match.range(at: 1), in: trimmed) else {
-            return []
-        }
-        let binding = String(trimmed[bindingRange])
-        // Extract identifiers (skip _ and keywords)
-        let identPattern = "\\b([a-zA-Z_]\\w*)\\b"
-        guard let identRegex = try? NSRegularExpression(pattern: identPattern) else {
-            return []
-        }
-        let matches = identRegex.matches(
-            in: binding,
-            range: NSRange(binding.startIndex..., in: binding)
-        )
-        let skip: Set<String> = ["_", "var", "let"]
-        return matches.compactMap { match in
-            guard let range = Range(match.range(at: 1), in: binding) else { return nil }
-            let name = String(binding[range])
-            if skip.contains(name) { return nil }
-            if commonSwiftVars.contains(name) { return name }
-            return name
-        }
     }
 
     // MARK: - Python Instrumentation
@@ -392,6 +319,84 @@ enum AutoInstrumenter {
             }
         }
         return spaces
+    }
+}
+
+// MARK: - Swift Scope Helpers
+
+extension AutoInstrumenter {
+    struct VarDecl {
+        let name: String
+        let line: Int
+    }
+
+    /// Extracts variable names declared at the function body level with their
+    /// line positions. Only variables declared BEFORE a given insertion point
+    /// should be captured in Trace.step() calls.
+    static func extractFunctionLevelDecls(lines: [String]) -> [VarDecl] {
+        var funcBodyIndent: Int?
+        var decls: [VarDecl] = []
+        let declPattern = "^(var|let)\\s+(\\w+)"
+
+        for (lineIndex, line) in lines.enumerated() {
+            let trimmed = line.trimmingCharacters(in: .whitespaces)
+
+            if funcBodyIndent == nil {
+                if trimmed.hasPrefix("var ") || trimmed.hasPrefix("let ")
+                    || trimmed.hasPrefix("return ") || trimmed.hasPrefix("guard ") {
+                    let indent = line.prefix(while: { $0 == " " || $0 == "\t" }).count
+                    if indent > 0 { funcBodyIndent = indent }
+                }
+            }
+
+            guard let bodyIndent = funcBodyIndent else { continue }
+            let lineIndent = line.prefix(while: { $0 == " " || $0 == "\t" }).count
+
+            guard lineIndent == bodyIndent else { continue }
+            guard let regex = try? NSRegularExpression(pattern: declPattern),
+                  let match = regex.firstMatch(
+                    in: trimmed,
+                    range: NSRange(trimmed.startIndex..., in: trimmed)
+                  ),
+                  let nameRange = Range(match.range(at: 2), in: trimmed) else {
+                continue
+            }
+            let name = String(trimmed[nameRange])
+            if commonSwiftVars.contains(name) {
+                decls.append(VarDecl(name: name, line: lineIndex))
+            }
+        }
+        return decls
+    }
+
+    /// Extracts binding variable names from a Swift `for` loop header.
+    /// Handles: `for x in ...`, `for (x, y) in ...`, `for (_, y) in ...`
+    static func extractSwiftLoopVars(trimmed: String) -> [String] {
+        let pattern = "^for\\s+(.+?)\\s+in\\s+"
+        guard let regex = try? NSRegularExpression(pattern: pattern),
+              let match = regex.firstMatch(
+                in: trimmed,
+                range: NSRange(trimmed.startIndex..., in: trimmed)
+              ),
+              let bindingRange = Range(match.range(at: 1), in: trimmed) else {
+            return []
+        }
+        let binding = String(trimmed[bindingRange])
+        let identPattern = "\\b([a-zA-Z_]\\w*)\\b"
+        guard let identRegex = try? NSRegularExpression(pattern: identPattern) else {
+            return []
+        }
+        let matches = identRegex.matches(
+            in: binding,
+            range: NSRange(binding.startIndex..., in: binding)
+        )
+        let skip: Set<String> = ["_", "var", "let"]
+        return matches.compactMap { match in
+            guard let range = Range(match.range(at: 1), in: binding) else { return nil }
+            let name = String(binding[range])
+            if skip.contains(name) { return nil }
+            return name
+        }
     }
 }
 

@@ -1,3 +1,4 @@
+import FocusDesignSystem
 import SwiftUI
 
 struct CodingEnvironmentView: View {
@@ -6,6 +7,8 @@ struct CodingEnvironmentView: View {
     @ObservedObject var debugLogStore: DebugLogStore
     let onBack: () -> Void
     @StateObject var focusPresenter = FocusPresenter()
+    @Environment(\.dsTheme) var theme
+    @Environment(\.openURL) var openURL
 
     private let focusTimer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
 
@@ -37,7 +40,7 @@ struct CodingEnvironmentView: View {
                 .animation(.easeInOut(duration: 0.2), value: codingCoordinator.isProblemSidebarShown)
             }
         }
-        .background(Color.appGray900)
+        .background(theme.colors.background)
         .sheet(isPresented: $presenter.showSubmissionTagPrompt) {
             submissionTagSheet
         }
@@ -90,40 +93,38 @@ struct CodingEnvironmentView: View {
     }
 
     private var submissionTagSheet: some View {
-        VStack(alignment: .leading, spacing: 16) {
-            Text(L10n.Coding.submissionTagTitle)
-                .font(.system(size: 16, weight: .semibold))
-                .foregroundColor(.white)
+        DSCard(config: .init(style: .surface, padding: 20, cornerRadius: 12)) {
+            VStack(alignment: .leading, spacing: 16) {
+                DSHeader(
+                    title: L10n.Coding.submissionTagTitle,
+                    subtitle: L10n.Coding.submissionTagBody
+                )
 
-            Text(L10n.Coding.submissionTagBody)
-                .font(.system(size: 12))
-                .foregroundColor(Color.appGray400)
+                DSTextField(
+                    title: "",
+                    placeholder: "e.g. Iterative, Recursive, Two pointers",
+                    text: $presenter.submissionTagInput
+                )
 
-            TextField("e.g. Iterative, Recursive, Two pointers", text: $presenter.submissionTagInput)
-                .textFieldStyle(.roundedBorder)
+                HStack {
+                    DSButton(
+                        "Skip",
+                        config: .init(style: .secondary, size: .small),
+                        action: { presenter.confirmSubmissionTag(saveWithTag: false) }
+                    )
 
-            HStack {
-                Button("Skip") {
-                    presenter.confirmSubmissionTag(saveWithTag: false)
+                    Spacer()
+
+                    DSButton(
+                        "Save",
+                        config: .init(style: .primary, size: .small),
+                        action: { presenter.confirmSubmissionTag(saveWithTag: true) }
+                    )
                 }
-                .buttonStyle(.plain)
-                .foregroundColor(Color.appGray400)
-
-                Spacer()
-
-                Button("Save") {
-                    presenter.confirmSubmissionTag(saveWithTag: true)
-                }
-                .buttonStyle(.plain)
-                .foregroundColor(.white)
-                .padding(.horizontal, 14)
-                .padding(.vertical, 6)
-                .background(Color.appPurple)
-                .clipShape(RoundedRectangle(cornerRadius: 6))
             }
         }
-        .padding(20)
         .frame(width: 360)
-        .background(Color.appGray900)
+        .padding(16)
+        .background(theme.colors.background)
     }
 }

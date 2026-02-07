@@ -1,44 +1,36 @@
+import FocusDesignSystem
 import SwiftUI
 
 struct ModernTestCaseView: View {
     @ObservedObject var presenter: CodingEnvironmentPresenter
     @Binding var isCollapsed: Bool
     @State private var selectedTestIndex: Int = 0
+    @Environment(\.dsTheme) private var theme
 
     var body: some View {
         VStack(spacing: 0) {
             HStack(spacing: 0) {
             Text(L10n.Coding.Testcase.title)
-                    .font(.system(size: 11, weight: .semibold))
-                    .foregroundColor(.white)
+                    .font(theme.typography.subtitle)
+                    .foregroundColor(theme.colors.textPrimary)
                     .padding(.horizontal, 12)
                     .padding(.vertical, 8)
 
                 Spacer()
 
                 HStack(spacing: 6) {
-                    Button(action: presenter.addManualTestCase) {
-                        Image(systemName: "plus")
-                            .font(.system(size: 11, weight: .medium))
-                            .foregroundColor(Color.appGray400)
-                    }
-                    .buttonStyle(.plain)
-
-                    Button(action: {
-                        isCollapsed.toggle()
-                    }, label: {
-                        Image(systemName: isCollapsed ? "chevron.up" : "chevron.down")
-                            .font(.system(size: 11, weight: .medium))
-                            .foregroundColor(Color.appGray400)
-                    })
-                    .buttonStyle(.plain)
+                    headerIconButton(systemName: "plus", action: presenter.addManualTestCase)
+                    headerIconButton(
+                        systemName: isCollapsed ? "chevron.up" : "chevron.down",
+                        action: { isCollapsed.toggle() }
+                    )
                 }
                 .padding(.trailing, 12)
             }
-            .background(Color.appGray800)
+            .background(theme.colors.surfaceElevated)
             .overlay(
                 Rectangle()
-                    .fill(Color.appGray700)
+                    .fill(theme.colors.border)
                     .frame(height: 1),
                 alignment: .bottom
             )
@@ -49,19 +41,18 @@ struct ModernTestCaseView: View {
                 VStack(spacing: 8) {
                     Image(systemName: "doc.text")
                         .font(.system(size: 20))
-                        .foregroundColor(Color.appGray600)
+                        .foregroundColor(theme.colors.textSecondary)
                 Text(L10n.Coding.Testcase.empty)
-                        .font(.system(size: 11))
-                        .foregroundColor(Color.appGray500)
-                    Button(action: presenter.addManualTestCase) {
-                    Text(L10n.Coding.Testcase.add)
-                            .font(.system(size: 11, weight: .medium))
-                            .foregroundColor(Color.appPurple)
-                    }
-                    .buttonStyle(.plain)
+                        .font(theme.typography.caption)
+                        .foregroundColor(theme.colors.textSecondary)
+                    DSButton(
+                        L10n.Coding.Testcase.add,
+                        config: .init(style: .ghost, size: .small),
+                        action: presenter.addManualTestCase
+                    )
                 }
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
-                .background(Color.appGray900)
+                .background(theme.colors.surface)
             } else {
                 VStack(spacing: 0) {
                     ScrollView(.horizontal, showsIndicators: false) {
@@ -73,7 +64,7 @@ struct ModernTestCaseView: View {
                         .padding(.horizontal, 8)
                         .padding(.vertical, 6)
                     }
-                    .background(Color.appGray900)
+                    .background(theme.colors.surface)
 
                     if selectedTestIndex < presenter.testCases.count {
                         testCaseContent(index: selectedTestIndex)
@@ -102,19 +93,19 @@ struct ModernTestCaseView: View {
             HStack(spacing: 4) {
                 if let passed = testCase.passed {
                     Circle()
-                        .fill(passed ? Color.appGreen : Color.appRed)
+                        .fill(passed ? theme.colors.success : theme.colors.danger)
                         .frame(width: 6, height: 6)
                 }
 
                 Text(L10n.Coding.Testcase.caseFormat(index + 1))
                     .font(.system(size: 10, weight: isSelected ? .semibold : .regular))
-                    .foregroundColor(isSelected ? .white : Color.appGray500)
+                    .foregroundColor(isSelected ? theme.colors.textPrimary : theme.colors.textSecondary)
             }
             .padding(.horizontal, 10)
             .padding(.vertical, 5)
             .background(
                 RoundedRectangle(cornerRadius: 4)
-                    .fill(isSelected ? Color.appGray700 : Color.clear)
+                    .fill(isSelected ? theme.colors.surfaceElevated : Color.clear)
             )
         })
         .buttonStyle(.plain)
@@ -138,7 +129,7 @@ struct ModernTestCaseView: View {
                 VStack(alignment: .leading, spacing: 4) {
                     Text(L10n.Coding.Testcase.inputLabel)
                         .font(.system(size: 10, weight: .medium))
-                        .foregroundColor(Color.appGray500)
+                        .foregroundColor(theme.colors.textSecondary)
 
                     TextField("Enter input...", text: Binding(
                         get: { testCase.input },
@@ -146,9 +137,9 @@ struct ModernTestCaseView: View {
                     ), axis: .vertical)
                     .textFieldStyle(.plain)
                     .font(.system(size: 12, design: .monospaced))
-                    .foregroundColor(.white)
+                    .foregroundColor(theme.colors.textPrimary)
                     .padding(8)
-                    .background(Color.black.opacity(0.3))
+                    .background(theme.colors.surfaceElevated)
                     .clipShape(RoundedRectangle(cornerRadius: 6))
                 }
 
@@ -156,12 +147,12 @@ struct ModernTestCaseView: View {
                     HStack(spacing: 4) {
                         Text(L10n.Coding.Testcase.expectedLabel)
                             .font(.system(size: 10, weight: .medium))
-                            .foregroundColor(Color.appGray500)
+                            .foregroundColor(theme.colors.textSecondary)
 
                         if testCase.expectedOutput.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
                             Text("(unavailable)")
                                 .font(.system(size: 10, weight: .regular))
-                                .foregroundColor(Color.appGray600)
+                                .foregroundColor(theme.colors.textSecondary)
                                 .italic()
                         }
                     }
@@ -172,14 +163,30 @@ struct ModernTestCaseView: View {
                     ), axis: .vertical)
                     .textFieldStyle(.plain)
                     .font(.system(size: 12, design: .monospaced))
-                    .foregroundColor(.white)
+                    .foregroundColor(theme.colors.textPrimary)
                     .padding(8)
-                    .background(Color.black.opacity(0.3))
+                    .background(theme.colors.surfaceElevated)
                     .clipShape(RoundedRectangle(cornerRadius: 6))
                 }
             }
             .padding(10)
         }
-        .background(Color.appGray900))
+        .background(theme.colors.surface))
+    }
+
+    private func headerIconButton(systemName: String, action: @escaping () -> Void) -> some View {
+        Button(action: action) {
+            Image(systemName: systemName)
+                .font(.system(size: 11, weight: .medium))
+                .foregroundColor(theme.colors.textSecondary)
+                .frame(width: 24, height: 24)
+                .background(theme.colors.surface)
+                .clipShape(RoundedRectangle(cornerRadius: 6))
+                .overlay(
+                    RoundedRectangle(cornerRadius: 6)
+                        .stroke(theme.colors.border, lineWidth: 1)
+                )
+        }
+        .buttonStyle(.plain)
     }
 }

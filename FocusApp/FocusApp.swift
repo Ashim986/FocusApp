@@ -1,4 +1,5 @@
 import AppKit
+import FocusDesignSystem
 import SwiftUI
 
 @main
@@ -8,15 +9,17 @@ struct FocusApp: App {
 
     var body: some Scene {
         WindowGroup {
-            ContentView(
-                presenter: coordinator.container.contentPresenter,
-                coordinator: coordinator.contentCoordinator
-            )
-            .frame(minWidth: 800, minHeight: 600)
-            .task {
-                coordinator.start()
-                _ = await coordinator.container.notificationManager.requestAuthorization()
-                await coordinator.container.leetCodeScheduler.syncNow(trigger: .hourly)
+            DesignSystemRoot {
+                ContentView(
+                    presenter: coordinator.container.contentPresenter,
+                    coordinator: coordinator.contentCoordinator
+                )
+                .frame(minWidth: 800, minHeight: 600)
+                .task {
+                    coordinator.start()
+                    _ = await coordinator.container.notificationManager.requestAuthorization()
+                    await coordinator.container.leetCodeScheduler.syncNow(trigger: .hourly)
+                }
             }
         }
         .windowStyle(.hiddenTitleBar)
@@ -32,10 +35,27 @@ struct FocusApp: App {
         }
 
         Settings {
-            SettingsView(
-                presenter: coordinator.container.settingsPresenter,
-                debugLogStore: coordinator.container.debugLogStore
-            )
+            DesignSystemRoot {
+                SettingsView(
+                    presenter: coordinator.container.settingsPresenter,
+                    debugLogStore: coordinator.container.debugLogStore
+                )
+            }
+        }
+    }
+}
+
+private struct DesignSystemRoot<Content: View>: View {
+    @Environment(\.colorScheme) private var colorScheme
+    private let content: Content
+
+    init(@ViewBuilder content: () -> Content) {
+        self.content = content()
+    }
+
+    var body: some View {
+        DSThemeProvider(theme: colorScheme == .dark ? .dark : .light) {
+            content
         }
     }
 }

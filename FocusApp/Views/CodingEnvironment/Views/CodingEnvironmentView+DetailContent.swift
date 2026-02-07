@@ -1,3 +1,4 @@
+import FocusDesignSystem
 import SwiftUI
 
 extension CodingEnvironmentView {
@@ -8,14 +9,14 @@ extension CodingEnvironmentView {
                 ProgressView()
                 Text(L10n.Coding.loadingProblem)
                     .font(.system(size: 13))
-                    .foregroundColor(Color.appGray500)
+                    .foregroundColor(theme.colors.textSecondary)
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
         } else if let content = presenter.problemContent {
             VStack(alignment: .leading, spacing: 12) {
                 Text(attributedDescription(from: content.content))
                     .font(.system(size: 14))
-                    .foregroundColor(Color.appGray50)
+                    .foregroundColor(theme.colors.textPrimary)
                     .lineSpacing(4)
                     .textSelection(.enabled)
             }
@@ -24,10 +25,10 @@ extension CodingEnvironmentView {
             VStack(spacing: 8) {
                 Image(systemName: "doc.text")
                     .font(.system(size: 22))
-                    .foregroundColor(Color.appGray600)
+                    .foregroundColor(theme.colors.textSecondary)
                 Text(L10n.Coding.descriptionEmpty)
                     .font(.system(size: 13))
-                    .foregroundColor(Color.appGray500)
+                    .foregroundColor(theme.colors.textSecondary)
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
         }
@@ -77,7 +78,7 @@ extension CodingEnvironmentView {
                 if submissions.isEmpty {
                     Text(L10n.Coding.submissionsEmpty)
                         .font(.system(size: 11))
-                        .foregroundColor(Color.appGray500)
+                        .foregroundColor(theme.colors.textSecondary)
                         .frame(maxWidth: .infinity, alignment: .leading)
                 } else {
                     VStack(alignment: .leading, spacing: 10) {
@@ -90,7 +91,7 @@ extension CodingEnvironmentView {
             } else {
                 Text(L10n.Coding.submissionsSelectPrompt)
                     .font(.system(size: 11))
-                    .foregroundColor(Color.appGray500)
+                    .foregroundColor(theme.colors.textSecondary)
                     .frame(maxWidth: .infinity, alignment: .center)
             }
         }
@@ -107,15 +108,15 @@ extension CodingEnvironmentView {
                     .controlSize(.small)
                 Text("Generating hidden tests…")
                     .font(.system(size: 12, weight: .medium))
-                    .foregroundColor(Color.appGray400)
+                    .foregroundColor(theme.colors.textSecondary)
             } else if !presenter.hiddenTestCases.isEmpty {
                 Text("\(presenter.hiddenTestCases.count) Hidden Tests Ready")
                     .font(.system(size: 12, weight: .semibold))
-                    .foregroundColor(Color.appGreen)
+                    .foregroundColor(theme.colors.success)
             } else {
                 Text("Hidden tests unavailable")
                     .font(.system(size: 12, weight: .medium))
-                    .foregroundColor(Color.appGray500)
+                    .foregroundColor(theme.colors.textSecondary)
             }
 
             Spacer()
@@ -123,7 +124,7 @@ extension CodingEnvironmentView {
         .padding(10)
         .background(
             RoundedRectangle(cornerRadius: 8)
-                .fill(Color.appGray800.opacity(0.7))
+                .fill(theme.colors.surfaceElevated)
                 .overlay(
                     RoundedRectangle(cornerRadius: 8)
                         .stroke(hiddenTestStatusColor.opacity(0.3), lineWidth: 1)
@@ -138,9 +139,9 @@ extension CodingEnvironmentView {
     }
 
     private var hiddenTestStatusColor: Color {
-        if presenter.isGeneratingHiddenTests { return Color.appAmber }
-        if !presenter.hiddenTestCases.isEmpty { return Color.appGreen }
-        return Color.appGray600
+        if presenter.isGeneratingHiddenTests { return theme.colors.warning }
+        if !presenter.hiddenTestCases.isEmpty { return theme.colors.success }
+        return theme.colors.textSecondary
     }
 
     @ViewBuilder
@@ -154,15 +155,15 @@ extension CodingEnvironmentView {
                     VStack(alignment: .leading, spacing: 4) {
                         Text(L10n.Coding.walkthroughCaseLabel( index + 1))
                             .font(.system(size: 10, weight: .semibold))
-                            .foregroundColor(Color.appGray400)
+                            .foregroundColor(theme.colors.textSecondary)
 
                         Text(L10n.Coding.walkthroughInputFormat( testCase.input))
                             .font(.system(size: 10, design: .monospaced))
-                            .foregroundColor(Color.appGray200)
+                            .foregroundColor(theme.colors.textPrimary)
 
                         Text(L10n.Coding.walkthroughExpectedFormat( testCase.expectedOutput))
                             .font(.system(size: 10, design: .monospaced))
-                            .foregroundColor(Color.appGreen)
+                            .foregroundColor(theme.colors.success)
                     }
                 }
             }
@@ -173,15 +174,15 @@ extension CodingEnvironmentView {
         VStack(alignment: .leading, spacing: 6) {
             Text(title)
                 .font(.system(size: 11, weight: .semibold))
-                .foregroundColor(.white)
+                .foregroundColor(theme.colors.textPrimary)
             content()
                 .font(.system(size: 11))
-                .foregroundColor(Color.appGray300)
+                .foregroundColor(theme.colors.textSecondary)
         }
         .padding(10)
         .background(
             RoundedRectangle(cornerRadius: 8)
-                .fill(Color.appGray800.opacity(0.6))
+                .fill(theme.colors.surfaceElevated)
         )
     }
 
@@ -189,13 +190,13 @@ extension CodingEnvironmentView {
         ScrollView {
             Text(code)
                 .font(.system(size: 11, design: .monospaced))
-                .foregroundColor(Color.appGray200)
+                .foregroundColor(theme.colors.textPrimary)
                 .textSelection(.enabled)
                 .frame(maxWidth: .infinity, alignment: .leading)
         }
         .frame(maxHeight: 220)
         .padding(8)
-        .background(Color.black.opacity(0.25))
+        .background(theme.colors.surfaceElevated)
         .clipShape(RoundedRectangle(cornerRadius: 6))
     }
 
@@ -206,27 +207,24 @@ extension CodingEnvironmentView {
             HStack {
                 Text(problem.displayName)
                     .font(.system(size: 11, weight: .semibold))
-                    .foregroundColor(.white)
+                    .foregroundColor(theme.colors.textPrimary)
 
-                Text(languageLabel(for: submission.languageSlug))
-                    .font(.system(size: 10, weight: .semibold))
-                    .foregroundColor(Color.appPurple)
-                    .padding(.horizontal, 8)
-                    .padding(.vertical, 3)
-                    .background(Color.appPurple.opacity(0.15))
-                    .clipShape(Capsule())
+                DSBadge(
+                    languageLabel(for: submission.languageSlug),
+                    config: .init(style: .info)
+                )
 
                 Spacer()
 
                 Text(formatSubmissionDate(submission.createdAt))
                     .font(.system(size: 10))
-                    .foregroundColor(Color.appGray400)
+                    .foregroundColor(theme.colors.textSecondary)
             }
         }
         .padding(10)
         .background(
             RoundedRectangle(cornerRadius: 8)
-                .fill(Color.appGray800.opacity(0.6))
+                .fill(theme.colors.surfaceElevated)
         )
     }
 
@@ -284,9 +282,9 @@ extension CodingEnvironmentView {
             }
         }
 
-        apply("Input:", color: NSColor(Color.appAmber))
-        apply("Output:", color: NSColor(Color.appGreen))
-        apply("Explanation:", color: NSColor(Color.appPurple))
+        apply("Input:", color: NSColor(theme.colors.warning))
+        apply("Output:", color: NSColor(theme.colors.success))
+        apply("Explanation:", color: NSColor(theme.colors.primary))
 
         return mutable
     }

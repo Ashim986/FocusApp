@@ -1,0 +1,15 @@
+{
+  "originHash" : "d4d9bd765f71eb1a3392bb2f07961e7720e295b1f41b8b74ba9ab8eb0dac9637",
+  "pins" : [
+    {
+      "identity" : "dsfocusflow",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/Ashim986/DSFocusFlow.git",
+      "state" : {
+        "revision" : "e88f52a5854b67e5010e23da5b23cd07f0695136",
+        "version" : "1.0.1"
+      }
+    }
+  ],
+  "version" : 3
+}

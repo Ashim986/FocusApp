@@ -1,3 +1,4 @@
+import FocusDesignSystem
 import SwiftUI
 
 extension CodingEnvironmentView {
@@ -11,18 +12,13 @@ extension CodingEnvironmentView {
                         HStack(spacing: 6) {
                             Text(problem.displayName)
                                 .font(.system(size: 13, weight: .semibold))
-                                .foregroundColor(.white)
+                                .foregroundColor(theme.colors.textPrimary)
                                 .lineLimit(1)
 
-                            Text(problem.difficulty.rawValue)
-                                .font(.system(size: 9, weight: .bold))
-                                .foregroundColor(problem.difficulty == .easy ? Color.appGreen : Color.appAmber)
-                                .padding(.horizontal, 6)
-                                .padding(.vertical, 2)
-                                .background(
-                                    (problem.difficulty == .easy ? Color.appGreen : Color.appAmber).opacity(0.15)
-                                )
-                                .clipShape(RoundedRectangle(cornerRadius: 4))
+                            DSBadge(
+                                problem.difficulty.rawValue.uppercased(),
+                                config: .init(style: problem.difficulty == .easy ? .success : .warning)
+                            )
                         }
 
                         Text(
@@ -32,17 +28,17 @@ extension CodingEnvironmentView {
                             )
                         )
                             .font(.system(size: 10))
-                            .foregroundColor(Color.appGray500)
+                            .foregroundColor(theme.colors.textSecondary)
                     }
                 } else {
                     Text(L10n.Coding.problemPickerSelect)
                         .font(.system(size: 13, weight: .medium))
-                        .foregroundColor(Color.appGray400)
+                        .foregroundColor(theme.colors.textSecondary)
                 }
 
                 Image(systemName: "chevron.down")
                     .font(.system(size: 10, weight: .semibold))
-                    .foregroundColor(Color.appGray500)
+                    .foregroundColor(theme.colors.textSecondary)
 
                 if presenter.isLoadingProblem {
                     ProgressView()
@@ -52,11 +48,11 @@ extension CodingEnvironmentView {
             }
             .padding(.horizontal, 12)
             .padding(.vertical, 8)
-            .background(Color.appGray800)
+            .background(theme.colors.surfaceElevated)
             .clipShape(RoundedRectangle(cornerRadius: 8))
             .overlay(
                 RoundedRectangle(cornerRadius: 8)
-                    .stroke(Color.appGray700, lineWidth: 1)
+                    .stroke(theme.colors.border, lineWidth: 1)
             )
         })
         .buttonStyle(.plain)
@@ -74,18 +70,18 @@ extension CodingEnvironmentView {
             HStack {
                 Text(L10n.Coding.problemPickerTitle)
                     .font(.system(size: 12, weight: .semibold))
-                    .foregroundColor(.white)
+                    .foregroundColor(theme.colors.textPrimary)
                 Spacer()
-                Text(L10n.Coding.problemPickerPendingLeft( pendingProblemCount))
+                Text(L10n.Coding.problemPickerPendingLeft(pendingProblemCount))
                     .font(.system(size: 10))
-                    .foregroundColor(Color.appGray500)
+                    .foregroundColor(theme.colors.textSecondary)
             }
             .padding(.horizontal, 12)
             .padding(.vertical, 10)
-            .background(Color.appGray800)
+            .background(theme.colors.surfaceElevated)
 
             Divider()
-                .background(Color.appGray700)
+                .background(theme.colors.border)
 
             ScrollView {
                 VStack(spacing: 12) {
@@ -98,7 +94,7 @@ extension CodingEnvironmentView {
             .frame(maxHeight: 300)
         }
         .frame(width: 320)
-        .background(Color.appGray900)
+        .background(theme.colors.surface)
     }
 
     var pendingProblemCount: Int {
@@ -115,13 +111,13 @@ extension CodingEnvironmentView {
                      ? L10n.Coding.sectionToday( section.dayId)
                      : L10n.Coding.sectionBacklog( section.dayId))
                     .font(.system(size: 10, weight: .semibold))
-                    .foregroundColor(Color.appGray400)
+                    .foregroundColor(theme.colors.textSecondary)
 
                 Spacer()
 
                 Text("\(section.completedCount)/\(section.totalCount)")
                     .font(.system(size: 9))
-                    .foregroundColor(Color.appGray500)
+                    .foregroundColor(theme.colors.textSecondary)
             }
 
             VStack(spacing: 2) {
@@ -142,29 +138,29 @@ extension CodingEnvironmentView {
             HStack(spacing: 10) {
                 ZStack {
                     Circle()
-                        .stroke(item.isCompleted ? Color.appGreen : Color.appGray600, lineWidth: 1.5)
+                        .stroke(item.isCompleted ? theme.colors.success : theme.colors.border, lineWidth: 1.5)
                         .frame(width: 20, height: 20)
 
                     if item.isCompleted {
                         Image(systemName: "checkmark")
                             .font(.system(size: 9, weight: .bold))
-                            .foregroundColor(Color.appGreen)
+                            .foregroundColor(theme.colors.success)
                     } else {
                         Text("\(item.index + 1)")
                             .font(.system(size: 9, weight: .medium))
-                            .foregroundColor(Color.appGray500)
+                            .foregroundColor(theme.colors.textSecondary)
                     }
                 }
 
                 VStack(alignment: .leading, spacing: 2) {
                     Text(item.problem.displayName)
                         .font(.system(size: 12, weight: isSelected ? .semibold : .regular))
-                        .foregroundColor(isSelected ? .white : Color.appGray300)
+                        .foregroundColor(isSelected ? theme.colors.textPrimary : theme.colors.textSecondary)
                         .lineLimit(1)
 
                     Text(item.problem.difficulty.rawValue)
                         .font(.system(size: 9, weight: .medium))
-                        .foregroundColor(item.problem.difficulty == .easy ? Color.appGreen : Color.appAmber)
+                        .foregroundColor(item.problem.difficulty == .easy ? theme.colors.success : theme.colors.warning)
                 }
 
                 Spacer()
@@ -172,14 +168,14 @@ extension CodingEnvironmentView {
                 if isSelected {
                     Image(systemName: "checkmark.circle.fill")
                         .font(.system(size: 14))
-                        .foregroundColor(Color.appPurple)
+                        .foregroundColor(theme.colors.primary)
                 }
             }
             .padding(.horizontal, 10)
             .padding(.vertical, 8)
             .background(
                 RoundedRectangle(cornerRadius: 6)
-                    .fill(isSelected ? Color.appPurple.opacity(0.15) : Color.clear)
+                    .fill(isSelected ? theme.colors.primary.opacity(0.15) : Color.clear)
             )
         })
         .buttonStyle(.plain)

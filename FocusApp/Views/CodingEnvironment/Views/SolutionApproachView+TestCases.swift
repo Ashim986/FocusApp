@@ -1,3 +1,4 @@
+import FocusDesignSystem
 import SwiftUI
 
 extension SolutionApproachView {
@@ -13,37 +14,37 @@ extension SolutionApproachView {
         VStack(alignment: .leading, spacing: 6) {
             Text(L10n.Coding.Solution.testCaseLabel(index + 1))
                 .font(.system(size: 12, weight: .semibold))
-                .foregroundColor(Color.appGray400)
+                .foregroundColor(theme.colors.textSecondary)
 
             HStack(spacing: 12) {
                 VStack(alignment: .leading, spacing: 2) {
                     Text(L10n.Coding.Solution.inputLabel)
                         .font(.system(size: 11, weight: .medium))
-                        .foregroundColor(Color.appAmber)
+                        .foregroundColor(theme.colors.warning)
                     Text(testCase.input)
                         .font(.system(size: 13, design: .monospaced))
-                        .foregroundColor(Color.appGray200)
+                        .foregroundColor(theme.colors.textPrimary)
                 }
 
                 VStack(alignment: .leading, spacing: 2) {
                     Text(L10n.Coding.Solution.outputLabel)
                         .font(.system(size: 11, weight: .medium))
-                        .foregroundColor(Color.appGreen)
+                        .foregroundColor(theme.colors.success)
                     Text(testCase.expectedOutput)
                         .font(.system(size: 13, design: .monospaced))
-                        .foregroundColor(Color.appGray200)
+                        .foregroundColor(theme.colors.textPrimary)
                 }
             }
 
             if let explanation = testCase.explanation, !explanation.isEmpty {
                 Text(explanation)
                     .font(.system(size: 13))
-                    .foregroundColor(Color.appGray500)
+                    .foregroundColor(theme.colors.textSecondary)
                     .padding(.top, 4)
             }
         }
         .padding(10)
-        .background(Color.appGray800.opacity(0.4))
+        .background(theme.colors.surfaceElevated)
         .clipShape(RoundedRectangle(cornerRadius: 6))
     }
 }

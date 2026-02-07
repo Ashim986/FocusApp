@@ -1,3 +1,4 @@
+import FocusDesignSystem
 import SwiftUI
 #if canImport(AppKit)
 import AppKit
@@ -25,7 +26,7 @@ extension ModernOutputView {
                     } else {
                         Text(L10n.Coding.Output.running)
                             .font(.system(size: 13, weight: .semibold))
-                            .foregroundColor(Color.appGray400)
+                            .foregroundColor(theme.colors.textSecondary)
                     }
 
                     ProgressView()
@@ -38,10 +39,10 @@ extension ModernOutputView {
             VStack(spacing: 8) {
                 Image(systemName: "play.circle")
                     .font(.system(size: 28))
-                    .foregroundColor(Color.appGray600)
+                    .foregroundColor(theme.colors.textSecondary)
                 Text(L10n.Coding.Output.empty)
                     .font(.system(size: 12))
-                    .foregroundColor(Color.appGray500)
+                    .foregroundColor(theme.colors.textSecondary)
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
         } else if hasTestResults {
@@ -60,15 +61,15 @@ extension ModernOutputView {
                 VStack(alignment: .leading, spacing: 8) {
                     HStack(spacing: 6) {
                         Image(systemName: "exclamationmark.triangle.fill")
-                            .foregroundColor(Color.appRed)
+                            .foregroundColor(theme.colors.danger)
                         Text(L10n.Coding.Output.compilationError)
                             .font(.system(size: 12, weight: .semibold))
-                            .foregroundColor(Color.appRed)
+                            .foregroundColor(theme.colors.danger)
                     }
 
                     Text(error)
                         .font(.system(size: 11, design: .monospaced))
-                        .foregroundColor(Color.appRed)
+                        .foregroundColor(theme.colors.danger)
                         .textSelection(.enabled)
                 }
                 .padding(12)
@@ -83,11 +84,11 @@ extension ModernOutputView {
             HStack {
                 Image(systemName: passed ? "checkmark.circle.fill" : "xmark.circle.fill")
                     .font(.system(size: 12))
-                    .foregroundColor(passed ? Color.appGreen : Color.appRed)
+                    .foregroundColor(passed ? theme.colors.success : theme.colors.danger)
 
                 Text(L10n.Coding.Output.testFormat(index + 1))
                     .font(.system(size: 11, weight: .medium))
-                    .foregroundColor(.white)
+                    .foregroundColor(theme.colors.textPrimary)
 
                 Spacer()
 
@@ -95,7 +96,7 @@ extension ModernOutputView {
                     ? L10n.Coding.Output.passed
                     : L10n.Coding.Output.failed)
                     .font(.system(size: 10, weight: .medium))
-                    .foregroundColor(passed ? Color.appGreen : Color.appRed)
+                    .foregroundColor(passed ? theme.colors.success : theme.colors.danger)
             }
 
             if !passed {
@@ -103,44 +104,44 @@ extension ModernOutputView {
                     HStack(alignment: .top, spacing: 4) {
                         Text(L10n.Coding.Output.inputLabel)
                             .font(.system(size: 10))
-                            .foregroundColor(Color.appGray500)
+                            .foregroundColor(theme.colors.textSecondary)
                             .frame(width: 60, alignment: .leading)
                         Text(testCase.input)
                             .font(.system(size: 10, design: .monospaced))
-                            .foregroundColor(Color.appGray300)
+                            .foregroundColor(theme.colors.textPrimary)
                     }
 
                     HStack(alignment: .top, spacing: 4) {
                         Text(L10n.Coding.Output.expectedLabel)
                             .font(.system(size: 10))
-                            .foregroundColor(Color.appGray500)
+                            .foregroundColor(theme.colors.textSecondary)
                             .frame(width: 60, alignment: .leading)
                         Text(testCase.expectedOutput)
                             .font(.system(size: 10, design: .monospaced))
-                            .foregroundColor(Color.appGreen)
+                            .foregroundColor(theme.colors.success)
                     }
 
                     if let actual = testCase.actualOutput {
                         HStack(alignment: .top, spacing: 4) {
                             Text(L10n.Coding.Output.outputLabel)
                                 .font(.system(size: 10))
-                                .foregroundColor(Color.appGray500)
+                                .foregroundColor(theme.colors.textSecondary)
                                 .frame(width: 60, alignment: .leading)
                             Text(actual)
                                 .font(.system(size: 10, design: .monospaced))
-                                .foregroundColor(Color.appRed)
+                                .foregroundColor(theme.colors.danger)
                         }
                     }
                 }
                 .padding(8)
-                .background(Color.black.opacity(0.2))
+                .background(theme.colors.surfaceElevated)
                 .clipShape(RoundedRectangle(cornerRadius: 4))
             }
         }
         .padding(10)
         .background(
             RoundedRectangle(cornerRadius: 6)
-                .fill(Color.appGray800.opacity(0.5))
+                .fill(theme.colors.surfaceElevated.opacity(0.7))
         )
     }
 
@@ -150,10 +151,10 @@ extension ModernOutputView {
             VStack(spacing: 8) {
                 Image(systemName: "terminal")
                     .font(.system(size: 28))
-                    .foregroundColor(Color.appGray600)
+                    .foregroundColor(theme.colors.textSecondary)
                 Text(L10n.Coding.Output.noOutput)
                     .font(.system(size: 12))
-                    .foregroundColor(Color.appGray500)
+                    .foregroundColor(theme.colors.textSecondary)
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
         } else {
@@ -174,10 +175,10 @@ extension ModernOutputView {
             VStack(spacing: 8) {
                 Image(systemName: "ladybug")
                     .font(.system(size: 26))
-                    .foregroundColor(Color.appGray600)
+                    .foregroundColor(theme.colors.textSecondary)
                 Text(L10n.Coding.Output.noDebug)
                     .font(.system(size: 12))
-                    .foregroundColor(Color.appGray500)
+                    .foregroundColor(theme.colors.textSecondary)
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
         } else {
@@ -186,7 +187,7 @@ extension ModernOutputView {
                     if !diagnostics.isEmpty {
                         Text("Diagnostics")
                             .font(.system(size: 10, weight: .medium))
-                            .foregroundColor(Color.appRed)
+                            .foregroundColor(theme.colors.danger)
 
                         VStack(spacing: 6) {
                             ForEach(diagnostics, id: \.self) { diagnostic in
@@ -199,21 +200,21 @@ extension ModernOutputView {
                     if !error.isEmpty {
                         Text(L10n.Coding.Output.stderrLabel)
                             .font(.system(size: 10, weight: .medium))
-                            .foregroundColor(Color.appRed)
+                            .foregroundColor(theme.colors.danger)
 
                         Text(error)
                             .font(.system(size: 11, design: .monospaced))
-                            .foregroundColor(Color.appRed)
+                            .foregroundColor(theme.colors.danger)
                             .textSelection(.enabled)
                             .padding(8)
-                            .background(Color.appRed.opacity(0.1))
+                            .background(theme.colors.danger.opacity(0.1))
                             .clipShape(RoundedRectangle(cornerRadius: 6))
                     }
 
                     if !executionEntries.isEmpty {
                         Text(L10n.Debug.logsTitle)
                             .font(.system(size: 10, weight: .medium))
-                            .foregroundColor(Color.appGray400)
+                            .foregroundColor(theme.colors.textSecondary)
                             .padding(.top, (error.isEmpty && diagnostics.isEmpty) ? 0 : 6)
 
                         VStack(spacing: 8) {
@@ -234,10 +235,10 @@ extension ModernOutputView {
             VStack(alignment: .leading, spacing: 2) {
                 Text(diagnosticLocation(diagnostic))
                     .font(.system(size: 10, design: .monospaced))
-                    .foregroundColor(Color.appRed)
+                    .foregroundColor(theme.colors.danger)
                 Text(diagnostic.message)
                     .font(.system(size: 11))
-                    .foregroundColor(Color.appGray200)
+                    .foregroundColor(theme.colors.textPrimary)
                     .textSelection(.enabled)
             }
 
@@ -248,13 +249,13 @@ extension ModernOutputView {
                 label: {
                     Image(systemName: "doc.on.doc")
                         .font(.system(size: 9))
-                        .foregroundColor(Color.appGray500)
+                        .foregroundColor(theme.colors.textSecondary)
                 }
             )
             .buttonStyle(.plain)
         }
         .padding(8)
-        .background(Color.appRed.opacity(0.1))
+        .background(theme.colors.danger.opacity(0.1))
         .clipShape(RoundedRectangle(cornerRadius: 6))
     }
 
@@ -279,8 +280,8 @@ extension ModernOutputView {
     /// Expected format: "Hidden test 3/50  ✓ 2  ✗ 1"
     private func coloredProgressText(_ text: String) -> Text {
         let baseColor: Color = hiddenTestsHaveFailures
-            ? Color.appRed.opacity(0.85)
-            : Color.appGreen.opacity(0.85)
+            ? theme.colors.danger.opacity(0.85)
+            : theme.colors.success.opacity(0.85)
         let font = Font.system(size: 13, weight: .semibold)
 
         guard let checkIndex = text.firstIndex(of: "✓") else {
@@ -292,14 +293,14 @@ extension ModernOutputView {
 
         guard let crossIndex = remainder.firstIndex(of: "✗") else {
             return Text(prefix).font(font).foregroundColor(baseColor)
-                + Text(remainder).font(font).foregroundColor(Color.appGreen)
+                + Text(remainder).font(font).foregroundColor(theme.colors.success)
         }
 
         let passSegment = String(remainder[remainder.startIndex..<crossIndex])
         let failSegment = String(remainder[crossIndex...])
 
         return Text(prefix).font(font).foregroundColor(baseColor)
-            + Text(passSegment).font(font).foregroundColor(Color.appGreen)
-            + Text(failSegment).font(font).foregroundColor(Color.appRed)
+            + Text(passSegment).font(font).foregroundColor(theme.colors.success)
+            + Text(failSegment).font(font).foregroundColor(theme.colors.danger)
     }
 }

@@ -1,5 +1,43 @@
 import AppKit
+import FocusDesignSystem
 import SwiftUI
+
+struct CodeEditorThemeColors {
+    let background: NSColor
+    let text: NSColor
+    let insertion: NSColor
+    let lineNumber: NSColor
+    let divider: NSColor
+    let marker: NSColor
+    let execution: NSColor
+    let errorUnderline: NSColor
+    let errorLineBackground: NSColor
+    let executionLineBackground: NSColor
+
+    init(theme: DSTheme) {
+        if theme.kind == .dark {
+            background = NSColor(theme.colors.surface)
+            text = NSColor(theme.colors.textPrimary)
+            insertion = NSColor(theme.colors.textPrimary)
+            lineNumber = NSColor(theme.colors.textSecondary)
+            divider = NSColor(theme.colors.border)
+        } else {
+            background = NSColor(Color(red: 0.07, green: 0.1, blue: 0.16))
+            text = NSColor.white
+            insertion = NSColor.white
+            lineNumber = NSColor(white: 0.7, alpha: 1)
+            divider = NSColor(white: 0.25, alpha: 1)
+        }
+
+        marker = NSColor(theme.colors.danger)
+        execution = NSColor(theme.colors.primary)
+        errorUnderline = NSColor(theme.colors.danger)
+        errorLineBackground = NSColor(theme.colors.danger).withAlphaComponent(0.12)
+        executionLineBackground = NSColor(theme.colors.primary).withAlphaComponent(
+            theme.kind == .dark ? 0.16 : 0.12
+        )
+    }
+}
 
 struct CodeEditorDiagnostic: Hashable {
     let line: Int
@@ -53,6 +91,7 @@ struct CodeEditorView: NSViewRepresentable {
     let isEditable: Bool
     let showsLineNumbers: Bool
     let onRun: (() -> Void)?
+    @Environment(\.dsTheme) private var theme
 
     init(
         code: Binding<String>,
@@ -79,6 +118,8 @@ struct CodeEditorView: NSViewRepresentable {
             return scrollView
         }
 
+        let palette = CodeEditorThemeColors(theme: theme)
+
         textView.isEditable = isEditable
         textView.isSelectable = true
         textView.isRichText = true
@@ -88,12 +129,12 @@ struct CodeEditorView: NSViewRepresentable {
         textView.font = font
         textView.typingAttributes = [
             .font: font,
-            .foregroundColor: NSColor.white
+            .foregroundColor: palette.text
         ]
 
-        textView.backgroundColor = NSColor(Color.appGray900)
-        textView.textColor = NSColor.white
-        textView.insertionPointColor = NSColor.white
+        textView.backgroundColor = palette.background
+        textView.textColor = palette.text
+        textView.insertionPointColor = palette.insertion
 
         textView.isAutomaticQuoteSubstitutionEnabled = false
         textView.isAutomaticDashSubstitutionEnabled = false
@@ -124,7 +165,7 @@ struct CodeEditorView: NSViewRepresentable {
         }
 
         if showsLineNumbers {
-            let ruler = CodeEditorLineNumberRulerView(textView: textView)
+            let ruler = CodeEditorLineNumberRulerView(textView: textView, palette: palette)
             ruler.diagnostics = diagnostics
             ruler.executionLine = executionLine
             scrollView.hasVerticalRuler = true
@@ -144,6 +185,7 @@ struct CodeEditorView: NSViewRepresentable {
 
     func updateNSView(_ nsView: NSScrollView, context: Context) {
         guard let textView = nsView.documentView as? CodeEditorTextView else { return }
+        let palette = CodeEditorThemeColors(theme: theme)
         textView.isEditable = isEditable
         textView.allowsUndo = isEditable
         textView.onCommandR = onRun
@@ -160,6 +202,18 @@ struct CodeEditorView: NSViewRepresentable {
             return coordinator.handleBracketDoubleClick(at: point, in: textView)
         }
 
+        if context.coordinator.themeKind != theme.kind {
+            context.coordinator.themeKind = theme.kind
+            context.coordinator.editorColors = palette
+            textView.backgroundColor = palette.background
+            textView.textColor = palette.text
+            textView.insertionPointColor = palette.insertion
+            var typingAttributes = textView.typingAttributes
+            typingAttributes[.foregroundColor] = palette.text
+            textView.typingAttributes = typingAttributes
+            context.coordinator.applySyntaxHighlighting()
+        }
+
         if context.coordinator.language != language {
             context.coordinator.language = language
             textView.string = code
@@ -174,6 +228,7 @@ struct CodeEditorView: NSViewRepresentable {
             if let ruler = nsView.verticalRulerView as? CodeEditorLineNumberRulerView {
                 ruler.diagnostics = diagnostics
                 ruler.executionLine = executionLine
+                ruler.updatePalette(palette)
             } else {
                 nsView.verticalRulerView?.needsDisplay = true
             }
@@ -190,6 +245,6 @@ struct CodeEditorView: NSViewRepresentable {
     }
 
     func makeCoordinator() -> Coordinator {
-        Coordinator(self)
+        Coordinator(self, editorColors: CodeEditorThemeColors(theme: theme), themeKind: theme.kind)
     }
 }

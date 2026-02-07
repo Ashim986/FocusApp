@@ -1,97 +1,89 @@
+import FocusDesignSystem
 import SwiftUI
 
 extension CodingEnvironmentView {
     var codeEditorPanel: some View {
-        VStack(spacing: 0) {
-            HStack(spacing: 12) {
-                Text(L10n.Coding.codeTitle)
-                    .font(.system(size: 12, weight: .semibold))
-                    .foregroundColor(.white)
+        DSCard(config: .init(style: .surface, padding: 0, cornerRadius: 12)) {
+            VStack(spacing: 0) {
+                HStack(spacing: 12) {
+                    VStack(alignment: .leading, spacing: 2) {
+                        Text(L10n.Coding.codeTitle)
+                            .font(theme.typography.subtitle)
+                            .foregroundColor(theme.colors.textPrimary)
 
-                languageMenu
+                        Text(L10n.Coding.solutionFilename(presenter.language.fileExtension))
+                            .font(theme.typography.mono)
+                            .foregroundColor(theme.colors.textSecondary)
+                    }
 
-                Text(L10n.Coding.solutionFilename(presenter.language.fileExtension))
-                    .font(.system(size: 11, weight: .medium, design: .monospaced))
-                    .foregroundColor(Color.appGray400)
-
-                Spacer()
-            }
-            .padding(.horizontal, 12)
-            .padding(.vertical, 8)
-            .background(Color.appGray900)
-            .overlay(
-                Rectangle()
-                    .fill(Color.appGray700)
-                    .frame(height: 1),
-                alignment: .bottom
-            )
-
-            if let notice = presenter.codeResetNotice {
-                HStack(spacing: 8) {
-                    Image(systemName: "exclamationmark.triangle.fill")
-                        .font(.system(size: 12, weight: .semibold))
-                        .foregroundColor(Color.appAmber)
-                    Text(notice)
-                        .font(.system(size: 11, weight: .medium))
-                        .foregroundColor(Color.appGray200)
                     Spacer()
-                    Button(action: { presenter.codeResetNotice = nil }, label: {
-                        Image(systemName: "xmark.circle.fill")
-                            .font(.system(size: 12))
-                            .foregroundColor(Color.appGray500)
-                    })
-                    .buttonStyle(.plain)
+
+                    languageSelect
                 }
                 .padding(.horizontal, 12)
-                .padding(.vertical, 6)
-                .background(Color.appAmber.opacity(0.12))
+                .padding(.vertical, 10)
+                .background(theme.colors.surface)
                 .overlay(
                     Rectangle()
-                        .fill(Color.appGray700)
+                        .fill(theme.colors.border)
                         .frame(height: 1),
                     alignment: .bottom
                 )
-            }
 
-            CodeEditorView(
-                code: $presenter.code,
-                language: presenter.language,
-                diagnostics: presenter.errorDiagnostics,
-                executionLine: presenter.highlightedExecutionLine,
-                onRun: presenter.runCode
-            )
+                if let notice = presenter.codeResetNotice {
+                    HStack(spacing: 8) {
+                        Image(systemName: "exclamationmark.triangle.fill")
+                            .font(.system(size: 12, weight: .semibold))
+                            .foregroundColor(theme.colors.warning)
+                        Text(notice)
+                            .font(theme.typography.caption)
+                            .foregroundColor(theme.colors.textPrimary)
+                        Spacer()
+                        Button(action: { presenter.codeResetNotice = nil }, label: {
+                            Image(systemName: "xmark.circle.fill")
+                                .font(.system(size: 12))
+                                .foregroundColor(theme.colors.textSecondary)
+                        })
+                        .buttonStyle(.plain)
+                    }
+                    .padding(.horizontal, 12)
+                    .padding(.vertical, 6)
+                    .background(theme.colors.warning.opacity(0.12))
+                    .overlay(
+                        Rectangle()
+                            .fill(theme.colors.border)
+                            .frame(height: 1),
+                        alignment: .bottom
+                    )
+                }
+
+                CodeEditorView(
+                    code: $presenter.code,
+                    language: presenter.language,
+                    diagnostics: presenter.errorDiagnostics,
+                    executionLine: presenter.highlightedExecutionLine,
+                    onRun: presenter.runCode
+                )
+            }
         }
     }
 
-    private var languageMenu: some View {
-        Menu(content: {
-            ForEach(ProgrammingLanguage.allCases, id: \.rawValue) { lang in
-                Button(action: {
+    private var languageSelect: some View {
+        let items = ProgrammingLanguage.allCases.map { lang in
+            DSSelectItem(id: lang.rawValue, title: lang.rawValue)
+        }
+
+        return DSSelect(
+            placeholder: "Language",
+            items: items,
+            config: .init(style: .outlined, isCompact: true, minWidth: 140),
+            state: .init(selectedId: presenter.language.rawValue),
+            onSelect: { item in
+                if let lang = ProgrammingLanguage(rawValue: item.id) {
                     presenter.changeLanguage(lang)
-                }, label: {
-                    Text(lang.rawValue)
-                })
+                }
             }
-        }, label: {
-            HStack(spacing: 4) {
-                Image(systemName: presenter.language == .swift ? "swift" : "chevron.left.forwardslash.chevron.right")
-                    .font(.system(size: 10))
-                    .foregroundColor(presenter.language == .swift ? Color.orange : Color.blue)
-
-                Text(presenter.language.rawValue)
-                    .font(.system(size: 11, weight: .semibold))
-                    .foregroundColor(.white)
-
-                Image(systemName: "chevron.down")
-                    .font(.system(size: 9, weight: .semibold))
-                    .foregroundColor(Color.appGray500)
-            }
-            .padding(.horizontal, 10)
-            .padding(.vertical, 6)
-            .background(Color.appGray800)
-            .clipShape(RoundedRectangle(cornerRadius: 6))
-        })
-        .menuStyle(.borderlessButton)
+        )
     }
 
     var rightPanel: some View {
@@ -109,7 +101,7 @@ extension CodingEnvironmentView {
     }
 
     private var bottomPanel: some View {
-        VStack(spacing: 0) {
+        DSCard(config: .init(style: .surface, padding: 0, cornerRadius: 12)) {
             VStack(spacing: 0) {
                 ModernTestCaseView(
                     presenter: presenter,
@@ -129,7 +121,7 @@ extension CodingEnvironmentView {
                     )
                 }
             }
+            .background(theme.colors.surface)
         }
-        .background(Color.appGray900)
     }
 }

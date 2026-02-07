@@ -10,7 +10,7 @@ Bundled solution write-ups live in `FocusApp/Resources/Solutions.json` (103 prob
 
 ```
 FocusApp/
-├── FocusApp.xcodeproj/              # Xcode project
+├── FocusApp.xcodeproj/              # Xcode project (SPM dependency on FocusDesignSystem)
 ├── FocusAppTests/                   # Unit tests (grouped by feature)
 │   ├── AppState/
 │   ├── CodingEnvironment/
@@ -36,26 +36,39 @@ FocusApp/
 │   │   ├── NotificationSettings.swift
 │   │   ├── NotificationSettingsStore.swift
 │   │   ├── NotificationScheduler.swift
-│   │   ├── LeetCodeService.swift    # LeetCode client + sync coordinator
+│   │   ├── LeetCodeService.swift        # LeetCode sync coordinator
+│   │   ├── LeetCodeRestClient+GraphQL.swift
+│   │   ├── LeetCodeRestClient+ProblemContent.swift
+│   │   ├── LeetCodeRestClient+Requests.swift
+│   │   ├── LeetCodeRestClient+SolvedSlugs.swift
+│   │   ├── LeetCodeRestClient+Validation.swift
 │   │   ├── LeetCodeNetworking.swift
 │   │   ├── LeetCodeErrors.swift
 │   │   ├── LeetCodeModels.swift
 │   │   ├── LeetCodeConstants.swift
-│   │   ├── LeetCodeProblemFetcher.swift  # GraphQL fetcher for problem manifest
+│   │   ├── LeetCodeValueType.swift
+│   │   ├── LeetCodeProblemFetcher.swift     # GraphQL fetcher for problem manifest
+│   │   ├── LeetCodeSyncInteractor.swift
 │   │   ├── LeetCodeSyncScheduler.swift
 │   │   ├── LeetCodeSlugExtractor.swift
-│   │   ├── ProblemManifestStore.swift    # Manifest-backed topic planning
+│   │   ├── LeetCodeSubmissionService.swift  # LeetCode code submission + result polling
+│   │   ├── ProblemManifestStore.swift       # Manifest-backed topic planning
 │   │   ├── TestCase.swift           # Test case model, ProgrammingLanguage enum, ExecutionResult
+│   │   ├── TestCaseAIService.swift  # AI test case generation protocol + providers
 │   │   ├── CodeExecutionService.swift   # Main code execution coordinator
 │   │   ├── ProcessRunner.swift      # Low-level process execution with timeout
+│   │   ├── ProcessOutputCollector.swift
+│   │   ├── ProcessRunState.swift
 │   │   ├── LanguageExecutor.swift   # Protocol and config for language executors
 │   │   ├── SwiftExecutor.swift      # Swift compilation and execution
+│   │   ├── SwiftExecutor+Logging.swift
 │   │   ├── PythonExecutor.swift     # Python interpreter execution
 │   │   ├── SolutionModels.swift     # Bundled solution data models
 │   │   ├── SolutionStore.swift      # Solution loader (Solutions.json)
 │   │   ├── SolutionAIService.swift  # AI solution providers (Groq, Gemini)
-│   │   ├── LeetCodeSubmissionService.swift  # LeetCode code submission + result polling
-│   │   └── AITestCaseStore.swift            # Hidden test case persistence (JSON)
+│   │   ├── TopicSolutionModels.swift    # Topic-partitioned solution models
+│   │   ├── TopicSolutionStore.swift     # Lazy-loading topic solution store
+│   │   └── AITestCaseStore.swift        # Hidden test case persistence (JSON)
 │   ├── Views/
 │   │   ├── Content/
 │   │   │   ├── ContentView.swift        # Main tabbed interface
@@ -111,50 +124,76 @@ FocusApp/
 │   │   │   ├── CarryoverProblemRow.swift
 │   │   │   └── TomorrowProblemRow.swift
 │   │   ├── CodingEnvironment/
-│   │   │   ├── CodingEnvironmentView.swift  # Code editor with problem picker and tests
 │   │   │   ├── CodingEnvironmentPresenter.swift
 │   │   │   ├── CodingEnvironmentInteractor.swift
 │   │   │   ├── CodingEnvironmentPresenter+ProblemLoading.swift
 │   │   │   ├── CodingEnvironmentPresenter+Persistence.swift
-│   │   │   ├── CodingEnvironmentPresenter+Snippets.swift
 │   │   │   ├── CodingEnvironmentProblemModels.swift
-│   │   │   ├── Execution/                       # Code execution & submission
+│   │   │   ├── Snippets/                       # LeetCode template building
+│   │   │   │   ├── LeetCodeTemplateBuilder.swift
+│   │   │   │   ├── LeetCodeTemplateBuilder+Swift.swift
+│   │   │   │   ├── LeetCodeTemplateBuilder+Python.swift
+│   │   │   │   ├── LeetCodeTemplateBuilder+Helpers.swift
+│   │   │   │   └── CodingEnvironmentPresenter+SnippetSelection.swift
+│   │   │   ├── Execution/                       # Code execution, submission & instrumentation
 │   │   │   │   ├── CodingEnvironmentPresenter+Execution.swift
-│   │   │   │   └── CodingEnvironmentPresenter+LeetCodeSubmit.swift
-│   │   │   ├── Views/                           # View files
+│   │   │   │   ├── CodingEnvironmentPresenter+ExecutionOutput.swift
+│   │   │   │   ├── CodingEnvironmentPresenter+ExecutionDiagnostics.swift
+│   │   │   │   ├── CodingEnvironmentPresenter+ExecutionTrace.swift
+│   │   │   │   ├── CodingEnvironmentPresenter+LeetCodeSubmit.swift
+│   │   │   │   ├── AutoInstrumenter.swift           # Trace.step() injection with scope analysis
+│   │   │   │   ├── LeetCodeExecutionWrapper.swift   # LeetCode-style code wrapping
+│   │   │   │   ├── LeetCodeExecutionWrapper+Swift.swift
+│   │   │   │   ├── LeetCodeExecutionWrapper+SwiftRunner.swift
+│   │   │   │   ├── LeetCodeExecutionWrapper+SwiftTrace.swift
+│   │   │   │   ├── LeetCodeExecutionWrapper+Python.swift
+│   │   │   │   ├── LeetCodeExecutionWrapper+PythonRunner.swift
+│   │   │   │   ├── LeetCodeExecutionWrapper+PythonTrace.swift
+│   │   │   │   ├── LeetCodeExecutionWrapper+SignatureParsing.swift
+│   │   │   │   └── LeetCodeExecutionWrapper+TypeParsing.swift
+│   │   │   ├── Views/                           # View files (uses FocusDesignSystem)
 │   │   │   │   ├── CodingEnvironmentView.swift
+│   │   │   │   ├── CodingEnvironmentView+Header.swift
 │   │   │   │   ├── CodingEnvironmentView+Panels.swift
 │   │   │   │   ├── CodingEnvironmentView+Sidebar.swift
+│   │   │   │   ├── CodingEnvironmentView+SidebarRows.swift
 │   │   │   │   ├── CodingEnvironmentView+DetailContent.swift
+│   │   │   │   ├── CodingEnvironmentView+ProblemPicker.swift
+│   │   │   │   ├── ProblemDetailTab.swift
 │   │   │   │   ├── ModernOutputView.swift
 │   │   │   │   ├── ModernOutputView+Sections.swift
-│   │   │   │   └── SolutionTabView.swift
-│   │   │   ├── CodingEnvironmentView+Header.swift
-│   │   │   ├── CodingEnvironmentView+ProblemPicker.swift
-│   │   │   ├── DataJourneyModels.swift
-│   │   │   ├── DataJourneyPointerModels.swift
-│   │   │   ├── DataJourneyTraceBubble.swift
-│   │   │   ├── DataJourneyTraceValueView.swift
-│   │   │   ├── DataJourneySequenceBubbleRow.swift
-│   │   │   ├── DataJourneySequenceBubbleRow+Layout.swift
-│   │   │   ├── DataJourneyStructureCanvasView.swift
-│   │   │   ├── DataJourneyStructureCanvasView+Structure.swift
-│   │   │   ├── DataJourneyStructureCanvasView+Pointers.swift
-│   │   │   ├── DataJourneyStructureCanvasView+CombinedList.swift
-│   │   │   ├── DataJourneyStructureCanvasView+Labels.swift
-│   │   │   ├── DataJourneyDictionaryStructureRow.swift
-│   │   │   ├── DataJourneyTreeGraphView.swift
-│   │   │   ├── DataJourneyGraphView.swift
-│   │   │   ├── DataJourneyView.swift
-│   │   │   ├── DataJourneyView+Layout.swift
-│   │   │   ├── DataJourneyView+Playback.swift
-│   │   │   ├── DataJourneyView+Selection.swift
-│   │   │   ├── SolutionTabView.swift
-│   │   │   ├── SolutionApproachView.swift
-│   │   │   ├── ModernTestCaseView.swift
-│   │   │   ├── ModernOutputView.swift
-│   │   │   ├── ModernOutputView+Sections.swift
-│   │   │   └── TestCaseEditorView.swift
+│   │   │   │   ├── ModernTestCaseView.swift
+│   │   │   │   ├── SolutionTabView.swift
+│   │   │   │   ├── SolutionApproachView.swift
+│   │   │   │   ├── SolutionApproachView+TestCases.swift
+│   │   │   │   └── TestCaseEditorView.swift
+│   │   │   └── DataJourney/                     # Data structure visualization
+│   │   │       ├── DataJourneyModels.swift
+│   │   │       ├── DataJourneyPointerModels.swift
+│   │   │       ├── DataJourneyDiff.swift
+│   │   │       ├── DataJourneyTraceBubble.swift
+│   │   │       ├── DataJourneyTraceValueView.swift
+│   │   │       ├── DataJourneySequenceBubbleRow.swift
+│   │   │       ├── DataJourneySequenceBubbleRow+Layout.swift
+│   │   │       ├── DataJourneyStructureCanvasView.swift
+│   │   │       ├── DataJourneyStructureCanvasView+Structure.swift
+│   │   │       ├── DataJourneyStructureCanvasView+Pointers.swift
+│   │   │       ├── DataJourneyStructureCanvasView+CombinedList.swift
+│   │   │       ├── DataJourneyStructureCanvasView+Labels.swift
+│   │   │       ├── DataJourneyDictionaryStructureRow.swift
+│   │   │       ├── DataJourneyTreeGraphView.swift
+│   │   │       ├── DataJourneyGraphView.swift
+│   │   │       ├── DataJourneyHeapView.swift
+│   │   │       ├── DataJourneyTrieGraphView.swift
+│   │   │       ├── DataJourneyMatrixGridView.swift
+│   │   │       ├── DataJourneyStringSequenceView.swift
+│   │   │       ├── DataJourneyComparisonView.swift
+│   │   │       ├── DataJourneyVariableTimeline.swift
+│   │   │       ├── DataJourneyFlowView.swift
+│   │   │       ├── DataJourneyView.swift
+│   │   │       ├── DataJourneyView+Layout.swift
+│   │   │       ├── DataJourneyView+Playback.swift
+│   │   │       └── DataJourneyView+Selection.swift
 │   │   ├── CodeEditorView.swift     # NSTextView wrapper with syntax highlighting
 │   │   ├── CodeEditorView+Coordinator.swift
 │   │   ├── CodeEditorView+CoordinatorInput.swift
@@ -169,7 +208,7 @@ FocusApp/
 │   │   ├── DayCard.swift            # Day card component
 │   │   └── ProblemRow.swift         # Problem row component
 │   ├── Helpers/
-│   │   ├── Colors.swift             # Color definitions
+│   │   ├── Colors.swift             # Color definitions (legacy, prefer theme.colors.*)
 │   │   └── AppStrings.swift         # Localized string helpers
 │   ├── Resources/
 │   │   ├── Localizable.xcstrings    # Localization strings catalog
@@ -178,6 +217,11 @@ FocusApp/
 │   └── Shared/
 │       ├── SharedDataStore.swift    # PlanCalendar, AppConstants, legacy FileAppStorage
 │       └── SwiftDataStorage.swift   # SwiftData persistence (AppDataRecord, SwiftDataAppStorage)
+├── Design/                          # Design documentation
+│   ├── README.md
+│   ├── Design-Spec.md
+│   ├── FOCUSAPP_FIGMA_URL.md
+│   └── Exports/EXPORT_CHECKLIST.md
 ├── Scripts/
 │   ├── swiftlint.sh                 # SwiftLint build phase script
 │   ├── fetch_problems.swift         # Manifest fetcher (GraphQL)
@@ -287,7 +331,7 @@ The project enforces these standards via `.swiftlint.yml`:
 ### Custom Rules
 
 - **No print statements**: Use proper logging
-- **No hardcoded colors**: Use `Colors.swift` definitions
+- **No hardcoded colors**: Use `theme.colors.*` from FocusDesignSystem (legacy `Colors.swift` still exists)
 - **Presenter @MainActor**: All Presenters must have `@MainActor`
 - **TODO with owner**: Format as `// TODO(username): description`
 
@@ -349,8 +393,12 @@ The app uses a **Clean Architecture / VIPER-inspired** pattern with clear separa
 | `AppStrings` | `Helpers/AppStrings.swift` | Localized string helpers |
 | `CodeEditorLineNumberRulerView` | `Views/CodeEditorLineNumberRulerView.swift` | Line numbers with diagnostic markers |
 | `SolutionAIProviding` | `Models/SolutionAIService.swift` | AI provider protocol + Groq/Gemini implementations |
+| `TestCaseAIProviding` | `Models/TestCaseAIService.swift` | AI test case generation (complete input + expected output) |
 | `LeetCodeSubmissionService` | `Models/LeetCodeSubmissionService.swift` | LeetCode code submission + result polling |
 | `AITestCaseStore` | `Models/AITestCaseStore.swift` | Thread-safe hidden test case persistence (JSON) |
+| `AutoInstrumenter` | `Execution/AutoInstrumenter.swift` | Trace.step() injection with scope-aware variable capture |
+| `LeetCodeExecutionWrapper` | `Execution/LeetCodeExecutionWrapper.swift` | LeetCode-style code wrapping for Swift/Python |
+| `TopicSolutionStore` | `Models/TopicSolutionStore.swift` | Lazy-loading topic-partitioned solution store |
 
 ### Presenter/Interactor Pattern
 
@@ -735,6 +783,34 @@ The code editor highlights:
 5. If all hidden tests pass, code submits to LeetCode via `LeetCodeSubmissionService`
 6. Failed hidden tests are placed in the test panel for debugging
 
+### Console Output & print() Statements
+
+The output panel has 3 tabs: **Result**, **Console**, **Debug**.
+
+**How print() output flows to the Console tab:**
+
+```
+User print() → stdout → ProcessRunner (pipe capture)
+  → ProcessOutputCollector → ExecutionResult.output
+  → parseTraceOutput() strips __focus_trace__ lines, keeps print() in cleanOutput
+  → compilationOutput = cleanOutput (runSingle) or consoleLogs (executeTests)
+  → ModernOutputView output: param → Console tab → ConsoleOutputView
+```
+
+| Execution Mode | Where print() output appears |
+|---------------|------------------------------|
+| **Run (no tests)** | `compilationOutput = parsed.cleanOutput` — shows all stdout directly |
+| **Run with tests** | Each test's output prefixed with `"Test N:\n"` and joined into `compilationOutput` |
+| **Hidden test gate** | Progress text replaces `compilationOutput` during run; final summary after |
+
+**Key details:**
+- `ProcessRunner` captures ALL stdout via pipe `readabilityHandler`
+- `parseTraceOutput()` separates `__focus_trace__` instrumentation lines from regular output
+- Everything that is NOT a trace line (including `print()`) goes into `cleanOutput`
+- The Console tab displays `compilationOutput` via `ConsoleOutputView` with line numbers and color detection
+- If user code has NO `print()` statements, the Console tab shows only the wrapper's function return values
+- The LeetCode execution wrapper prints `jsonString(from: output)` as the LAST stdout line — user `print()` appears BEFORE this
+
 ## Hidden Test Cases & LeetCode Submission
 
 The coding environment includes a background AI-driven hidden test case system that validates user solutions before submitting to LeetCode.
@@ -742,13 +818,32 @@ The coding environment includes a background AI-driven hidden test case system t
 ### Hidden Test Case Generation
 
 When a user selects a problem, `startHiddenTestGeneration()` runs in the background:
-1. AI providers (Groq/Gemini) generate up to 50 test cases for the selected problem
-2. A reference solution is executed against each generated test case to produce expected outputs
+1. AI providers (Groq/Gemini) generate up to 50 **complete test cases** (input + expected output) for the selected problem
+2. No reference solution execution is needed — the AI generates both inputs and correct expected outputs directly
 3. Generated test cases are cached in `AITestCaseStore` at `~/Library/Application Support/FocusApp/ai-testcases.json`
 4. A badge in the **Submissions tab** shows the generation state:
    - Amber = generating in progress
    - Green = test cases ready
    - Gray = unavailable (generation failed or not applicable)
+
+### Output Comparison & `orderMatters` Flag
+
+Test output comparison uses `outputMatches()` in `CodingEnvironmentPresenter+ExecutionOutput.swift`:
+- **Exact match first**: Always tries direct string comparison
+- **Order-insensitive fallback**: Only when `orderMatters: false`, tries sorting both sides as flat JSON arrays
+- The `orderMatters` flag is per-test-case on `SolutionTestCase` (defaults to `true` for backward compatibility)
+- AI prompt explicitly asks the provider to set `orderMatters: false` for problems that say "return in any order"
+- User-created visible test cases (`TestCase`) always use exact matching (no `orderMatters` flag)
+- `sortedJSONArray()` helper parses flat JSON arrays and sorts elements for comparison
+- Nested arrays/objects are NOT sorted — only flat `[1,2,"a"]` style arrays
+
+**When order matters vs doesn't**:
+| Scenario | `orderMatters` | Example |
+|----------|---------------|---------|
+| Sorted output (merge sort, inorder traversal) | `true` | `[1,2,3]` must match exactly |
+| "Return in any order" problems | `false` | `[1,2]` matches `[2,1]` |
+| Single values, booleans, strings | `true` | `"true"`, `"42"` — exact match |
+| User-created test cases | `true` (always) | User explicitly typed the expected output |
 
 ### Hidden Test Gate on Submit
 
@@ -781,8 +876,8 @@ After all hidden tests pass, `submitToLeetCodeDirect()` submits the user's code 
 | Method | File | Purpose |
 |--------|------|---------|
 | `startHiddenTestGeneration()` | `CodingEnvironmentPresenter+LeetCodeSubmit.swift` | Kicks off background AI test case generation on problem select |
-| `runHiddenTestGate(executionCode:)` | `CodingEnvironmentPresenter+LeetCodeSubmit.swift` | Runs user code against all hidden tests |
-| `submitToLeetCodeDirect()` | `CodingEnvironmentPresenter+LeetCodeSubmit.swift` | Submits to LeetCode bypassing old AI gate |
+| `runHiddenTestGate(executionCode:)` | `CodingEnvironmentPresenter+Execution.swift` | Runs user code against all hidden tests |
+| `submitToLeetCodeDirect()` | `CodingEnvironmentPresenter+LeetCodeSubmit.swift` | Submits to LeetCode after hidden tests pass |
 
 ## Localization
 
@@ -815,6 +910,93 @@ AppStrings.format("coding.sidebar_pending_left", pendingCount)
 
 - Use dot notation: `section.identifier`
 - Examples: `coding.sidebar_title`, `coding.status_solved`, `coding.section_today`
+
+## FocusDesignSystem (External Package)
+
+The app uses **FocusDesignSystem** (`DSFocusFlow`) as an SPM dependency for consistent, themeable UI components.
+
+- **Repository**: `https://github.com/Ashim986/DSFocusFlow`
+- **Version**: `>= 1.0.1` (upToNextMinor)
+- **Platforms**: macOS 14.0+, iOS 26
+
+### Package Structure
+
+| Module | Purpose |
+|--------|---------|
+| `FocusDesignSystemCore` | Tokens: colors, typography, spacing, radii, shadows + theme environment |
+| `FocusDesignSystemState` | Reducer protocol + state store |
+| `FocusDesignSystemComponents` | Reusable UI components |
+| `FocusDesignSystem` | Umbrella re-export of all modules |
+
+### Theme Usage
+
+```swift
+import FocusDesignSystem
+
+// In views — access theme via environment
+@Environment(\.dsTheme) var theme
+
+// Use theme tokens
+theme.colors.textPrimary
+theme.colors.textSecondary
+theme.colors.surface
+theme.colors.surfaceElevated
+theme.colors.background
+theme.colors.border
+theme.colors.primary
+theme.colors.success
+theme.colors.danger
+theme.colors.warning
+theme.colors.accent
+theme.typography.subtitle
+theme.typography.caption
+theme.typography.mono
+```
+
+### Available Components
+
+| Component | Usage |
+|-----------|-------|
+| `DSCard` | Card container with style/padding/cornerRadius config |
+| `DSButton` | Themed button with primary/secondary/danger styles |
+| `DSBadge` | Status badge (success, warning, danger, neutral) |
+| `DSTextField` | Themed text input |
+| `DSSelect` | Dropdown select with outlined/compact styles |
+| `DSSegmentedControl` | Tab-like segmented control |
+| `DSProgressRing` | Circular progress indicator |
+| `DSHeader` | Section header with title/subtitle |
+| `DSMetricCard` | Metric display with trend indicator |
+| `DSToast` | Toast notification |
+| `DSBubble` | Data visualization bubble |
+| `DSArrow`, `DSCurvedArrow` | Arrow primitives for visualizations |
+| `DSGraphView` | Graph visualization (adjacency list) |
+| `DSTreeGraphView` | Tree visualization |
+
+### Important Integration Notes
+
+- `@Environment(\.dsTheme) var theme` must be `internal` (not `private`) when the view has extensions in separate files
+- Same applies to `@Environment(\.openURL) var openURL`
+- `Difficulty` enum has 3 cases: `.easy`, `.medium`, `.hard` (used with `DSBadge` styles)
+- Colors in new code should use `theme.colors.*` instead of `Color.app*` from `Colors.swift`
+
+## AutoInstrumenter (Trace.step Injection)
+
+The `AutoInstrumenter` in `Execution/AutoInstrumenter.swift` injects `Trace.step()` calls into user code for the Data Journey visualization system.
+
+### Scope-Aware Variable Capture
+
+The instrumenter uses **scope-aware** variable capture to avoid compilation errors:
+
+1. **Function-level declarations**: `extractFunctionLevelDecls()` returns `[VarDecl]` with `(name, line)` pairs
+2. **Declaration ordering**: Only variables declared BEFORE each insertion point are captured: `funcLevelDecls.filter { $0.line < lineIndex }`
+3. **Loop-local variables**: `extractSwiftLoopVars()` captures binding variables from `for` loop headers only for that specific loop
+4. **No cross-scope leaking**: Loop binding variables (e.g., `count` from `for (num, count) in ...`) don't leak into other loops
+
+### Common Pitfalls
+
+- Never capture variables before their declaration line (causes "use of local variable before its declaration")
+- Loop binding variables must be scoped to their containing loop only
+- Helper structs/methods live in a separate extension to stay under the `type_body_length` SwiftLint limit
 
 ## Known Limitations
 

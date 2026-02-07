@@ -15,7 +15,7 @@ extension CodeEditorView.Coordinator {
         let font = NSFont.monospacedSystemFont(ofSize: 13, weight: .regular)
         textStorage.setAttributes([
             .font: font,
-            .foregroundColor: colors.default
+            .foregroundColor: editorColors.text
         ], range: fullRange)
 
         switch language {
@@ -56,7 +56,7 @@ extension CodeEditorView.Coordinator {
         if let executionLine, let lineRange = lineRanges[executionLine] {
             textStorage.addAttribute(
                 .backgroundColor,
-                value: colors.executionHighlight,
+                value: editorColors.executionLineBackground,
                 range: lineRange
             )
         }
@@ -66,8 +66,8 @@ extension CodeEditorView.Coordinator {
             return
         }
 
-        let underlineColor = NSColor(Color.appRed)
-        let lineBackground = NSColor(Color.appRed).withAlphaComponent(0.12)
+        let underlineColor = editorColors.errorUnderline
+        let lineBackground = editorColors.errorLineBackground
 
         for diagnostic in diagnostics {
             guard let lineRange = lineRanges[diagnostic.line] else { continue }

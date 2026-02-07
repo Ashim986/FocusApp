@@ -34,7 +34,8 @@ final class DSAPlanTests: XCTestCase {
     func testDifficultyEnumRawValues() {
         XCTAssertEqual(Difficulty.easy.rawValue, "Easy")
         XCTAssertEqual(Difficulty.medium.rawValue, "Medium")
-        XCTAssertEqual(Difficulty.allCases.count, 2)
+        XCTAssertEqual(Difficulty.hard.rawValue, "Hard")
+        XCTAssertEqual(Difficulty.allCases.count, 3)
     }
 
     func testProblemCodableRoundTrip() throws {

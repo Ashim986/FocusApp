@@ -396,8 +396,8 @@ extension CodeEditorView.Coordinator {
 
     private func applyBracketHighlights(_ ranges: [NSRange], in textView: NSTextView) {
         guard let textStorage = textView.textStorage else { return }
-        let highlightColor = NSColor(Color.appPurple).withAlphaComponent(0.25)
-        let underlineColor = NSColor(Color.appPurple)
+        let highlightColor = editorColors.execution.withAlphaComponent(0.25)
+        let underlineColor = editorColors.execution
         for range in ranges {
             textStorage.addAttribute(.backgroundColor, value: highlightColor, range: range)
             textStorage.addAttribute(

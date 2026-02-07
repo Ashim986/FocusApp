@@ -30,17 +30,33 @@ struct SolutionTestCase: Codable, Equatable, Identifiable, Sendable {
     let input: String
     let expectedOutput: String
     let explanation: String?
+    /// Whether the order of elements in the output matters for comparison.
+    /// When `false`, array outputs like `[1,2]` and `[2,1]` are treated as equivalent.
+    /// Defaults to `true` for backward compatibility with cached JSON.
+    let orderMatters: Bool
 
     init(
         id: UUID = UUID(),
         input: String,
         expectedOutput: String,
-        explanation: String? = nil
+        explanation: String? = nil,
+        orderMatters: Bool = true
     ) {
         self.id = id
         self.input = input
         self.expectedOutput = expectedOutput
         self.explanation = explanation
+        self.orderMatters = orderMatters
+    }
+
+    // Backward-compatible decoding: older JSON without orderMatters defaults to true
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        id = (try? container.decode(UUID.self, forKey: .id)) ?? UUID()
+        input = try container.decode(String.self, forKey: .input)
+        expectedOutput = try container.decode(String.self, forKey: .expectedOutput)
+        explanation = try? container.decode(String.self, forKey: .explanation)
+        orderMatters = (try? container.decode(Bool.self, forKey: .orderMatters)) ?? true
     }
 }
 

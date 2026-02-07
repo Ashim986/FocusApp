@@ -1517,9 +1517,6 @@
     "Diagnostics" : {
 
     },
-    "e.g. Iterative, Recursive, Two pointers" : {
-
-    },
     "Enter expected output..." : {
 
     },
@@ -2223,9 +2220,6 @@
     "Run with input to see the data journey." : {
 
     },
-    "Save" : {
-
-    },
     "settings.about_header" : {
       "extractionState" : "stale",
       "localizations" : {
@@ -2830,9 +2824,6 @@
           }
         }
       }
-    },
-    "Skip" : {
-
     },
     "Speed" : {
 

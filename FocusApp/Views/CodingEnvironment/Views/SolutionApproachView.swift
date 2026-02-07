@@ -1,10 +1,12 @@
 import AppKit
+import FocusDesignSystem
 import SwiftUI
 
 struct SolutionApproachView: View {
     let approach: SolutionApproach
 
     @State private var expandedSections: Set<SolutionSection> = [.intuition, .approach]
+    @Environment(\.dsTheme) var theme
 
     enum SolutionSection: String, CaseIterable {
         case intuition
@@ -24,7 +26,7 @@ struct SolutionApproachView: View {
             ) {
                 Text(approach.intuition)
                     .font(.system(size: 14))
-                    .foregroundColor(Color.appGray300)
+                    .foregroundColor(theme.colors.textSecondary)
                     .lineSpacing(3)
             }
 
@@ -35,7 +37,7 @@ struct SolutionApproachView: View {
             ) {
                 Text(approach.approach)
                     .font(.system(size: 14))
-                    .foregroundColor(Color.appGray300)
+                    .foregroundColor(theme.colors.textSecondary)
                     .lineSpacing(3)
             }
 
@@ -54,7 +56,7 @@ struct SolutionApproachView: View {
             ) {
                 Text(approach.explanation)
                     .font(.system(size: 14))
-                    .foregroundColor(Color.appGray300)
+                    .foregroundColor(theme.colors.textSecondary)
                     .lineSpacing(3)
             }
 
@@ -99,34 +101,34 @@ struct SolutionApproachView: View {
                 HStack {
                     Image(systemName: icon)
                         .font(.system(size: 13))
-                        .foregroundColor(Color.appPurple)
+                        .foregroundColor(theme.colors.primary)
                         .frame(width: 16)
 
                     Text(title)
                         .font(.system(size: 14, weight: .semibold))
-                        .foregroundColor(.white)
+                        .foregroundColor(theme.colors.textPrimary)
 
                     Spacer()
 
                     Image(systemName: expandedSections.contains(section) ? "chevron.up" : "chevron.down")
                         .font(.system(size: 12, weight: .semibold))
-                        .foregroundColor(Color.appGray500)
+                        .foregroundColor(theme.colors.textSecondary)
                 }
                 .padding(10)
-                .background(Color.appGray800.opacity(0.6))
+                .background(theme.colors.surfaceElevated)
             }
             .buttonStyle(.plain)
 
             if expandedSections.contains(section) {
                 content()
                     .padding(12)
-                    .background(Color.appGray900.opacity(0.5))
+                    .background(theme.colors.surface)
             }
         }
         .clipShape(RoundedRectangle(cornerRadius: 8))
         .overlay(
             RoundedRectangle(cornerRadius: 8)
-                .stroke(Color.appGray700, lineWidth: 1)
+                .stroke(theme.colors.border, lineWidth: 1)
         )
     }
 
@@ -137,7 +139,7 @@ struct SolutionApproachView: View {
             HStack {
                 Text("Swift")
                     .font(.system(size: 12, weight: .semibold))
-                    .foregroundColor(Color.appGray400)
+                    .foregroundColor(theme.colors.textSecondary)
 
                 Spacer()
 
@@ -151,10 +153,10 @@ struct SolutionApproachView: View {
                         Text(L10n.Coding.Solution.copyCode)
                             .font(.system(size: 12, weight: .medium))
                     }
-                    .foregroundColor(Color.appGray400)
+                    .foregroundColor(theme.colors.textSecondary)
                     .padding(.horizontal, 8)
                     .padding(.vertical, 4)
-                    .background(Color.appGray700.opacity(0.5))
+                    .background(theme.colors.surfaceElevated)
                     .clipShape(RoundedRectangle(cornerRadius: 4))
                 }
                 .buttonStyle(.plain)
@@ -171,7 +173,7 @@ struct SolutionApproachView: View {
             .clipShape(RoundedRectangle(cornerRadius: 6))
         }
         .padding(10)
-        .background(Color.black.opacity(0.3))
+        .background(theme.colors.surfaceElevated)
         .clipShape(RoundedRectangle(cornerRadius: 6))
     }
 
@@ -183,14 +185,14 @@ struct SolutionApproachView: View {
                 title: L10n.Coding.Solution.timeComplexity,
                 value: complexity.time,
                 explanation: complexity.timeExplanation,
-                color: Color.appGreen
+                color: theme.colors.success
             )
 
             complexityRow(
                 title: L10n.Coding.Solution.spaceComplexity,
                 value: complexity.space,
                 explanation: complexity.spaceExplanation,
-                color: Color.appCyan
+                color: theme.colors.accent
             )
         }
     }
@@ -205,7 +207,7 @@ struct SolutionApproachView: View {
             HStack(spacing: 8) {
                 Text(title)
                     .font(.system(size: 13, weight: .medium))
-                    .foregroundColor(Color.appGray400)
+                    .foregroundColor(theme.colors.textSecondary)
 
                 Text(value)
                     .font(.system(size: 14, weight: .semibold, design: .monospaced))
@@ -215,7 +217,7 @@ struct SolutionApproachView: View {
             if let explanation = explanation, !explanation.isEmpty {
                 Text(explanation)
                     .font(.system(size: 13))
-                    .foregroundColor(Color.appGray500)
+                    .foregroundColor(theme.colors.textSecondary)
             }
         }
     }

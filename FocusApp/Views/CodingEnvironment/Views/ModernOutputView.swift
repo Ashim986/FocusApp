@@ -1,3 +1,4 @@
+import FocusDesignSystem
 import SwiftUI
 
 struct ModernOutputView: View {
@@ -11,6 +12,7 @@ struct ModernOutputView: View {
     let logAnchor: Date?
 
     @State private var selectedTab: OutputTab = .result
+    @Environment(\.dsTheme) var theme
 
     enum OutputTab: CaseIterable {
         case result
@@ -45,7 +47,11 @@ struct ModernOutputView: View {
 
                             Text(tab.title)
                                 .font(.system(size: 11, weight: selectedTab == tab ? .semibold : .regular))
-                                .foregroundColor(selectedTab == tab ? .white : Color.appGray500)
+                                .foregroundColor(
+                                    selectedTab == tab
+                                        ? theme.colors.textPrimary
+                                        : theme.colors.textSecondary
+                                )
                         }
                         .padding(.horizontal, 12)
                         .padding(.vertical, 8)
@@ -64,17 +70,17 @@ struct ModernOutputView: View {
                             ? L10n.Coding.Output.running
                             : output)
                             .font(.system(size: 10))
-                            .foregroundColor(Color.appGray500)
+                            .foregroundColor(theme.colors.textSecondary)
                             .lineLimit(1)
                             .truncationMode(.tail)
                     }
                     .padding(.trailing, 12)
                 }
             }
-            .background(Color.appGray800)
+            .background(theme.colors.surfaceElevated)
             .overlay(
                 Rectangle()
-                    .fill(Color.appGray700)
+                    .fill(theme.colors.border)
                     .frame(height: 1),
                 alignment: .bottom
             )
@@ -90,7 +96,7 @@ struct ModernOutputView: View {
                 }
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
-            .background(Color.appGray900)
+            .background(theme.colors.surface)
         }
         .onChange(of: availableTabs) { _ in
             if !availableTabs.contains(selectedTab) {
@@ -117,12 +123,12 @@ struct ModernOutputView: View {
 
     var resultIndicatorColor: Color {
         if hasFailures {
-            return Color.appRed
+            return theme.colors.danger
         }
         if allTestsPassed {
-            return Color.appGreen
+            return theme.colors.success
         }
-        return Color.appAmber
+        return theme.colors.warning
     }
 
     private var availableTabs: [OutputTab] {

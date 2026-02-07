@@ -224,7 +224,11 @@ extension CodingEnvironmentPresenter {
             }
 
             if !normalizedExpected.isEmpty,
-               normalized.comparisonValue != normalizedExpected {
+               !self.outputMatches(
+                   normalized.comparisonValue,
+                   expected: normalizedExpected,
+                   orderMatters: item.orderMatters
+               ) {
                 var failedCase = TestCase(input: item.input, expectedOutput: item.expectedOutput)
                 failedCase.actualOutput = normalized.displayValue
                 failedCase.passed = false
@@ -296,7 +300,10 @@ extension CodingEnvironmentPresenter {
                         if normalizedExpected.isEmpty {
                             updatedTestCases[index].passed = nil
                         } else {
-                            updatedTestCases[index].passed = normalized.comparisonValue == normalizedExpected
+                            updatedTestCases[index].passed = self.outputMatches(
+                                normalized.comparisonValue,
+                                expected: normalizedExpected
+                            )
                         }
                     }
                     if updatedTestCases[index].passed != true {

@@ -15,8 +15,8 @@ extension LeetCodeExecutionWrapper {
         let container = typeDefinition(named: className, in: code)?.body
             ?? stripCommentsAndStrings(from: code)
         let signaturePattern =
-            "func\\\\s+(`?[A-Za-z_][A-Za-z0-9_]*`?)\\\\s*\\\\(([^\\\\)]*)\\\\)\\\\s*"
-            + "(?:->\\\\s*([^\\\\{\\\\n]+))?"
+            "func\\s+(`?[A-Za-z_][A-Za-z0-9_]*`?)\\s*\\(([^)]*)\\)\\s*"
+            + "(?:->\\s*([^{\\n]+))?"
         guard let regex = try? NSRegularExpression(pattern: signaturePattern, options: []) else { return nil }
         let range = NSRange(location: 0, length: (container as NSString).length)
         let matches = regex.matches(in: container, options: [], range: range)
@@ -28,43 +28,45 @@ extension LeetCodeExecutionWrapper {
                 .replacingOccurrences(of: "`", with: "")
         }
 
-        var fallback: SwiftFunctionSignature?
-        var firstSignature: SwiftFunctionSignature?
-        for match in matches {
-            guard match.numberOfRanges >= 3 else { continue }
-            let rawName = (container as NSString).substring(with: match.range(at: 1))
-            let normalizedName = rawName.replacingOccurrences(of: "`", with: "")
-            let paramsRaw = (container as NSString).substring(with: match.range(at: 2))
-            let returnRaw = match.numberOfRanges > 3
-                ? (container as NSString).substring(with: match.range(at: 3))
-                : nil
+        let signatures = matches.compactMap { match in
+            parseSignatureMatch(match, in: container)
+        }
+        guard !signatures.isEmpty else { return nil }
 
-            let params = parseSwiftParams(paramsRaw)
-            let signature = SwiftFunctionSignature(
-                callName: rawName,
-                params: params,
-                returnType: returnRaw?.trimmedNonEmpty
-            )
-            if firstSignature == nil {
-                firstSignature = signature
-            }
-
-            if let targetName {
-                if normalizedName == targetName || normalizedName == safeTarget {
-                    return signature
-                }
-            } else if fallback == nil {
-                fallback = signature
+        for (name, signature) in signatures {
+            if let targetName, name == targetName || name == safeTarget {
+                return signature
             }
         }
 
-        if let fallback {
-            return fallback
+        if targetName == nil, let first = signatures.first {
+            return first.1
         }
-        if matches.count == 1 {
-            return firstSignature
-        }
-        return nil
+        return signatures.count == 1 ? signatures[0].1 : nil
+    }
+
+    private static func parseSignatureMatch(
+        _ match: NSTextCheckingResult,
+        in container: String
+    ) -> (String, SwiftFunctionSignature)? {
+        guard match.numberOfRanges >= 3 else { return nil }
+        let nsContainer = container as NSString
+        let rawName = nsContainer.substring(with: match.range(at: 1))
+        let normalizedName = rawName.replacingOccurrences(of: "`", with: "")
+        let paramsRaw = nsContainer.substring(with: match.range(at: 2))
+        let returnRaw: String? = {
+            guard match.numberOfRanges > 3 else { return nil }
+            let range = match.range(at: 3)
+            guard range.location != NSNotFound else { return nil }
+            return nsContainer.substring(with: range)
+        }()
+        let params = parseSwiftParams(paramsRaw)
+        let signature = SwiftFunctionSignature(
+            callName: rawName,
+            params: params,
+            returnType: returnRaw?.trimmedNonEmpty
+        )
+        return (normalizedName, signature)
     }
 
     private static func parseSwiftParams(_ raw: String) -> [LeetCodeMetaParam] {

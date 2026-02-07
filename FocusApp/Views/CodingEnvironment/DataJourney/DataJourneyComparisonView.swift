@@ -1,3 +1,4 @@
+import FocusDesignSystem
 import SwiftUI
 
 /// Split-pane before/after comparison view showing previous and current step side by side.
@@ -7,6 +8,11 @@ struct DataJourneyComparisonView: View {
     let currentEvent: DataJourneyEvent?
 
     @State private var isExpanded = false
+    @Environment(\.dsTheme) private var theme
+
+    private var palette: DataJourneyPalette {
+        DataJourneyPalette(theme: theme)
+    }
 
     var body: some View {
         guard previousEvent != nil, currentEvent != nil else {
@@ -14,18 +20,18 @@ struct DataJourneyComparisonView: View {
         }
         return AnyView(
             VStack(alignment: .leading, spacing: 6) {
-                Button(
+                DSButton(
                     action: {
                         withAnimation(.easeInOut(duration: 0.2)) { isExpanded.toggle() }
                     },
                     label: {
                         HStack(spacing: 4) {
-                            Image(systemName: isExpanded ? "chevron.down" : "chevron.right")
+                            DSImage(systemName: isExpanded ? "chevron.down" : "chevron.right")
                                 .font(.system(size: 8, weight: .bold))
-                                .foregroundColor(Color.appGray400)
-                            Text("Compare Steps")
+                                .foregroundColor(palette.gray400)
+                            DSText("Compare Steps")
                                 .font(.system(size: 9, weight: .semibold))
-                                .foregroundColor(Color.appGray400)
+                                .foregroundColor(palette.gray400)
                             Spacer()
                         }
                     }
@@ -39,7 +45,7 @@ struct DataJourneyComparisonView: View {
             .padding(8)
             .background(
                 RoundedRectangle(cornerRadius: 6)
-                    .fill(Color.appGray900.opacity(0.3))
+                    .fill(palette.gray900.opacity(0.3))
             )
         )
     }
@@ -60,12 +66,12 @@ struct DataJourneyComparisonView: View {
                 event: previousEvent,
                 allKeys: allKeys,
                 changedKeys: changedKeys,
-                accent: Color.appRed
+                accent: palette.red
             )
 
             // Divider
             Rectangle()
-                .fill(Color.appGray700.opacity(0.5))
+                .fill(palette.gray700.opacity(0.5))
                 .frame(width: 1)
 
             // Current step (right pane)
@@ -74,7 +80,7 @@ struct DataJourneyComparisonView: View {
                 event: currentEvent,
                 allKeys: allKeys,
                 changedKeys: changedKeys,
-                accent: Color.appGreen
+                accent: palette.green
             )
         }
     }
@@ -89,7 +95,7 @@ struct DataJourneyComparisonView: View {
         accent: Color
     ) -> some View {
         VStack(alignment: .leading, spacing: 6) {
-            Text(title)
+            DSText(title)
                 .font(.system(size: 8, weight: .bold))
                 .foregroundColor(accent)
                 .padding(.horizontal, 6)
@@ -103,21 +109,21 @@ struct DataJourneyComparisonView: View {
                 let value = event?.values[key]
                 let isChanged = changedKeys.contains(key)
                 HStack(spacing: 6) {
-                    Text(key)
+                    DSText(key)
                         .font(.system(size: 8, weight: .semibold))
-                        .foregroundColor(isChanged ? accent : Color.appGray400)
+                        .foregroundColor(isChanged ? accent : palette.gray400)
                         .frame(width: 50, alignment: .leading)
                         .lineLimit(1)
 
                     if let value {
-                        Text(compactSummary(value))
+                        DSText(compactSummary(value))
                             .font(.system(size: 8, weight: .medium, design: .monospaced))
-                            .foregroundColor(isChanged ? Color.appGray100 : Color.appGray300)
+                            .foregroundColor(isChanged ? palette.gray100 : palette.gray300)
                             .lineLimit(1)
                     } else {
-                        Text("—")
+                        DSText("—")
                             .font(.system(size: 8))
-                            .foregroundColor(Color.appGray600)
+                            .foregroundColor(palette.gray600)
                     }
                 }
                 .padding(.vertical, 1)

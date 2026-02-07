@@ -1,3 +1,4 @@
+import FocusDesignSystem
 import SwiftUI
 import WebKit
 
@@ -10,15 +11,17 @@ typealias PlatformWebViewRepresentable = UIViewRepresentable
 struct LeetCodeLoginSheet: View {
     let onAuthCaptured: (LeetCodeAuthSession) -> Void
     let onClose: () -> Void
+    @Environment(\.dsTheme) private var theme
 
     var body: some View {
         VStack(spacing: 16) {
             VStack(spacing: 6) {
-                Text(L10n.Settings.leetcodeLoginSheetTitle)
+                DSText(L10n.Settings.leetcodeLoginSheetTitle)
                     .font(.headline)
-                Text(L10n.Settings.leetcodeLoginSheetBody)
+                    .foregroundColor(theme.colors.textPrimary)
+                DSText(L10n.Settings.leetcodeLoginSheetBody)
                     .font(.caption)
-                    .foregroundColor(.secondary)
+                    .foregroundColor(theme.colors.textSecondary)
             }
 
             LeetCodeLoginWebView { auth in
@@ -26,16 +29,21 @@ struct LeetCodeLoginSheet: View {
             }
             .frame(minWidth: 720, minHeight: 520)
             .cornerRadius(10)
+            .overlay(
+                RoundedRectangle(cornerRadius: 10)
+                    .stroke(theme.colors.border.opacity(0.6), lineWidth: 1)
+            )
 
             HStack {
                 Spacer()
-                Button(L10n.Settings.close) {
+                DSButton(L10n.Settings.close) {
                     onClose()
                 }
                 .buttonStyle(.bordered)
             }
         }
         .padding(16)
+        .background(theme.colors.background)
     }
 }
 

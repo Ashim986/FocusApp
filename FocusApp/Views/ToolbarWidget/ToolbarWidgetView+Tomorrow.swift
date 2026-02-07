@@ -1,35 +1,36 @@
+import FocusDesignSystem
 import SwiftUI
 
 extension ToolbarWidgetView {
     var tomorrowSection: some View {
         VStack(spacing: 0) {
-            Button(action: {
+            DSButton(action: {
                 withAnimation(.easeInOut(duration: 0.2)) {
                     showTomorrow.toggle()
                 }
             }, label: {
                 HStack {
-                    Image(systemName: showTomorrow ? "chevron.down" : "chevron.right")
+                    DSImage(systemName: showTomorrow ? "chevron.down" : "chevron.right")
                         .font(.system(size: 9))
-                        .foregroundColor(.gray)
+                        .foregroundColor(theme.colors.textSecondary)
                         .frame(width: 12)
 
-                    Text(L10n.Widget.tomorrowTitle)
+                    DSText(L10n.Widget.tomorrowTitle)
                         .font(.system(size: 11, weight: .semibold))
-                        .foregroundColor(.white.opacity(0.7))
+                        .foregroundColor(theme.colors.textPrimary.opacity(0.75))
 
                     if !presenter.carryoverProblems.isEmpty {
-                        Text(L10n.Widget.tomorrowCarryoverCount(presenter.carryoverProblems.count))
+                        DSText(L10n.Widget.tomorrowCarryoverCount(presenter.carryoverProblems.count))
                             .font(.system(size: 9))
-                            .foregroundColor(.orange.opacity(0.8))
+                            .foregroundColor(theme.colors.warning.opacity(0.85))
                     }
 
                     Spacer()
 
                     if presenter.hasTomorrow {
-                        Text(L10n.Widget.tomorrowDayFormat(presenter.tomorrowDayNumber))
+                        DSText(L10n.Widget.tomorrowDayFormat(presenter.tomorrowDayNumber))
                             .font(.system(size: 10))
-                            .foregroundColor(.gray)
+                            .foregroundColor(theme.colors.textSecondary)
                     }
                 }
             })
@@ -41,12 +42,12 @@ extension ToolbarWidgetView {
                     if !presenter.carryoverProblems.isEmpty {
                         VStack(alignment: .leading, spacing: 4) {
                             HStack {
-                                Image(systemName: "arrow.uturn.forward")
+                                DSImage(systemName: "arrow.uturn.forward")
                                     .font(.system(size: 9))
-                                    .foregroundColor(.orange)
-                                Text(L10n.Widget.tomorrowCarryoverTitle)
+                                    .foregroundColor(theme.colors.warning)
+                                DSText(L10n.Widget.tomorrowCarryoverTitle)
                                     .font(.system(size: 10, weight: .medium))
-                                    .foregroundColor(.orange)
+                                    .foregroundColor(theme.colors.warning)
                                 Spacer()
                             }
                             .padding(.horizontal, 4)
@@ -65,16 +66,16 @@ extension ToolbarWidgetView {
                     if presenter.hasTomorrow {
                         VStack(alignment: .leading, spacing: 4) {
                             HStack {
-                                Image(systemName: "calendar.badge.plus")
+                                DSImage(systemName: "calendar.badge.plus")
                                     .font(.system(size: 9))
-                                    .foregroundColor(.blue)
-                                Text(presenter.tomorrowsTopic)
+                                    .foregroundColor(theme.colors.primary)
+                                DSText(presenter.tomorrowsTopic)
                                     .font(.system(size: 10, weight: .medium))
-                                    .foregroundColor(.blue)
+                                    .foregroundColor(theme.colors.primary)
                                 Spacer()
-                                Text(L10n.Widget.tomorrowProblemCount(presenter.tomorrowsProblems.count))
+                                DSText(L10n.Widget.tomorrowProblemCount(presenter.tomorrowsProblems.count))
                                     .font(.system(size: 9))
-                                    .foregroundColor(.gray)
+                                    .foregroundColor(theme.colors.textSecondary)
                             }
                             .padding(.horizontal, 4)
                             .padding(.bottom, 4)

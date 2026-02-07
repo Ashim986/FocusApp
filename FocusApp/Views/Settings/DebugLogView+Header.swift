@@ -1,46 +1,47 @@
+import FocusDesignSystem
 import SwiftUI
 
 extension DebugLogView {
     var header: some View {
         HStack {
             VStack(alignment: .leading, spacing: 4) {
-                Text(L10n.Debug.logsTitle)
+                DSText(L10n.Debug.logsTitle)
                     .font(.title3.weight(.semibold))
 
                 HStack(spacing: 8) {
-                    statusChip(title: "Live", color: Color.appGreen)
-                    Text("Last \(lastEntryTimestamp)")
+                    statusChip(title: "Live", color: theme.colors.success)
+                    DSText("Last \(lastEntryTimestamp)")
                         .font(.system(size: 11))
-                        .foregroundColor(Color.appGray400)
+                        .foregroundColor(theme.colors.textSecondary)
                 }
             }
             Spacer()
-            Text("\(store.entries.count)")
+            DSText("\(store.entries.count)")
                 .font(.system(size: 12, weight: .semibold, design: .monospaced))
-                .foregroundColor(.white)
+                .foregroundColor(theme.colors.textPrimary)
                 .padding(.horizontal, 10)
                 .padding(.vertical, 6)
                 .background(
                     RoundedRectangle(cornerRadius: 8)
-                        .fill(Color.appGray800.opacity(0.8))
+                        .fill(theme.colors.surfaceElevated.opacity(0.8))
                 )
             if let onClose {
-                Button(action: onClose, label: {
-                    Image(systemName: "xmark")
+                DSButton(action: onClose, label: {
+                    DSImage(systemName: "xmark")
                         .font(.system(size: 11, weight: .semibold))
-                        .foregroundColor(Color.appGray300)
+                        .foregroundColor(theme.colors.textSecondary)
                         .frame(width: 28, height: 28)
-                        .background(Color.appGray800)
+                        .background(theme.colors.surfaceElevated)
                         .clipShape(RoundedRectangle(cornerRadius: 6))
                 })
                 .buttonStyle(.plain)
                 .help("Close")
             }
-            Button(L10n.Debug.copyLogs) {
+            DSButton(L10n.Debug.copyLogs) {
                 copyLogs()
             }
             .buttonStyle(.bordered)
-            Button(L10n.Debug.clearLogs) {
+            DSButton(L10n.Debug.clearLogs) {
                 store.clear()
             }
             .buttonStyle(.borderedProminent)
@@ -55,7 +56,7 @@ extension DebugLogView {
             summaryPill(
                 title: L10n.Debug.levelAll,
                 count: counts.total,
-                color: Color.appGray500,
+                color: theme.colors.textSecondary,
                 isSelected: selectedLevel == .all
             ) {
                 selectedLevel = .all
@@ -63,7 +64,7 @@ extension DebugLogView {
             summaryPill(
                 title: DebugLogLevel.error.rawValue,
                 count: counts.error,
-                color: Color.appRed,
+                color: theme.colors.danger,
                 isSelected: selectedLevel == .error
             ) {
                 selectedLevel = .error
@@ -71,7 +72,7 @@ extension DebugLogView {
             summaryPill(
                 title: DebugLogLevel.warning.rawValue,
                 count: counts.warning,
-                color: Color.appAmber,
+                color: theme.colors.warning,
                 isSelected: selectedLevel == .warning
             ) {
                 selectedLevel = .warning
@@ -79,7 +80,7 @@ extension DebugLogView {
             summaryPill(
                 title: DebugLogLevel.info.rawValue,
                 count: counts.info,
-                color: Color.appCyan,
+                color: theme.colors.accent,
                 isSelected: selectedLevel == .info
             ) {
                 selectedLevel = .info
@@ -89,7 +90,7 @@ extension DebugLogView {
         .padding(.horizontal, 16)
         .padding(.top, 12)
         .padding(.bottom, 4)
-        .background(Color.appGray800)
+        .background(theme.colors.surfaceElevated)
     }
 
     private func summaryPill(
@@ -99,25 +100,25 @@ extension DebugLogView {
         isSelected: Bool,
         action: @escaping () -> Void
     ) -> some View {
-        Button(action: action, label: {
+        DSButton(action: action, label: {
             HStack(spacing: 6) {
                 Circle()
                     .fill(color)
                     .frame(width: 8, height: 8)
-                Text(title)
+                DSText(title)
                     .font(.system(size: 11, weight: .semibold))
-                Text("\(count)")
+                DSText("\(count)")
                     .font(.system(size: 11, weight: .semibold, design: .monospaced))
             }
             .padding(.horizontal, 10)
             .padding(.vertical, 6)
             .background(
                 RoundedRectangle(cornerRadius: 8)
-                    .fill(isSelected ? Color.appGray700 : Color.appGray900)
+                    .fill(isSelected ? theme.colors.surfaceElevated : theme.colors.surface)
             )
             .overlay(
                 RoundedRectangle(cornerRadius: 8)
-                    .stroke(isSelected ? color.opacity(0.7) : Color.appGray700, lineWidth: 1)
+                    .stroke(isSelected ? color.opacity(0.7) : theme.colors.border, lineWidth: 1)
             )
         })
         .buttonStyle(.plain)
@@ -128,7 +129,7 @@ extension DebugLogView {
             Circle()
                 .fill(color)
                 .frame(width: 6, height: 6)
-            Text(title)
+            DSText(title)
                 .font(.system(size: 10, weight: .semibold))
                 .foregroundColor(.white)
         }

@@ -1,4 +1,5 @@
 import AppKit
+import FocusDesignSystem
 import SwiftUI
 
 struct ToolbarWidgetView: View {
@@ -6,15 +7,27 @@ struct ToolbarWidgetView: View {
     @State var showTomorrow: Bool = false
     @State var showSettings: Bool = false
     private let panelWidth: CGFloat = 350
+    @Environment(\.dsTheme) private var theme
+
+    private var backgroundGradient: LinearGradient {
+        LinearGradient(
+            colors: [
+                theme.colors.background,
+                theme.colors.surfaceElevated
+            ],
+            startPoint: .topLeading,
+            endPoint: .bottomTrailing
+        )
+    }
 
     var body: some View {
         VStack(spacing: 14) {
-            WidgetCard(fill: Color.white.opacity(0.06)) {
+            WidgetCard(fill: theme.colors.surfaceElevated.opacity(0.55)) {
                 header
             }
 
             if showSettings {
-                WidgetCard(fill: Color.blue.opacity(0.12)) {
+                WidgetCard(fill: theme.colors.primary.opacity(0.12)) {
                     settingsSection
                 }
             }
@@ -46,20 +59,11 @@ struct ToolbarWidgetView: View {
         .fixedSize(horizontal: true, vertical: false)
         .background(
             RoundedRectangle(cornerRadius: 14)
-                .fill(
-                    LinearGradient(
-                        colors: [
-                            Color(red: 0.07, green: 0.08, blue: 0.12),
-                            Color(red: 0.12, green: 0.11, blue: 0.18)
-                        ],
-                        startPoint: .topLeading,
-                        endPoint: .bottomTrailing
-                    )
-                )
+                .fill(backgroundGradient)
         )
         .overlay(
             RoundedRectangle(cornerRadius: 14)
-                .stroke(Color.white.opacity(0.08), lineWidth: 1)
+                .stroke(theme.colors.border.opacity(0.5), lineWidth: 1)
         )
         .padding(10)
     }

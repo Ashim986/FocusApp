@@ -1,3 +1,4 @@
+import FocusDesignSystem
 import SwiftUI
 
 struct GraphView: View {
@@ -9,6 +10,11 @@ struct GraphView: View {
     let pointerVerticalPadding: CGFloat
     let pointerSpacing: CGFloat
     let bubbleStyle: TraceBubble.Style
+    @Environment(\.dsTheme) private var theme
+
+    private var palette: DataJourneyPalette {
+        DataJourneyPalette(theme: theme)
+    }
 
     private var pointerHeight: CGFloat { pointerFontSize + pointerVerticalPadding * 2 + 4 }
 
@@ -42,7 +48,7 @@ struct GraphView: View {
                         var path = Path()
                         path.move(to: edge.from)
                         path.addLine(to: edge.to)
-                        context.stroke(path, with: .color(Color.appGray600.opacity(0.6)), lineWidth: 1)
+                        context.stroke(path, with: .color(palette.gray600.opacity(0.6)), lineWidth: 1)
                         if edge.directed {
                             drawEdgeArrowHead(
                                 context: &context,
@@ -56,7 +62,7 @@ struct GraphView: View {
 
                 ForEach(layout.nodes) { node in
                     ZStack(alignment: .top) {
-                        let fill = Color.appGray700
+                        let fill = palette.gray700
                         TraceBubble(
                             text: "\(node.index)",
                             fill: fill,
@@ -129,7 +135,7 @@ struct GraphView: View {
         path.addLine(to: CGPoint(x: leftX, y: leftY))
         path.addLine(to: CGPoint(x: rightX, y: rightY))
         path.closeSubpath()
-        context.fill(path, with: .color(Color.appGray600.opacity(0.7)))
+        context.fill(path, with: .color(palette.gray600.opacity(0.7)))
     }
 }
 

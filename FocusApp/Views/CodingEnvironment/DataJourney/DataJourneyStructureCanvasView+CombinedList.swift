@@ -25,7 +25,13 @@ extension DataJourneyStructureCanvasView {
                 let listMarkers = listPointers(in: selectedEvent, list: entry.list)
                 for marker in listMarkers {
                     if let indexValue = marker.index {
-                        pointers.append(PointerMarker(name: marker.name, index: indexValue + offset))
+                        pointers.append(
+                            PointerMarker(
+                                name: marker.name,
+                                index: indexValue + offset,
+                                palette: palette
+                            )
+                        )
                     }
                 }
             }
@@ -69,15 +75,15 @@ extension DataJourneyStructureCanvasView {
             }
         }
         guard indices.count > 1 else { return [] }
-        let palette: [Color] = [
-            Color.appGreen,
-            Color.appCyan,
-            Color.appAmber,
-            Color.appPurple
+        let linkPalette: [Color] = [
+            palette.green,
+            palette.cyan,
+            palette.amber,
+            palette.purple
         ]
         var links: [SequenceLink] = []
         for (index, pair) in zip(indices, indices.dropFirst()).enumerated() {
-            let color = palette[index % palette.count]
+            let color = linkPalette[index % linkPalette.count]
             links.append(SequenceLink(fromIndex: pair.0, toIndex: pair.1, color: color))
         }
         return visibleSequenceLinks(

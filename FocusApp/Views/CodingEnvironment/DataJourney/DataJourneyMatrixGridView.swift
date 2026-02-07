@@ -1,3 +1,4 @@
+import FocusDesignSystem
 import SwiftUI
 
 struct MatrixPointerCell: Equatable {
@@ -10,6 +11,11 @@ struct MatrixGridView: View {
     let pointers: MatrixPointerCell?
     let highlightedCells: Set<MatrixCell>
     let bubbleSize: CGFloat
+    @Environment(\.dsTheme) private var theme
+
+    private var palette: DataJourneyPalette {
+        DataJourneyPalette(theme: theme)
+    }
 
     private let headerSize: CGFloat = 20
     private let cellSpacing: CGFloat = 2
@@ -60,18 +66,18 @@ struct MatrixGridView: View {
                 .frame(width: headerSize, height: headerSize)
 
             ForEach(0..<cols, id: \.self) { col in
-                Text("\(col)")
+                DSText("\(col)")
                     .font(.system(size: 9, weight: .medium, design: .monospaced))
-                    .foregroundColor(Color.appGray400)
+                    .foregroundColor(palette.gray400)
                     .frame(width: bubbleSize, height: headerSize)
             }
         }
     }
 
     private func rowHeader(_ row: Int) -> some View {
-        Text("\(row)")
+        DSText("\(row)")
             .font(.system(size: 9, weight: .medium, design: .monospaced))
-            .foregroundColor(Color.appGray400)
+            .foregroundColor(palette.gray400)
             .frame(width: headerSize, height: bubbleSize)
     }
 
@@ -80,17 +86,17 @@ struct MatrixGridView: View {
         highlighted: Bool,
         changed: Bool = false
     ) -> some View {
-        let model = TraceBubbleModel.from(value, compact: true)
+        let model = TraceBubbleModel.from(value, palette: palette, compact: true)
         let borderColor: Color = highlighted
-            ? Color.appCyan
-            : changed ? Color.appCyan.opacity(0.6) : Color.clear
+            ? palette.cyan
+            : changed ? palette.cyan.opacity(0.6) : Color.clear
         let borderWidth: CGFloat = highlighted ? 2 : changed ? 1.5 : 0
         return ZStack {
             RoundedRectangle(cornerRadius: 4)
                 .fill(cellFill(for: model, highlighted: highlighted))
             RoundedRectangle(cornerRadius: 4)
                 .strokeBorder(borderColor, lineWidth: borderWidth)
-            Text(model.text)
+            DSText(model.text)
                 .font(.system(
                     size: max(8, bubbleSize * 0.3),
                     weight: .semibold,
@@ -103,14 +109,14 @@ struct MatrixGridView: View {
         }
         .frame(width: bubbleSize, height: bubbleSize)
         .shadow(
-            color: changed ? Color.appCyan.opacity(0.4) : Color.clear,
+            color: changed ? palette.cyan.opacity(0.4) : Color.clear,
             radius: changed ? 3 : 0
         )
     }
 
     private func cellFill(for model: TraceBubbleModel, highlighted: Bool) -> Color {
         if highlighted {
-            return Color.appCyan.opacity(0.35)
+            return palette.cyan.opacity(0.35)
         }
         return model.fill.opacity(0.6)
     }

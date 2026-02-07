@@ -8,16 +8,16 @@ struct TestCaseEditorView: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
             HStack {
-            Text(L10n.Coding.TestEditor.title)
+            DSText(L10n.Coding.TestEditor.title)
                     .font(.system(size: 12, weight: .semibold))
                     .foregroundColor(theme.colors.textPrimary)
 
                 Spacer()
 
-                Button(action: presenter.addManualTestCase) {
+                DSButton(action: presenter.addManualTestCase) {
                     HStack(spacing: 4) {
-                        Image(systemName: "plus")
-                        Text(L10n.Coding.TestEditor.add)
+                        DSImage(systemName: "plus")
+                        DSText(L10n.Coding.TestEditor.add)
                     }
                     .font(.system(size: 11))
                     .foregroundColor(theme.colors.primary)
@@ -26,7 +26,7 @@ struct TestCaseEditorView: View {
             }
 
             if presenter.testCases.isEmpty {
-            Text(L10n.Coding.TestEditor.empty)
+            DSText(L10n.Coding.TestEditor.empty)
                     .font(.system(size: 11))
                     .foregroundColor(theme.colors.textSecondary)
                     .padding(.vertical, 8)
@@ -41,16 +41,16 @@ struct TestCaseEditorView: View {
     private func testCaseEditRow(index: Int, testCase: TestCase) -> some View {
         VStack(alignment: .leading, spacing: 6) {
             HStack {
-                Text(L10n.Coding.TestEditor.testFormat(index + 1))
+                DSText(L10n.Coding.TestEditor.testFormat(index + 1))
                     .font(.system(size: 11, weight: .medium))
                     .foregroundColor(theme.colors.textSecondary)
 
                 Spacer()
 
-                Button(action: {
+                DSButton(action: {
                     presenter.removeTestCase(at: index)
                 }, label: {
-                    Image(systemName: "trash")
+                    DSImage(systemName: "trash")
                         .font(.system(size: 10))
                         .foregroundColor(theme.colors.textSecondary)
                 })
@@ -59,7 +59,7 @@ struct TestCaseEditorView: View {
 
             HStack(spacing: 8) {
                 VStack(alignment: .leading, spacing: 2) {
-                    Text(L10n.Coding.TestEditor.inputLabel)
+                    DSText(L10n.Coding.TestEditor.inputLabel)
                         .font(.system(size: 10))
                         .foregroundColor(theme.colors.textSecondary)
 
@@ -76,7 +76,7 @@ struct TestCaseEditorView: View {
                 }
 
                 VStack(alignment: .leading, spacing: 2) {
-                Text(L10n.Coding.TestEditor.expectedLabel)
+                DSText(L10n.Coding.TestEditor.expectedLabel)
                         .font(.system(size: 10))
                         .foregroundColor(theme.colors.textSecondary)
 

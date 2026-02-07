@@ -1,3 +1,4 @@
+import FocusDesignSystem
 import SwiftUI
 
 /// Compact overview showing data transformation flow: Input -> Key Steps -> Output.
@@ -9,6 +10,11 @@ struct DataJourneyFlowView: View {
     let onSelectEvent: (DataJourneyEvent) -> Void
 
     @State private var isExpanded = false
+    @Environment(\.dsTheme) private var theme
+
+    private var palette: DataJourneyPalette {
+        DataJourneyPalette(theme: theme)
+    }
 
     var body: some View {
         let keyEvents = selectKeyEvents()
@@ -18,18 +24,18 @@ struct DataJourneyFlowView: View {
 
         return AnyView(
             VStack(alignment: .leading, spacing: 6) {
-                Button(
+                DSButton(
                     action: {
                         withAnimation(.easeInOut(duration: 0.2)) { isExpanded.toggle() }
                     },
                     label: {
                         HStack(spacing: 4) {
-                            Image(systemName: isExpanded ? "chevron.down" : "chevron.right")
+                            DSImage(systemName: isExpanded ? "chevron.down" : "chevron.right")
                                 .font(.system(size: 8, weight: .bold))
-                                .foregroundColor(Color.appGray400)
-                            Text("Flow Overview")
+                                .foregroundColor(palette.gray400)
+                            DSText("Flow Overview")
                                 .font(.system(size: 9, weight: .semibold))
-                                .foregroundColor(Color.appGray400)
+                                .foregroundColor(palette.gray400)
                             Spacer()
                         }
                     }
@@ -59,7 +65,7 @@ struct DataJourneyFlowView: View {
             .padding(8)
             .background(
                 RoundedRectangle(cornerRadius: 6)
-                    .fill(Color.appGray900.opacity(0.3))
+                    .fill(palette.gray900.opacity(0.3))
             )
         )
     }
@@ -119,7 +125,7 @@ struct DataJourneyFlowView: View {
         VStack(alignment: .leading, spacing: 4) {
             HStack(spacing: 4) {
                 cardIcon(for: event)
-                Text(cardTitle(for: event))
+                DSText(cardTitle(for: event))
                     .font(.system(size: 8, weight: .bold))
                     .foregroundColor(cardTitleColor(for: event))
             }
@@ -129,25 +135,25 @@ struct DataJourneyFlowView: View {
             ForEach(displayKeys, id: \.self) { key in
                 if let value = event.values[key] {
                     HStack(spacing: 4) {
-                        Text(key)
+                        DSText(key)
                             .font(.system(size: 7, weight: .medium))
-                            .foregroundColor(Color.appGray400)
+                            .foregroundColor(palette.gray400)
                             .lineLimit(1)
-                        Text(valueSummary(value))
+                        DSText(valueSummary(value))
                             .font(.system(
                                 size: 7,
                                 weight: .semibold,
                                 design: .monospaced
                             ))
-                            .foregroundColor(Color.appGray200)
+                            .foregroundColor(palette.gray200)
                             .lineLimit(1)
                     }
                 }
             }
             if sortedKeys.count > 3 {
-                Text("+\(sortedKeys.count - 3) more")
+                DSText("+\(sortedKeys.count - 3) more")
                     .font(.system(size: 7))
-                    .foregroundColor(Color.appGray500)
+                    .foregroundColor(palette.gray500)
             }
         }
         .padding(8)
@@ -167,11 +173,11 @@ struct DataJourneyFlowView: View {
     private func flowArrow() -> some View {
         HStack(spacing: 0) {
             Rectangle()
-                .fill(Color.appGray600)
+                .fill(palette.gray600)
                 .frame(width: 16, height: 1.5)
-            Image(systemName: "arrowtriangle.right.fill")
+            DSImage(systemName: "arrowtriangle.right.fill")
                 .font(.system(size: 6))
-                .foregroundColor(Color.appGray600)
+                .foregroundColor(palette.gray600)
         }
         .padding(.horizontal, 2)
     }
@@ -196,41 +202,41 @@ struct DataJourneyFlowView: View {
     private func cardIcon(for event: DataJourneyEvent) -> some View {
         switch event.kind {
         case .input:
-            Image(systemName: "arrow.right.circle.fill")
+            DSImage(systemName: "arrow.right.circle.fill")
                 .font(.system(size: 8))
-                .foregroundColor(Color.appGreen)
+                .foregroundColor(palette.green)
         case .output:
-            Image(systemName: "arrow.left.circle.fill")
+            DSImage(systemName: "arrow.left.circle.fill")
                 .font(.system(size: 8))
-                .foregroundColor(Color.appCyan)
+                .foregroundColor(palette.cyan)
         case .step:
-            Image(systemName: "circle.fill")
+            DSImage(systemName: "circle.fill")
                 .font(.system(size: 6))
-                .foregroundColor(Color.appPurple)
+                .foregroundColor(palette.purple)
         }
     }
 
     private func cardTitleColor(for event: DataJourneyEvent) -> Color {
         switch event.kind {
-        case .input: return Color.appGreen
-        case .output: return Color.appCyan
-        case .step: return Color.appGray300
+        case .input: return palette.green
+        case .output: return palette.cyan
+        case .step: return palette.gray300
         }
     }
 
     private func cardBackground(for event: DataJourneyEvent) -> Color {
         switch event.kind {
-        case .input: return Color.appGreen.opacity(0.08)
-        case .output: return Color.appCyan.opacity(0.08)
-        case .step: return Color.appGray800.opacity(0.6)
+        case .input: return palette.green.opacity(0.08)
+        case .output: return palette.cyan.opacity(0.08)
+        case .step: return palette.gray800.opacity(0.6)
         }
     }
 
     private func cardBorderColor(for event: DataJourneyEvent) -> Color {
         switch event.kind {
-        case .input: return Color.appGreen.opacity(0.3)
-        case .output: return Color.appCyan.opacity(0.3)
-        case .step: return Color.appGray700.opacity(0.5)
+        case .input: return palette.green.opacity(0.3)
+        case .output: return palette.cyan.opacity(0.3)
+        case .step: return palette.gray700.opacity(0.5)
         }
     }
 

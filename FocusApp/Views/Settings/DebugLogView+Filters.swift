@@ -1,3 +1,4 @@
+import FocusDesignSystem
 import SwiftUI
 
 extension DebugLogView {
@@ -18,30 +19,23 @@ extension DebugLogView {
             }
 
             HStack(spacing: 10) {
-                Image(systemName: "magnifyingglass")
-                    .foregroundColor(Color.appGray400)
-                TextField(L10n.Debug.searchPlaceholder, text: $searchText)
-                    .textFieldStyle(.plain)
+                DSImage(systemName: "magnifyingglass")
+                    .foregroundColor(theme.colors.textSecondary)
+                DSTextField(
+                    placeholder: L10n.Debug.searchPlaceholder,
+                    text: $searchText,
+                    config: DSTextFieldConfig(style: .outlined, size: .small)
+                )
             }
-            .padding(.horizontal, 12)
-            .padding(.vertical, 8)
-            .background(
-                RoundedRectangle(cornerRadius: 8)
-                    .fill(Color.appGray900)
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 8)
-                            .stroke(Color.appGray700, lineWidth: 1)
-                    )
-            )
         }
         .padding(16)
-        .background(Color.appGray800)
+        .background(theme.colors.surfaceElevated)
     }
 
     private var levelSegmentedPicker: some View {
         Picker(L10n.Debug.levelLabel, selection: $selectedLevel) {
             ForEach(DebugLogLevelFilter.allCases, id: \.self) { filter in
-                Text(filter.title).tag(filter)
+                DSText(filter.title).tag(filter)
             }
         }
         .pickerStyle(.segmented)
@@ -51,7 +45,7 @@ extension DebugLogView {
     private var categorySegmentedPicker: some View {
         Picker(L10n.Debug.categoryLabel, selection: $selectedCategory) {
             ForEach(DebugLogCategoryFilter.allCases, id: \.self) { filter in
-                Text(filter.title).tag(filter)
+                DSText(filter.title).tag(filter)
             }
         }
         .pickerStyle(.segmented)
@@ -61,7 +55,7 @@ extension DebugLogView {
     private var levelMenuPicker: some View {
         Picker(L10n.Debug.levelLabel, selection: $selectedLevel) {
             ForEach(DebugLogLevelFilter.allCases, id: \.self) { filter in
-                Text(filter.title).tag(filter)
+                DSText(filter.title).tag(filter)
             }
         }
         .pickerStyle(.menu)
@@ -71,7 +65,7 @@ extension DebugLogView {
     private var categoryMenuPicker: some View {
         Picker(L10n.Debug.categoryLabel, selection: $selectedCategory) {
             ForEach(DebugLogCategoryFilter.allCases, id: \.self) { filter in
-                Text(filter.title).tag(filter)
+                DSText(filter.title).tag(filter)
             }
         }
         .pickerStyle(.menu)

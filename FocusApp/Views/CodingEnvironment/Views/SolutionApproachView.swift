@@ -24,7 +24,7 @@ struct SolutionApproachView: View {
                 icon: "brain.head.profile",
                 section: .intuition
             ) {
-                Text(approach.intuition)
+                DSText(approach.intuition)
                     .font(.system(size: 14))
                     .foregroundColor(theme.colors.textSecondary)
                     .lineSpacing(3)
@@ -35,7 +35,7 @@ struct SolutionApproachView: View {
                 icon: "arrow.triangle.branch",
                 section: .approach
             ) {
-                Text(approach.approach)
+                DSText(approach.approach)
                     .font(.system(size: 14))
                     .foregroundColor(theme.colors.textSecondary)
                     .lineSpacing(3)
@@ -54,7 +54,7 @@ struct SolutionApproachView: View {
                 icon: "text.alignleft",
                 section: .explanation
             ) {
-                Text(approach.explanation)
+                DSText(approach.explanation)
                     .font(.system(size: 14))
                     .foregroundColor(theme.colors.textSecondary)
                     .lineSpacing(3)
@@ -99,18 +99,18 @@ struct SolutionApproachView: View {
                 }
             } label: {
                 HStack {
-                    Image(systemName: icon)
+                    DSImage(systemName: icon)
                         .font(.system(size: 13))
                         .foregroundColor(theme.colors.primary)
                         .frame(width: 16)
 
-                    Text(title)
+                    DSText(title)
                         .font(.system(size: 14, weight: .semibold))
                         .foregroundColor(theme.colors.textPrimary)
 
                     Spacer()
 
-                    Image(systemName: expandedSections.contains(section) ? "chevron.up" : "chevron.down")
+                    DSImage(systemName: expandedSections.contains(section) ? "chevron.up" : "chevron.down")
                         .font(.system(size: 12, weight: .semibold))
                         .foregroundColor(theme.colors.textSecondary)
                 }
@@ -137,7 +137,7 @@ struct SolutionApproachView: View {
     private func codeBlock(_ code: String) -> some View {
         VStack(alignment: .leading, spacing: 8) {
             HStack {
-                Text("Swift")
+                DSText("Swift")
                     .font(.system(size: 12, weight: .semibold))
                     .foregroundColor(theme.colors.textSecondary)
 
@@ -148,9 +148,9 @@ struct SolutionApproachView: View {
                     NSPasteboard.general.setString(code, forType: .string)
                 } label: {
                     HStack(spacing: 4) {
-                        Image(systemName: "doc.on.doc")
+                        DSImage(systemName: "doc.on.doc")
                             .font(.system(size: 12))
-                        Text(L10n.Coding.Solution.copyCode)
+                        DSText(L10n.Coding.Solution.copyCode)
                             .font(.system(size: 12, weight: .medium))
                     }
                     .foregroundColor(theme.colors.textSecondary)
@@ -205,17 +205,17 @@ struct SolutionApproachView: View {
     ) -> some View {
         VStack(alignment: .leading, spacing: 4) {
             HStack(spacing: 8) {
-                Text(title)
+                DSText(title)
                     .font(.system(size: 13, weight: .medium))
                     .foregroundColor(theme.colors.textSecondary)
 
-                Text(value)
+                DSText(value)
                     .font(.system(size: 14, weight: .semibold, design: .monospaced))
                     .foregroundColor(color)
             }
 
             if let explanation = explanation, !explanation.isEmpty {
-                Text(explanation)
+                DSText(explanation)
                     .font(.system(size: 13))
                     .foregroundColor(theme.colors.textSecondary)
             }

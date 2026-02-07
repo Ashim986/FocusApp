@@ -1,3 +1,4 @@
+import FocusDesignSystem
 import SwiftUI
 
 extension DataJourneyView {
@@ -34,10 +35,10 @@ extension DataJourneyView {
             Group {
                 if playbackEvents.count > 1 {
                     Slider(value: sliderBinding, in: sliderRange, step: 1)
-                        .tint(Color.appPurple)
+                        .tint(palette.purple)
                 } else {
                     Slider(value: sliderBinding, in: sliderRange)
-                        .tint(Color.appPurple)
+                        .tint(palette.purple)
                         .disabled(true)
                 }
             }
@@ -45,34 +46,34 @@ extension DataJourneyView {
 
             if isTruncated {
                 HStack(spacing: 6) {
-                    Image(systemName: "exclamationmark.triangle.fill")
+                    DSImage(systemName: "exclamationmark.triangle.fill")
                         .font(.system(size: textSize, weight: .semibold))
-                        .foregroundColor(Color.appAmber)
-                    Text(truncationMessage)
+                        .foregroundColor(palette.amber)
+                    DSText(truncationMessage)
                         .font(.system(size: isEmbedded ? 8 : 9, weight: .medium))
-                        .foregroundColor(Color.appAmber)
+                        .foregroundColor(palette.amber)
                 }
             }
 
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack(spacing: 6) {
                     ForEach(playbackEvents) { event in
-                        Button(action: {
+                        DSButton(action: {
                             selectEvent(event)
                         }, label: {
                             HStack(spacing: 6) {
                                 Circle()
-                                    .fill(event.id == selectedEventID ? Color.appPurple : Color.appGray600)
+                                    .fill(event.id == selectedEventID ? palette.purple : palette.gray600)
                                     .frame(width: 6, height: 6)
-                                Text(stepLabel(for: event))
+                                DSText(stepLabel(for: event))
                                     .font(.system(size: chipFontSize, weight: .semibold))
                             }
                             .padding(.horizontal, 8)
                             .padding(.vertical, chipVerticalPadding)
-                            .background(
-                                RoundedRectangle(cornerRadius: 6)
-                                    .fill(event.id == selectedEventID ? Color.appPurple.opacity(0.2) : Color.appGray800)
-                            )
+                                .background(
+                                    RoundedRectangle(cornerRadius: 6)
+                                        .fill(event.id == selectedEventID ? palette.purple.opacity(0.2) : palette.gray800)
+                                )
                         })
                         .buttonStyle(.plain)
                     }
@@ -83,7 +84,7 @@ extension DataJourneyView {
         .padding(controlPadding)
         .background(
             RoundedRectangle(cornerRadius: 8)
-                .fill(isEmbedded ? Color.clear : Color.appGray900.opacity(0.35))
+                .fill(isEmbedded ? Color.clear : palette.gray900.opacity(0.35))
         )
     }
 
@@ -120,10 +121,10 @@ extension DataJourneyView {
             Group {
                 if playbackEvents.count > 1 {
                     Slider(value: sliderBinding, in: sliderRange, step: 1)
-                        .tint(Color.appPurple)
+                        .tint(palette.purple)
                 } else {
                     Slider(value: sliderBinding, in: sliderRange)
-                        .tint(Color.appPurple)
+                        .tint(palette.purple)
                         .disabled(true)
                 }
             }
@@ -131,34 +132,34 @@ extension DataJourneyView {
 
             if isTruncated {
                 HStack(spacing: 6) {
-                    Image(systemName: "exclamationmark.triangle.fill")
+                    DSImage(systemName: "exclamationmark.triangle.fill")
                         .font(.system(size: textSize, weight: .semibold))
-                        .foregroundColor(Color.appAmber)
-                    Text(truncationMessage)
+                        .foregroundColor(palette.amber)
+                    DSText(truncationMessage)
                         .font(.system(size: isEmbedded ? 8 : 9, weight: .medium))
-                        .foregroundColor(Color.appAmber)
+                        .foregroundColor(palette.amber)
                 }
             }
 
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack(spacing: 6) {
                     ForEach(playbackEvents) { event in
-                        Button(action: {
+                        DSButton(action: {
                             selectEvent(event)
                         }, label: {
                             HStack(spacing: 6) {
                                 Circle()
-                                    .fill(event.id == selectedEventID ? Color.appPurple : Color.appGray600)
+                                    .fill(event.id == selectedEventID ? palette.purple : palette.gray600)
                                     .frame(width: 6, height: 6)
-                                Text(stepLabel(for: event))
+                                DSText(stepLabel(for: event))
                                     .font(.system(size: chipFontSize, weight: .semibold))
                             }
                             .padding(.horizontal, 8)
                             .padding(.vertical, chipVerticalPadding)
-                            .background(
-                                RoundedRectangle(cornerRadius: 6)
-                                    .fill(event.id == selectedEventID ? Color.appPurple.opacity(0.2) : Color.appGray800)
-                            )
+                                .background(
+                                    RoundedRectangle(cornerRadius: 6)
+                                        .fill(event.id == selectedEventID ? palette.purple.opacity(0.2) : palette.gray800)
+                                )
                         })
                         .buttonStyle(.plain)
                     }
@@ -177,59 +178,59 @@ extension DataJourneyView {
     ) -> some View {
         HStack(alignment: .center, spacing: spacing) {
             HStack(spacing: 12) {
-                Button(action: selectPrevious) {
-                    Image(systemName: "backward.fill")
+                DSButton(action: selectPrevious) {
+                    DSImage(systemName: "backward.fill")
                         .font(.system(size: iconSize, weight: .bold))
                 }
                 .buttonStyle(.plain)
-                .foregroundColor(currentPlaybackIndex == 0 ? Color.appGray600 : Color.appGray300)
+                .foregroundColor(currentPlaybackIndex == 0 ? palette.gray600 : palette.gray300)
                 .disabled(currentPlaybackIndex == 0)
 
-                Button(action: togglePlayback) {
-                    Image(systemName: isPlaying ? "pause.fill" : "play.fill")
+                DSButton(action: togglePlayback) {
+                    DSImage(systemName: isPlaying ? "pause.fill" : "play.fill")
                         .font(.system(size: iconSize, weight: .bold))
                 }
                 .buttonStyle(.plain)
-                .foregroundColor(playbackEvents.count > 1 ? Color.appGray300 : Color.appGray600)
+                .foregroundColor(playbackEvents.count > 1 ? palette.gray300 : palette.gray600)
                 .disabled(playbackEvents.count <= 1)
 
-                Button(action: selectNext) {
-                    Image(systemName: "forward.fill")
+                DSButton(action: selectNext) {
+                    DSImage(systemName: "forward.fill")
                         .font(.system(size: iconSize, weight: .bold))
                 }
                 .buttonStyle(.plain)
-                .foregroundColor(currentPlaybackIndex >= playbackEvents.count - 1 ? Color.appGray600 : Color.appGray300)
+                .foregroundColor(currentPlaybackIndex >= playbackEvents.count - 1 ? palette.gray600 : palette.gray300)
                 .disabled(currentPlaybackIndex >= playbackEvents.count - 1)
             }
 
             if playbackEvents.indices.contains(currentPlaybackIndex) {
-                Text(stepLabel(for: playbackEvents[currentPlaybackIndex]))
+                DSText(stepLabel(for: playbackEvents[currentPlaybackIndex]))
                     .font(.system(size: textSize, weight: .semibold))
-                    .foregroundColor(Color.appGray300)
+                    .foregroundColor(palette.gray300)
             }
 
             Spacer()
 
             HStack(spacing: 8) {
                 Picker("Speed", selection: $playbackSpeed) {
-                    Text("0.5x").tag(0.5)
-                    Text("1x").tag(1.0)
-                    Text("1.5x").tag(1.5)
-                    Text("2x").tag(2.0)
+                    DSText("0.5x").tag(0.5)
+                    DSText("1x").tag(1.0)
+                    DSText("1.5x").tag(1.5)
+                    DSText("2x").tag(2.0)
                 }
                 .pickerStyle(.segmented)
                 .frame(width: pickerWidth)
 
                 ZStack {
-                    Button(action: { selectIndex(0) }, label: {
-                        Text("Start Over")
+                    DSButton(action: { selectIndex(0) }, label: {
+                        DSText("Start Over")
                             .font(.system(size: textSize, weight: .semibold))
-                            .foregroundColor(Color.appGray200)
+                            .foregroundColor(palette.gray200)
                             .padding(.horizontal, 12)
                             .padding(.vertical, 4)
                             .background(
                                 RoundedRectangle(cornerRadius: 6)
-                                    .fill(Color.appGray800.opacity(0.3))
+                                    .fill(palette.gray800.opacity(0.3))
                             )
                     })
                     .buttonStyle(.plain)

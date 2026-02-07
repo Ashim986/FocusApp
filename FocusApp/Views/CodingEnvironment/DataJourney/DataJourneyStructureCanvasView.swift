@@ -1,3 +1,4 @@
+import FocusDesignSystem
 import SwiftUI
 
 enum TraceStructure {
@@ -52,6 +53,11 @@ struct DataJourneyStructureCanvasView: View {
     let structurePointerHorizontalPadding: CGFloat = 9
     let structurePointerVerticalPadding: CGFloat = 3
     let combinedMaxItems = 40
+    @Environment(\.dsTheme) private var theme
+
+    var palette: DataJourneyPalette {
+        DataJourneyPalette(theme: theme)
+    }
 
     init(
         inputEvent: DataJourneyEvent?,
@@ -82,9 +88,9 @@ struct DataJourneyStructureCanvasView: View {
         return AnyView(
             VStack(alignment: .leading, spacing: 6) {
                 HStack(alignment: .center, spacing: 10) {
-                    Text("Structure")
+                    DSText("Structure")
                         .font(.system(size: 10, weight: .semibold))
-                        .foregroundColor(Color.appGray400)
+                        .foregroundColor(palette.gray400)
 
                     if let header {
                         header
@@ -117,7 +123,7 @@ struct DataJourneyStructureCanvasView: View {
                     let finalLinks = outputSequenceLinks(for: lists)
                     VStack(alignment: .leading, spacing: 10) {
                         HStack(alignment: .center, spacing: 10) {
-                            listLabel("combined", color: Color.appPurple, background: Color.appPurple.opacity(0.18))
+                            listLabel("combined", color: palette.purple, background: palette.purple.opacity(0.18))
                                 .frame(width: 64, alignment: .leading)
 
                             SequenceBubbleRow(
@@ -139,13 +145,13 @@ struct DataJourneyStructureCanvasView: View {
                         }
 
                         Rectangle()
-                            .fill(Color.appGray700.opacity(0.6))
+                            .fill(palette.gray700.opacity(0.6))
                             .frame(height: 1)
                             .padding(.leading, 64)
 
                         ForEach(lists) { entry in
                             HStack(alignment: .center, spacing: 10) {
-                                let accent = PointerPalette.color(for: entry.name)
+                                let accent = PointerPalette.color(for: entry.name, palette: palette)
                                 listLabel(
                                     entry.name,
                                     color: accent,
@@ -175,7 +181,7 @@ struct DataJourneyStructureCanvasView: View {
                     let finalLinks = outputSequenceLinks(for: listArray.lists)
                     VStack(alignment: .leading, spacing: 10) {
                         HStack(alignment: .center, spacing: 10) {
-                            listLabel("combined", color: Color.appPurple, background: Color.appPurple.opacity(0.18))
+                            listLabel("combined", color: palette.purple, background: palette.purple.opacity(0.18))
                                 .frame(width: 64, alignment: .leading)
 
                             SequenceBubbleRow(
@@ -197,7 +203,7 @@ struct DataJourneyStructureCanvasView: View {
                         }
 
                         HStack(alignment: .center, spacing: 10) {
-                            listLabel("heads", color: Color.appCyan, background: Color.appCyan.opacity(0.18))
+                            listLabel("heads", color: palette.cyan, background: palette.cyan.opacity(0.18))
                                 .frame(width: 64, alignment: .leading)
 
                             SequenceBubbleRow(
@@ -216,13 +222,13 @@ struct DataJourneyStructureCanvasView: View {
                         }
 
                         Rectangle()
-                            .fill(Color.appGray700.opacity(0.6))
+                            .fill(palette.gray700.opacity(0.6))
                             .frame(height: 1)
                             .padding(.leading, 64)
 
                         ForEach(listArray.lists) { entry in
                             HStack(alignment: .center, spacing: 10) {
-                                let accent = PointerPalette.color(for: entry.name)
+                                let accent = PointerPalette.color(for: entry.name, palette: palette)
                                 listLabel(
                                     entry.name,
                                     color: accent,
@@ -399,7 +405,7 @@ struct DataJourneyStructureCanvasView: View {
             .padding(8)
             .background(
                 RoundedRectangle(cornerRadius: 8)
-                    .fill(Color.appGray900.opacity(0.45))
+                    .fill(palette.gray900.opacity(0.45))
             )
         )
     }

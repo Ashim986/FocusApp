@@ -1,9 +1,11 @@
+import FocusDesignSystem
 import SwiftData
 import SwiftUI
 
 struct PlanView: View {
     @ObservedObject var presenter: PlanPresenter
     let onSelectProblem: (_ problem: Problem, _ day: Int, _ index: Int) -> Void
+    @Environment(\.dsTheme) private var theme
 
     var body: some View {
         ScrollView {
@@ -30,119 +32,101 @@ struct PlanView: View {
             }
             .padding(20)
         }
-        .background(Color.appGray50)
+        .background(theme.colors.background)
     }
 
     private var preCompletedBanner: some View {
-        VStack(alignment: .leading, spacing: 12) {
-            HStack {
-                Image(systemName: "checkmark.circle.fill")
-                    .font(.system(size: 20))
-                    .foregroundColor(Color.appGreen)
+        DSCard(config: .init(style: .elevated)) {
+            VStack(alignment: .leading, spacing: 12) {
+                HStack {
+                    DSImage(systemName: "checkmark.circle.fill")
+                        .font(.system(size: 20))
+                        .foregroundColor(theme.colors.success)
 
-                Text(L10n.Plan.precompletedTitle)
-                    .font(.system(size: 16, weight: .semibold))
-                    .foregroundColor(Color.appGray800)
+                    DSText(L10n.Plan.precompletedTitle)
+                        .font(.system(size: 16, weight: .semibold))
+                        .foregroundColor(theme.colors.textPrimary)
 
-                Spacer()
+                    Spacer()
 
-                Text(L10n.Plan.precompletedCountFormat( preCompletedTopics.count))
-                    .font(.system(size: 13))
-                    .foregroundColor(Color.appGray500)
-            }
+                    DSText(L10n.Plan.precompletedCountFormat( preCompletedTopics.count))
+                        .font(.system(size: 13))
+                        .foregroundColor(theme.colors.textSecondary)
+                }
 
-            FlowLayout(spacing: 8) {
-                ForEach(preCompletedTopics, id: \.self) { topic in
-                    HStack(spacing: 4) {
-                        Image(systemName: "checkmark")
-                            .font(.system(size: 10, weight: .bold))
+                FlowLayout(spacing: 8) {
+                    ForEach(preCompletedTopics, id: \.self) { topic in
+                        HStack(spacing: 4) {
+                            DSImage(systemName: "checkmark")
+                                .font(.system(size: 10, weight: .bold))
 
-                        Text(topic)
-                            .font(.system(size: 12, weight: .medium))
+                            DSText(topic)
+                                .font(.system(size: 12, weight: .medium))
+                        }
+                        .foregroundColor(theme.colors.success)
+                        .padding(.horizontal, 10)
+                        .padding(.vertical, 6)
+                        .background(
+                            RoundedRectangle(cornerRadius: 16)
+                                .fill(theme.colors.success.opacity(0.15))
+                        )
                     }
-                    .foregroundColor(Color.appGreen)
-                    .padding(.horizontal, 10)
-                    .padding(.vertical, 6)
-                    .background(
-                        RoundedRectangle(cornerRadius: 16)
-                            .fill(Color.appGreenLight)
-                    )
                 }
             }
         }
-        .padding(16)
-        .background(
-            RoundedRectangle(cornerRadius: 12)
-                .fill(Color.white)
-                .shadow(color: Color.black.opacity(0.05), radius: 4, x: 0, y: 2)
-        )
         .overlay(
-            RoundedRectangle(cornerRadius: 12)
-                .strokeBorder(Color.appGreen.opacity(0.3), lineWidth: 1)
+            RoundedRectangle(cornerRadius: theme.radii.lg)
+                .strokeBorder(theme.colors.success.opacity(0.3), lineWidth: 1)
         )
     }
 
     private var syncCard: some View {
-        HStack(spacing: 16) {
-            VStack(alignment: .leading, spacing: 4) {
-                Text(L10n.Plan.syncTitle)
-                    .font(.system(size: 16, weight: .semibold))
-                    .foregroundColor(Color.appGray800)
+        DSCard(config: .init(style: .elevated)) {
+            HStack(spacing: 16) {
+                VStack(alignment: .leading, spacing: 4) {
+                    DSText(L10n.Plan.syncTitle)
+                        .font(.system(size: 16, weight: .semibold))
+                        .foregroundColor(theme.colors.textPrimary)
 
-                Text(presenter.lastSyncResult.isEmpty
-                     ? L10n.Plan.syncDefaultStatus
-                     : presenter.lastSyncResult)
-                    .font(.system(size: 12))
-                    .foregroundColor(Color.appGray500)
-            }
+                    DSText(presenter.lastSyncResult.isEmpty
+                         ? L10n.Plan.syncDefaultStatus
+                         : presenter.lastSyncResult)
+                        .font(.system(size: 12))
+                        .foregroundColor(theme.colors.textSecondary)
+                }
 
-            Spacer()
+                Spacer()
 
-            if presenter.isSyncing {
-                ProgressView()
-                    .scaleEffect(0.9)
-            } else {
-                Button(action: {
-                    presenter.syncNow()
-                }, label: {
-                    HStack(spacing: 6) {
-                        Image(systemName: "arrow.triangle.2.circlepath")
-                        Text(L10n.Plan.syncNow)
+                if presenter.isSyncing {
+                    ProgressView()
+                        .scaleEffect(0.9)
+                        .tint(theme.colors.primary)
+                } else {
+                    DSButton(
+                        L10n.Plan.syncNow,
+                        config: .init(style: .primary, size: .small, icon: DSImage(systemName: "arrow.triangle.2.circlepath"))
+                    ) {
+                        presenter.syncNow()
                     }
-                    .font(.system(size: 12, weight: .semibold))
-                    .foregroundColor(.white)
-                    .padding(.horizontal, 12)
-                    .padding(.vertical, 8)
-                    .background(
-                        RoundedRectangle(cornerRadius: 8)
-                            .fill(Color.appPurple)
-                    )
-                })
-                .buttonStyle(.plain)
+                }
             }
         }
-        .padding(16)
-        .background(
-            RoundedRectangle(cornerRadius: 12)
-                .fill(Color.white)
-                .shadow(color: Color.black.opacity(0.05), radius: 4, x: 0, y: 2)
-        )
     }
 
     private var bufferNote: some View {
         HStack(spacing: 12) {
-            Image(systemName: "calendar.badge.clock")
+            DSImage(systemName: "calendar.badge.clock")
                 .font(.system(size: 20))
-                .foregroundColor(Color.appPurple)
+                .foregroundColor(theme.colors.primary)
 
             VStack(alignment: .leading, spacing: 2) {
-                Text(L10n.Plan.bufferTitle)
+                DSText(L10n.Plan.bufferTitle)
                     .font(.system(size: 14, weight: .medium))
-                    .foregroundColor(Color.appGray700)
+                    .foregroundColor(theme.colors.textPrimary)
 
-                Text(L10n.Plan.bufferBody)
+                DSText(L10n.Plan.bufferBody)
                     .font(.system(size: 12))
-                    .foregroundColor(Color.appGray500)
+                    .foregroundColor(theme.colors.textSecondary)
             }
 
             Spacer()
@@ -150,7 +134,7 @@ struct PlanView: View {
         .padding(16)
         .background(
             RoundedRectangle(cornerRadius: 12)
-                .fill(Color.appPurple.opacity(0.1))
+                .fill(theme.colors.primary.opacity(0.12))
         )
     }
 }
@@ -224,7 +208,7 @@ struct PlanView_Previews: PreviewProvider {
                 )
                     .frame(width: 600, height: 800)
             } else {
-                Text("Preview unavailable")
+                DSText("Preview unavailable")
             }
         }
     }

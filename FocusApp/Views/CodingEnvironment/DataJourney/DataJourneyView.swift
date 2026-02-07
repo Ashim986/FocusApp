@@ -1,3 +1,4 @@
+import FocusDesignSystem
 import SwiftUI
 
 struct DataJourneyView: View {
@@ -8,6 +9,11 @@ struct DataJourneyView: View {
     @State var isPlaying = false
     @State var playbackSpeed = 1.0
     @State var playbackTask: Task<Void, Never>?
+    @Environment(\.dsTheme) private var theme
+
+    var palette: DataJourneyPalette {
+        DataJourneyPalette(theme: theme)
+    }
 
     var body: some View {
         if events.isEmpty || hasNoData {

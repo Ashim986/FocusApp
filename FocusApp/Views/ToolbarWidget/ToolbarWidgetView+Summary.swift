@@ -1,3 +1,4 @@
+import FocusDesignSystem
 import SwiftUI
 
 extension ToolbarWidgetView {
@@ -5,13 +6,13 @@ extension ToolbarWidgetView {
         HStack(spacing: 12) {
             ZStack {
                 Circle()
-                    .stroke(Color.gray.opacity(0.3), lineWidth: 5)
+                    .stroke(theme.colors.border.opacity(0.4), lineWidth: 5)
 
                 Circle()
                     .trim(from: 0, to: presenter.progressPercentage / 100)
                     .stroke(
                         LinearGradient(
-                            colors: [Color.purple, Color.blue],
+                            colors: [theme.colors.primary, theme.colors.accent],
                             startPoint: .topLeading,
                             endPoint: .bottomTrailing
                         ),
@@ -19,42 +20,46 @@ extension ToolbarWidgetView {
                     )
                     .rotationEffect(.degrees(-90))
 
-                Text("\(Int(presenter.progressPercentage))%")
+                DSText("\(Int(presenter.progressPercentage))%")
                     .font(.system(size: 12, weight: .bold, design: .rounded))
-                    .foregroundColor(.white)
+                    .foregroundColor(theme.colors.textPrimary)
             }
             .frame(width: 52, height: 52)
 
             VStack(alignment: .leading, spacing: 2) {
                 HStack(spacing: 4) {
-                    Text(L10n.Widget.summaryDayFormat( presenter.currentDayNumber))
+                    DSText(L10n.Widget.summaryDayFormat( presenter.currentDayNumber))
                         .font(.system(size: 13, weight: .semibold))
-                        .foregroundColor(.white)
+                        .foregroundColor(theme.colors.textPrimary)
 
-                    Text(L10n.Widget.summaryOfTotalFormat( dsaPlan.count))
+                    DSText(L10n.Widget.summaryOfTotalFormat( dsaPlan.count))
                         .font(.system(size: 10))
-                        .foregroundColor(.gray)
+                        .foregroundColor(theme.colors.textSecondary)
                 }
 
-                Text(L10n.Widget.summaryTopicTitle)
+                DSText(L10n.Widget.summaryTopicTitle)
                     .font(.system(size: 9, weight: .medium))
-                    .foregroundColor(.white.opacity(0.5))
+                    .foregroundColor(theme.colors.textSecondary)
 
-                Text(presenter.todaysTopic)
+                DSText(presenter.todaysTopic)
                     .font(.system(size: 11, weight: .medium))
-                    .foregroundColor(.white.opacity(0.9))
+                    .foregroundColor(theme.colors.textPrimary.opacity(0.9))
                     .lineLimit(1)
             }
 
             Spacer()
 
             VStack(alignment: .trailing, spacing: 2) {
-                Text(L10n.Widget.summaryHabitsTitle)
+                DSText(L10n.Widget.summaryHabitsTitle)
                     .font(.system(size: 9))
-                    .foregroundColor(.gray)
-                Text("\(presenter.habitsCompletedToday)/\(AppConstants.totalHabits)")
+                    .foregroundColor(theme.colors.textSecondary)
+                DSText("\(presenter.habitsCompletedToday)/\(AppConstants.totalHabits)")
                     .font(.system(size: 12, weight: .semibold))
-                    .foregroundColor(presenter.habitsCompletedToday == AppConstants.totalHabits ? .green : .white)
+                    .foregroundColor(
+                        presenter.habitsCompletedToday == AppConstants.totalHabits
+                            ? theme.colors.success
+                            : theme.colors.textPrimary
+                    )
             }
         }
     }

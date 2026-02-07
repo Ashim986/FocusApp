@@ -1,59 +1,63 @@
+import FocusDesignSystem
 import SwiftUI
 
 extension ToolbarWidgetView {
     var settingsSection: some View {
         VStack(spacing: 8) {
             HStack {
-                Text(L10n.Widget.leetcodeUsername)
+                DSText(L10n.Widget.leetcodeUsername)
                     .font(.system(size: 10, weight: .medium))
-                    .foregroundColor(.gray)
+                    .foregroundColor(theme.colors.textSecondary)
                 Spacer()
 
                 switch presenter.usernameValidationState {
                 case .valid:
                     HStack(spacing: 2) {
-                        Image(systemName: "checkmark.circle.fill")
+                        DSImage(systemName: "checkmark.circle.fill")
                             .font(.system(size: 10))
-                        Text(L10n.Widget.validationValid)
+                        DSText(L10n.Widget.validationValid)
                             .font(.system(size: 9))
                     }
-                    .foregroundColor(.green)
+                    .foregroundColor(theme.colors.success)
                 case .invalid:
                     HStack(spacing: 2) {
-                        Image(systemName: "xmark.circle.fill")
+                        DSImage(systemName: "xmark.circle.fill")
                             .font(.system(size: 10))
-                        Text(L10n.Widget.validationNotFound)
+                        DSText(L10n.Widget.validationNotFound)
                             .font(.system(size: 9))
                     }
-                    .foregroundColor(.red)
+                    .foregroundColor(theme.colors.danger)
                 case .none:
                     EmptyView()
                 }
             }
 
             HStack(spacing: 8) {
-                TextField(L10n.Widget.usernamePlaceholder, text: $presenter.editingUsername)
-                    .textFieldStyle(.plain)
-                    .font(.system(size: 11))
-                    .foregroundColor(.white)
-                    .padding(.horizontal, 8)
-                    .padding(.vertical, 6)
-                    .background(
-                        RoundedRectangle(cornerRadius: 6)
-                            .fill(Color.white.opacity(0.1))
-                    )
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 6)
-                            .stroke(validationBorderColor, lineWidth: 1)
-                    )
-                    .onSubmit {
-                        presenter.validateAndSaveUsername()
+                let validation: DSTextFieldValidation = {
+                    switch presenter.usernameValidationState {
+                    case .valid:
+                        return .valid
+                    case .invalid:
+                        return .invalid(nil)
+                    case .none:
+                        return .none
                     }
-                    .onChange(of: presenter.editingUsername) { _, _ in
-                        presenter.resetValidationState()
-                    }
+                }()
 
-                Button(action: {
+                DSTextField(
+                    placeholder: L10n.Widget.usernamePlaceholder,
+                    text: $presenter.editingUsername,
+                    config: DSTextFieldConfig(style: .outlined, size: .small),
+                    state: DSTextFieldState(validation: validation)
+                )
+                .onSubmit {
+                    presenter.validateAndSaveUsername()
+                }
+                .onChange(of: presenter.editingUsername) { _, _ in
+                    presenter.resetValidationState()
+                }
+
+                DSButton(action: {
                     presenter.validateAndSaveUsername()
                 }, label: {
                     HStack(spacing: 4) {
@@ -62,20 +66,24 @@ extension ToolbarWidgetView {
                                 .scaleEffect(0.6)
                                 .frame(width: 12, height: 12)
                         } else {
-                            Image(systemName: "arrow.clockwise")
+                            DSImage(systemName: "arrow.clockwise")
                                 .font(.system(size: 10))
                         }
-                        Text(presenter.isValidatingUsername
+                        DSText(presenter.isValidatingUsername
                              ? L10n.Widget.checking
                              : L10n.Widget.saveSync)
                             .font(.system(size: 10, weight: .medium))
                     }
-                    .foregroundColor(.white)
+                    .foregroundColor(theme.colors.surface)
                     .padding(.horizontal, 8)
                     .padding(.vertical, 6)
                     .background(
                         RoundedRectangle(cornerRadius: 6)
-                            .fill(presenter.isValidatingUsername ? Color.gray : Color.blue)
+                            .fill(
+                                presenter.isValidatingUsername
+                                    ? theme.colors.surfaceElevated.opacity(0.7)
+                                    : theme.colors.primary
+                            )
                     )
                 })
                 .buttonStyle(.plain)
@@ -83,25 +91,15 @@ extension ToolbarWidgetView {
             }
 
             HStack {
-                Image(systemName: "info.circle")
+                DSImage(systemName: "info.circle")
                     .font(.system(size: 9))
-                    .foregroundColor(.gray)
-                Text(L10n.Widget.leetcodePublicNotice)
+                    .foregroundColor(theme.colors.textSecondary)
+                DSText(L10n.Widget.leetcodePublicNotice)
                     .font(.system(size: 9))
-                    .foregroundColor(.gray)
+                    .foregroundColor(theme.colors.textSecondary)
                 Spacer()
             }
         }
     }
 
-    var validationBorderColor: Color {
-        switch presenter.usernameValidationState {
-        case .valid:
-            return .green
-        case .invalid:
-            return .red
-        case .none:
-            return .clear
-        }
-    }
 }

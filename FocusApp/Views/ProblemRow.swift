@@ -1,3 +1,4 @@
+import FocusDesignSystem
 import SwiftUI
 
 struct ProblemRow: View {
@@ -5,22 +6,23 @@ struct ProblemRow: View {
     let isCompleted: Bool
     let onToggle: () -> Void
     let onSelect: () -> Void
+    @Environment(\.dsTheme) private var theme
 
     var body: some View {
         HStack(spacing: 12) {
             // Checkbox
-            Button(action: onToggle, label: {
+            DSButton(action: onToggle, label: {
                 ZStack {
                     RoundedRectangle(cornerRadius: 4)
-                        .strokeBorder(isCompleted ? Color.appGreen : Color.appGray300, lineWidth: 2)
+                        .strokeBorder(isCompleted ? theme.colors.success : theme.colors.border, lineWidth: 2)
                         .frame(width: 20, height: 20)
                         .background(
                             RoundedRectangle(cornerRadius: 4)
-                                .fill(isCompleted ? Color.appGreen : Color.clear)
+                                .fill(isCompleted ? theme.colors.success : Color.clear)
                         )
 
                     if isCompleted {
-                        Image(systemName: "checkmark")
+                        DSImage(systemName: "checkmark")
                             .font(.system(size: 12, weight: .bold))
                             .foregroundColor(.white)
                     }
@@ -29,18 +31,18 @@ struct ProblemRow: View {
             .buttonStyle(.plain)
 
             // Problem name (clickable)
-            Button(action: onSelect, label: {
+            DSButton(action: onSelect, label: {
                 HStack(spacing: 4) {
-                    Text(problem.displayName)
+                    DSText(problem.displayName)
                         .font(.system(size: 14))
-                        .foregroundColor(isCompleted ? Color.appGray500 : Color.appGray700)
+                        .foregroundColor(isCompleted ? theme.colors.textSecondary : theme.colors.textPrimary)
                         .lineLimit(1)
                         .truncationMode(.tail)
                         .layoutPriority(1)
 
-                    Image(systemName: "chevron.right")
+                    DSImage(systemName: "chevron.right")
                         .font(.system(size: 9, weight: .semibold))
-                        .foregroundColor(Color.appGray500)
+                        .foregroundColor(theme.colors.textSecondary)
                 }
             })
             .buttonStyle(.plain)
@@ -55,15 +57,10 @@ struct ProblemRow: View {
             Spacer()
 
             // Difficulty badge
-            Text(problem.difficulty.rawValue)
-                .font(.system(size: 11, weight: .medium))
-                .padding(.horizontal, 8)
-                .padding(.vertical, 3)
-                .background(
-                    RoundedRectangle(cornerRadius: 4)
-                        .fill(problem.difficulty == .easy ? Color.appGreenLight : Color.appAmberLight)
-                )
-                .foregroundColor(problem.difficulty == .easy ? Color.appGreen : Color.appAmber)
+            DSBadge(
+                problem.difficulty.rawValue,
+                config: .init(style: problem.difficulty == .easy ? .success : .warning)
+            )
         }
         .padding(.vertical, 8)
         .padding(.horizontal, 12)

@@ -1,3 +1,4 @@
+import FocusDesignSystem
 import SwiftUI
 
 extension TodayView {
@@ -5,37 +6,30 @@ extension TodayView {
         VStack(spacing: 16) {
             HStack(spacing: 12) {
                 VStack(alignment: .leading, spacing: 4) {
-                    Text(L10n.Today.ctaTitle)
+                    DSText(L10n.Today.ctaTitle)
                         .font(.system(size: 20, weight: .bold))
                         .foregroundColor(.white)
 
-                    Text(L10n.Today.ctaSubtitle)
+                    DSText(L10n.Today.ctaSubtitle)
                         .font(.system(size: 14))
                         .foregroundColor(.white.opacity(0.8))
                 }
 
                 Spacer()
 
-                Button(action: {
-                    onOpenCodingEnvironment?()
-                }, label: {
-                    HStack(spacing: 6) {
-                        Image(systemName: "chevron.left.slash.chevron.right")
-                        Text(L10n.Today.ctaButton)
-                    }
-                    .font(.system(size: 13, weight: .semibold))
-                    .foregroundColor(Color.appPurple)
-                    .padding(.horizontal, 14)
-                    .padding(.vertical, 9)
-                    .background(
-                        RoundedRectangle(cornerRadius: 8)
-                            .fill(Color.white)
+                DSButton(
+                    L10n.Today.ctaButton,
+                    config: .init(
+                        style: .secondary,
+                        size: .small,
+                        icon: DSImage(systemName: "chevron.left.slash.chevron.right")
                     )
-                })
-                .buttonStyle(.plain)
+                ) {
+                    onOpenCodingEnvironment?()
+                }
             }
 
-            Text(L10n.Today.ctaFooter)
+            DSText(L10n.Today.ctaFooter)
                 .font(.system(size: 12, weight: .medium))
                 .foregroundColor(.white.opacity(0.7))
         }
@@ -44,7 +38,7 @@ extension TodayView {
             RoundedRectangle(cornerRadius: 16)
                 .fill(
                     LinearGradient(
-                        colors: [Color.appIndigo, Color.appIndigoLight],
+                        colors: [theme.colors.primary, theme.colors.accent],
                         startPoint: .topLeading,
                         endPoint: .bottomTrailing
                     )

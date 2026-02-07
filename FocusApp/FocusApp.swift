@@ -89,7 +89,14 @@ final class FloatingWidgetController {
             return
         }
 
-        let hostingController = NSHostingController(rootView: ToolbarWidgetView(presenter: presenter))
+        let appearance = NSApp.effectiveAppearance
+        let matches = appearance.bestMatch(from: [.darkAqua, .aqua])
+        let widgetTheme: DSTheme = matches == .darkAqua ? .dark : .light
+        let hostingController = NSHostingController(
+            rootView: DSThemeProvider(theme: widgetTheme) {
+                ToolbarWidgetView(presenter: presenter)
+            }
+        )
         let panel = NSPanel(contentViewController: hostingController)
 
         panel.setContentSize(NSSize(width: 350, height: 560))

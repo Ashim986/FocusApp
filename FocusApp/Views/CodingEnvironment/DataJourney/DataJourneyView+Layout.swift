@@ -1,3 +1,4 @@
+import FocusDesignSystem
 import SwiftUI
 
 extension DataJourneyView {
@@ -73,12 +74,12 @@ extension DataJourneyView {
 
     var emptyState: some View {
         VStack(alignment: .leading, spacing: 6) {
-            Text("Run with input to see the data journey.")
+            DSText("Run with input to see the data journey.")
                 .font(.system(size: 11, weight: .medium))
-                .foregroundColor(Color.appGray300)
-            Text("Add `Trace.step(\"label\", [\"key\": value])` inside loops to visualize iterations.")
+                .foregroundColor(palette.gray300)
+            DSText("Add `Trace.step(\"label\", [\"key\": value])` inside loops to visualize iterations.")
                 .font(.system(size: 10))
-                .foregroundColor(Color.appGray500)
+                .foregroundColor(palette.gray500)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
     }
@@ -105,24 +106,24 @@ extension DataJourneyView {
         let keyWidth: CGFloat = isCompact ? 70 : 80
         let infoSize: CGFloat = isCompact ? 9 : 10
         return VStack(alignment: .leading, spacing: 8) {
-            Text(title)
+            DSText(title)
                 .font(.system(size: titleSize, weight: .semibold))
-                .foregroundColor(Color.appGray400)
+                .foregroundColor(palette.gray400)
 
             if event.values.isEmpty {
-                Text("No values captured for this step.")
+                DSText("No values captured for this step.")
                     .font(.system(size: infoSize))
-                    .foregroundColor(Color.appGray500)
+                    .foregroundColor(palette.gray500)
             } else {
                 VStack(alignment: .leading, spacing: rowSpacing) {
                     ForEach(event.values.keys.sorted(), id: \.self) { key in
                         if let value = event.values[key] {
                             let isChanged = changedKeys.contains(key)
                             HStack(alignment: .center, spacing: 10) {
-                                Text(key)
+                                DSText(key)
                                     .font(.system(size: infoSize, weight: .semibold))
                                     .foregroundColor(
-                                        isChanged ? Color.appCyan : Color.appGray300
+                                        isChanged ? palette.cyan : palette.gray300
                                     )
                                     .frame(width: keyWidth, alignment: .leading)
 
@@ -130,12 +131,12 @@ extension DataJourneyView {
                             }
                             .padding(.vertical, 2)
                             .padding(.horizontal, 4)
-                            .background(
-                                isChanged
-                                    ? RoundedRectangle(cornerRadius: 4)
-                                        .fill(Color.appCyan.opacity(0.08))
-                                    : nil
-                            )
+                                .background(
+                                    isChanged
+                                        ? RoundedRectangle(cornerRadius: 4)
+                                            .fill(palette.cyan.opacity(0.08))
+                                        : nil
+                                )
                         }
                     }
                 }
@@ -144,7 +145,7 @@ extension DataJourneyView {
         .padding(verticalPadding)
         .background(
             RoundedRectangle(cornerRadius: 8)
-                .fill(Color.appGray900.opacity(0.45))
+                .fill(palette.gray900.opacity(0.45))
         )
     }
 

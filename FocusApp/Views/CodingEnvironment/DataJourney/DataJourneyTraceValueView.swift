@@ -1,7 +1,13 @@
+import FocusDesignSystem
 import SwiftUI
 
 struct TraceValueView: View {
     let value: TraceValue
+    @Environment(\.dsTheme) private var theme
+
+    private var palette: DataJourneyPalette {
+        DataJourneyPalette(theme: theme)
+    }
 
     var body: some View {
         switch value {
@@ -46,9 +52,9 @@ struct TraceValueView: View {
             ForEach(map.keys.sorted(), id: \.self) { key in
                 if let value = map[key] {
                     HStack(spacing: 6) {
-                        Text(key)
+                        DSText(key)
                             .font(.system(size: 9, weight: .semibold))
-                            .foregroundColor(Color.appGray400)
+                            .foregroundColor(palette.gray400)
                         TraceValueView(value: value)
                     }
                 }
@@ -127,7 +133,7 @@ struct TraceValueView: View {
     }
 
     private func bubble(for value: TraceValue) -> some View {
-        let model = TraceBubbleModel.from(value)
+        let model = TraceBubbleModel.from(value, palette: palette)
         return TraceBubble(text: model.text, fill: model.fill)
     }
 
@@ -161,18 +167,18 @@ struct TraceValueView: View {
 
     private func stackPointers(for items: [TraceValue]) -> [PointerMarker] {
         guard let topIndex = items.indices.last else { return [] }
-        return [PointerMarker(name: "top", index: topIndex)]
+        return [PointerMarker(name: "top", index: topIndex, palette: palette)]
     }
 
     private func queuePointers(for items: [TraceValue]) -> [PointerMarker] {
         guard let firstIndex = items.indices.first else { return [] }
         let lastIndex = items.indices.last ?? firstIndex
         if firstIndex == lastIndex {
-            return [PointerMarker(name: "front/back", index: firstIndex)]
+            return [PointerMarker(name: "front/back", index: firstIndex, palette: palette)]
         }
         return [
-            PointerMarker(name: "front", index: firstIndex),
-            PointerMarker(name: "back", index: lastIndex)
+            PointerMarker(name: "front", index: firstIndex, palette: palette),
+            PointerMarker(name: "back", index: lastIndex, palette: palette)
         ]
     }
 

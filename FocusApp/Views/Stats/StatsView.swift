@@ -1,7 +1,9 @@
+import FocusDesignSystem
 import SwiftUI
 
 struct StatsView: View {
     @ObservedObject var presenter: StatsPresenter
+    @Environment(\.dsTheme) private var theme
 
     let blockedSites = [
         "YouTube", "Twitter/X", "Reddit", "Instagram",
@@ -18,6 +20,6 @@ struct StatsView: View {
             }
             .padding(20)
         }
-        .background(Color.appGray50)
+        .background(theme.colors.background)
     }
 }

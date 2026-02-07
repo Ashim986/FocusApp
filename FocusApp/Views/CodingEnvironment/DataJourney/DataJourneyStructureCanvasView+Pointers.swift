@@ -62,7 +62,7 @@ extension DataJourneyStructureCanvasView {
         return pointerCandidates(in: selectedEvent).compactMap { name, value in
             guard case .listPointer(let id) = value,
                   let index = headIdToIndex[id] else { return nil }
-            return PointerMarker(name: name, index: index)
+            return PointerMarker(name: name, index: index, palette: palette)
         }
     }
 
@@ -136,7 +136,14 @@ extension DataJourneyStructureCanvasView {
         var motions: [PointerMotion] = []
         for (name, toIndex) in current {
             guard let fromIndex = previous[name], fromIndex != toIndex else { continue }
-            motions.append(PointerMotion(name: name, fromIndex: fromIndex, toIndex: toIndex))
+            motions.append(
+                PointerMotion(
+                    name: name,
+                    fromIndex: fromIndex,
+                    toIndex: toIndex,
+                    palette: palette
+                )
+            )
         }
         return motions.sorted { $0.name.localizedCaseInsensitiveCompare($1.name) == .orderedAscending }
     }
@@ -182,14 +189,14 @@ extension DataJourneyStructureCanvasView {
         return pointerCandidates(in: event).compactMap { name, value in
             guard case .listPointer(let id) = value,
                   let index = idToIndex[id] else { return nil }
-            return PointerMarker(name: name, index: index)
+            return PointerMarker(name: name, index: index, palette: palette)
         }
     }
 
     func treePointers(in event: DataJourneyEvent) -> [PointerMarker] {
         pointerCandidates(in: event).compactMap { name, value in
             guard case .treePointer(let id) = value else { return nil }
-            return PointerMarker(name: name, nodeId: id)
+            return PointerMarker(name: name, nodeId: id, palette: palette)
         }
     }
 
@@ -203,7 +210,7 @@ extension DataJourneyStructureCanvasView {
         var motions: [TreePointerMotion] = []
         for (name, toId) in current {
             guard let fromId = previous[name], fromId != toId else { continue }
-            motions.append(TreePointerMotion(name: name, fromId: fromId, toId: toId))
+            motions.append(TreePointerMotion(name: name, fromId: fromId, toId: toId, palette: palette))
         }
         return motions.sorted { $0.name.localizedCaseInsensitiveCompare($1.name) == .orderedAscending }
     }
@@ -222,7 +229,7 @@ extension DataJourneyStructureCanvasView {
             guard case .number(let number, let isInt) = value, isInt else { return nil }
             let index = Int(number)
             guard items.indices.contains(index), isIndexName(key) else { return nil }
-            return PointerMarker(name: key, index: index)
+            return PointerMarker(name: key, index: index, palette: palette)
         }
         .sorted { $0.name < $1.name }
     }
@@ -232,7 +239,7 @@ extension DataJourneyStructureCanvasView {
             guard case .number(let number, let isInt) = value, isInt else { return nil }
             let index = Int(number)
             guard adjacency.indices.contains(index), isIndexName(key) else { return nil }
-            return PointerMarker(name: key, index: index)
+            return PointerMarker(name: key, index: index, palette: palette)
         }
         .sorted { $0.name < $1.name }
     }
@@ -243,12 +250,12 @@ extension DataJourneyStructureCanvasView {
             switch value {
             case .string(let stringValue):
                 guard let index = keyToIndex[stringValue] else { return nil }
-                return PointerMarker(name: key, index: index)
+                return PointerMarker(name: key, index: index, palette: palette)
             case .number(let number, let isInt):
                 guard isInt else { return nil }
                 let stringValue = "\(Int(number))"
                 guard let index = keyToIndex[stringValue] else { return nil }
-                return PointerMarker(name: key, index: index)
+                return PointerMarker(name: key, index: index, palette: palette)
             default:
                 return nil
             }
@@ -265,18 +272,18 @@ extension DataJourneyStructureCanvasView {
 
     func stackPointers(for items: [TraceValue]) -> [PointerMarker] {
         guard let topIndex = items.indices.last else { return [] }
-        return [PointerMarker(name: "top", index: topIndex)]
+        return [PointerMarker(name: "top", index: topIndex, palette: palette)]
     }
 
     func queuePointers(for items: [TraceValue]) -> [PointerMarker] {
         guard let firstIndex = items.indices.first else { return [] }
         let lastIndex = items.indices.last ?? firstIndex
         if firstIndex == lastIndex {
-            return [PointerMarker(name: "front/back", index: firstIndex)]
+            return [PointerMarker(name: "front/back", index: firstIndex, palette: palette)]
         }
         return [
-            PointerMarker(name: "front", index: firstIndex),
-            PointerMarker(name: "back", index: lastIndex)
+            PointerMarker(name: "front", index: firstIndex, palette: palette),
+            PointerMarker(name: "back", index: lastIndex, palette: palette)
         ]
     }
 

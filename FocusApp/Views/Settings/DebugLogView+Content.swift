@@ -1,3 +1,4 @@
+import FocusDesignSystem
 import SwiftUI
 
 extension DebugLogView {
@@ -6,25 +7,25 @@ extension DebugLogView {
         return Group {
             if filtered.isEmpty {
                 VStack(spacing: 8) {
-                    Image(systemName: "doc.text.magnifyingglass")
+                    DSImage(systemName: "doc.text.magnifyingglass")
                         .font(.system(size: 32))
-                        .foregroundColor(Color.appGray500)
+                        .foregroundColor(theme.colors.textSecondary)
                     if store.entries.isEmpty {
-                        Text(L10n.Debug.emptyTitle)
+                        DSText(L10n.Debug.emptyTitle)
                             .font(.system(size: 14, weight: .semibold))
-                            .foregroundColor(.white)
-                        Text(L10n.Debug.emptyBody)
+                            .foregroundColor(theme.colors.textPrimary)
+                        DSText(L10n.Debug.emptyBody)
                             .font(.system(size: 12))
-                            .foregroundColor(Color.appGray500)
+                            .foregroundColor(theme.colors.textSecondary)
                     } else {
-                        Text("No logs match your filters")
+                        DSText("No logs match your filters")
                             .font(.system(size: 14, weight: .semibold))
-                            .foregroundColor(.white)
-                        Text("Try clearing the filters to view recent entries.")
+                            .foregroundColor(theme.colors.textPrimary)
+                        DSText("Try clearing the filters to view recent entries.")
                             .font(.system(size: 12))
-                            .foregroundColor(Color.appGray500)
+                            .foregroundColor(theme.colors.textSecondary)
 
-                        Button("Reset filters") {
+                        DSButton("Reset filters") {
                             resetFilters()
                         }
                         .buttonStyle(.borderedProminent)
@@ -32,7 +33,7 @@ extension DebugLogView {
                     }
                 }
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
-                .background(Color.appGray900)
+                .background(theme.colors.surface)
             } else {
                 ScrollView {
                     LazyVStack(alignment: .leading, spacing: 10) {
@@ -42,7 +43,7 @@ extension DebugLogView {
                     }
                     .padding(12)
                 }
-                .background(Color.appGray900)
+                .background(theme.colors.surface)
             }
         }
     }

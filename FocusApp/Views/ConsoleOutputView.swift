@@ -1,3 +1,4 @@
+import FocusDesignSystem
 import SwiftUI
 #if canImport(AppKit)
 import AppKit
@@ -5,6 +6,7 @@ import AppKit
 
 struct ConsoleOutputView: View {
     let output: String
+    @Environment(\.dsTheme) private var theme
 
     private var lines: [ConsoleLine] {
         output.components(separatedBy: "\n").enumerated().map { index, content in
@@ -25,10 +27,10 @@ struct ConsoleOutputView: View {
         .padding(8)
         .background(
             RoundedRectangle(cornerRadius: 6)
-                .fill(Color.black.opacity(0.3))
+                .fill(theme.colors.surfaceElevated.opacity(0.6))
                 .overlay(
                     RoundedRectangle(cornerRadius: 6)
-                        .stroke(Color.appGray700, lineWidth: 1)
+                        .stroke(theme.colors.border, lineWidth: 1)
                 )
         )
     }
@@ -79,13 +81,13 @@ enum ConsoleLineType {
     case info
     case success
 
-    var color: Color {
+    func color(theme: DSTheme) -> Color {
         switch self {
-        case .standard: return .white
-        case .error: return Color.appRed
-        case .warning: return Color.appAmber
-        case .info: return Color(red: 0.35, green: 0.78, blue: 0.98)
-        case .success: return Color.appGreen
+        case .standard: return theme.colors.textPrimary
+        case .error: return theme.colors.danger
+        case .warning: return theme.colors.warning
+        case .info: return theme.colors.accent
+        case .success: return theme.colors.success
         }
     }
 
@@ -102,47 +104,49 @@ enum ConsoleLineType {
 
 struct ConsoleLineView: View {
     let line: ConsoleLine
+    @Environment(\.dsTheme) private var theme
 
     var body: some View {
+        let lineColor = line.type.color(theme: theme)
         HStack(alignment: .top, spacing: 0) {
-            Text("\(line.number)")
+            DSText("\(line.number)")
                 .font(.system(size: 10, design: .monospaced))
-                .foregroundColor(Color.appGray600)
+                .foregroundColor(theme.colors.textSecondary)
                 .frame(width: 28, alignment: .trailing)
                 .padding(.trailing, 8)
 
             Rectangle()
-                .fill(Color.appGray700)
+                .fill(theme.colors.border)
                 .frame(width: 1)
                 .padding(.trailing, 8)
 
             if let icon = line.type.icon {
-                Image(systemName: icon)
+                DSImage(systemName: icon)
                     .font(.system(size: 9))
-                    .foregroundColor(line.type.color)
+                    .foregroundColor(lineColor)
                     .frame(width: 12)
                     .padding(.trailing, 4)
             }
 
-            Text(line.content.isEmpty ? " " : line.content)
+            DSText(line.content.isEmpty ? " " : line.content)
                 .font(.system(size: 12, design: .monospaced))
-                .foregroundColor(line.type.color)
+                .foregroundColor(lineColor)
                 .textSelection(.enabled)
 
             Spacer(minLength: 0)
 
-            Button(action: copyLine) {
-                Image(systemName: "doc.on.doc")
+            DSButton(action: copyLine) {
+                DSImage(systemName: "doc.on.doc")
                     .font(.system(size: 9))
-                    .foregroundColor(Color.appGray500)
+                    .foregroundColor(theme.colors.textSecondary)
             }
             .buttonStyle(.plain)
             .padding(.leading, 8)
         }
         .padding(.vertical, 2)
         .background(
-            line.type == .error ? Color.appRed.opacity(0.1) :
-            line.type == .warning ? Color.appAmber.opacity(0.1) :
+            line.type == .error ? theme.colors.danger.opacity(0.1) :
+            line.type == .warning ? theme.colors.warning.opacity(0.1) :
             Color.clear
         )
     }

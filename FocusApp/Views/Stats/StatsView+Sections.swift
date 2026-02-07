@@ -1,3 +1,4 @@
+import FocusDesignSystem
 import SwiftUI
 
 extension StatsView {
@@ -10,7 +11,7 @@ extension StatsView {
                 title: L10n.Stats.cardProblemsSolved,
                 value: "\(presenter.viewModel.solvedProblems)/\(presenter.viewModel.totalProblems)",
                 icon: "checkmark.circle.fill",
-                color: Color.appGreen,
+                color: theme.colors.success,
                 progress: Double(presenter.viewModel.solvedProblems) / Double(max(presenter.viewModel.totalProblems, 1))
             )
 
@@ -18,7 +19,7 @@ extension StatsView {
                 title: L10n.Stats.cardTopicsDone,
                 value: "\(presenter.viewModel.completedTopics)/\(presenter.viewModel.totalTopics)",
                 icon: "book.closed.fill",
-                color: Color.appPurple,
+                color: theme.colors.primary,
                 progress: Double(presenter.viewModel.completedTopics) / Double(max(presenter.viewModel.totalTopics, 1))
             )
 
@@ -26,7 +27,7 @@ extension StatsView {
                 title: L10n.Stats.cardHabitsToday,
                 value: "\(presenter.viewModel.habitsToday)/\(AppConstants.totalHabits)",
                 icon: "star.fill",
-                color: Color.appAmber,
+                color: theme.colors.warning,
                 progress: Double(presenter.viewModel.habitsToday) / Double(AppConstants.totalHabits)
             )
 
@@ -34,150 +35,138 @@ extension StatsView {
                 title: L10n.Stats.cardDaysLeft,
                 value: "\(presenter.viewModel.daysLeft)",
                 icon: "calendar",
-                color: Color.appRed,
+                color: theme.colors.danger,
                 progress: nil
             )
         }
     }
 
     func statCard(title: String, value: String, icon: String, color: Color, progress: Double?) -> some View {
-        VStack(alignment: .leading, spacing: 12) {
-            HStack {
-                ZStack {
-                    Circle()
-                        .fill(color.opacity(0.1))
-                        .frame(width: 40, height: 40)
+        DSCard(config: .init(style: .elevated)) {
+            VStack(alignment: .leading, spacing: 12) {
+                HStack {
+                    ZStack {
+                        Circle()
+                            .fill(color.opacity(0.12))
+                            .frame(width: 40, height: 40)
 
-                    Image(systemName: icon)
-                        .font(.system(size: 18))
-                        .foregroundColor(color)
-                }
-
-                Spacer()
-            }
-
-            Text(value)
-                .font(.system(size: 28, weight: .bold))
-                .foregroundColor(Color.appGray800)
-
-            Text(title)
-                .font(.system(size: 13))
-                .foregroundColor(Color.appGray500)
-
-            if let progress = progress {
-                GeometryReader { geo in
-                    ZStack(alignment: .leading) {
-                        RoundedRectangle(cornerRadius: 2)
-                            .fill(Color.appGray200)
-                            .frame(height: 4)
-
-                        RoundedRectangle(cornerRadius: 2)
-                            .fill(color)
-                            .frame(width: geo.size.width * progress, height: 4)
+                        DSImage(systemName: icon)
+                            .font(.system(size: 18))
+                            .foregroundColor(color)
                     }
+
+                    Spacer()
                 }
-                .frame(height: 4)
+
+                DSText(value)
+                    .font(.system(size: 28, weight: .bold))
+                    .foregroundColor(theme.colors.textPrimary)
+
+                DSText(title)
+                    .font(.system(size: 13))
+                    .foregroundColor(theme.colors.textSecondary)
+
+                if let progress = progress {
+                    GeometryReader { geo in
+                        ZStack(alignment: .leading) {
+                            RoundedRectangle(cornerRadius: 2)
+                                .fill(theme.colors.border)
+                                .frame(height: 4)
+
+                            RoundedRectangle(cornerRadius: 2)
+                                .fill(color)
+                                .frame(width: geo.size.width * progress, height: 4)
+                        }
+                    }
+                    .frame(height: 4)
+                }
             }
         }
-        .padding(16)
-        .background(
-            RoundedRectangle(cornerRadius: 12)
-                .fill(Color.white)
-                .shadow(color: Color.black.opacity(0.05), radius: 4, x: 0, y: 2)
-        )
     }
 
     var preCompletedSection: some View {
-        VStack(alignment: .leading, spacing: 12) {
-            HStack {
-                Image(systemName: "trophy.fill")
-                    .font(.system(size: 16))
-                    .foregroundColor(Color.appAmber)
+        DSCard(config: .init(style: .elevated)) {
+            VStack(alignment: .leading, spacing: 12) {
+                HStack {
+                    DSImage(systemName: "trophy.fill")
+                        .font(.system(size: 16))
+                        .foregroundColor(theme.colors.warning)
 
-                Text(L10n.Stats.precompletedTitle)
-                    .font(.system(size: 16, weight: .semibold))
-                    .foregroundColor(Color.appGray800)
+                    DSText(L10n.Stats.precompletedTitle)
+                        .font(.system(size: 16, weight: .semibold))
+                        .foregroundColor(theme.colors.textPrimary)
 
-                Spacer()
+                    Spacer()
 
-                Text(L10n.Stats.precompletedBonusFormat( preCompletedTopics.count))
-                    .font(.system(size: 13, weight: .medium))
-                    .foregroundColor(Color.appGreen)
-            }
+                    DSText(L10n.Stats.precompletedBonusFormat( preCompletedTopics.count))
+                        .font(.system(size: 13, weight: .medium))
+                        .foregroundColor(theme.colors.success)
+                }
 
-            FlowLayout(spacing: 8) {
-                ForEach(preCompletedTopics, id: \.self) { topic in
-                    HStack(spacing: 4) {
-                        Image(systemName: "checkmark")
-                            .font(.system(size: 10, weight: .bold))
+                FlowLayout(spacing: 8) {
+                    ForEach(preCompletedTopics, id: \.self) { topic in
+                        HStack(spacing: 4) {
+                            DSImage(systemName: "checkmark")
+                                .font(.system(size: 10, weight: .bold))
 
-                        Text(topic)
-                            .font(.system(size: 12, weight: .medium))
+                            DSText(topic)
+                                .font(.system(size: 12, weight: .medium))
+                        }
+                        .foregroundColor(theme.colors.success)
+                        .padding(.horizontal, 10)
+                        .padding(.vertical, 6)
+                        .background(
+                            RoundedRectangle(cornerRadius: 16)
+                                .fill(theme.colors.success.opacity(0.15))
+                        )
                     }
-                    .foregroundColor(Color.appGreen)
-                    .padding(.horizontal, 10)
-                    .padding(.vertical, 6)
-                    .background(
-                        RoundedRectangle(cornerRadius: 16)
-                            .fill(Color.appGreenLight)
-                    )
                 }
             }
         }
-        .padding(16)
-        .background(
-            RoundedRectangle(cornerRadius: 12)
-                .fill(Color.white)
-                .shadow(color: Color.black.opacity(0.05), radius: 4, x: 0, y: 2)
-        )
     }
 
     var topicBreakdownSection: some View {
-        VStack(alignment: .leading, spacing: 16) {
-            Text(L10n.Stats.topicBreakdownTitle)
-                .font(.system(size: 16, weight: .semibold))
-                .foregroundColor(Color.appGray800)
+        DSCard(config: .init(style: .elevated)) {
+            VStack(alignment: .leading, spacing: 16) {
+                DSText(L10n.Stats.topicBreakdownTitle)
+                    .font(.system(size: 16, weight: .semibold))
+                    .foregroundColor(theme.colors.textPrimary)
 
-            ForEach(presenter.viewModel.topicBreakdown) { day in
-                topicRow(day: day)
+                ForEach(presenter.viewModel.topicBreakdown) { day in
+                    topicRow(day: day)
+                }
             }
         }
-        .padding(16)
-        .background(
-            RoundedRectangle(cornerRadius: 12)
-                .fill(Color.white)
-                .shadow(color: Color.black.opacity(0.05), radius: 4, x: 0, y: 2)
-        )
     }
 
     func topicRow(day: TopicBreakdownViewModel) -> some View {
         VStack(spacing: 8) {
             HStack {
-                Text(day.topic)
+                DSText(day.topic)
                     .font(.system(size: 14, weight: .medium))
-                    .foregroundColor(day.isComplete ? Color.appGreen : Color.appGray700)
+                    .foregroundColor(day.isComplete ? theme.colors.success : theme.colors.textPrimary)
 
                 Spacer()
 
-                Text("\(day.completed)/\(day.total)")
+                DSText("\(day.completed)/\(day.total)")
                     .font(.system(size: 13))
-                    .foregroundColor(day.isComplete ? Color.appGreen : Color.appGray500)
+                    .foregroundColor(day.isComplete ? theme.colors.success : theme.colors.textSecondary)
 
                 if day.isComplete {
-                    Image(systemName: "checkmark.circle.fill")
+                    DSImage(systemName: "checkmark.circle.fill")
                         .font(.system(size: 14))
-                        .foregroundColor(Color.appGreen)
+                        .foregroundColor(theme.colors.success)
                 }
             }
 
             GeometryReader { geo in
                 ZStack(alignment: .leading) {
                     RoundedRectangle(cornerRadius: 2)
-                        .fill(Color.appGray200)
+                        .fill(theme.colors.border)
                         .frame(height: 4)
 
                     RoundedRectangle(cornerRadius: 2)
-                        .fill(day.isComplete ? Color.appGreen : Color.appPurple)
+                        .fill(day.isComplete ? theme.colors.success : theme.colors.primary)
                         .frame(width: geo.size.width * day.progress, height: 4)
                 }
             }

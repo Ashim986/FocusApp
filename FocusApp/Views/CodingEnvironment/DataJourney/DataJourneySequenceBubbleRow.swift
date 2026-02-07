@@ -1,3 +1,4 @@
+import FocusDesignSystem
 import SwiftUI
 
 struct SequenceBubbleRow: View {
@@ -19,6 +20,11 @@ struct SequenceBubbleRow: View {
     let pointerHorizontalPadding: CGFloat
     let pointerVerticalPadding: CGFloat
     let pointerSpacing: CGFloat
+    @Environment(\.dsTheme) private var theme
+
+    private var palette: DataJourneyPalette {
+        DataJourneyPalette(theme: theme)
+    }
 
     var centerSpacing: CGFloat { bubbleSize * 1.9 }
     var labelHeight: CGFloat { bubbleSize * 0.4 }
@@ -31,9 +37,9 @@ struct SequenceBubbleRow: View {
     var sequenceClearance: CGFloat { bubbleSize * 0.25 }
     var motionInset: CGFloat { pointerMotionInset + sequenceInset }
     var gapSpacing: CGFloat { max(10, bubbleSize * 0.8) }
-    let arrowColor = Color.appPurple.opacity(0.8)
+    var arrowColor: Color { palette.purple.opacity(0.8) }
     var loopArrowHeight: CGFloat { bubbleSize * 0.6 }
-    let loopArrowColor = Color.appPurple.opacity(0.95)
+    var loopArrowColor: Color { palette.purple.opacity(0.95) }
     var doublyOffset: CGFloat { bubbleSize * 0.27 }
     var pointerHeight: CGFloat { pointerFontSize + pointerVerticalPadding * 2 + 4 }
 
@@ -189,7 +195,7 @@ struct SequenceBubbleRow: View {
                 .frame(width: totalWidth, height: rowHeight)
 
                 ForEach(Array(bubbleItems.enumerated()), id: \.element.id) { index, item in
-                    let model = TraceBubbleModel.from(item.value)
+                    let model = TraceBubbleModel.from(item.value, palette: palette)
                     let fill = model.fill
                     let isHighlighted = highlightedIndices.contains(index)
                     let elementChangeType: ChangeType? = index < changeTypes.count
@@ -206,9 +212,9 @@ struct SequenceBubbleRow: View {
                                 changeType: elementChangeType
                             )
                             if showIndices {
-                                Text("\(index)")
+                                DSText("\(index)")
                                     .font(.system(size: max(8, bubbleSize * 0.28), weight: .semibold))
-                                    .foregroundColor(Color.appGray500)
+                                    .foregroundColor(palette.gray500)
                                     .frame(height: labelHeight)
                             }
                         }

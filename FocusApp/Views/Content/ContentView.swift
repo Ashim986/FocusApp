@@ -1,3 +1,4 @@
+import FocusDesignSystem
 import SwiftUI
 #if canImport(AppKit)
 import AppKit
@@ -23,11 +24,20 @@ enum Tab: CaseIterable {
         case .stats: return L10n.Tab.stats
         }
     }
+
+    var id: String {
+        switch self {
+        case .plan: return "plan"
+        case .today: return "today"
+        case .stats: return "stats"
+        }
+    }
 }
 
 struct ContentView: View {
     @ObservedObject var presenter: ContentPresenter
     @ObservedObject var coordinator: ContentCoordinator
+    @Environment(\.dsTheme) private var theme
 
     var body: some View {
         NavigationStack {
@@ -85,110 +95,68 @@ struct ContentView: View {
         VStack(spacing: 16) {
             HStack {
                 VStack(alignment: .leading, spacing: 4) {
-                    Text(L10n.Content.appTitle)
+                    DSText(L10n.Content.appTitle)
                         .font(.system(size: 24, weight: .bold))
-                        .foregroundColor(Color.appGray800)
+                        .foregroundColor(theme.colors.textPrimary)
 
-                    Text(L10n.Content.subtitle)
+                    DSText(L10n.Content.subtitle)
                         .font(.system(size: 13))
-                        .foregroundColor(Color.appGray500)
+                        .foregroundColor(theme.colors.textSecondary)
                 }
 
                 Spacer()
 
                 HStack(spacing: 12) {
                     VStack(alignment: .trailing, spacing: 2) {
-                        Text(L10n.Content.progressCount( presenter.solvedProblems, presenter.totalProblems))
+                        DSText(L10n.Content.progressCount( presenter.solvedProblems, presenter.totalProblems))
                             .font(.system(size: 14, weight: .semibold))
-                            .foregroundColor(Color.appGray700)
+                            .foregroundColor(theme.colors.textPrimary)
 
-                        Text(L10n.Content.problemsSolved)
+                        DSText(L10n.Content.problemsSolved)
                             .font(.system(size: 11))
-                            .foregroundColor(Color.appGray500)
+                            .foregroundColor(theme.colors.textSecondary)
                     }
 
                     ZStack {
-                        Circle()
-                            .stroke(Color.appGray200, lineWidth: 4)
-                            .frame(width: 44, height: 44)
-
-                        Circle()
-                            .trim(from: 0, to: presenter.progressPercent)
-                            .stroke(Color.appGreen, style: StrokeStyle(lineWidth: 4, lineCap: .round))
-                            .frame(width: 44, height: 44)
-                            .rotationEffect(.degrees(-90))
-
-                        Text("\(Int(presenter.progressPercent * 100))%")
-                            .font(.system(size: 10, weight: .semibold))
-                            .foregroundColor(Color.appGray700)
-                    }
-
-                    Button(action: openSettings) {
-                        HStack(spacing: 6) {
-                            Image(systemName: "slider.horizontal.3")
-                                .font(.system(size: 12, weight: .semibold))
-                            Text(L10n.Content.settingsButton)
-                                .font(.system(size: 12, weight: .semibold))
-                        }
-                        .foregroundColor(Color.appGray700)
-                        .padding(.horizontal, 10)
-                        .padding(.vertical, 8)
-                        .background(
-                            RoundedRectangle(cornerRadius: 8)
-                                .fill(Color.appGray100)
+                        DSProgressRing(
+                            config: .init(size: 44, lineWidth: 4, style: .secondary),
+                            state: .init(progress: presenter.progressPercent)
                         )
+
+                        DSText("\(Int(presenter.progressPercent * 100))%")
+                            .font(.system(size: 10, weight: .semibold))
+                            .foregroundColor(theme.colors.textPrimary)
                     }
-                    .buttonStyle(.plain)
+
+                    DSButton(
+                        L10n.Content.settingsButton,
+                        config: .init(
+                            style: .secondary,
+                            size: .small,
+                            icon: DSImage(systemName: "slider.horizontal.3"),
+                            iconPosition: .leading
+                        )
+                    ) {
+                        openSettings()
+                    }
                     .help(L10n.Content.settingsButton)
                 }
 
             }
 
-            HStack(spacing: 4) {
-                ForEach(Tab.allCases, id: \.self) { tab in
-                    tabButton(tab)
+            DSSegmentedControl(
+                items: Tab.allCases.map { DSSegmentItem(id: $0.id, title: $0.title) },
+                state: .init(selectedId: coordinator.selectedTab.id),
+                onSelect: { selected in
+                    if let tab = Tab.allCases.first(where: { $0.id == selected }) {
+                        coordinator.selectTab(tab)
+                    }
                 }
-            }
-            .padding(4)
-            .background(
-                RoundedRectangle(cornerRadius: 10)
-                    .fill(Color.appGray100)
             )
         }
         .padding(20)
-        .background(Color.white)
-        .shadow(color: Color.black.opacity(0.05), radius: 2, x: 0, y: 2)
-    }
-
-    private func tabButton(_ tab: Tab) -> some View {
-        Button(action: {
-            coordinator.selectTab(tab)
-        }, label: {
-            HStack(spacing: 6) {
-                Image(systemName: tab.icon)
-                    .font(.system(size: 12))
-
-                Text(tab.title)
-                    .font(.system(
-                        size: 13,
-                        weight: coordinator.selectedTab == tab ? .semibold : .medium
-                    ))
-            }
-            .foregroundColor(coordinator.selectedTab == tab ? Color.appPurple : Color.appGray500)
-            .padding(.horizontal, 16)
-            .padding(.vertical, 8)
-            .background(
-                RoundedRectangle(cornerRadius: 8)
-                    .fill(coordinator.selectedTab == tab ? Color.white : Color.clear)
-                    .shadow(
-                        color: coordinator.selectedTab == tab ? Color.black.opacity(0.05) : Color.clear,
-                        radius: 2,
-                        x: 0,
-                        y: 1
-                    )
-            )
-        })
-        .buttonStyle(.plain)
+        .background(theme.colors.surface)
+        .shadow(color: theme.shadow.color, radius: theme.shadow.radius, x: theme.shadow.x, y: theme.shadow.y)
     }
 
     private func openSettings() {

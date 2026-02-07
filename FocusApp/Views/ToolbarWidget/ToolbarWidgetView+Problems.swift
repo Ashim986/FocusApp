@@ -1,29 +1,34 @@
+import FocusDesignSystem
 import SwiftUI
 
 extension ToolbarWidgetView {
     var todaysProblemsSection: some View {
         VStack(spacing: 0) {
             HStack {
-                Text(L10n.Widget.problemsTitle)
+                DSText(L10n.Widget.problemsTitle)
                     .font(.system(size: 11, weight: .semibold))
-                    .foregroundColor(.white.opacity(0.8))
+                    .foregroundColor(theme.colors.textPrimary.opacity(0.85))
 
                 Spacer()
 
                 let solved = presenter.todaysProblems.enumerated().filter { item in
                     presenter.data.isProblemCompleted(day: presenter.currentDayNumber, problemIndex: item.offset)
                 }.count
-                Text("\(solved)/\(presenter.todaysProblems.count)")
+                DSText("\(solved)/\(presenter.todaysProblems.count)")
                     .font(.system(size: 9, weight: .semibold))
-                    .foregroundColor(solved == presenter.todaysProblems.count ? .green : .white.opacity(0.7))
+                    .foregroundColor(
+                        solved == presenter.todaysProblems.count
+                            ? theme.colors.success
+                            : theme.colors.textSecondary
+                    )
                     .padding(.horizontal, 8)
                     .padding(.vertical, 3)
                     .background(
                         Capsule()
                             .fill(
                                 solved == presenter.todaysProblems.count
-                                    ? Color.green.opacity(0.2)
-                                    : Color.white.opacity(0.08)
+                                    ? theme.colors.success.opacity(0.18)
+                                    : theme.colors.surfaceElevated.opacity(0.5)
                             )
                     )
             }
@@ -54,29 +59,29 @@ extension ToolbarWidgetView {
 
     var nextDaySection: some View {
         HStack {
-            Image(systemName: "checkmark.seal.fill")
-                .foregroundColor(.green)
-            Text(L10n.Widget.problemsAllDone)
+            DSImage(systemName: "checkmark.seal.fill")
+                .foregroundColor(theme.colors.success)
+            DSText(L10n.Widget.problemsAllDone)
                 .font(.system(size: 11, weight: .medium))
-                .foregroundColor(.green)
+                .foregroundColor(theme.colors.success)
             Spacer()
-            Button(action: {
+            DSButton(action: {
                 presenter.advanceToNextDay()
             }, label: {
                 HStack(spacing: 4) {
-                    Text(L10n.Widget.problemsStartDayFormat(presenter.tomorrowDayNumber))
+                    DSText(L10n.Widget.problemsStartDayFormat(presenter.tomorrowDayNumber))
                         .font(.system(size: 10, weight: .semibold))
-                    Image(systemName: "arrow.right.circle.fill")
+                    DSImage(systemName: "arrow.right.circle.fill")
                         .font(.system(size: 12))
                 }
-                .foregroundColor(.white)
+                .foregroundColor(theme.colors.surface)
                 .padding(.horizontal, 10)
                 .padding(.vertical, 5)
                 .background(
                     RoundedRectangle(cornerRadius: 6)
                         .fill(
                             LinearGradient(
-                                colors: [Color.purple, Color.blue],
+                                colors: [theme.colors.primary, theme.colors.accent],
                                 startPoint: .leading,
                                 endPoint: .trailing
                             )
@@ -89,7 +94,7 @@ extension ToolbarWidgetView {
         .padding(.vertical, 6)
         .background(
             RoundedRectangle(cornerRadius: 10)
-                .fill(Color.white.opacity(0.04))
+                .fill(theme.colors.surfaceElevated.opacity(0.35))
         )
     }
 }

@@ -1,24 +1,28 @@
+import FocusDesignSystem
 import SwiftUI
 
 struct WidgetCard<Content: View>: View {
-    let fill: Color
+    let fill: Color?
     let content: Content
+    @Environment(\.dsTheme) private var theme
 
-    init(fill: Color = Color.white.opacity(0.05), @ViewBuilder content: () -> Content) {
+    init(fill: Color? = nil, @ViewBuilder content: () -> Content) {
         self.fill = fill
         self.content = content()
     }
 
     var body: some View {
+        let fillColor = fill ?? theme.colors.surfaceElevated.opacity(theme.kind == .dark ? 0.5 : 0.9)
+        let borderColor = theme.colors.border.opacity(theme.kind == .dark ? 0.35 : 0.7)
         content
             .padding(12)
             .background(
                 RoundedRectangle(cornerRadius: 12)
-                    .fill(fill)
+                    .fill(fillColor)
             )
             .overlay(
                 RoundedRectangle(cornerRadius: 12)
-                    .stroke(Color.white.opacity(0.08), lineWidth: 1)
+                    .stroke(borderColor, lineWidth: 1)
             )
     }
 }

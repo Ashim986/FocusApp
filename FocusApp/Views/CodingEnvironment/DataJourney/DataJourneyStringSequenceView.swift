@@ -1,3 +1,4 @@
+import FocusDesignSystem
 import SwiftUI
 
 /// Displays a string as a full label above a row of character bubbles with index pointers.
@@ -11,6 +12,11 @@ struct StringSequenceView: View {
     let pointerFontSize: CGFloat
     let pointerHorizontalPadding: CGFloat
     let pointerVerticalPadding: CGFloat
+    @Environment(\.dsTheme) private var theme
+
+    private var palette: DataJourneyPalette {
+        DataJourneyPalette(theme: theme)
+    }
 
     init(
         fullString: String,
@@ -36,22 +42,22 @@ struct StringSequenceView: View {
         VStack(alignment: .leading, spacing: 8) {
             // Full string label
             HStack(spacing: 6) {
-                Text("string")
+                DSText("string")
                     .font(.system(size: 9, weight: .medium))
-                    .foregroundColor(Color.appGreen)
+                    .foregroundColor(palette.green)
                     .padding(.horizontal, 6)
                     .padding(.vertical, 2)
                     .background(
                         RoundedRectangle(cornerRadius: 4)
-                            .fill(Color.appGreen.opacity(0.15))
+                            .fill(palette.green.opacity(0.15))
                     )
 
                 let displayString = fullString.count > 50
                     ? String(fullString.prefix(47)) + "..."
                     : fullString
-                Text("\"\(displayString)\"")
+                DSText("\"\(displayString)\"")
                     .font(.system(size: 11, weight: .medium, design: .monospaced))
-                    .foregroundColor(Color.appGreen.opacity(0.85))
+                    .foregroundColor(palette.green.opacity(0.85))
                     .lineLimit(1)
             }
 
@@ -122,7 +128,7 @@ struct StringSequenceView: View {
                 Color.clear
                     .frame(width: startFraction * 100, height: 3)
                 RoundedRectangle(cornerRadius: 1.5)
-                    .fill(Color.appCyan.opacity(0.6))
+                    .fill(palette.cyan.opacity(0.6))
                     .frame(width: max(4, widthFraction * 100), height: 3)
                 Spacer(minLength: 0)
             }

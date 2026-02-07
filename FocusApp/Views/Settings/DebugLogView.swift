@@ -1,3 +1,4 @@
+import FocusDesignSystem
 import SwiftUI
 #if canImport(AppKit)
 import AppKit
@@ -10,6 +11,7 @@ struct DebugLogView: View {
     @State var selectedLevel: DebugLogLevelFilter = .all
     @State var selectedCategory: DebugLogCategoryFilter = .all
     @State var searchText: String = ""
+    @Environment(\.dsTheme) private var theme
 
     var body: some View {
         VStack(spacing: 0) {

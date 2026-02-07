@@ -1,3 +1,4 @@
+import FocusDesignSystem
 import SwiftUI
 
 /// Dual visualization for heap data: array view on top, implicit binary tree below.
@@ -10,6 +11,11 @@ struct HeapView: View {
     let pointerFontSize: CGFloat
     let pointerHorizontalPadding: CGFloat
     let pointerVerticalPadding: CGFloat
+    @Environment(\.dsTheme) private var theme
+
+    private var palette: DataJourneyPalette {
+        DataJourneyPalette(theme: theme)
+    }
 
     init(
         items: [TraceValue],
@@ -35,19 +41,19 @@ struct HeapView: View {
         VStack(alignment: .leading, spacing: 10) {
             // Label
             HStack(spacing: 6) {
-                Text(isMinHeap ? "min-heap" : "max-heap")
+                DSText(isMinHeap ? "min-heap" : "max-heap")
                     .font(.system(size: 9, weight: .medium))
-                    .foregroundColor(Color.appPurple)
+                    .foregroundColor(palette.purple)
                     .padding(.horizontal, 6)
                     .padding(.vertical, 2)
                     .background(
                         RoundedRectangle(cornerRadius: 4)
-                            .fill(Color.appPurple.opacity(0.15))
+                            .fill(palette.purple.opacity(0.15))
                     )
 
-                Text("array")
+                DSText("array")
                     .font(.system(size: 9, weight: .medium))
-                    .foregroundColor(Color.appGray400)
+                    .foregroundColor(palette.gray400)
             }
 
             // Array view
@@ -69,16 +75,16 @@ struct HeapView: View {
             // Separator with "tree view" label
             HStack(spacing: 6) {
                 Rectangle()
-                    .fill(Color.appGray700.opacity(0.4))
+                    .fill(palette.gray700.opacity(0.4))
                     .frame(height: 1)
                     .frame(maxWidth: 30)
 
-                Text("tree view")
+                DSText("tree view")
                     .font(.system(size: 9, weight: .medium))
-                    .foregroundColor(Color.appGray400)
+                    .foregroundColor(palette.gray400)
 
                 Rectangle()
-                    .fill(Color.appGray700.opacity(0.4))
+                    .fill(palette.gray700.opacity(0.4))
                     .frame(height: 1)
             }
 
@@ -106,7 +112,8 @@ struct HeapView: View {
             guard tree.nodes.contains(where: { $0.id == nodeId }) else { return nil }
             return PointerMarker(
                 name: pointer.name,
-                nodeId: nodeId
+                nodeId: nodeId,
+                palette: palette
             )
         }
     }

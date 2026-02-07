@@ -10,7 +10,7 @@ struct ModernTestCaseView: View {
     var body: some View {
         VStack(spacing: 0) {
             HStack(spacing: 0) {
-            Text(L10n.Coding.Testcase.title)
+            DSText(L10n.Coding.Testcase.title)
                     .font(theme.typography.subtitle)
                     .foregroundColor(theme.colors.textPrimary)
                     .padding(.horizontal, 12)
@@ -39,10 +39,10 @@ struct ModernTestCaseView: View {
                 EmptyView()
             } else if presenter.testCases.isEmpty {
                 VStack(spacing: 8) {
-                    Image(systemName: "doc.text")
+                    DSImage(systemName: "doc.text")
                         .font(.system(size: 20))
                         .foregroundColor(theme.colors.textSecondary)
-                Text(L10n.Coding.Testcase.empty)
+                DSText(L10n.Coding.Testcase.empty)
                         .font(theme.typography.caption)
                         .foregroundColor(theme.colors.textSecondary)
                     DSButton(
@@ -86,7 +86,7 @@ struct ModernTestCaseView: View {
     private func testCaseTab(index: Int, testCase: TestCase) -> some View {
         let isSelected = selectedTestIndex == index
 
-        return Button(action: {
+        return DSButton(action: {
             selectedTestIndex = index
             presenter.showJourneyForTestCase(index)
         }, label: {
@@ -97,7 +97,7 @@ struct ModernTestCaseView: View {
                         .frame(width: 6, height: 6)
                 }
 
-                Text(L10n.Coding.Testcase.caseFormat(index + 1))
+                DSText(L10n.Coding.Testcase.caseFormat(index + 1))
                     .font(.system(size: 10, weight: isSelected ? .semibold : .regular))
                     .foregroundColor(isSelected ? theme.colors.textPrimary : theme.colors.textSecondary)
             }
@@ -110,7 +110,7 @@ struct ModernTestCaseView: View {
         })
         .buttonStyle(.plain)
         .contextMenu {
-            Button(role: .destructive, action: {
+            DSButton(role: .destructive, action: {
                 presenter.removeTestCase(at: index)
             }, label: {
                 Label("Delete", systemImage: "trash")
@@ -127,7 +127,7 @@ struct ModernTestCaseView: View {
         return AnyView(ScrollView {
             VStack(alignment: .leading, spacing: 12) {
                 VStack(alignment: .leading, spacing: 4) {
-                    Text(L10n.Coding.Testcase.inputLabel)
+                    DSText(L10n.Coding.Testcase.inputLabel)
                         .font(.system(size: 10, weight: .medium))
                         .foregroundColor(theme.colors.textSecondary)
 
@@ -145,12 +145,12 @@ struct ModernTestCaseView: View {
 
                 VStack(alignment: .leading, spacing: 4) {
                     HStack(spacing: 4) {
-                        Text(L10n.Coding.Testcase.expectedLabel)
+                        DSText(L10n.Coding.Testcase.expectedLabel)
                             .font(.system(size: 10, weight: .medium))
                             .foregroundColor(theme.colors.textSecondary)
 
                         if testCase.expectedOutput.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
-                            Text("(unavailable)")
+                            DSText("(unavailable)")
                                 .font(.system(size: 10, weight: .regular))
                                 .foregroundColor(theme.colors.textSecondary)
                                 .italic()
@@ -175,8 +175,8 @@ struct ModernTestCaseView: View {
     }
 
     private func headerIconButton(systemName: String, action: @escaping () -> Void) -> some View {
-        Button(action: action) {
-            Image(systemName: systemName)
+        DSButton(action: action) {
+            DSImage(systemName: systemName)
                 .font(.system(size: 11, weight: .medium))
                 .foregroundColor(theme.colors.textSecondary)
                 .frame(width: 24, height: 24)

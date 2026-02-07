@@ -1,25 +1,27 @@
 import AppKit
+import FocusDesignSystem
 import SwiftUI
 
 struct TomorrowProblemRow: View {
     let problem: Problem
 
     @State private var isHovering = false
+    @Environment(\.dsTheme) private var theme
 
     var body: some View {
         HStack(spacing: 8) {
-            Image(systemName: "circle.dashed")
+            DSImage(systemName: "circle.dashed")
                 .font(.system(size: 12))
-                .foregroundColor(.gray.opacity(0.4))
+                .foregroundColor(theme.colors.textSecondary.opacity(0.4))
 
-            Button(action: {
+            DSButton(action: {
                 if let url = URL(string: problem.url) {
                     NSWorkspace.shared.open(url)
                 }
             }, label: {
-                Text(problem.displayName)
+                DSText(problem.displayName)
                     .font(.system(size: 10))
-                    .foregroundColor(.white.opacity(0.6))
+                    .foregroundColor(theme.colors.textSecondary)
                     .lineLimit(1)
                     .underline(isHovering)
             })
@@ -35,21 +37,32 @@ struct TomorrowProblemRow: View {
 
             Spacer()
 
-            Text(problem.difficulty.rawValue)
+            DSText(problem.difficulty.rawValue)
                 .font(.system(size: 7, weight: .medium))
-                .foregroundColor(problem.difficulty == .easy ? .green.opacity(0.6) : .orange.opacity(0.6))
+                .foregroundColor(difficultyColor.opacity(0.7))
                 .padding(.horizontal, 4)
                 .padding(.vertical, 1)
                 .background(
                     RoundedRectangle(cornerRadius: 3)
-                        .fill((problem.difficulty == .easy ? Color.green : Color.orange).opacity(0.1))
+                        .fill(difficultyColor.opacity(0.12))
                 )
         }
         .padding(.horizontal, 8)
         .padding(.vertical, 4)
         .background(
             RoundedRectangle(cornerRadius: 5)
-                .fill(isHovering ? Color.white.opacity(0.05) : Color.clear)
+                .fill(isHovering ? theme.colors.surfaceElevated.opacity(0.2) : Color.clear)
         )
+    }
+
+    private var difficultyColor: Color {
+        switch problem.difficulty {
+        case .easy:
+            return theme.colors.success
+        case .medium:
+            return theme.colors.warning
+        case .hard:
+            return theme.colors.danger
+        }
     }
 }

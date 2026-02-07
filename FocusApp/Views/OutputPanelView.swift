@@ -1,3 +1,4 @@
+import FocusDesignSystem
 import SwiftUI
 
 struct OutputPanelView: View {
@@ -5,14 +6,15 @@ struct OutputPanelView: View {
     let error: String
     let testCases: [TestCase]
     let isRunning: Bool
+    @Environment(\.dsTheme) private var theme
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
             // Header
             HStack {
-                Text(L10n.Output.title)
+                DSText(L10n.Output.title)
                     .font(.system(size: 12, weight: .semibold))
-                    .foregroundColor(.white)
+                    .foregroundColor(theme.colors.textPrimary)
 
                 Spacer()
 
@@ -21,18 +23,18 @@ struct OutputPanelView: View {
                         ProgressView()
                             .scaleEffect(0.6)
                             .frame(width: 12, height: 12)
-                        Text(L10n.Output.running)
+                        DSText(L10n.Output.running)
                             .font(.system(size: 11))
-                            .foregroundColor(Color.appGray400)
+                            .foregroundColor(theme.colors.textSecondary)
                     }
                 }
             }
             .padding(.horizontal, 12)
             .padding(.vertical, 8)
-            .background(Color.appGray800)
+            .background(theme.colors.surfaceElevated)
 
             Divider()
-                .background(Color.appGray700)
+                .background(theme.colors.border)
 
             ScrollView {
                 VStack(alignment: .leading, spacing: 12) {
@@ -59,7 +61,7 @@ struct OutputPanelView: View {
                 .padding(12)
                 .frame(maxWidth: .infinity, alignment: .leading)
             }
-            .background(Color.appGray900)
+            .background(theme.colors.surface)
         }
     }
 }

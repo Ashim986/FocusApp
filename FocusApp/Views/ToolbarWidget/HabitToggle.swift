@@ -1,4 +1,5 @@
 import AppKit
+import FocusDesignSystem
 import SwiftUI
 
 struct HabitToggle: View {
@@ -8,27 +9,37 @@ struct HabitToggle: View {
     let onToggle: () -> Void
 
     @State private var isHovering = false
+    @Environment(\.dsTheme) private var theme
 
     var body: some View {
-        Button(action: onToggle) {
+        DSButton(action: onToggle) {
             HStack(spacing: 4) {
-                Image(systemName: done ? "checkmark.circle.fill" : icon)
+                DSImage(systemName: done ? "checkmark.circle.fill" : icon)
                     .font(.system(size: 11))
-                    .foregroundColor(done ? .green : .gray)
+                    .foregroundColor(done ? theme.colors.success : theme.colors.textSecondary)
 
-                Text(label)
+                DSText(label)
                     .font(.system(size: 10, weight: .medium))
-                    .foregroundColor(done ? .green : .gray)
+                    .foregroundColor(done ? theme.colors.success : theme.colors.textSecondary)
             }
             .padding(.horizontal, 10)
             .padding(.vertical, 6)
             .background(
                 Capsule()
-                    .fill(done ? Color.green.opacity(0.18) : Color.white.opacity(isHovering ? 0.12 : 0.06))
+                    .fill(
+                        done
+                            ? theme.colors.success.opacity(0.18)
+                            : theme.colors.surfaceElevated.opacity(isHovering ? 0.35 : 0.2)
+                    )
             )
             .overlay(
                 Capsule()
-                    .stroke(done ? Color.green.opacity(0.35) : Color.white.opacity(0.06), lineWidth: 1)
+                    .stroke(
+                        done
+                            ? theme.colors.success.opacity(0.35)
+                            : theme.colors.border.opacity(0.3),
+                        lineWidth: 1
+                    )
             )
         }
         .buttonStyle(.plain)

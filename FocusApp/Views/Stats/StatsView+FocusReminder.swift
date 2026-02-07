@@ -1,43 +1,32 @@
+import FocusDesignSystem
 import SwiftUI
 
 extension StatsView {
     var blockedSitesReminder: some View {
-        VStack(alignment: .leading, spacing: 12) {
-            HStack {
-                Image(systemName: "shield.fill")
-                    .font(.system(size: 16))
-                    .foregroundColor(Color.appRed)
+        DSCard(config: .init(style: .elevated)) {
+            VStack(alignment: .leading, spacing: 12) {
+                HStack {
+                    DSImage(systemName: "shield.fill")
+                        .font(.system(size: 16))
+                        .foregroundColor(theme.colors.danger)
 
-                Text(L10n.Stats.focusReminderTitle)
-                    .font(.system(size: 16, weight: .semibold))
-                    .foregroundColor(Color.appGray800)
+                    DSText(L10n.Stats.focusReminderTitle)
+                        .font(.system(size: 16, weight: .semibold))
+                        .foregroundColor(theme.colors.textPrimary)
 
-                Spacer()
-            }
+                    Spacer()
+                }
 
-            Text(L10n.Stats.focusReminderBody)
-                .font(.system(size: 13))
-                .foregroundColor(Color.appGray600)
+                DSText(L10n.Stats.focusReminderBody)
+                    .font(.system(size: 13))
+                    .foregroundColor(theme.colors.textSecondary)
 
-            FlowLayout(spacing: 6) {
-                ForEach(blockedSites, id: \.self) { site in
-                    Text(site)
-                        .font(.system(size: 11, weight: .medium))
-                        .foregroundColor(Color.appRed)
-                        .padding(.horizontal, 8)
-                        .padding(.vertical, 4)
-                        .background(
-                            RoundedRectangle(cornerRadius: 4)
-                                .fill(Color.appRedLight)
-                        )
+                FlowLayout(spacing: 6) {
+                    ForEach(blockedSites, id: \.self) { site in
+                        DSBadge(site, config: .init(style: .danger))
+                    }
                 }
             }
         }
-        .padding(16)
-        .background(
-            RoundedRectangle(cornerRadius: 12)
-                .fill(Color.white)
-                .shadow(color: Color.black.opacity(0.05), radius: 4, x: 0, y: 2)
-        )
     }
 }

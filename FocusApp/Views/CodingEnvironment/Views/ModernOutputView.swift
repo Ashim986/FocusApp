@@ -35,7 +35,7 @@ struct ModernOutputView: View {
         VStack(spacing: 0) {
             HStack(spacing: 0) {
                 ForEach(availableTabs, id: \.self) { tab in
-                    Button(action: {
+                    DSButton(action: {
                         selectedTab = tab
                     }, label: {
                         HStack(spacing: 4) {
@@ -45,7 +45,7 @@ struct ModernOutputView: View {
                                     .frame(width: 6, height: 6)
                             }
 
-                            Text(tab.title)
+                            DSText(tab.title)
                                 .font(.system(size: 11, weight: selectedTab == tab ? .semibold : .regular))
                                 .foregroundColor(
                                     selectedTab == tab
@@ -66,7 +66,7 @@ struct ModernOutputView: View {
                         ProgressView()
                             .scaleEffect(0.5)
                             .frame(width: 12, height: 12)
-                        Text(output.isEmpty
+                        DSText(output.isEmpty
                             ? L10n.Coding.Output.running
                             : output)
                             .font(.system(size: 10))

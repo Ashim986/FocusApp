@@ -1,3 +1,4 @@
+import FocusDesignSystem
 import SwiftUI
 
 /// Renders a trie as an N-ary tree layout with character-labeled edges and isEnd highlighting.
@@ -8,6 +9,11 @@ struct TrieGraphView: View {
     let pointerFontSize: CGFloat
     let pointerHorizontalPadding: CGFloat
     let pointerVerticalPadding: CGFloat
+    @Environment(\.dsTheme) private var theme
+
+    private var palette: DataJourneyPalette {
+        DataJourneyPalette(theme: theme)
+    }
 
     private let horizontalSpacing: CGFloat = 12
     private let verticalSpacing: CGFloat = 50
@@ -41,15 +47,15 @@ struct TrieGraphView: View {
                         path.addLine(to: edge.to)
                         context.stroke(
                             path,
-                            with: .color(Color.appGray600.opacity(0.5)),
+                            with: .color(palette.gray600.opacity(0.5)),
                             lineWidth: 1.5
                         )
                         // Edge character label
                         let midX = (edge.from.x + edge.to.x) / 2
                         let midY = (edge.from.y + edge.to.y) / 2
-                        let text = Text(edge.character)
+                        let text = DSText(edge.character)
                             .font(.system(size: max(8, nodeSize * 0.28), weight: .bold, design: .monospaced))
-                            .foregroundColor(Color.appCyan)
+                            .foregroundColor(palette.cyan)
                         context.draw(context.resolve(text), at: CGPoint(x: midX - 6, y: midY))
                     }
                 }
@@ -57,7 +63,7 @@ struct TrieGraphView: View {
 
                 ForEach(layout.nodes) { node in
                     ZStack(alignment: .top) {
-                        let fill = node.isEnd ? Color.appGreen.opacity(0.7) : Color.appGray700
+                        let fill = node.isEnd ? palette.green.opacity(0.7) : palette.gray700
                         let label = node.character.isEmpty ? "root" : node.character
                         TraceBubble(
                             text: label,
@@ -67,7 +73,7 @@ struct TrieGraphView: View {
                         )
                         if node.isEnd {
                             Circle()
-                                .stroke(Color.appGreen, lineWidth: 2)
+                                .stroke(palette.green, lineWidth: 2)
                                 .frame(width: nodeSize + 4, height: nodeSize + 4)
                         }
                         if let pointerStack = pointerMap[node.trieNodeId] {

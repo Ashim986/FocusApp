@@ -1,14 +1,16 @@
+import FocusDesignSystem
 import SwiftUI
 
 struct FocusOverlay: View {
     @ObservedObject var presenter: FocusPresenter
     @Binding var isPresented: Bool
+    @Environment(\.dsTheme) private var theme
 
     private let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
 
     var body: some View {
         ZStack {
-            Color.appIndigo
+            theme.colors.background
                 .ignoresSafeArea()
 
             if !presenter.hasStarted {

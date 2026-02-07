@@ -3,7 +3,7 @@ import SwiftUI
 extension DataJourneyStructureCanvasView {
     @ViewBuilder
     func listLabel(_ title: String, color: Color, background: Color) -> some View {
-        Text(title)
+        DSText(title)
             .font(.system(size: 9, weight: .semibold))
             .foregroundColor(color)
             .padding(.horizontal, 8)

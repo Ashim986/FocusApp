@@ -1,11 +1,12 @@
+import FocusDesignSystem
 import SwiftUI
 
 extension ToolbarWidgetView {
     var habitsSection: some View {
         VStack(alignment: .leading, spacing: 8) {
-            Text(L10n.Widget.habitsTitle)
+            DSText(L10n.Widget.habitsTitle)
                 .font(.system(size: 11, weight: .semibold))
-                .foregroundColor(.white.opacity(0.8))
+                .foregroundColor(theme.colors.textPrimary.opacity(0.85))
 
             HStack(spacing: 8) {
                 HabitToggle(

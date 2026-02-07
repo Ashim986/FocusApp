@@ -1,3 +1,4 @@
+import FocusDesignSystem
 import SwiftData
 import SwiftUI
 
@@ -12,9 +13,11 @@ struct ToolbarWidgetView_Previews: PreviewProvider {
                 let presenter = ToolbarWidgetPresenter(
                     interactor: ToolbarWidgetInteractor(appStore: appStore, leetCodeSync: leetCodeSync)
                 )
-                ToolbarWidgetView(presenter: presenter)
+                DSThemeProvider(theme: .dark) {
+                    ToolbarWidgetView(presenter: presenter)
+                }
             } else {
-                Text("Preview unavailable")
+                DSText("Preview unavailable")
             }
         }
     }

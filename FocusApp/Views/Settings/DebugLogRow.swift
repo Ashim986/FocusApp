@@ -1,3 +1,4 @@
+import FocusDesignSystem
 import SwiftUI
 #if canImport(AppKit)
 import AppKit
@@ -6,6 +7,7 @@ import AppKit
 struct DebugLogRow: View {
     let entry: DebugLogEntry
     @State private var isExpanded = false
+    @Environment(\.dsTheme) private var theme
 
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
@@ -17,35 +19,35 @@ struct DebugLogRow: View {
 
                 VStack(alignment: .leading, spacing: 4) {
                     HStack(alignment: .center, spacing: 8) {
-                        Text(entry.title)
+                        DSText(entry.title)
                             .font(.system(size: 12, weight: .semibold))
-                            .foregroundColor(.white)
+                            .foregroundColor(theme.colors.textPrimary)
                         Spacer()
-                        Text(Self.timestampFormatter.string(from: entry.timestamp))
+                        DSText(Self.timestampFormatter.string(from: entry.timestamp))
                             .font(.system(size: 10))
-                            .foregroundColor(Color.appGray500)
-                        Image(systemName: isExpanded ? "chevron.down" : "chevron.right")
+                            .foregroundColor(theme.colors.textSecondary)
+                        DSImage(systemName: isExpanded ? "chevron.down" : "chevron.right")
                             .font(.system(size: 10, weight: .semibold))
-                            .foregroundColor(Color.appGray500)
-                        Button(action: copyEntry) {
-                            Image(systemName: "doc.on.doc")
+                            .foregroundColor(theme.colors.textSecondary)
+                        DSButton(action: copyEntry) {
+                            DSImage(systemName: "doc.on.doc")
                                 .font(.system(size: 10))
-                                .foregroundColor(Color.appGray500)
+                                .foregroundColor(theme.colors.textSecondary)
                         }
                         .buttonStyle(.plain)
                         .help("Copy log")
                     }
 
-                    Text(entry.message)
+                    DSText(entry.message)
                         .font(.system(size: 11))
-                        .foregroundColor(Color.appGray300)
+                        .foregroundColor(theme.colors.textSecondary)
                         .lineLimit(isExpanded ? nil : 2)
                         .fixedSize(horizontal: false, vertical: true)
 
                     if let detail = primaryDetail {
-                        Text(detail)
+                        DSText(detail)
                             .font(.system(size: 10, design: .monospaced))
-                            .foregroundColor(Color.appGray400)
+                            .foregroundColor(theme.colors.textSecondary)
                             .lineLimit(isExpanded ? nil : 3)
                             .fixedSize(horizontal: false, vertical: true)
                     }
@@ -92,33 +94,33 @@ struct DebugLogRow: View {
     private var levelColor: Color {
         switch entry.level {
         case .info:
-            return Color.appCyan
+            return theme.colors.accent
         case .warning:
-            return Color.appAmber
+            return theme.colors.warning
         case .error:
-            return Color.appRed
+            return theme.colors.danger
         }
     }
 
     private var levelBackground: Color {
         switch entry.level {
         case .info:
-            return Color.appGreenLight.opacity(0.12)
+            return theme.colors.accent.opacity(0.12)
         case .warning:
-            return Color.appAmberLight.opacity(0.18)
+            return theme.colors.warning.opacity(0.18)
         case .error:
-            return Color.appRedLight.opacity(0.2)
+            return theme.colors.danger.opacity(0.2)
         }
     }
 
     private var levelBorder: Color {
         switch entry.level {
         case .info:
-            return Color.appGreen.opacity(0.5)
+            return theme.colors.accent.opacity(0.5)
         case .warning:
-            return Color.appAmber.opacity(0.6)
+            return theme.colors.warning.opacity(0.6)
         case .error:
-            return Color.appRed.opacity(0.6)
+            return theme.colors.danger.opacity(0.6)
         }
     }
 
@@ -209,29 +211,29 @@ struct DebugLogRow: View {
     private func detailSection(title: String, value: String) -> some View {
         VStack(alignment: .leading, spacing: 4) {
             HStack {
-                Text(title)
+                DSText(title)
                     .font(.system(size: 10, weight: .semibold))
-                    .foregroundColor(Color.appGray400)
+                    .foregroundColor(theme.colors.textSecondary)
                 Spacer()
-                Button(
+                DSButton(
                     action: { copySection(title: title, value: value) },
                     label: {
-                        Image(systemName: "doc.on.doc")
+                        DSImage(systemName: "doc.on.doc")
                             .font(.system(size: 9))
-                            .foregroundColor(Color.appGray500)
+                            .foregroundColor(theme.colors.textSecondary)
                     }
                 )
                 .buttonStyle(.plain)
                 .help("Copy \(title.lowercased())")
             }
-            Text(value)
+            DSText(value)
                 .font(.system(size: 10, design: .monospaced))
-                .foregroundColor(Color.appGray300)
+                .foregroundColor(theme.colors.textSecondary)
                 .textSelection(.enabled)
                 .fixedSize(horizontal: false, vertical: true)
         }
         .padding(8)
-        .background(Color.black.opacity(0.2))
+        .background(theme.colors.surfaceElevated.opacity(0.6))
         .clipShape(RoundedRectangle(cornerRadius: 6))
     }
 
@@ -241,19 +243,19 @@ struct DebugLogRow: View {
             ForEach(items, id: \.key) { key, value in
                 if value.contains("\n") {
                     VStack(alignment: .leading, spacing: 2) {
-                        Text("\(key):")
+                        DSText("\(key):")
                             .font(.system(size: 10, weight: .semibold))
-                            .foregroundColor(Color.appGray400)
-                        Text(value)
+                            .foregroundColor(theme.colors.textSecondary)
+                        DSText(value)
                             .font(.system(size: 10, design: .monospaced))
-                            .foregroundColor(Color.appGray400)
+                            .foregroundColor(theme.colors.textSecondary)
                             .textSelection(.enabled)
                             .fixedSize(horizontal: false, vertical: true)
                     }
                 } else {
-                    Text("\(key): \(value)")
+                    DSText("\(key): \(value)")
                         .font(.system(size: 10, design: .monospaced))
-                        .foregroundColor(Color.appGray400)
+                        .foregroundColor(theme.colors.textSecondary)
                         .textSelection(.enabled)
                         .fixedSize(horizontal: false, vertical: true)
                 }

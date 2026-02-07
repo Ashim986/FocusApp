@@ -7,14 +7,14 @@ extension CodingEnvironmentView {
         if presenter.isLoadingProblem {
             VStack(spacing: 10) {
                 ProgressView()
-                Text(L10n.Coding.loadingProblem)
+                DSText(L10n.Coding.loadingProblem)
                     .font(.system(size: 13))
                     .foregroundColor(theme.colors.textSecondary)
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
         } else if let content = presenter.problemContent {
             VStack(alignment: .leading, spacing: 12) {
-                Text(attributedDescription(from: content.content))
+                DSText(attributedDescription(from: content.content))
                     .font(.system(size: 14))
                     .foregroundColor(theme.colors.textPrimary)
                     .lineSpacing(4)
@@ -23,10 +23,10 @@ extension CodingEnvironmentView {
             .frame(maxWidth: .infinity, alignment: .leading)
         } else {
             VStack(spacing: 8) {
-                Image(systemName: "doc.text")
+                DSImage(systemName: "doc.text")
                     .font(.system(size: 22))
                     .foregroundColor(theme.colors.textSecondary)
-                Text(L10n.Coding.descriptionEmpty)
+                DSText(L10n.Coding.descriptionEmpty)
                     .font(.system(size: 13))
                     .foregroundColor(theme.colors.textSecondary)
             }
@@ -53,15 +53,15 @@ extension CodingEnvironmentView {
             }
 
             solutionSection(title: L10n.Coding.editorialIntuitionTitle) {
-                Text(L10n.Coding.editorialIntuitionBody)
+                DSText(L10n.Coding.editorialIntuitionBody)
             }
 
             solutionSection(title: L10n.Coding.editorialApproachTitle) {
-                Text(L10n.Coding.editorialApproachBody)
+                DSText(L10n.Coding.editorialApproachBody)
             }
 
             solutionSection(title: L10n.Coding.editorialBigOTitle) {
-                Text(L10n.Coding.editorialBigOPlaceholder)
+                DSText(L10n.Coding.editorialBigOPlaceholder)
                     .font(.system(size: 11, design: .monospaced))
             }
         }
@@ -76,7 +76,7 @@ extension CodingEnvironmentView {
             if let problem = presenter.selectedProblem {
                 let submissions = presenter.submissions(for: problem)
                 if submissions.isEmpty {
-                    Text(L10n.Coding.submissionsEmpty)
+                    DSText(L10n.Coding.submissionsEmpty)
                         .font(.system(size: 11))
                         .foregroundColor(theme.colors.textSecondary)
                         .frame(maxWidth: .infinity, alignment: .leading)
@@ -89,7 +89,7 @@ extension CodingEnvironmentView {
                     .frame(maxWidth: .infinity, alignment: .leading)
                 }
             } else {
-                Text(L10n.Coding.submissionsSelectPrompt)
+                DSText(L10n.Coding.submissionsSelectPrompt)
                     .font(.system(size: 11))
                     .foregroundColor(theme.colors.textSecondary)
                     .frame(maxWidth: .infinity, alignment: .center)
@@ -99,22 +99,22 @@ extension CodingEnvironmentView {
 
     private var hiddenTestsBadge: some View {
         HStack(spacing: 8) {
-            Image(systemName: hiddenTestStatusIcon)
+            DSImage(systemName: hiddenTestStatusIcon)
                 .font(.system(size: 12, weight: .semibold))
                 .foregroundColor(hiddenTestStatusColor)
 
             if presenter.isGeneratingHiddenTests {
                 ProgressView()
                     .controlSize(.small)
-                Text("Generating hidden tests…")
+                DSText("Generating hidden tests…")
                     .font(.system(size: 12, weight: .medium))
                     .foregroundColor(theme.colors.textSecondary)
             } else if !presenter.hiddenTestCases.isEmpty {
-                Text("\(presenter.hiddenTestCases.count) Hidden Tests Ready")
+                DSText("\(presenter.hiddenTestCases.count) Hidden Tests Ready")
                     .font(.system(size: 12, weight: .semibold))
                     .foregroundColor(theme.colors.success)
             } else {
-                Text("Hidden tests unavailable")
+                DSText("Hidden tests unavailable")
                     .font(.system(size: 12, weight: .medium))
                     .foregroundColor(theme.colors.textSecondary)
             }
@@ -147,21 +147,21 @@ extension CodingEnvironmentView {
     @ViewBuilder
     private var walkthroughContent: some View {
         if presenter.testCases.isEmpty {
-            Text(L10n.Coding.walkthroughEmpty)
+            DSText(L10n.Coding.walkthroughEmpty)
         } else {
             let cases = presenter.testCases.prefix(2)
             VStack(alignment: .leading, spacing: 8) {
                 ForEach(Array(cases.enumerated()), id: \.offset) { index, testCase in
                     VStack(alignment: .leading, spacing: 4) {
-                        Text(L10n.Coding.walkthroughCaseLabel( index + 1))
+                        DSText(L10n.Coding.walkthroughCaseLabel( index + 1))
                             .font(.system(size: 10, weight: .semibold))
                             .foregroundColor(theme.colors.textSecondary)
 
-                        Text(L10n.Coding.walkthroughInputFormat( testCase.input))
+                        DSText(L10n.Coding.walkthroughInputFormat( testCase.input))
                             .font(.system(size: 10, design: .monospaced))
                             .foregroundColor(theme.colors.textPrimary)
 
-                        Text(L10n.Coding.walkthroughExpectedFormat( testCase.expectedOutput))
+                        DSText(L10n.Coding.walkthroughExpectedFormat( testCase.expectedOutput))
                             .font(.system(size: 10, design: .monospaced))
                             .foregroundColor(theme.colors.success)
                     }
@@ -172,7 +172,7 @@ extension CodingEnvironmentView {
 
     private func solutionSection(title: String, @ViewBuilder content: () -> some View) -> some View {
         VStack(alignment: .leading, spacing: 6) {
-            Text(title)
+            DSText(title)
                 .font(.system(size: 11, weight: .semibold))
                 .foregroundColor(theme.colors.textPrimary)
             content()
@@ -188,7 +188,7 @@ extension CodingEnvironmentView {
 
     private func codeBlock(_ code: String) -> some View {
         ScrollView {
-            Text(code)
+            DSText(code)
                 .font(.system(size: 11, design: .monospaced))
                 .foregroundColor(theme.colors.textPrimary)
                 .textSelection(.enabled)
@@ -205,7 +205,7 @@ extension CodingEnvironmentView {
             codeBlock(submission.code)
         } label: {
             HStack {
-                Text(problem.displayName)
+                DSText(problem.displayName)
                     .font(.system(size: 11, weight: .semibold))
                     .foregroundColor(theme.colors.textPrimary)
 
@@ -216,7 +216,7 @@ extension CodingEnvironmentView {
 
                 Spacer()
 
-                Text(formatSubmissionDate(submission.createdAt))
+                DSText(formatSubmissionDate(submission.createdAt))
                     .font(.system(size: 10))
                     .foregroundColor(theme.colors.textSecondary)
             }

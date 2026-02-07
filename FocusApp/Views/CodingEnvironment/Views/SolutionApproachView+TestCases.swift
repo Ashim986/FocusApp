@@ -12,32 +12,32 @@ extension SolutionApproachView {
 
     func testCaseRow(_ testCase: SolutionTestCase, index: Int) -> some View {
         VStack(alignment: .leading, spacing: 6) {
-            Text(L10n.Coding.Solution.testCaseLabel(index + 1))
+            DSText(L10n.Coding.Solution.testCaseLabel(index + 1))
                 .font(.system(size: 12, weight: .semibold))
                 .foregroundColor(theme.colors.textSecondary)
 
             HStack(spacing: 12) {
                 VStack(alignment: .leading, spacing: 2) {
-                    Text(L10n.Coding.Solution.inputLabel)
+                    DSText(L10n.Coding.Solution.inputLabel)
                         .font(.system(size: 11, weight: .medium))
                         .foregroundColor(theme.colors.warning)
-                    Text(testCase.input)
+                    DSText(testCase.input)
                         .font(.system(size: 13, design: .monospaced))
                         .foregroundColor(theme.colors.textPrimary)
                 }
 
                 VStack(alignment: .leading, spacing: 2) {
-                    Text(L10n.Coding.Solution.outputLabel)
+                    DSText(L10n.Coding.Solution.outputLabel)
                         .font(.system(size: 11, weight: .medium))
                         .foregroundColor(theme.colors.success)
-                    Text(testCase.expectedOutput)
+                    DSText(testCase.expectedOutput)
                         .font(.system(size: 13, design: .monospaced))
                         .foregroundColor(theme.colors.textPrimary)
                 }
             }
 
             if let explanation = testCase.explanation, !explanation.isEmpty {
-                Text(explanation)
+                DSText(explanation)
                     .font(.system(size: 13))
                     .foregroundColor(theme.colors.textSecondary)
                     .padding(.top, 4)

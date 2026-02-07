@@ -3,14 +3,14 @@ import SwiftUI
 
 extension CodingEnvironmentView {
     var problemSelector: some View {
-        Button(action: {
+        DSButton(action: {
             codingCoordinator.isProblemPickerShown.toggle()
         }, label: {
             HStack(spacing: 8) {
                 if let problem = presenter.selectedProblem {
                     VStack(alignment: .leading, spacing: 2) {
                         HStack(spacing: 6) {
-                            Text(problem.displayName)
+                            DSText(problem.displayName)
                                 .font(.system(size: 13, weight: .semibold))
                                 .foregroundColor(theme.colors.textPrimary)
                                 .lineLimit(1)
@@ -21,7 +21,7 @@ extension CodingEnvironmentView {
                             )
                         }
 
-                        Text(
+                        DSText(
                             L10n.Coding.problemPickerDayTopic(
                                 selectedDayLabel,
                                 presenter.selectedDayTopic
@@ -31,12 +31,12 @@ extension CodingEnvironmentView {
                             .foregroundColor(theme.colors.textSecondary)
                     }
                 } else {
-                    Text(L10n.Coding.problemPickerSelect)
+                    DSText(L10n.Coding.problemPickerSelect)
                         .font(.system(size: 13, weight: .medium))
                         .foregroundColor(theme.colors.textSecondary)
                 }
 
-                Image(systemName: "chevron.down")
+                DSImage(systemName: "chevron.down")
                     .font(.system(size: 10, weight: .semibold))
                     .foregroundColor(theme.colors.textSecondary)
 
@@ -68,11 +68,11 @@ extension CodingEnvironmentView {
     var problemPickerPopover: some View {
         VStack(alignment: .leading, spacing: 0) {
             HStack {
-                Text(L10n.Coding.problemPickerTitle)
+                DSText(L10n.Coding.problemPickerTitle)
                     .font(.system(size: 12, weight: .semibold))
                     .foregroundColor(theme.colors.textPrimary)
                 Spacer()
-                Text(L10n.Coding.problemPickerPendingLeft(pendingProblemCount))
+                DSText(L10n.Coding.problemPickerPendingLeft(pendingProblemCount))
                     .font(.system(size: 10))
                     .foregroundColor(theme.colors.textSecondary)
             }
@@ -107,7 +107,7 @@ extension CodingEnvironmentView {
     func problemSection(_ section: CodingProblemSection) -> some View {
         VStack(alignment: .leading, spacing: 6) {
             HStack {
-                Text(section.isToday
+                DSText(section.isToday
                      ? L10n.Coding.sectionToday( section.dayId)
                      : L10n.Coding.sectionBacklog( section.dayId))
                     .font(.system(size: 10, weight: .semibold))
@@ -115,7 +115,7 @@ extension CodingEnvironmentView {
 
                 Spacer()
 
-                Text("\(section.completedCount)/\(section.totalCount)")
+                DSText("\(section.completedCount)/\(section.totalCount)")
                     .font(.system(size: 9))
                     .foregroundColor(theme.colors.textSecondary)
             }
@@ -131,7 +131,7 @@ extension CodingEnvironmentView {
     func problemRow(item: CodingProblemItem) -> some View {
         let isSelected = presenter.selectedProblem?.id == item.problem.id
 
-        return Button(action: {
+        return DSButton(action: {
             presenter.selectProblem(item)
             codingCoordinator.isProblemPickerShown = false
         }, label: {
@@ -142,23 +142,23 @@ extension CodingEnvironmentView {
                         .frame(width: 20, height: 20)
 
                     if item.isCompleted {
-                        Image(systemName: "checkmark")
+                        DSImage(systemName: "checkmark")
                             .font(.system(size: 9, weight: .bold))
                             .foregroundColor(theme.colors.success)
                     } else {
-                        Text("\(item.index + 1)")
+                        DSText("\(item.index + 1)")
                             .font(.system(size: 9, weight: .medium))
                             .foregroundColor(theme.colors.textSecondary)
                     }
                 }
 
                 VStack(alignment: .leading, spacing: 2) {
-                    Text(item.problem.displayName)
+                    DSText(item.problem.displayName)
                         .font(.system(size: 12, weight: isSelected ? .semibold : .regular))
                         .foregroundColor(isSelected ? theme.colors.textPrimary : theme.colors.textSecondary)
                         .lineLimit(1)
 
-                    Text(item.problem.difficulty.rawValue)
+                    DSText(item.problem.difficulty.rawValue)
                         .font(.system(size: 9, weight: .medium))
                         .foregroundColor(item.problem.difficulty == .easy ? theme.colors.success : theme.colors.warning)
                 }
@@ -166,7 +166,7 @@ extension CodingEnvironmentView {
                 Spacer()
 
                 if isSelected {
-                    Image(systemName: "checkmark.circle.fill")
+                    DSImage(systemName: "checkmark.circle.fill")
                         .font(.system(size: 14))
                         .foregroundColor(theme.colors.primary)
                 }

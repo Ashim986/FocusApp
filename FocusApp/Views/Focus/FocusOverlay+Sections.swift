@@ -1,20 +1,21 @@
+import FocusDesignSystem
 import SwiftUI
 
 extension FocusOverlay {
     var durationSelector: some View {
         VStack(spacing: 40) {
             VStack(spacing: 8) {
-                Image(systemName: "bolt.fill")
+                DSImage(systemName: "bolt.fill")
                     .font(.system(size: 48))
-                    .foregroundColor(Color.appPurple)
+                    .foregroundColor(theme.colors.primary)
 
-                Text(L10n.Focus.durationTitle)
+                DSText(L10n.Focus.durationTitle)
                     .font(.system(size: 32, weight: .bold))
-                    .foregroundColor(.white)
+                    .foregroundColor(theme.colors.textPrimary)
 
-                Text(L10n.Focus.durationPrompt)
+                DSText(L10n.Focus.durationPrompt)
                     .font(.system(size: 16))
-                    .foregroundColor(.white.opacity(0.7))
+                    .foregroundColor(theme.colors.textSecondary)
             }
 
             VStack(spacing: 20) {
@@ -32,66 +33,57 @@ extension FocusOverlay {
             }
 
             HStack(spacing: 12) {
-                Text(L10n.Focus.durationCustomLabel)
+                DSText(L10n.Focus.durationCustomLabel)
                     .font(.system(size: 14))
-                    .foregroundColor(.white.opacity(0.7))
+                    .foregroundColor(theme.colors.textSecondary)
 
                 TextField("", value: $presenter.duration, format: .number)
                     .textFieldStyle(.plain)
                     .font(.system(size: 18, weight: .semibold))
-                    .foregroundColor(.white)
+                    .foregroundColor(theme.colors.textPrimary)
                     .frame(width: 60)
                     .padding(.horizontal, 12)
                     .padding(.vertical, 8)
                     .background(
                         RoundedRectangle(cornerRadius: 8)
-                            .fill(Color.white.opacity(0.1))
+                            .fill(theme.colors.surfaceElevated)
                     )
 
-                Text(L10n.Focus.durationMinutesLabel)
+                DSText(L10n.Focus.durationMinutesLabel)
                     .font(.system(size: 14))
-                    .foregroundColor(.white.opacity(0.7))
+                    .foregroundColor(theme.colors.textSecondary)
             }
 
-            Button(action: presenter.startTimer) {
-                HStack(spacing: 8) {
-                    Image(systemName: "play.fill")
-                    Text(L10n.Focus.durationStartButton)
-                }
-                .font(.system(size: 16, weight: .semibold))
-                .foregroundColor(.white)
-                .padding(.horizontal, 32)
-                .padding(.vertical, 16)
-                .background(
-                    RoundedRectangle(cornerRadius: 12)
-                        .fill(Color.appPurple)
-                )
+            DSButton(
+                L10n.Focus.durationStartButton,
+                config: .init(style: .primary, size: .large, icon: DSImage(systemName: "play.fill"))
+            ) {
+                presenter.startTimer()
             }
-            .buttonStyle(.plain)
 
-            Button(action: {
+            DSButton(action: {
                 closeSession()
             }, label: {
-                Text(L10n.Focus.durationCancel)
+                DSText(L10n.Focus.durationCancel)
                     .font(.system(size: 14))
-                    .foregroundColor(.white.opacity(0.5))
+                    .foregroundColor(theme.colors.textSecondary)
             })
             .buttonStyle(.plain)
         }
     }
 
     func durationButton(minutes: Int) -> some View {
-        Button(action: {
+        DSButton(action: {
             presenter.duration = minutes
         }, label: {
-            Text(L10n.Focus.durationButtonFormat(minutes))
+            DSText(L10n.Focus.durationButtonFormat(minutes))
                 .font(.system(size: 14, weight: presenter.duration == minutes ? .semibold : .regular))
-                .foregroundColor(presenter.duration == minutes ? Color.appPurple : .white)
+                .foregroundColor(presenter.duration == minutes ? theme.colors.primary : theme.colors.textPrimary)
                 .padding(.horizontal, 16)
                 .padding(.vertical, 10)
                 .background(
                     RoundedRectangle(cornerRadius: 8)
-                        .fill(presenter.duration == minutes ? Color.white : Color.white.opacity(0.1))
+                        .fill(presenter.duration == minutes ? theme.colors.surface : theme.colors.surfaceElevated)
                 )
         })
         .buttonStyle(.plain)

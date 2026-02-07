@@ -1,8 +1,10 @@
+import FocusDesignSystem
 import SwiftUI
 
 struct ProblemSelectionView: View {
     @ObservedObject var presenter: CodingEnvironmentPresenter
     let onBack: () -> Void
+    @Environment(\.dsTheme) private var theme
 
     var body: some View {
         VStack(spacing: 0) {
@@ -10,7 +12,7 @@ struct ProblemSelectionView: View {
             header
 
             Divider()
-                .background(Color.appGray700)
+                .background(theme.colors.border)
 
             // Problem list
             ScrollView {
@@ -22,19 +24,19 @@ struct ProblemSelectionView: View {
                 .padding(20)
             }
         }
-        .background(Color.appIndigo)
+        .background(theme.colors.background)
     }
 
     private var header: some View {
         VStack(spacing: 12) {
             HStack {
-                Button(action: onBack) {
+                DSButton(action: onBack) {
                     HStack(spacing: 4) {
-                        Image(systemName: "chevron.left")
-                        Text(L10n.ProblemSelection.backToTimer)
+                        DSImage(systemName: "chevron.left")
+                        DSText(L10n.ProblemSelection.backToTimer)
                     }
                     .font(.system(size: 13))
-                    .foregroundColor(Color.appGray400)
+                    .foregroundColor(theme.colors.textSecondary)
                 }
                 .buttonStyle(.plain)
 
@@ -42,33 +44,33 @@ struct ProblemSelectionView: View {
             }
 
             VStack(spacing: 4) {
-                Text(L10n.ProblemSelection.title)
+                DSText(L10n.ProblemSelection.title)
                     .font(.system(size: 20, weight: .bold))
-                    .foregroundColor(.white)
+                    .foregroundColor(theme.colors.textPrimary)
 
-                Text(L10n.ProblemSelection.subtitle)
+                DSText(L10n.ProblemSelection.subtitle)
                     .font(.system(size: 14))
-                    .foregroundColor(Color.appGray400)
+                    .foregroundColor(theme.colors.textSecondary)
             }
         }
         .padding(20)
-        .background(Color.appIndigoLight)
+        .background(theme.colors.surfaceElevated)
     }
 
     private func sectionBlock(_ section: CodingProblemSection) -> some View {
         VStack(alignment: .leading, spacing: 10) {
             HStack {
-                Text(section.isToday
+                DSText(section.isToday
                      ? L10n.ProblemSelection.sectionToday( section.dayId)
                      : L10n.ProblemSelection.sectionBacklog( section.dayId))
                     .font(.system(size: 12, weight: .semibold))
-                    .foregroundColor(Color.appGray400)
+                    .foregroundColor(theme.colors.textSecondary)
 
                 Spacer()
 
-                Text("\(section.completedCount)/\(section.totalCount)")
+                DSText("\(section.completedCount)/\(section.totalCount)")
                     .font(.system(size: 11))
-                    .foregroundColor(Color.appGray500)
+                    .foregroundColor(theme.colors.textSecondary)
             }
 
             VStack(spacing: 12) {
@@ -80,68 +82,63 @@ struct ProblemSelectionView: View {
     }
 
     private func problemCard(_ item: CodingProblemItem) -> some View {
-        Button(action: {
+        DSButton(action: {
             presenter.selectProblem(item)
         }, label: {
             HStack(spacing: 12) {
                 // Completion indicator
                 ZStack {
                     Circle()
-                        .stroke(item.isCompleted ? Color.appGreen : Color.appGray600, lineWidth: 2)
+                        .stroke(item.isCompleted ? theme.colors.success : theme.colors.border, lineWidth: 2)
                         .frame(width: 24, height: 24)
 
                     if item.isCompleted {
-                        Image(systemName: "checkmark")
+                        DSImage(systemName: "checkmark")
                             .font(.system(size: 12, weight: .bold))
-                            .foregroundColor(Color.appGreen)
+                            .foregroundColor(theme.colors.success)
                     }
                 }
 
                 VStack(alignment: .leading, spacing: 4) {
-                    Text(item.problem.displayName)
+                    DSText(item.problem.displayName)
                         .font(.system(size: 14, weight: .medium))
-                        .foregroundColor(.white)
+                        .foregroundColor(theme.colors.textPrimary)
                         .lineLimit(1)
 
                     HStack(spacing: 8) {
                         difficultyBadge(item.problem.difficulty)
 
                         if item.isCompleted {
-                            Text(L10n.ProblemSelection.solved)
+                            DSText(L10n.ProblemSelection.solved)
                                 .font(.system(size: 10))
-                                .foregroundColor(Color.appGreen)
+                                .foregroundColor(theme.colors.success)
                         }
                     }
                 }
 
                 Spacer()
 
-                Image(systemName: "chevron.right")
+                DSImage(systemName: "chevron.right")
                     .font(.system(size: 12))
-                    .foregroundColor(Color.appGray500)
+                    .foregroundColor(theme.colors.textSecondary)
             }
             .padding(16)
             .background(
                 RoundedRectangle(cornerRadius: 12)
-                    .fill(Color.appGray800.opacity(0.5))
+                    .fill(theme.colors.surfaceElevated.opacity(0.5))
             )
             .overlay(
                 RoundedRectangle(cornerRadius: 12)
-                    .stroke(Color.appGray700, lineWidth: 1)
+                    .stroke(theme.colors.border, lineWidth: 1)
             )
         })
         .buttonStyle(.plain)
     }
 
     private func difficultyBadge(_ difficulty: Difficulty) -> some View {
-        Text(difficulty.rawValue)
-            .font(.system(size: 10, weight: .medium))
-            .foregroundColor(difficulty == .easy ? Color.appGreen : Color.appAmber)
-            .padding(.horizontal, 8)
-            .padding(.vertical, 3)
-            .background(
-                RoundedRectangle(cornerRadius: 4)
-                    .fill((difficulty == .easy ? Color.appGreen : Color.appAmber).opacity(0.15))
-            )
+        DSBadge(
+            difficulty.rawValue,
+            config: .init(style: difficulty == .easy ? .success : .warning)
+        )
     }
 }

@@ -1,3 +1,4 @@
+import FocusDesignSystem
 import SwiftUI
 
 /// Collapsible timeline showing how each variable evolves across all playback steps.
@@ -7,6 +8,11 @@ struct VariableTimelineView: View {
     let onSelectIndex: (Int) -> Void
 
     @State private var isExpanded = false
+    @Environment(\.dsTheme) private var theme
+
+    private var palette: DataJourneyPalette {
+        DataJourneyPalette(theme: theme)
+    }
 
     var body: some View {
         let variableNames = collectVariableNames()
@@ -15,16 +21,16 @@ struct VariableTimelineView: View {
         }
         return AnyView(
             VStack(alignment: .leading, spacing: 6) {
-                Button(
+                DSButton(
                     action: { withAnimation(.easeInOut(duration: 0.2)) { isExpanded.toggle() } },
                     label: {
                         HStack(spacing: 4) {
-                            Image(systemName: isExpanded ? "chevron.down" : "chevron.right")
+                            DSImage(systemName: isExpanded ? "chevron.down" : "chevron.right")
                                 .font(.system(size: 8, weight: .bold))
-                                .foregroundColor(Color.appGray400)
-                            Text("Timeline")
+                                .foregroundColor(palette.gray400)
+                            DSText("Timeline")
                                 .font(.system(size: 9, weight: .semibold))
-                                .foregroundColor(Color.appGray400)
+                                .foregroundColor(palette.gray400)
                             Spacer()
                         }
                     }
@@ -36,10 +42,10 @@ struct VariableTimelineView: View {
                         ForEach(variableNames, id: \.self) { name in
                             let series = extractSeries(for: name)
                             HStack(alignment: .center, spacing: 8) {
-                                Text(name)
-                                    .font(.system(size: 9, weight: .medium))
-                                    .foregroundColor(Color.appGray300)
-                                    .frame(width: 60, alignment: .trailing)
+                                    DSText(name)
+                                        .font(.system(size: 9, weight: .medium))
+                                        .foregroundColor(palette.gray300)
+                                        .frame(width: 60, alignment: .trailing)
 
                                 timelineRow(series: series)
                             }
@@ -51,7 +57,7 @@ struct VariableTimelineView: View {
             .padding(8)
             .background(
                 RoundedRectangle(cornerRadius: 6)
-                    .fill(Color.appGray900.opacity(0.3))
+                    .fill(palette.gray900.opacity(0.3))
             )
         )
     }
@@ -95,7 +101,7 @@ struct VariableTimelineView: View {
                         path.addLine(to: CGPoint(x: x, y: y))
                     }
                 }
-                context.stroke(path, with: .color(Color.appCyan.opacity(0.7)), lineWidth: 1.5)
+                context.stroke(path, with: .color(palette.cyan.opacity(0.7)), lineWidth: 1.5)
 
                 // Current index marker
                 if currentIndex < values.count {
@@ -103,7 +109,7 @@ struct VariableTimelineView: View {
                     let cy = size.height - ((values[currentIndex] - minVal) / range) * size.height
                     var dot = Path()
                     dot.addEllipse(in: CGRect(x: cx - 3, y: cy - 3, width: 6, height: 6))
-                    context.fill(dot, with: .color(Color.appCyan))
+                    context.fill(dot, with: .color(palette.cyan))
                 }
             }
             .frame(width: width, height: height)
@@ -131,7 +137,7 @@ struct VariableTimelineView: View {
                 let barHeight = max(2, (CGFloat(size) / max(maxSize, 1)) * height)
                 let isCurrent = index == currentIndex
                 RoundedRectangle(cornerRadius: 2)
-                    .fill(isCurrent ? Color.appCyan : Color.appPurple.opacity(0.5))
+                    .fill(isCurrent ? palette.cyan : palette.purple.opacity(0.5))
                     .frame(width: barWidth, height: barHeight)
                     .onTapGesture { onSelectIndex(index) }
             }
@@ -159,13 +165,13 @@ struct VariableTimelineView: View {
     private func dotColor(for point: TimelinePoint) -> Color {
         switch point.kind {
         case .boolTrue:
-            return Color.appGreen
+            return palette.green
         case .boolFalse:
-            return Color.appRed
+            return palette.red
         case .null:
-            return Color.appGray600
+            return palette.gray600
         default:
-            return Color.appAmber.opacity(0.6)
+            return palette.amber.opacity(0.6)
         }
     }
 

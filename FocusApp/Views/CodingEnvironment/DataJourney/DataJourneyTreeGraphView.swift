@@ -1,3 +1,4 @@
+import FocusDesignSystem
 import SwiftUI
 
 struct TreeGraphView: View {
@@ -12,6 +13,11 @@ struct TreeGraphView: View {
     let bubbleStyle: TraceBubble.Style
     private let levelSpacing: CGFloat = 50
     private let pointerSpacing: CGFloat = 2
+    @Environment(\.dsTheme) private var theme
+
+    private var palette: DataJourneyPalette {
+        DataJourneyPalette(theme: theme)
+    }
 
     private var pointerHeight: CGFloat { pointerFontSize + pointerVerticalPadding * 2 + 4 }
 
@@ -60,7 +66,7 @@ struct TreeGraphView: View {
                         let to = CGPoint(x: edge.to.x, y: edge.to.y + yOffset)
                         path.move(to: from)
                         path.addLine(to: to)
-                        context.stroke(path, with: .color(Color.appGray600.opacity(0.6)), lineWidth: 1)
+                        context.stroke(path, with: .color(palette.gray600.opacity(0.6)), lineWidth: 1)
                     }
 
                     for (index, motion) in pointerMotions.enumerated() {
@@ -180,6 +186,11 @@ struct TraceValueNode: View {
     let size: CGFloat
     let style: TraceBubble.Style
     let highlighted: Bool
+    @Environment(\.dsTheme) private var theme
+
+    private var palette: DataJourneyPalette {
+        DataJourneyPalette(theme: theme)
+    }
 
     init(
         value: TraceValue,
@@ -194,7 +205,7 @@ struct TraceValueNode: View {
     }
 
     var body: some View {
-        let model = TraceBubbleModel.from(value, compact: true)
+        let model = TraceBubbleModel.from(value, palette: palette, compact: true)
         return TraceBubble(
             text: model.text,
             fill: model.fill,

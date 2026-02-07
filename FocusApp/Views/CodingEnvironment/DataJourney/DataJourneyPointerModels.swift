@@ -1,4 +1,5 @@
 import SwiftUI
+import FocusDesignSystem
 
 struct PointerMarker: Identifiable, Hashable {
     let id: String
@@ -7,12 +8,12 @@ struct PointerMarker: Identifiable, Hashable {
     let nodeId: String?
     let color: Color
 
-    init(name: String, index: Int? = nil, nodeId: String? = nil) {
+    init(name: String, index: Int? = nil, nodeId: String? = nil, palette: DataJourneyPalette) {
         self.id = "\(name)-\(index ?? -1)-\(nodeId ?? "none")"
         self.name = name
         self.index = index
         self.nodeId = nodeId
-        self.color = PointerPalette.color(for: name)
+        self.color = PointerPalette.color(for: name, palette: palette)
     }
 }
 
@@ -23,12 +24,12 @@ struct PointerMotion: Identifiable {
     let toIndex: Int
     let color: Color
 
-    init(name: String, fromIndex: Int, toIndex: Int) {
+    init(name: String, fromIndex: Int, toIndex: Int, palette: DataJourneyPalette) {
         self.id = "\(name)-\(fromIndex)-\(toIndex)"
         self.name = name
         self.fromIndex = fromIndex
         self.toIndex = toIndex
-        self.color = PointerPalette.color(for: name)
+        self.color = PointerPalette.color(for: name, palette: palette)
     }
 }
 
@@ -39,12 +40,12 @@ struct TreePointerMotion: Identifiable {
     let toId: String
     let color: Color
 
-    init(name: String, fromId: String, toId: String) {
+    init(name: String, fromId: String, toId: String, palette: DataJourneyPalette) {
         self.id = "\(name)-\(fromId)-\(toId)"
         self.name = name
         self.fromId = fromId
         self.toId = toId
-        self.color = PointerPalette.color(for: name)
+        self.color = PointerPalette.color(for: name, palette: palette)
     }
 }
 
@@ -63,13 +64,13 @@ struct SequenceLink: Identifiable {
 }
 
 enum PointerPalette {
-    static func color(for name: String) -> Color {
+    static func color(for name: String, palette: DataJourneyPalette) -> Color {
         let palette: [Color] = [
-            Color.appCyan,
-            Color.appPurple,
-            Color.appGreen,
-            Color.appAmber,
-            Color.appRed
+            palette.cyan,
+            palette.purple,
+            palette.green,
+            palette.amber,
+            palette.red
         ]
         let index = abs(name.lowercased().hashValue) % palette.count
         return palette[index].opacity(0.9)
@@ -98,7 +99,7 @@ struct PointerBadge: View {
     }
 
     var body: some View {
-        Text(text)
+        DSText(text)
             .font(.system(size: fontSize, weight: .semibold))
             .foregroundColor(.white)
             .padding(.horizontal, horizontalPadding)

@@ -1,3 +1,4 @@
+#if os(iOS)
 // iPhoneTodayView.swift
 // FocusApp -- iPhone Today screen (393x852)
 
@@ -6,9 +7,23 @@ import SwiftUI
 
 struct iPhoneTodayView: View {
     @Environment(\.dsTheme) var theme
+    @Environment(\.openURL) var openURL
 
-    var onSettingsTap: (() -> Void)?
-    var onStartFocus: (() -> Void)?
+    @ObservedObject var presenter: TodayPresenter
+    var onSettingsTap: () -> Void
+    var onStartFocus: () -> Void
+
+    private var todayDay: TodayDayViewModel? {
+        presenter.visibleDays.last(where: { $0.isToday })
+    }
+
+    private var completedCount: Int {
+        todayDay?.completedCount ?? 0
+    }
+
+    private var totalCount: Int {
+        todayDay?.totalCount ?? 0
+    }
 
     var body: some View {
         VStack(spacing: 0) {
@@ -19,7 +34,7 @@ struct iPhoneTodayView: View {
             ScrollView {
                 VStack(alignment: .leading, spacing: theme.spacing.md) {
                     // Date label
-                    Text("FRIDAY, FEBRUARY 6")
+                    Text(currentDateString.uppercased())
                         .font(theme.typography.caption)
                         .fontWeight(.semibold)
                         .foregroundColor(Color(hex: 0x6B7280))
@@ -27,7 +42,7 @@ struct iPhoneTodayView: View {
                         .padding(.horizontal, theme.spacing.lg)
 
                     // Greeting
-                    Text("Good Morning, John")
+                    Text("Today")
                         .font(theme.typography.title)
                         .foregroundColor(theme.colors.textPrimary)
                         .padding(.horizontal, theme.spacing.lg)
@@ -37,11 +52,11 @@ struct iPhoneTodayView: View {
                         .padding(.horizontal, theme.spacing.lg)
 
                     // Daily Goal Card
-                    dailyGoalCard(completed: 1, total: 4)
+                    dailyGoalCard(completed: completedCount, total: totalCount)
                         .padding(.horizontal, theme.spacing.lg)
 
-                    // Focus Time Card
-                    focusTimeCard
+                    // Habits section
+                    habitsSection
                         .padding(.horizontal, theme.spacing.lg)
 
                     // Start Focus CTA
@@ -56,60 +71,90 @@ struct iPhoneTodayView: View {
 
                         Spacer()
 
-                        Button("View Full Plan") { }
-                            .font(theme.typography.body)
-                            .foregroundColor(Color(hex: 0x6366F1))
+                        if presenter.isSyncing {
+                            ProgressView()
+                                .controlSize(.small)
+                        } else {
+                            Button {
+                                presenter.syncNow()
+                            } label: {
+                                Image(systemName: "arrow.triangle.2.circlepath")
+                                    .font(.system(size: 14))
+                                    .foregroundColor(theme.colors.textSecondary)
+                            }
+                            .buttonStyle(.plain)
+                        }
                     }
                     .padding(.horizontal, theme.spacing.lg)
                     .padding(.top, theme.spacing.sm)
 
-                    // Task rows
-                    VStack(spacing: 0) {
-                        taskRow(
-                            title: "Complete Two Sum",
-                            subtitle: "Arrays & Hashing - LeetCode 75",
-                            isCompleted: true,
-                            difficulty: .easy
-                        )
-                        Divider().padding(.leading, 52)
-
-                        taskRow(
-                            title: "Read System Design Chapter 5",
-                            subtitle: "System Design",
-                            isCompleted: true,
-                            difficulty: nil
-                        )
-                        Divider().padding(.leading, 52)
-
-                        taskRow(
-                            title: "Review Pull Requests",
-                            subtitle: "Code Review",
-                            isCompleted: false,
-                            difficulty: nil
-                        )
-                        Divider().padding(.leading, 52)
-
-                        taskRow(
-                            title: "Exercise",
-                            subtitle: nil,
-                            isCompleted: true,
-                            difficulty: nil,
-                            progressText: "1/4"
-                        )
+                    // Sync status
+                    if !presenter.lastSyncResult.isEmpty {
+                        Text(presenter.lastSyncResult)
+                            .font(theme.typography.caption)
+                            .foregroundColor(Color(hex: 0x6B7280))
+                            .padding(.horizontal, theme.spacing.lg)
                     }
-                    .background(theme.colors.surface)
-                    .cornerRadius(theme.radii.md)
-                    .overlay(
-                        RoundedRectangle(cornerRadius: theme.radii.md)
-                            .stroke(theme.colors.border, lineWidth: 1)
-                    )
-                    .padding(.horizontal, theme.spacing.lg)
+
+                    // Problem rows from presenter
+                    if let today = todayDay {
+                        VStack(spacing: 0) {
+                            ForEach(Array(today.problems.enumerated()), id: \.element.id) { index, vm in
+                                if index > 0 {
+                                    Divider().padding(.leading, 52)
+                                }
+                                problemRow(vm: vm, dayId: today.id)
+                            }
+                        }
+                        .background(theme.colors.surface)
+                        .cornerRadius(theme.radii.md)
+                        .overlay(
+                            RoundedRectangle(cornerRadius: theme.radii.md)
+                                .stroke(theme.colors.border, lineWidth: 1)
+                        )
+                        .padding(.horizontal, theme.spacing.lg)
+                    }
+
+                    // Carryover days (incomplete problems from previous days)
+                    ForEach(presenter.visibleDays.filter({ !$0.isToday && !$0.problems.isEmpty })) { day in
+                        VStack(alignment: .leading, spacing: theme.spacing.sm) {
+                            Text("Day \(day.id): \(day.topic)")
+                                .font(theme.typography.caption)
+                                .fontWeight(.semibold)
+                                .foregroundColor(Color(hex: 0xEA580C))
+                                .padding(.horizontal, theme.spacing.lg)
+
+                            VStack(spacing: 0) {
+                                ForEach(Array(day.problems.enumerated()), id: \.element.id) { index, vm in
+                                    if index > 0 {
+                                        Divider().padding(.leading, 52)
+                                    }
+                                    problemRow(vm: vm, dayId: day.id)
+                                }
+                            }
+                            .background(theme.colors.surface)
+                            .cornerRadius(theme.radii.md)
+                            .overlay(
+                                RoundedRectangle(cornerRadius: theme.radii.md)
+                                    .stroke(theme.colors.border, lineWidth: 1)
+                            )
+                            .padding(.horizontal, theme.spacing.lg)
+                        }
+                    }
                 }
                 .padding(.top, theme.spacing.lg)
                 .padding(.bottom, 32)
             }
         }
         .background(theme.colors.background)
+    }
+
+    // MARK: - Current Date String
+
+    private var currentDateString: String {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "EEEE, MMMM d"
+        return formatter.string(from: Date())
     }
 
     // MARK: - Header Bar
@@ -127,7 +172,7 @@ struct iPhoneTodayView: View {
         }
         .overlay(alignment: .trailing) {
             Button {
-                onSettingsTap?()
+                onSettingsTap()
             } label: {
                 Image(systemName: "gearshape")
                     .font(.system(size: 20))
@@ -145,11 +190,13 @@ struct iPhoneTodayView: View {
     // MARK: - Streak Badge
 
     private var streakBadge: some View {
-        HStack(spacing: theme.spacing.xs) {
-            Text("\u{1F525}")
+        let habitsCount = presenter.habitsCompletedCount
+        return HStack(spacing: theme.spacing.xs) {
+            Image(systemName: "flame.fill")
                 .font(.system(size: 14))
+                .foregroundColor(Color(hex: 0xEA580C))
 
-            Text("12 Day Streak")
+            Text("\(habitsCount)/3 Habits Today")
                 .font(theme.typography.body)
                 .fontWeight(.semibold)
                 .foregroundColor(Color(hex: 0xEA580C))
@@ -193,7 +240,7 @@ struct iPhoneTodayView: View {
                     .font(theme.typography.title)
                     .foregroundColor(.white)
 
-                Text("Tasks completed")
+                Text("Problems completed")
                     .font(theme.typography.body)
                     .foregroundColor(.white.opacity(0.8))
             }
@@ -229,52 +276,64 @@ struct iPhoneTodayView: View {
         .cornerRadius(theme.radii.lg)
     }
 
-    // MARK: - Focus Time Card
+    // MARK: - Habits Section
 
-    private var focusTimeCard: some View {
+    private var habitsSection: some View {
         HStack(spacing: theme.spacing.md) {
-            ZStack {
-                Circle()
-                    .fill(Color(hex: 0xD1FAE5))
-                    .frame(width: 40, height: 40)
-                Image(systemName: "waveform.path.ecg")
-                    .font(.system(size: 18))
-                    .foregroundColor(theme.colors.success)
+            ForEach(presenter.habits) { habit in
+                Button {
+                    presenter.toggleHabit(habit.id)
+                } label: {
+                    VStack(spacing: theme.spacing.xs) {
+                        ZStack {
+                            Circle()
+                                .fill(
+                                    habit.isCompleted
+                                        ? Color(hex: 0xD1FAE5)
+                                        : Color(hex: 0xF3F4F6)
+                                )
+                                .frame(width: 40, height: 40)
+                            Image(systemName: habit.icon)
+                                .font(.system(size: 18))
+                                .foregroundColor(
+                                    habit.isCompleted
+                                        ? theme.colors.success
+                                        : Color(hex: 0x6B7280)
+                                )
+                        }
+
+                        Text(habit.title)
+                            .font(theme.typography.caption)
+                            .foregroundColor(
+                                habit.isCompleted
+                                    ? theme.colors.success
+                                    : Color(hex: 0x6B7280)
+                            )
+                    }
+                    .frame(maxWidth: .infinity)
+                    .padding(.vertical, theme.spacing.md)
+                    .background(theme.colors.surface)
+                    .cornerRadius(theme.radii.md)
+                    .overlay(
+                        RoundedRectangle(cornerRadius: theme.radii.md)
+                            .stroke(
+                                habit.isCompleted
+                                    ? theme.colors.success.opacity(0.3)
+                                    : theme.colors.border,
+                                lineWidth: 1
+                            )
+                    )
+                }
+                .buttonStyle(.plain)
             }
-
-            VStack(alignment: .leading, spacing: theme.spacing.xs) {
-                Text("Focus Time")
-                    .font(theme.typography.body)
-                    .fontWeight(.semibold)
-                    .foregroundColor(Color(hex: 0x6B7280))
-
-                Text("2h 15m")
-                    .font(theme.typography.subtitle)
-                    .fontWeight(.bold)
-                    .foregroundColor(theme.colors.textPrimary)
-
-                Text("35m remaining today")
-                    .font(theme.typography.caption)
-                    .foregroundColor(Color(hex: 0x6B7280))
-            }
-
-            Spacer()
         }
-        .padding(theme.spacing.lg)
-        .background(theme.colors.surface)
-        .cornerRadius(theme.radii.md)
-        .overlay(
-            RoundedRectangle(cornerRadius: theme.radii.md)
-                .stroke(theme.colors.border, lineWidth: 1)
-        )
-        .shadow(color: .black.opacity(0.05), radius: 3, x: 0, y: 1)
     }
 
     // MARK: - Start Focus CTA
 
     private var startFocusCTA: some View {
         Button {
-            onStartFocus?()
+            onStartFocus()
         } label: {
             VStack(spacing: theme.spacing.sm) {
                 ZStack {
@@ -310,89 +369,92 @@ struct iPhoneTodayView: View {
         .buttonStyle(.plain)
     }
 
-    // MARK: - Task Row
+    // MARK: - Problem Row
 
-    private func taskRow(
-        title: String,
-        subtitle: String?,
-        isCompleted: Bool,
-        difficulty: TaskDifficulty?,
-        progressText: String? = nil
-    ) -> some View {
-        HStack(spacing: theme.spacing.md) {
-            // Check icon
-            if isCompleted {
-                ZStack {
+    private func problemRow(vm: TodayProblemViewModel, dayId: Int) -> some View {
+        Button {
+            if let url = URL(string: vm.problem.url) {
+                openURL(url)
+            }
+        } label: {
+            HStack(spacing: theme.spacing.md) {
+                // Check icon
+                if vm.isCompleted {
+                    ZStack {
+                        Circle()
+                            .fill(Color(hex: 0x6366F1))
+                            .frame(width: 24, height: 24)
+                        Image(systemName: "checkmark")
+                            .font(.system(size: 12, weight: .bold))
+                            .foregroundColor(.white)
+                    }
+                } else {
                     Circle()
-                        .fill(Color(hex: 0x6366F1))
+                        .strokeBorder(
+                            Color(hex: 0xD1D5DB),
+                            style: StrokeStyle(lineWidth: 1.5, dash: [3])
+                        )
                         .frame(width: 24, height: 24)
-                    Image(systemName: "checkmark")
-                        .font(.system(size: 12, weight: .bold))
-                        .foregroundColor(.white)
                 }
-            } else {
-                Circle()
-                    .strokeBorder(
-                        Color(hex: 0xD1D5DB),
-                        style: StrokeStyle(lineWidth: 1.5, dash: [3])
-                    )
-                    .frame(width: 24, height: 24)
-            }
 
-            // Title + Subtitle
-            VStack(alignment: .leading, spacing: 2) {
-                Text(title)
-                    .font(theme.typography.body)
-                    .fontWeight(.semibold)
-                    .foregroundColor(
-                        isCompleted ? Color(hex: 0x9CA3AF) : theme.colors.textPrimary
-                    )
-                    .strikethrough(isCompleted)
+                // Title + Subtitle
+                VStack(alignment: .leading, spacing: 2) {
+                    Text(vm.problem.name)
+                        .font(theme.typography.body)
+                        .fontWeight(.semibold)
+                        .foregroundColor(
+                            vm.isCompleted ? Color(hex: 0x9CA3AF) : theme.colors.textPrimary
+                        )
+                        .strikethrough(vm.isCompleted)
 
-                if let subtitle {
-                    Text(subtitle)
-                        .font(theme.typography.caption)
-                        .foregroundColor(Color(hex: 0x6B7280))
+                    if let number = vm.problem.leetcodeNumber {
+                        Text("LeetCode #\(number)")
+                            .font(theme.typography.caption)
+                            .foregroundColor(Color(hex: 0x6B7280))
+                    }
                 }
+
+                Spacer()
+
+                difficultyBadge(vm.problem.difficulty)
+
+                Image(systemName: "chevron.right")
+                    .font(.system(size: 12))
+                    .foregroundColor(Color(hex: 0x9CA3AF))
             }
-
-            Spacer()
-
-            if let progressText {
-                Text(progressText)
-                    .font(theme.typography.body)
-                    .fontWeight(.semibold)
-                    .foregroundColor(Color(hex: 0x6B7280))
-            }
-
-            if let difficulty {
-                difficultyBadge(difficulty)
-            }
-
-            Image(systemName: "chevron.right")
-                .font(.system(size: 12))
-                .foregroundColor(Color(hex: 0x9CA3AF))
+            .padding(.horizontal, theme.spacing.lg)
+            .frame(height: 56)
         }
-        .padding(.horizontal, theme.spacing.lg)
-        .frame(height: 56)
+        .buttonStyle(.plain)
     }
 
     // MARK: - Difficulty Badge
 
-    private func difficultyBadge(_ difficulty: TaskDifficulty) -> some View {
+    private func difficultyBadge(_ difficulty: Difficulty) -> some View {
         Text(difficulty.rawValue)
             .font(theme.typography.caption)
             .fontWeight(.semibold)
-            .foregroundColor(difficulty.textColor)
+            .foregroundColor(difficultyTextColor(difficulty))
             .padding(.horizontal, theme.spacing.sm)
             .padding(.vertical, theme.spacing.xs)
-            .background(difficulty.bgColor)
+            .background(difficultyBgColor(difficulty))
             .cornerRadius(theme.radii.sm)
     }
-}
 
-// TaskDifficulty enum is defined in iPadTodayView.swift
+    private func difficultyTextColor(_ difficulty: Difficulty) -> Color {
+        switch difficulty {
+        case .easy: return Color(hex: 0x059669)
+        case .medium: return Color(hex: 0xD97706)
+        case .hard: return Color(hex: 0xDC2626)
+        }
+    }
 
-#Preview {
-    iPhoneTodayView()
+    private func difficultyBgColor(_ difficulty: Difficulty) -> Color {
+        switch difficulty {
+        case .easy: return Color(hex: 0xD1FAE5)
+        case .medium: return Color(hex: 0xFEF3C7)
+        case .hard: return Color(hex: 0xFEE2E2)
+        }
+    }
 }
+#endif

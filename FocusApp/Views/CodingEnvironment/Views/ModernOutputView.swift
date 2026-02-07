@@ -19,6 +19,17 @@ struct ModernOutputView: View {
         case console
         case debug
 
+        var id: String {
+            switch self {
+            case .result:
+                return "result"
+            case .console:
+                return "console"
+            case .debug:
+                return "debug"
+            }
+        }
+
         var title: String {
             switch self {
             case .result:
@@ -32,40 +43,24 @@ struct ModernOutputView: View {
     }
 
     var body: some View {
-        VStack(spacing: 0) {
-            HStack(spacing: 0) {
-                ForEach(availableTabs, id: \.self) { tab in
-                    Button(action: {
-                        selectedTab = tab
-                    }, label: {
-                        HStack(spacing: 4) {
-                            if tab == .result && hasTestResults {
-                                Circle()
-                                    .fill(resultIndicatorColor)
-                                    .frame(width: 6, height: 6)
-                            }
-
-                            Text(tab.title)
-                                .font(.system(size: 11, weight: selectedTab == tab ? .semibold : .regular))
-                                .foregroundColor(
-                                    selectedTab == tab
-                                        ? theme.colors.textPrimary
-                                        : theme.colors.textSecondary
-                                )
+        VStack(spacing: DSLayout.spacing(0)) {
+            HStack(spacing: DSLayout.spacing(.space8)) {
+                DSSegmentedControl(
+                    items: availableTabs.map { tab in
+                        DSSegmentItem(id: tab.id, title: tab.title)
+                    },
+                    state: .init(selectedId: selectedTab.id),
+                    onSelect: { id in
+                        if let tab = availableTabs.first(where: { $0.id == id }) {
+                            selectedTab = tab
                         }
-                        .padding(.horizontal, 12)
-                        .padding(.vertical, 8)
-                    })
-                    .buttonStyle(.plain)
-                }
-
-                Spacer()
-
+                    }
+                )
                 if isRunning {
-                    HStack(spacing: 4) {
+                    HStack(spacing: DSLayout.spacing(.space4)) {
                         ProgressView()
                             .scaleEffect(0.5)
-                            .frame(width: 12, height: 12)
+                            .frame(width: DSLayout.spacing(.space12), height: DSLayout.spacing(.space12))
                         Text(output.isEmpty
                             ? L10n.Coding.Output.running
                             : output)
@@ -74,9 +69,11 @@ struct ModernOutputView: View {
                             .lineLimit(1)
                             .truncationMode(.tail)
                     }
-                    .padding(.trailing, 12)
+                    .padding(.trailing, DSLayout.spacing(.space12))
                 }
             }
+            .padding(.horizontal, DSLayout.spacing(.space8))
+            .padding(.vertical, DSLayout.spacing(.space8))
             .background(theme.colors.surfaceElevated)
             .overlay(
                 Rectangle()
@@ -98,7 +95,7 @@ struct ModernOutputView: View {
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .background(theme.colors.surface)
         }
-        .onChange(of: availableTabs) { _ in
+        .onChange(of: availableTabs) {
             if !availableTabs.contains(selectedTab) {
                 selectedTab = .result
             }

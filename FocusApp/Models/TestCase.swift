@@ -89,14 +89,3 @@ struct ExecutionResult {
         Self(output: "", error: "Execution stopped by user", exitCode: -1, timedOut: false, wasCancelled: true)
     }
 }
-
-struct QuestionContent {
-    let title: String
-    let content: String
-    let exampleTestcases: String
-    let sampleTestCase: String
-    let difficulty: String
-    let codeSnippets: [String: String]  // langSlug -> code
-    let metaData: String?
-    let questionId: String?
-}

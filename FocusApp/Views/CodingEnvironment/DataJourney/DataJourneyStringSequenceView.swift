@@ -39,14 +39,14 @@ struct StringSequenceView: View {
     }
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 8) {
+        VStack(alignment: .leading, spacing: DSLayout.spacing(8)) {
             // Full string label
-            HStack(spacing: 6) {
+            HStack(spacing: DSLayout.spacing(6)) {
                 Text("string")
                     .font(.system(size: 9, weight: .medium))
                     .foregroundColor(palette.green)
-                    .padding(.horizontal, 6)
-                    .padding(.vertical, 2)
+                    .padding(.horizontal, DSLayout.spacing(6))
+                    .padding(.vertical, DSLayout.spacing(2))
                     .background(
                         RoundedRectangle(cornerRadius: 4)
                             .fill(palette.green.opacity(0.15))
@@ -124,7 +124,7 @@ struct StringSequenceView: View {
             let totalChars = CGFloat(charCount)
             let startFraction = CGFloat(range.lowerBound) / totalChars
             let widthFraction = CGFloat(range.count) / totalChars
-            HStack(spacing: 0) {
+            HStack(spacing: DSLayout.spacing(0)) {
                 Color.clear
                     .frame(width: startFraction * 100, height: 3)
                 RoundedRectangle(cornerRadius: 1.5)

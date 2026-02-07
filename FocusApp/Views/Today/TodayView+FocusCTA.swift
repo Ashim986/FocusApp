@@ -3,9 +3,9 @@ import SwiftUI
 
 extension TodayView {
     var codingCTACard: some View {
-        VStack(spacing: 16) {
-            HStack(spacing: 12) {
-                VStack(alignment: .leading, spacing: 4) {
+        VStack(spacing: DSLayout.spacing(16)) {
+            HStack(spacing: DSLayout.spacing(12)) {
+                VStack(alignment: .leading, spacing: DSLayout.spacing(4)) {
                     Text(L10n.Today.ctaTitle)
                         .font(.system(size: 20, weight: .bold))
                         .foregroundColor(.white)
@@ -33,7 +33,7 @@ extension TodayView {
                 .font(.system(size: 12, weight: .medium))
                 .foregroundColor(.white.opacity(0.7))
         }
-        .padding(20)
+        .padding(DSLayout.spacing(20))
         .background(
             RoundedRectangle(cornerRadius: 16)
                 .fill(

@@ -21,7 +21,7 @@ struct ToolbarWidgetView: View {
     }
 
     var body: some View {
-        VStack(spacing: 14) {
+        VStack(spacing: DSLayout.spacing(14)) {
             WidgetCard(fill: theme.colors.surfaceElevated.opacity(0.55)) {
                 header
             }
@@ -37,7 +37,7 @@ struct ToolbarWidgetView: View {
             }
 
             WidgetCard {
-                VStack(spacing: 10) {
+                VStack(spacing: DSLayout.spacing(10)) {
                     todaysProblemsSection
                     if presenter.allTodaysSolved && presenter.hasTomorrow {
                         nextDaySection
@@ -65,6 +65,6 @@ struct ToolbarWidgetView: View {
             RoundedRectangle(cornerRadius: 14)
                 .stroke(theme.colors.border.opacity(0.5), lineWidth: 1)
         )
-        .padding(10)
+        .padding(DSLayout.spacing(10))
     }
 }

@@ -6,7 +6,7 @@ struct TestCaseEditorView: View {
     @Environment(\.dsTheme) var theme
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 8) {
+        VStack(alignment: .leading, spacing: DSLayout.spacing(8)) {
             HStack {
             Text(L10n.Coding.TestEditor.title)
                     .font(.system(size: 12, weight: .semibold))
@@ -14,22 +14,19 @@ struct TestCaseEditorView: View {
 
                 Spacer()
 
-                Button(action: presenter.addManualTestCase) {
-                    HStack(spacing: 4) {
-                        Image(systemName: "plus")
-                        Text(L10n.Coding.TestEditor.add)
-                    }
-                    .font(.system(size: 11))
-                    .foregroundColor(theme.colors.primary)
+                DSButton(
+                    L10n.Coding.TestEditor.add,
+                    config: .init(style: .secondary, size: .small, icon: Image(systemName: "plus"))
+                ) {
+                    presenter.addManualTestCase()
                 }
-                .buttonStyle(.plain)
             }
 
             if presenter.testCases.isEmpty {
             Text(L10n.Coding.TestEditor.empty)
                     .font(.system(size: 11))
                     .foregroundColor(theme.colors.textSecondary)
-                    .padding(.vertical, 8)
+                    .padding(.vertical, DSLayout.spacing(8))
             } else {
                 ForEach(Array(presenter.testCases.enumerated()), id: \.element.id) { index, testCase in
                     testCaseEditRow(index: index, testCase: testCase)
@@ -39,7 +36,7 @@ struct TestCaseEditorView: View {
     }
 
     private func testCaseEditRow(index: Int, testCase: TestCase) -> some View {
-        VStack(alignment: .leading, spacing: 6) {
+        VStack(alignment: .leading, spacing: DSLayout.spacing(6)) {
             HStack {
                 Text(L10n.Coding.TestEditor.testFormat(index + 1))
                     .font(.system(size: 11, weight: .medium))
@@ -47,18 +44,16 @@ struct TestCaseEditorView: View {
 
                 Spacer()
 
-                Button(action: {
+                DSButton(
+                    "Delete",
+                    config: .init(style: .destructive, size: .small, icon: Image(systemName: "trash"))
+                ) {
                     presenter.removeTestCase(at: index)
-                }, label: {
-                    Image(systemName: "trash")
-                        .font(.system(size: 10))
-                        .foregroundColor(theme.colors.textSecondary)
-                })
-                .buttonStyle(.plain)
+                }
             }
 
-            HStack(spacing: 8) {
-                VStack(alignment: .leading, spacing: 2) {
+            HStack(spacing: DSLayout.spacing(8)) {
+                VStack(alignment: .leading, spacing: DSLayout.spacing(2)) {
                     Text(L10n.Coding.TestEditor.inputLabel)
                         .font(.system(size: 10))
                         .foregroundColor(theme.colors.textSecondary)
@@ -73,7 +68,7 @@ struct TestCaseEditorView: View {
                     )
                 }
 
-                VStack(alignment: .leading, spacing: 2) {
+                VStack(alignment: .leading, spacing: DSLayout.spacing(2)) {
                 Text(L10n.Coding.TestEditor.expectedLabel)
                         .font(.system(size: 10))
                         .foregroundColor(theme.colors.textSecondary)
@@ -89,7 +84,7 @@ struct TestCaseEditorView: View {
                 }
             }
         }
-        .padding(8)
+        .padding(DSLayout.spacing(8))
         .background(
             RoundedRectangle(cornerRadius: 6)
                 .fill(theme.colors.surfaceElevated.opacity(0.4))

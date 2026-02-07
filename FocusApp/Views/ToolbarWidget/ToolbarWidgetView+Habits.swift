@@ -3,12 +3,12 @@ import SwiftUI
 
 extension ToolbarWidgetView {
     var habitsSection: some View {
-        VStack(alignment: .leading, spacing: 8) {
+        VStack(alignment: .leading, spacing: DSLayout.spacing(8)) {
             Text(L10n.Widget.habitsTitle)
                 .font(.system(size: 11, weight: .semibold))
                 .foregroundColor(theme.colors.textPrimary.opacity(0.85))
 
-            HStack(spacing: 8) {
+            HStack(spacing: DSLayout.spacing(8)) {
                 HabitToggle(
                     label: L10n.Habit.Label.dsa,
                     icon: "book.fill",

@@ -78,7 +78,7 @@ struct TrieGraphView: View {
                         }
                         if let pointerStack = pointerMap[node.trieNodeId] {
                             let stackHeight = CGFloat(pointerStack.count) * pointerHeight
-                            VStack(spacing: 2) {
+                            VStack(spacing: DSLayout.spacing(2)) {
                                 ForEach(pointerStack) { pointer in
                                     PointerBadge(
                                         text: pointer.name,

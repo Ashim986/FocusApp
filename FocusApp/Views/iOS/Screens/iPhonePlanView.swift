@@ -1,3 +1,4 @@
+#if os(iOS)
 // iPhonePlanView.swift
 // FocusApp -- iPhone Plan screen (393x852)
 
@@ -6,6 +7,11 @@ import SwiftUI
 
 struct iPhonePlanView: View {
     @Environment(\.dsTheme) var theme
+    @Environment(\.openURL) var openURL
+
+    @ObservedObject var presenter: PlanPresenter
+
+    @State private var expandedDayId: Int?
 
     var body: some View {
         VStack(spacing: 0) {
@@ -20,39 +26,28 @@ struct iPhonePlanView: View {
                         .foregroundColor(theme.colors.textPrimary)
                         .padding(.horizontal, theme.spacing.lg)
 
-                    // Calendar
-                    calendarGrid
+                    // Sync status
+                    if presenter.isSyncing {
+                        HStack(spacing: theme.spacing.sm) {
+                            ProgressView()
+                                .controlSize(.small)
+                            Text("Syncing...")
+                                .font(theme.typography.caption)
+                                .foregroundColor(Color(hex: 0x6B7280))
+                        }
                         .padding(.horizontal, theme.spacing.lg)
-
-                    // Schedule section
-                    Text("Schedule for February 7th")
-                        .font(theme.typography.subtitle)
-                        .foregroundColor(theme.colors.textPrimary)
-                        .padding(.horizontal, theme.spacing.lg)
-
-                    VStack(spacing: theme.spacing.sm) {
-                        scheduleRow(
-                            time: "09:00 AM",
-                            title: "Morning Review",
-                            subtitle: "Review yesterday's problems",
-                            state: .active
-                        )
-
-                        scheduleRow(
-                            time: "10:30 AM",
-                            title: "Graph Theory",
-                            subtitle: "BFS and DFS practice",
-                            state: .normal
-                        )
-
-                        scheduleRow(
-                            time: "02:00 PM",
-                            title: "Mock Interview",
-                            subtitle: "System Design with Peer",
-                            state: .faded
-                        )
+                    } else if !presenter.lastSyncResult.isEmpty {
+                        Text(presenter.lastSyncResult)
+                            .font(theme.typography.caption)
+                            .foregroundColor(Color(hex: 0x6B7280))
+                            .padding(.horizontal, theme.spacing.lg)
                     }
-                    .padding(.horizontal, theme.spacing.lg)
+
+                    // Day cards
+                    ForEach(presenter.days) { day in
+                        dayCard(day)
+                            .padding(.horizontal, theme.spacing.lg)
+                    }
                 }
                 .padding(.top, theme.spacing.sm)
                 .padding(.bottom, 32)
@@ -75,13 +70,14 @@ struct iPhonePlanView: View {
             Spacer()
         }
         .overlay(alignment: .trailing) {
-            Button { } label: {
-                Image(systemName: "gearshape")
+            Button {
+                presenter.syncNow()
+            } label: {
+                Image(systemName: "arrow.triangle.2.circlepath")
                     .font(.system(size: 20))
                     .foregroundColor(theme.colors.textSecondary)
                     .frame(width: 24, height: 24)
             }
-            .buttonStyle(.plain)
             .padding(.trailing, theme.spacing.lg)
         }
         .frame(height: 44)
@@ -89,148 +85,139 @@ struct iPhonePlanView: View {
         .background(theme.colors.background)
     }
 
-    // MARK: - Calendar Grid
+    // MARK: - Day Card
 
-    private var calendarGrid: some View {
-        CalendarGridContent(theme: theme)
-    }
+    private func dayCard(_ day: PlanDayViewModel) -> some View {
+        let isExpanded = expandedDayId == day.id
 
-    // MARK: - Schedule Row
-
-    private func scheduleRow(
-        time: String,
-        title: String,
-        subtitle: String,
-        state: ScheduleRowState
-    ) -> some View {
-        HStack(spacing: theme.spacing.lg) {
-            Text(time)
-                .font(theme.typography.body)
-                .fontWeight(.semibold)
-                .foregroundColor(state.timeColor)
-                .frame(width: 60, alignment: .leading)
-
-            VStack(alignment: .leading, spacing: 2) {
-                Text(title)
-                    .font(theme.typography.body)
-                    .fontWeight(.semibold)
-                    .foregroundColor(theme.colors.textPrimary)
-
-                Text(subtitle)
-                    .font(theme.typography.caption)
-                    .foregroundColor(Color(hex: 0x6B7280))
-            }
-
-            Spacer()
-        }
-        .padding(theme.spacing.lg)
-        .frame(height: 72)
-        .background(state.backgroundColor)
-        .cornerRadius(theme.radii.md)
-        .opacity(state == .faded ? 0.5 : 1.0)
-    }
-}
-
-// ScheduleRowState enum is defined in iPadPlanView.swift
-
-// MARK: - Calendar Grid Content
-
-private struct CalendarGridContent: View {
-    let theme: DSTheme
-    @State private var selectedDate: Int = 7
-    private let month = "February 2026"
-    private let weekdays = ["SU", "MO", "TU", "WE", "TH", "FR", "SA"]
-    private let daysInMonth = 28
-    private let startOffset = 0
-
-    var body: some View {
-        VStack(spacing: theme.spacing.lg) {
-            // Header: Month + arrows
-            HStack {
-                Button { } label: {
-                    Image(systemName: "chevron.left")
-                        .font(.system(size: 16))
-                        .foregroundColor(Color(hex: 0x6B7280))
+        return VStack(alignment: .leading, spacing: 0) {
+            // Header row (always visible)
+            Button {
+                withAnimation(.easeInOut(duration: 0.2)) {
+                    expandedDayId = isExpanded ? nil : day.id
                 }
-                .buttonStyle(.plain)
+            } label: {
+                HStack {
+                    VStack(alignment: .leading, spacing: 2) {
+                        Text("Day \(day.id): \(day.topic)")
+                            .font(theme.typography.body)
+                            .fontWeight(.semibold)
+                            .foregroundColor(theme.colors.textPrimary)
 
-                Spacer()
+                        Text("\(day.date) - \(day.completedCount)/\(day.problems.count) completed")
+                            .font(theme.typography.caption)
+                            .foregroundColor(Color(hex: 0x6B7280))
+                    }
 
-                Text(month)
-                    .font(theme.typography.subtitle)
-                    .foregroundColor(theme.colors.textPrimary)
+                    Spacer()
 
-                Spacer()
+                    if day.isFullyCompleted {
+                        ZStack {
+                            Circle()
+                                .fill(Color(hex: 0xD1FAE5))
+                                .frame(width: 28, height: 28)
+                            Image(systemName: "checkmark")
+                                .font(.system(size: 12, weight: .bold))
+                                .foregroundColor(Color(hex: 0x059669))
+                        }
+                    } else {
+                        // Progress indicator
+                        Text("\(day.completedCount)/\(day.problems.count)")
+                            .font(theme.typography.caption)
+                            .fontWeight(.semibold)
+                            .foregroundColor(Color(hex: 0x6B7280))
+                    }
 
-                Button { } label: {
-                    Image(systemName: "chevron.right")
-                        .font(.system(size: 16))
-                        .foregroundColor(Color(hex: 0x6B7280))
-                }
-                .buttonStyle(.plain)
-            }
-
-            // Weekday labels
-            HStack(spacing: 0) {
-                ForEach(weekdays, id: \.self) { day in
-                    Text(day)
-                        .font(theme.typography.caption)
-                        .fontWeight(.semibold)
+                    Image(systemName: isExpanded ? "chevron.up" : "chevron.down")
+                        .font(.system(size: 12))
                         .foregroundColor(Color(hex: 0x9CA3AF))
-                        .frame(maxWidth: .infinity)
                 }
+                .padding(theme.spacing.lg)
             }
 
-            // Date grid
-            let totalCells = startOffset + daysInMonth
-            let rows = (totalCells + 6) / 7
+            // Progress bar
+            GeometryReader { geo in
+                ZStack(alignment: .leading) {
+                    Capsule()
+                        .fill(Color(hex: 0xE5E7EB))
+                        .frame(height: 4)
 
-            VStack(spacing: theme.spacing.xs) {
-                ForEach(0..<rows, id: \.self) { row in
-                    HStack(spacing: 0) {
-                        ForEach(0..<7, id: \.self) { col in
-                            let index = row * 7 + col
-                            let day = index - startOffset + 1
+                    Capsule()
+                        .fill(
+                            day.isFullyCompleted
+                                ? Color(hex: 0x059669)
+                                : Color(hex: 0x6366F1)
+                        )
+                        .frame(
+                            width: day.problems.count > 0
+                                ? geo.size.width * CGFloat(day.completedCount) / CGFloat(day.problems.count)
+                                : 0,
+                            height: 4
+                        )
+                }
+            }
+            .frame(height: 4)
+            .padding(.horizontal, theme.spacing.lg)
 
-                            if day >= 1 && day <= daysInMonth {
-                                Button {
-                                    selectedDate = day
-                                } label: {
-                                    ZStack {
-                                        if day == selectedDate {
-                                            Circle()
-                                                .fill(Color(hex: 0x6366F1))
-                                                .frame(width: 36, height: 36)
-                                        }
+            // Expanded problem list
+            if isExpanded {
+                VStack(spacing: 0) {
+                    ForEach(day.problems) { problem in
+                        Divider().padding(.leading, 52)
 
-                                        Text("\(day)")
-                                            .font(theme.typography.body)
-                                            .foregroundColor(
-                                                day == selectedDate
-                                                    ? .white
-                                                    : theme.colors.textPrimary
-                                            )
-                                    }
-                                    .frame(maxWidth: .infinity)
-                                    .frame(height: 44)
-                                }
-                                .buttonStyle(.plain)
-                            } else {
-                                Color.clear
-                                    .frame(maxWidth: .infinity)
-                                    .frame(height: 44)
+                        Button {
+                            if let url = URL(string: problem.problem.url) {
+                                openURL(url)
                             }
+                        } label: {
+                            HStack(spacing: theme.spacing.md) {
+                                if problem.isCompleted {
+                                    ZStack {
+                                        Circle()
+                                            .fill(Color(hex: 0x6366F1))
+                                            .frame(width: 24, height: 24)
+                                        Image(systemName: "checkmark")
+                                            .font(.system(size: 12, weight: .bold))
+                                            .foregroundColor(.white)
+                                    }
+                                } else {
+                                    Circle()
+                                        .strokeBorder(
+                                            Color(hex: 0xD1D5DB),
+                                            lineWidth: 1.5
+                                        )
+                                        .frame(width: 24, height: 24)
+                                }
+
+                                VStack(alignment: .leading, spacing: 2) {
+                                    Text(problem.problem.name)
+                                        .font(theme.typography.body)
+                                        .foregroundColor(
+                                            problem.isCompleted
+                                                ? Color(hex: 0x9CA3AF)
+                                                : theme.colors.textPrimary
+                                        )
+                                        .strikethrough(problem.isCompleted)
+
+                                    if let number = problem.problem.leetcodeNumber {
+                                        Text("LeetCode #\(number)")
+                                            .font(theme.typography.caption)
+                                            .foregroundColor(Color(hex: 0x6B7280))
+                                    }
+                                }
+
+                                Spacer()
+
+                                difficultyBadge(problem.problem.difficulty)
+                            }
+                            .padding(.horizontal, theme.spacing.lg)
+                            .frame(height: 48)
                         }
                     }
                 }
+                .padding(.bottom, theme.spacing.sm)
             }
-
-            // Selected date label
-            Text("You selected Feb \(selectedDate), 2026.")
-                .font(theme.typography.body)
-                .foregroundColor(Color(hex: 0x6B7280))
         }
-        .padding(theme.spacing.lg)
         .background(theme.colors.surface)
         .cornerRadius(theme.radii.md)
         .overlay(
@@ -239,8 +226,34 @@ private struct CalendarGridContent: View {
         )
         .shadow(color: .black.opacity(0.05), radius: 3, x: 0, y: 1)
     }
-}
 
-#Preview {
-    iPhonePlanView()
+    // MARK: - Difficulty Badge
+
+    private func difficultyBadge(_ difficulty: Difficulty) -> some View {
+        Text(difficulty.rawValue)
+            .font(theme.typography.caption)
+            .fontWeight(.semibold)
+            .foregroundColor(difficultyTextColor(difficulty))
+            .padding(.horizontal, theme.spacing.sm)
+            .padding(.vertical, theme.spacing.xs)
+            .background(difficultyBgColor(difficulty))
+            .cornerRadius(theme.radii.sm)
+    }
+
+    private func difficultyTextColor(_ difficulty: Difficulty) -> Color {
+        switch difficulty {
+        case .easy: return Color(hex: 0x059669)
+        case .medium: return Color(hex: 0xD97706)
+        case .hard: return Color(hex: 0xDC2626)
+        }
+    }
+
+    private func difficultyBgColor(_ difficulty: Difficulty) -> Color {
+        switch difficulty {
+        case .easy: return Color(hex: 0xD1FAE5)
+        case .medium: return Color(hex: 0xFEF3C7)
+        case .hard: return Color(hex: 0xFEE2E2)
+        }
+    }
 }
+#endif

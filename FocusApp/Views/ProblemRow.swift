@@ -1,6 +1,33 @@
 import FocusDesignSystem
 import SwiftUI
 
+struct DSActionButton<Label: View>: View {
+    let isEnabled: Bool
+    let action: () -> Void
+    private let label: Label
+
+    init(
+        isEnabled: Bool = true,
+        action: @escaping () -> Void,
+        @ViewBuilder label: () -> Label
+    ) {
+        self.isEnabled = isEnabled
+        self.action = action
+        self.label = label()
+    }
+
+    var body: some View {
+        label
+            .contentShape(Rectangle())
+            .onTapGesture {
+                guard isEnabled else { return }
+                action()
+            }
+            .opacity(isEnabled ? 1.0 : 0.6)
+            .allowsHitTesting(isEnabled)
+    }
+}
+
 struct ProblemRow: View {
     let problem: Problem
     let isCompleted: Bool
@@ -9,9 +36,9 @@ struct ProblemRow: View {
     @Environment(\.dsTheme) var theme
 
     var body: some View {
-        HStack(spacing: 12) {
+        HStack(spacing: DSLayout.spacing(12)) {
             // Checkbox
-            Button(action: onToggle, label: {
+            DSActionButton(action: onToggle) {
                 ZStack {
                     RoundedRectangle(cornerRadius: 4)
                         .strokeBorder(isCompleted ? theme.colors.success : theme.colors.border, lineWidth: 2)
@@ -27,12 +54,11 @@ struct ProblemRow: View {
                             .foregroundColor(.white)
                     }
                 }
-            })
-            .buttonStyle(.plain)
+            }
 
             // Problem name (clickable)
-            Button(action: onSelect, label: {
-                HStack(spacing: 4) {
+            DSActionButton(action: onSelect) {
+                HStack(spacing: DSLayout.spacing(4)) {
                     Text(problem.displayName)
                         .font(.system(size: 14))
                         .foregroundColor(isCompleted ? theme.colors.textSecondary : theme.colors.textPrimary)
@@ -44,8 +70,7 @@ struct ProblemRow: View {
                         .font(.system(size: 9, weight: .semibold))
                         .foregroundColor(theme.colors.textSecondary)
                 }
-            })
-            .buttonStyle(.plain)
+            }
             .onHover { hovering in
                 if hovering {
                     NSCursor.pointingHand.push()
@@ -62,8 +87,8 @@ struct ProblemRow: View {
                 config: .init(style: problem.difficulty == .easy ? .success : .warning)
             )
         }
-        .padding(.vertical, 8)
-        .padding(.horizontal, 12)
+        .padding(.vertical, DSLayout.spacing(8))
+        .padding(.horizontal, DSLayout.spacing(12))
     }
 }
 

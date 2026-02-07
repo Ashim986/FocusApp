@@ -13,7 +13,7 @@ struct CodingEnvironmentView: View {
     private let focusTimer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
 
     var body: some View {
-        VStack(spacing: 0) {
+        VStack(spacing: DSLayout.spacing(0)) {
             // Modern Header Bar
             headerBar
 
@@ -94,7 +94,7 @@ struct CodingEnvironmentView: View {
 
     private var submissionTagSheet: some View {
         DSCard(config: .init(style: .surface, padding: 20, cornerRadius: 12)) {
-            VStack(alignment: .leading, spacing: 16) {
+            VStack(alignment: .leading, spacing: DSLayout.spacing(16)) {
                 DSHeader(
                     title: L10n.Coding.submissionTagTitle,
                     subtitle: L10n.Coding.submissionTagBody
@@ -124,7 +124,7 @@ struct CodingEnvironmentView: View {
             }
         }
         .frame(width: 360)
-        .padding(16)
+        .padding(DSLayout.spacing(16))
         .background(theme.colors.background)
     }
 }

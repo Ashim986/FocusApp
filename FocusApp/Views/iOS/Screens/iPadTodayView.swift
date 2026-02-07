@@ -1,54 +1,43 @@
+#if os(iOS)
 // iPadTodayView.swift
-// FocusApp — iPad Today screen (834x1194)
-// Spec: FIGMA_SETUP_GUIDE.md §5.1
+// FocusApp -- iPad Today screen
+// Wired to TodayPresenter for live data
 
 import FocusDesignSystem
 import SwiftUI
 
-// MARK: - Difficulty Badge
-
-enum TaskDifficulty: String {
-    case easy = "Easy"
-    case medium = "Medium"
-    case hard = "Hard"
-
-    var bgColor: Color {
-        switch self {
-        case .easy: return Color(hex: 0xD1FAE5)
-        case .medium: return Color(hex: 0xFEF3C7)
-        case .hard: return Color(hex: 0xFEE2E2)
-        }
-    }
-
-    var textColor: Color {
-        switch self {
-        case .easy: return Color(hex: 0x059669)
-        case .medium: return Color(hex: 0xD97706)
-        case .hard: return Color(hex: 0xDC2626)
-        }
-    }
-}
-
 struct iPadTodayView: View {
+    @ObservedObject var presenter: TodayPresenter
     @Environment(\.dsTheme) var theme
+    @Environment(\.openURL) var openURL
 
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: theme.spacing.lg) {
-                // Date + Greeting + Streak
                 headerSection
-
-                // Card strip (3 horizontal cards)
                 cardStrip
-
-                // Today's Plan header
                 planHeader
 
-                // Task rows
-                taskList
+                if let todayDay = presenter.visibleDays.first(where: { $0.isToday }) {
+                    taskList(for: todayDay)
+                }
+
+                // Carryover days (past days with unsolved problems)
+                ForEach(presenter.visibleDays.filter({ !$0.isToday })) { day in
+                    carryoverSection(for: day)
+                }
             }
             .padding(.bottom, 48)
         }
+        .onAppear {
+            presenter.syncNow()
+        }
+    }
+
+    // MARK: - Current Day Info
+
+    private var currentDay: TodayDayViewModel? {
+        presenter.visibleDays.first(where: { $0.isToday })
     }
 
     // MARK: - Header Section
@@ -56,63 +45,57 @@ struct iPadTodayView: View {
     private var headerSection: some View {
         HStack(alignment: .top) {
             VStack(alignment: .leading, spacing: theme.spacing.xs) {
-                Text("SATURDAY, FEBRUARY 7")
+                Text(formattedDate)
                     .font(.system(size: 12, weight: .semibold))
-                    .foregroundColor(Color(hex: 0x6B7280))
+                    .foregroundColor(theme.colors.textSecondary)
                     .textCase(.uppercase)
 
-                Text("Good Morning, John")
+                Text(currentDay?.topic ?? "Study Plan")
                     .font(.system(size: 32, weight: .bold))
                     .foregroundColor(theme.colors.textPrimary)
             }
 
             Spacer()
 
-            // Streak badge
-            streakBadge
+            // Sync status
+            if !presenter.lastSyncResult.isEmpty {
+                Text(presenter.lastSyncResult)
+                    .font(.system(size: 12, weight: .medium))
+                    .foregroundColor(theme.colors.textSecondary)
+                    .padding(.horizontal, theme.spacing.md)
+                    .padding(.vertical, theme.spacing.sm)
+                    .background(theme.colors.surface)
+                    .cornerRadius(theme.radii.pill)
+            }
         }
         .padding(.horizontal, theme.spacing.xl)
         .padding(.top, theme.spacing.xl)
     }
 
-    private var streakBadge: some View {
-        HStack(spacing: theme.spacing.xs) {
-            Text("\u{1F525}")
-                .font(.system(size: 14))
-
-            Text("12 Day Streak")
-                .font(.system(size: 14, weight: .semibold))
-                .foregroundColor(Color(hex: 0xEA580C))
-        }
-        .padding(.horizontal, theme.spacing.md)
-        .padding(.vertical, theme.spacing.sm)
-        .background(Color(hex: 0xFFF7ED))
-        .cornerRadius(theme.radii.pill)
-        .overlay(
-            Capsule()
-                .stroke(Color(hex: 0xFDBA74), lineWidth: 1)
-        )
+    private var formattedDate: String {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "EEEE, MMMM d"
+        return formatter.string(from: Date()).uppercased()
     }
 
     // MARK: - Card Strip
 
     private var cardStrip: some View {
         HStack(spacing: theme.spacing.md) {
-            // Daily Goal (gradient card)
             dailyGoalCard
-
-            // Focus Time
-            focusTimeCard
-
-            // Start Focus
-            startFocusCard
+            habitsCard
+            syncCard
         }
         .frame(height: 120)
         .padding(.horizontal, theme.spacing.xl)
     }
 
     private var dailyGoalCard: some View {
-        VStack(alignment: .leading, spacing: theme.spacing.sm) {
+        let completed = currentDay?.completedCount ?? 0
+        let total = currentDay?.totalCount ?? 0
+        let progress: CGFloat = total > 0 ? CGFloat(completed) / CGFloat(total) : 0
+
+        return VStack(alignment: .leading, spacing: theme.spacing.sm) {
             HStack {
                 Image(systemName: "target")
                     .foregroundColor(.white)
@@ -120,14 +103,13 @@ struct iPadTodayView: View {
                     .font(.system(size: 12, weight: .semibold))
                     .foregroundColor(.white)
             }
-            Text("1/4")
+            Text("\(completed)/\(total)")
                 .font(.system(size: 24, weight: .bold))
                 .foregroundColor(.white)
             Text("Tasks done")
                 .font(theme.typography.caption)
                 .foregroundColor(.white.opacity(0.8))
 
-            // Mini progress bar
             GeometryReader { geo in
                 ZStack(alignment: .leading) {
                     Capsule()
@@ -135,7 +117,7 @@ struct iPadTodayView: View {
                         .frame(height: 4)
                     Capsule()
                         .fill(Color.white)
-                        .frame(width: geo.size.width * 0.25, height: 4)
+                        .frame(width: geo.size.width * progress, height: 4)
                 }
             }
             .frame(height: 4)
@@ -151,38 +133,48 @@ struct iPadTodayView: View {
         .cornerRadius(theme.radii.md)
     }
 
-    private var focusTimeCard: some View {
+    private var habitsCard: some View {
         DSCard(config: DSCardConfig(style: .outlined)) {
             VStack(alignment: .leading, spacing: theme.spacing.xs) {
                 HStack {
-                    Image(systemName: "waveform.path.ecg")
+                    Image(systemName: "checkmark.circle")
                         .foregroundColor(theme.colors.success)
-                    Text("Focus Time")
+                    Text("Habits")
                         .font(.system(size: 12, weight: .semibold))
-                        .foregroundColor(Color(hex: 0x6B7280))
+                        .foregroundColor(theme.colors.textSecondary)
                 }
-                Text("2h 15m")
+                Text("\(presenter.habitsCompletedCount)/\(presenter.habits.count)")
                     .font(.system(size: 24, weight: .bold))
                     .foregroundColor(theme.colors.textPrimary)
-                Text("35m remaining")
+                Text("Completed today")
                     .font(theme.typography.caption)
-                    .foregroundColor(Color(hex: 0x6B7280))
+                    .foregroundColor(theme.colors.textSecondary)
             }
         }
     }
 
-    private var startFocusCard: some View {
-        Button { } label: {
+    private var syncCard: some View {
+        DSActionButton(
+            isEnabled: !presenter.isSyncing,
+            action: { presenter.syncNow() }
+        ) {
             VStack(spacing: theme.spacing.xs) {
-                Image(systemName: "arrow.right")
+                Image(systemName: presenter.isSyncing ? "arrow.triangle.2.circlepath" : "arrow.clockwise")
                     .font(.system(size: 18, weight: .semibold))
-                    .foregroundColor(Color(hex: 0x6366F1))
-                Text("Start Focus")
+                    .foregroundColor(theme.colors.primary)
+                    .rotationEffect(presenter.isSyncing ? .degrees(360) : .zero)
+                    .animation(
+                        presenter.isSyncing
+                            ? .linear(duration: 1).repeatForever(autoreverses: false)
+                            : .default,
+                        value: presenter.isSyncing
+                    )
+                Text("Sync LeetCode")
                     .font(.system(size: 12, weight: .semibold))
                     .foregroundColor(theme.colors.textPrimary)
-                Text("Get in the zone")
+                Text("Fetch progress")
                     .font(theme.typography.caption)
-                    .foregroundColor(Color(hex: 0x6B7280))
+                    .foregroundColor(theme.colors.textSecondary)
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .background(theme.colors.surface)
@@ -195,7 +187,6 @@ struct iPadTodayView: View {
                     )
             )
         }
-        .buttonStyle(.plain)
     }
 
     // MARK: - Plan Header
@@ -206,50 +197,50 @@ struct iPadTodayView: View {
                 .font(.system(size: 20, weight: .semibold))
                 .foregroundColor(theme.colors.textPrimary)
 
-            Spacer()
+            if let day = currentDay {
+                Text("Day \(day.id)")
+                    .font(.system(size: 14, weight: .medium))
+                    .foregroundColor(theme.colors.textSecondary)
+            }
 
-            Button("View Full Plan") { }
-                .font(.system(size: 14, weight: .regular))
-                .foregroundColor(Color(hex: 0x6366F1))
+            Spacer()
         }
         .padding(.horizontal, theme.spacing.xl)
     }
 
     // MARK: - Task List
 
-    private var taskList: some View {
+    private func taskList(for day: TodayDayViewModel) -> some View {
         VStack(spacing: 0) {
-            iPadTaskRow(
-                title: "Complete Two Sum",
-                subtitle: "Arrays & Hashing - LeetCode 75",
-                isCompleted: true,
-                difficulty: .easy,
-                theme: theme
-            )
-            Divider().padding(.leading, 52)
+            ForEach(Array(day.problems.enumerated()), id: \.element.id) { offset, problem in
+                iPadTaskRow(
+                    title: problem.problem.name,
+                    subtitle: day.topic,
+                    isCompleted: problem.isCompleted,
+                    difficulty: problem.problem.difficulty,
+                    theme: theme,
+                    onTap: {
+                        if let url = URL(string: problem.problem.url) {
+                            openURL(url)
+                        }
+                    }
+                )
+                if offset < day.problems.count - 1 {
+                    Divider().padding(.leading, 52)
+                }
+            }
 
-            iPadTaskRow(
-                title: "Read System Design Chapter 5",
-                subtitle: "System Design",
-                isCompleted: true,
-                theme: theme
-            )
-            Divider().padding(.leading, 52)
-
-            iPadTaskRow(
-                title: "Review Pull Requests",
-                subtitle: "Code Review",
-                isCompleted: false,
-                theme: theme
-            )
-            Divider().padding(.leading, 52)
-
-            iPadTaskRow(
-                title: "Exercise",
-                isCompleted: true,
-                progressText: "1/4",
-                theme: theme
-            )
+            // Habits section
+            if !presenter.habits.isEmpty {
+                Divider().padding(.leading, 52)
+                ForEach(presenter.habits) { habit in
+                    iPadHabitRow(
+                        habit: habit,
+                        theme: theme,
+                        onToggle: { presenter.toggleHabit(habit.id) }
+                    )
+                }
+            }
         }
         .background(theme.colors.surface)
         .cornerRadius(theme.radii.md)
@@ -259,6 +250,50 @@ struct iPadTodayView: View {
         )
         .padding(.horizontal, theme.spacing.xl)
     }
+
+    // MARK: - Carryover Section
+
+    private func carryoverSection(for day: TodayDayViewModel) -> some View {
+        VStack(alignment: .leading, spacing: theme.spacing.sm) {
+            HStack {
+                Text("Day \(day.id) - \(day.topic)")
+                    .font(.system(size: 16, weight: .semibold))
+                    .foregroundColor(theme.colors.warning)
+                Text("(\(day.problems.count) carryover)")
+                    .font(.system(size: 12, weight: .medium))
+                    .foregroundColor(theme.colors.warning)
+            }
+            .padding(.horizontal, theme.spacing.xl)
+
+            VStack(spacing: 0) {
+                ForEach(Array(day.problems.enumerated()), id: \.element.id) { offset, problem in
+                    iPadTaskRow(
+                        title: problem.problem.name,
+                        subtitle: day.topic,
+                        isCompleted: problem.isCompleted,
+                        difficulty: problem.problem.difficulty,
+                        isCarryover: true,
+                        theme: theme,
+                        onTap: {
+                            if let url = URL(string: problem.problem.url) {
+                                openURL(url)
+                            }
+                        }
+                    )
+                    if offset < day.problems.count - 1 {
+                        Divider().padding(.leading, 52)
+                    }
+                }
+            }
+            .background(theme.colors.surface)
+            .cornerRadius(theme.radii.md)
+            .overlay(
+                RoundedRectangle(cornerRadius: theme.radii.md)
+                    .stroke(theme.colors.warning.opacity(0.3), lineWidth: 1)
+            )
+            .padding(.horizontal, theme.spacing.xl)
+        }
+    }
 }
 
 // MARK: - Task Row
@@ -267,80 +302,126 @@ private struct iPadTaskRow: View {
     var title: String
     var subtitle: String?
     var isCompleted: Bool = false
-    var difficulty: TaskDifficulty?
-    var progressText: String?
+    var difficulty: Difficulty?
+    var isCarryover: Bool = false
     var theme: DSTheme
+    var onTap: (() -> Void)?
 
     var body: some View {
-        HStack(spacing: 12) {
-            // Check icon
-            if isCompleted {
-                ZStack {
+        DSActionButton(action: { onTap?() }) {
+            HStack(spacing: 12) {
+                // Check icon
+                if isCompleted {
+                    ZStack {
+                        Circle()
+                            .fill(theme.colors.primary)
+                            .frame(width: 24, height: 24)
+                        Image(systemName: "checkmark")
+                            .font(.system(size: 12, weight: .bold))
+                            .foregroundColor(.white)
+                    }
+                } else {
                     Circle()
-                        .fill(Color(hex: 0x6366F1))
+                        .strokeBorder(
+                            isCarryover ? theme.colors.warning : theme.colors.border,
+                            style: StrokeStyle(lineWidth: 1.5, dash: [3])
+                        )
                         .frame(width: 24, height: 24)
-                    Image(systemName: "checkmark")
-                        .font(.system(size: 12, weight: .bold))
-                        .foregroundColor(.white)
                 }
-            } else {
-                Circle()
-                    .strokeBorder(
-                        Color(hex: 0xD1D5DB),
-                        style: StrokeStyle(lineWidth: 1.5, dash: [3])
-                    )
-                    .frame(width: 24, height: 24)
-            }
 
-            // Title + Subtitle
-            VStack(alignment: .leading, spacing: 2) {
-                Text(title)
-                    .font(.system(size: 16, weight: .semibold))
-                    .foregroundColor(
-                        isCompleted
-                            ? Color(hex: 0x9CA3AF)
-                            : theme.colors.textPrimary
-                    )
-                    .strikethrough(isCompleted)
+                // Title + Subtitle
+                VStack(alignment: .leading, spacing: 2) {
+                    Text(title)
+                        .font(.system(size: 16, weight: .semibold))
+                        .foregroundColor(
+                            isCompleted
+                                ? theme.colors.textSecondary
+                                : theme.colors.textPrimary
+                        )
+                        .strikethrough(isCompleted)
 
-                if let subtitle {
-                    Text(subtitle)
-                        .font(theme.typography.caption)
-                        .foregroundColor(Color(hex: 0x6B7280))
+                    if let subtitle {
+                        Text(subtitle)
+                            .font(theme.typography.caption)
+                            .foregroundColor(theme.colors.textSecondary)
+                    }
                 }
+
+                Spacer()
+
+                // Difficulty badge
+                if let difficulty {
+                    DSBadge(
+                        difficulty.rawValue,
+                        style: badgeStyle(for: difficulty)
+                    )
+                }
+
+                // Chevron
+                Image(systemName: "chevron.right")
+                    .font(.system(size: 12))
+                    .foregroundColor(theme.colors.textSecondary)
             }
-
-            Spacer()
-
-            // Progress text
-            if let progressText {
-                Text(progressText)
-                    .font(.system(size: 14, weight: .semibold))
-                    .foregroundColor(Color(hex: 0x6B7280))
-            }
-
-            // Difficulty badge
-            if let difficulty {
-                Text(difficulty.rawValue)
-                    .font(.system(size: 12, weight: .semibold))
-                    .foregroundColor(difficulty.textColor)
-                    .padding(.horizontal, theme.spacing.sm)
-                    .padding(.vertical, theme.spacing.xs)
-                    .background(difficulty.bgColor)
-                    .cornerRadius(theme.radii.sm)
-            }
-
-            // Chevron
-            Image(systemName: "chevron.right")
-                .font(.system(size: 12))
-                .foregroundColor(Color(hex: 0x9CA3AF))
+            .padding(.horizontal, theme.spacing.lg)
+            .frame(height: 56)
         }
-        .padding(.horizontal, theme.spacing.lg)
-        .frame(height: 56)
+    }
+
+    private func badgeStyle(for difficulty: Difficulty) -> DSBadgeStyle {
+        switch difficulty {
+        case .easy: return .success
+        case .medium: return .warning
+        case .hard: return .danger
+        }
     }
 }
 
-#Preview {
-    iPadTodayView()
-        .frame(width: 574, height: 1194)
+// MARK: - Habit Row
+
+private struct iPadHabitRow: View {
+    let habit: HabitViewModel
+    let theme: DSTheme
+    let onToggle: () -> Void
+
+    var body: some View {
+        DSActionButton(action: onToggle) {
+            HStack(spacing: 12) {
+                if habit.isCompleted {
+                    ZStack {
+                        Circle()
+                            .fill(theme.colors.success)
+                            .frame(width: 24, height: 24)
+                        Image(systemName: "checkmark")
+                            .font(.system(size: 12, weight: .bold))
+                            .foregroundColor(.white)
+                    }
+                } else {
+                    Circle()
+                        .strokeBorder(
+                            theme.colors.border,
+                            style: StrokeStyle(lineWidth: 1.5)
+                        )
+                        .frame(width: 24, height: 24)
+                }
+
+                Image(systemName: habit.icon)
+                    .font(.system(size: 14))
+                    .foregroundColor(
+                        habit.isCompleted ? theme.colors.success : theme.colors.textSecondary
+                    )
+
+                Text(habit.title)
+                    .font(.system(size: 16, weight: .semibold))
+                    .foregroundColor(
+                        habit.isCompleted ? theme.colors.textSecondary : theme.colors.textPrimary
+                    )
+                    .strikethrough(habit.isCompleted)
+
+                Spacer()
+            }
+            .padding(.horizontal, theme.spacing.lg)
+            .frame(height: 56)
+        }
+    }
 }
+#endif

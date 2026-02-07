@@ -4,7 +4,7 @@ import SwiftUI
 extension DataJourneyView {
     var content: some View {
         let structure = resolvedStructure
-        return VStack(alignment: .leading, spacing: 10) {
+        return VStack(alignment: .leading, spacing: DSLayout.spacing(10)) {
             if let structure {
                 let beginsAtZero = playbackEvents.first?.label?
                     .lowercased()
@@ -73,7 +73,7 @@ extension DataJourneyView {
     }
 
     var emptyState: some View {
-        VStack(alignment: .leading, spacing: 6) {
+        VStack(alignment: .leading, spacing: DSLayout.spacing(6)) {
             Text("Run with input to see the data journey.")
                 .font(.system(size: 11, weight: .medium))
                 .foregroundColor(palette.gray300)
@@ -105,7 +105,7 @@ extension DataJourneyView {
         let titleSize: CGFloat = isCompact ? 9 : 10
         let keyWidth: CGFloat = isCompact ? 70 : 80
         let infoSize: CGFloat = isCompact ? 9 : 10
-        return VStack(alignment: .leading, spacing: 8) {
+        return VStack(alignment: .leading, spacing: DSLayout.spacing(8)) {
             Text(title)
                 .font(.system(size: titleSize, weight: .semibold))
                 .foregroundColor(palette.gray400)
@@ -119,7 +119,7 @@ extension DataJourneyView {
                     ForEach(event.values.keys.sorted(), id: \.self) { key in
                         if let value = event.values[key] {
                             let isChanged = changedKeys.contains(key)
-                            HStack(alignment: .center, spacing: 10) {
+                            HStack(alignment: .center, spacing: DSLayout.spacing(10)) {
                                 Text(key)
                                     .font(.system(size: infoSize, weight: .semibold))
                                     .foregroundColor(
@@ -129,8 +129,8 @@ extension DataJourneyView {
 
                                 valueView(for: value, listContexts: listContexts)
                             }
-                            .padding(.vertical, 2)
-                            .padding(.horizontal, 4)
+                            .padding(.vertical, DSLayout.spacing(2))
+                            .padding(.horizontal, DSLayout.spacing(4))
                                 .background(
                                     isChanged
                                         ? RoundedRectangle(cornerRadius: 4)

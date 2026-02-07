@@ -86,8 +86,8 @@ struct DataJourneyStructureCanvasView: View {
             return AnyView(EmptyView())
         }
         return AnyView(
-            VStack(alignment: .leading, spacing: 6) {
-                HStack(alignment: .center, spacing: 10) {
+            VStack(alignment: .leading, spacing: DSLayout.spacing(6)) {
+                HStack(alignment: .center, spacing: DSLayout.spacing(10)) {
                     Text("Structure")
                         .font(.system(size: 10, weight: .semibold))
                         .foregroundColor(palette.gray400)
@@ -98,7 +98,7 @@ struct DataJourneyStructureCanvasView: View {
 
                     Spacer()
                 }
-                .padding(.top, -16)
+                .padding(.top, DSLayout.spacing(-16))
 
                 switch structure {
                 case .list(let list):
@@ -121,8 +121,8 @@ struct DataJourneyStructureCanvasView: View {
                     let combined = combinedListViewModel(for: lists)
                     let motions = combinedPointerMotions(from: previousEvent, to: selectedEvent, lists: lists)
                     let finalLinks = outputSequenceLinks(for: lists)
-                    VStack(alignment: .leading, spacing: 10) {
-                        HStack(alignment: .center, spacing: 10) {
+                    VStack(alignment: .leading, spacing: DSLayout.spacing(10)) {
+                        HStack(alignment: .center, spacing: DSLayout.spacing(10)) {
                             listLabel("combined", color: palette.purple, background: palette.purple.opacity(0.18))
                                 .frame(width: 64, alignment: .leading)
 
@@ -147,10 +147,10 @@ struct DataJourneyStructureCanvasView: View {
                         Rectangle()
                             .fill(palette.gray700.opacity(0.6))
                             .frame(height: 1)
-                            .padding(.leading, 64)
+                            .padding(.leading, DSLayout.spacing(64))
 
                         ForEach(lists) { entry in
-                            HStack(alignment: .center, spacing: 10) {
+                            HStack(alignment: .center, spacing: DSLayout.spacing(10)) {
                                 let accent = PointerPalette.color(for: entry.name, palette: palette)
                                 listLabel(
                                     entry.name,
@@ -179,8 +179,8 @@ struct DataJourneyStructureCanvasView: View {
                     let combined = combinedListViewModel(for: listArray.lists)
                     let motions = combinedPointerMotions(from: previousEvent, to: selectedEvent, lists: listArray.lists)
                     let finalLinks = outputSequenceLinks(for: listArray.lists)
-                    VStack(alignment: .leading, spacing: 10) {
-                        HStack(alignment: .center, spacing: 10) {
+                    VStack(alignment: .leading, spacing: DSLayout.spacing(10)) {
+                        HStack(alignment: .center, spacing: DSLayout.spacing(10)) {
                             listLabel("combined", color: palette.purple, background: palette.purple.opacity(0.18))
                                 .frame(width: 64, alignment: .leading)
 
@@ -202,7 +202,7 @@ struct DataJourneyStructureCanvasView: View {
                             )
                         }
 
-                        HStack(alignment: .center, spacing: 10) {
+                        HStack(alignment: .center, spacing: DSLayout.spacing(10)) {
                             listLabel("heads", color: palette.cyan, background: palette.cyan.opacity(0.18))
                                 .frame(width: 64, alignment: .leading)
 
@@ -224,10 +224,10 @@ struct DataJourneyStructureCanvasView: View {
                         Rectangle()
                             .fill(palette.gray700.opacity(0.6))
                             .frame(height: 1)
-                            .padding(.leading, 64)
+                            .padding(.leading, DSLayout.spacing(64))
 
                         ForEach(listArray.lists) { entry in
-                            HStack(alignment: .center, spacing: 10) {
+                            HStack(alignment: .center, spacing: DSLayout.spacing(10)) {
                                 let accent = PointerPalette.color(for: entry.name, palette: palette)
                                 listLabel(
                                     entry.name,
@@ -399,10 +399,10 @@ struct DataJourneyStructureCanvasView: View {
 
                 if let footer {
                     footer
-                        .padding(.top, 6)
+                        .padding(.top, DSLayout.spacing(6))
                 }
             }
-            .padding(8)
+            .padding(DSLayout.spacing(8))
             .background(
                 RoundedRectangle(cornerRadius: 8)
                     .fill(palette.gray900.opacity(0.45))

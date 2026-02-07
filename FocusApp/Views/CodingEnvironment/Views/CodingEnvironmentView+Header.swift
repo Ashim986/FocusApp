@@ -7,8 +7,8 @@ import AppKit
 extension CodingEnvironmentView {
     var headerBar: some View {
         DSCard(config: .init(style: .surface, padding: 0, cornerRadius: 0)) {
-            HStack(spacing: 0) {
-                HStack(spacing: 12) {
+            HStack(spacing: DSLayout.spacing(0)) {
+                HStack(spacing: DSLayout.spacing(.space12)) {
                     headerIconButton(
                         systemName: "xmark",
                         help: L10n.Coding.exitHelp,
@@ -25,7 +25,7 @@ extension CodingEnvironmentView {
 
                     problemSelector
                 }
-                .padding(.leading, 12)
+                .padding(.leading, DSLayout.spacing(.space12))
 
                 Spacer()
 
@@ -33,7 +33,7 @@ extension CodingEnvironmentView {
 
                 Spacer()
 
-                HStack(spacing: 10) {
+                HStack(spacing: DSLayout.spacing(10)) {
                     if let problem = presenter.selectedProblem, let url = URL(string: problem.url) {
                         DSButton(
                             L10n.Coding.leetcodeLink,
@@ -99,9 +99,9 @@ extension CodingEnvironmentView {
                         .help(L10n.Content.settingsButton)
                     }
                 }
-                .padding(.trailing, 12)
+                .padding(.trailing, DSLayout.spacing(.space12))
             }
-            .frame(height: 52)
+            .frame(height: DSLayout.spacing(52))
             .background(theme.colors.surface)
             .overlay(
                 Rectangle()
@@ -123,7 +123,7 @@ extension CodingEnvironmentView {
             : timeString
         let ringStyle: DSProgressRingStyle = focusPresenter.isCompleted ? .secondary : .primary
 
-        return HStack(spacing: 8) {
+        return HStack(spacing: DSLayout.spacing(.space8)) {
             DSProgressRing(
                 config: .init(size: 18, lineWidth: 2, style: ringStyle),
                 state: .init(progress: progress)
@@ -143,14 +143,14 @@ extension CodingEnvironmentView {
                 compact: true
             )
         }
-        .padding(.horizontal, 12)
-        .padding(.vertical, 6)
+        .padding(.horizontal, DSLayout.spacing(.space12))
+        .padding(.vertical, DSLayout.spacing(6))
         .background(
-            RoundedRectangle(cornerRadius: 8)
+            RoundedRectangle(cornerRadius: DSLayout.spacing(.space8))
                 .fill(theme.colors.surfaceElevated)
         )
         .overlay(
-            RoundedRectangle(cornerRadius: 8)
+            RoundedRectangle(cornerRadius: DSLayout.spacing(.space8))
                 .stroke(theme.colors.border, lineWidth: 1)
         )
     }
@@ -167,20 +167,19 @@ extension CodingEnvironmentView {
         action: @escaping () -> Void,
         compact: Bool = false
     ) -> some View {
-        let size: CGFloat = compact ? 22 : 28
-        return Button(action: action) {
+        let size: CGFloat = compact ? DSLayout.spacing(22) : DSLayout.spacing(28)
+        return DSActionButton(action: action) {
             Image(systemName: systemName)
                 .font(.system(size: compact ? 9 : 12, weight: .medium))
                 .foregroundColor(theme.colors.textSecondary)
                 .frame(width: size, height: size)
                 .background(theme.colors.surfaceElevated)
-                .clipShape(RoundedRectangle(cornerRadius: 6))
+                .clipShape(RoundedRectangle(cornerRadius: DSLayout.spacing(6)))
                 .overlay(
-                    RoundedRectangle(cornerRadius: 6)
+                    RoundedRectangle(cornerRadius: DSLayout.spacing(6))
                         .stroke(theme.colors.border, lineWidth: 1)
                 )
         }
-        .buttonStyle(.plain)
         .help(help ?? "")
     }
 

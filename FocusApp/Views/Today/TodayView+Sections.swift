@@ -4,8 +4,8 @@ import SwiftUI
 extension TodayView {
     var syncCard: some View {
         DSCard(config: .init(style: .elevated)) {
-            HStack(spacing: 16) {
-                VStack(alignment: .leading, spacing: 4) {
+            HStack(spacing: DSLayout.spacing(.space16)) {
+                VStack(alignment: .leading, spacing: DSLayout.spacing(.space4)) {
                     Text(L10n.Today.syncTitle)
                         .font(.system(size: 16, weight: .semibold))
                         .foregroundColor(theme.colors.textPrimary)
@@ -37,7 +37,7 @@ extension TodayView {
 
     var habitsCard: some View {
         DSCard(config: .init(style: .elevated)) {
-            VStack(alignment: .leading, spacing: 16) {
+            VStack(alignment: .leading, spacing: DSLayout.spacing(.space16)) {
                 HStack {
                     Text(L10n.Today.habitsTitle)
                         .font(.system(size: 16, weight: .semibold))
@@ -55,7 +55,7 @@ extension TodayView {
                         .foregroundColor(theme.colors.textSecondary)
                 }
 
-                VStack(spacing: 12) {
+                VStack(spacing: DSLayout.spacing(.space12)) {
                     ForEach(presenter.habits) { habit in
                         habitRow(habit)
                     }
@@ -65,10 +65,10 @@ extension TodayView {
     }
 
     func habitRow(_ habit: HabitViewModel) -> some View {
-        Button(action: {
+        DSActionButton(action: {
             presenter.toggleHabit(habit.id)
-        }, label: {
-            HStack(spacing: 12) {
+        }) {
+            HStack(spacing: DSLayout.spacing(.space12)) {
                 ZStack {
                     Circle()
                         .fill(habit.isCompleted ? theme.colors.success.opacity(0.12) : theme.colors.surfaceElevated)
@@ -87,11 +87,11 @@ extension TodayView {
                 Spacer()
 
                 ZStack {
-                    RoundedRectangle(cornerRadius: 4)
+                    RoundedRectangle(cornerRadius: DSLayout.spacing(.space4))
                         .strokeBorder(habit.isCompleted ? theme.colors.success : theme.colors.border, lineWidth: 2)
                         .frame(width: 20, height: 20)
                         .background(
-                            RoundedRectangle(cornerRadius: 4)
+                            RoundedRectangle(cornerRadius: DSLayout.spacing(.space4))
                                 .fill(habit.isCompleted ? theme.colors.success : Color.clear)
                         )
 
@@ -102,18 +102,17 @@ extension TodayView {
                     }
                 }
             }
-            .padding(12)
+            .padding(DSLayout.spacing(.space12))
             .background(
-                RoundedRectangle(cornerRadius: 8)
+                RoundedRectangle(cornerRadius: DSLayout.spacing(.space8))
                     .fill(habit.isCompleted ? theme.colors.success.opacity(0.15) : theme.colors.surface)
             )
-        })
-        .buttonStyle(.plain)
+        }
     }
 
     func dayCard(day: TodayDayViewModel) -> some View {
         DSCard(config: .init(style: .elevated)) {
-            VStack(alignment: .leading, spacing: 16) {
+            VStack(alignment: .leading, spacing: DSLayout.spacing(.space16)) {
                 HStack {
                     ZStack {
                         if day.isToday {
@@ -125,7 +124,7 @@ extension TodayView {
                                 .font(.system(size: 14, weight: .bold))
                                 .foregroundColor(.white)
                         } else {
-                            RoundedRectangle(cornerRadius: 6)
+                            RoundedRectangle(cornerRadius: DSLayout.spacing(6))
                                 .fill(theme.colors.surfaceElevated)
                                 .frame(width: 32, height: 32)
 
@@ -135,7 +134,7 @@ extension TodayView {
                         }
                     }
 
-                    VStack(alignment: .leading, spacing: 2) {
+                    VStack(alignment: .leading, spacing: DSLayout.spacing(.space2)) {
                         Text(day.isToday
                              ? L10n.Today.dayTitleToday( day.topic)
                              : L10n.Today.dayTitleBacklog( day.topic))
@@ -152,7 +151,7 @@ extension TodayView {
 
                 Divider()
 
-                VStack(spacing: 0) {
+                VStack(spacing: DSLayout.spacing(0)) {
                     ForEach(day.problems) { problem in
                         ProblemRow(
                             problem: problem.problem,
@@ -167,7 +166,7 @@ extension TodayView {
 
                         if problem.index < day.problems.count - 1 {
                             Divider()
-                                .padding(.leading, 44)
+                                .padding(.leading, DSLayout.spacing(44))
                         }
                     }
                 }

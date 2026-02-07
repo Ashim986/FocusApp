@@ -53,7 +53,7 @@ struct MatrixGridView: View {
                     }
                 }
             }
-            .padding(4)
+            .padding(DSLayout.spacing(4))
         }
         .frame(
             maxHeight: CGFloat(min(rows, 12)) * (bubbleSize + cellSpacing) + headerSize + 16
@@ -105,7 +105,7 @@ struct MatrixGridView: View {
                 .foregroundColor(.white)
                 .lineLimit(1)
                 .minimumScaleFactor(0.5)
-                .padding(.horizontal, 2)
+                .padding(.horizontal, DSLayout.spacing(2))
         }
         .frame(width: bubbleSize, height: bubbleSize)
         .shadow(

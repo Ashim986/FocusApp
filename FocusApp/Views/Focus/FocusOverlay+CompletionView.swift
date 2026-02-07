@@ -3,7 +3,7 @@ import SwiftUI
 
 extension FocusOverlay {
     var completionView: some View {
-        VStack(spacing: 32) {
+        VStack(spacing: DSLayout.spacing(32)) {
             ZStack {
                 Circle()
                     .fill(theme.colors.success.opacity(0.2))
@@ -14,7 +14,7 @@ extension FocusOverlay {
                     .foregroundColor(theme.colors.success)
             }
 
-            VStack(spacing: 8) {
+            VStack(spacing: DSLayout.spacing(8)) {
                 Text(L10n.Focus.completeTitle)
                     .font(.system(size: 32, weight: .bold))
                     .foregroundColor(theme.colors.textPrimary)
@@ -24,8 +24,8 @@ extension FocusOverlay {
                     .foregroundColor(theme.colors.textSecondary)
             }
 
-            HStack(spacing: 40) {
-                VStack(spacing: 4) {
+            HStack(spacing: DSLayout.spacing(40)) {
+                VStack(spacing: DSLayout.spacing(4)) {
                     Text("\(presenter.minutesFocused)")
                         .font(.system(size: 36, weight: .bold))
                         .foregroundColor(theme.colors.primary)

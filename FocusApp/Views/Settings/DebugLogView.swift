@@ -14,7 +14,7 @@ struct DebugLogView: View {
     @Environment(\.dsTheme) var theme
 
     var body: some View {
-        VStack(spacing: 0) {
+        VStack(spacing: DSLayout.spacing(0)) {
             header
             summary
             filters

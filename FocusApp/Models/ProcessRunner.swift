@@ -1,3 +1,4 @@
+#if os(macOS)
 import Foundation
 
 /// Result of running a process
@@ -214,3 +215,4 @@ final class ProcessRunner: ProcessRunning {
         return text
     }
 }
+#endif

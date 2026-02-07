@@ -4,16 +4,36 @@ import SwiftUI
 import AppKit
 #endif
 
-enum Tab: CaseIterable {
+enum Tab: Hashable {
     case plan
     case today
     case stats
+    case focus
+    case coding
+
+    /// Tabs shown in the macOS segmented control header.
+    static let macTabs: [Tab] = [.plan, .today, .stats]
+
+    /// Tabs shown in the iOS bottom tab bar / iPad sidebar.
+    static let iOSTabs: [Tab] = [.today, .plan, .stats, .focus, .coding]
 
     var icon: String {
         switch self {
         case .plan: return "list.bullet.clipboard"
         case .today: return "sun.max.fill"
         case .stats: return "chart.bar.fill"
+        case .focus: return "bolt.fill"
+        case .coding: return "chevron.left.forwardslash.chevron.right"
+        }
+    }
+
+    var activeIcon: String {
+        switch self {
+        case .today: return "house.fill"
+        case .plan: return "calendar"
+        case .stats: return "chart.bar.fill"
+        case .focus: return "bolt.fill"
+        case .coding: return "chevron.left.forwardslash.chevron.right"
         }
     }
 
@@ -22,6 +42,8 @@ enum Tab: CaseIterable {
         case .plan: return L10n.Tab.plan
         case .today: return L10n.Tab.today
         case .stats: return L10n.Tab.stats
+        case .focus: return "Focus"
+        case .coding: return "Coding"
         }
     }
 
@@ -30,6 +52,8 @@ enum Tab: CaseIterable {
         case .plan: return "plan"
         case .today: return "today"
         case .stats: return "stats"
+        case .focus: return "focus"
+        case .coding: return "coding"
         }
     }
 }
@@ -42,7 +66,7 @@ struct ContentView: View {
     var body: some View {
         NavigationStack {
             ZStack {
-                VStack(spacing: 0) {
+                VStack(spacing: DSLayout.spacing(0)) {
                     header
 
                     Group {
@@ -70,6 +94,10 @@ struct ContentView: View {
                             )
                         case .stats:
                             StatsView(presenter: coordinator.container.statsPresenter)
+                        case .focus, .coding:
+                            // iOS-only tabs; on macOS these are handled
+                            // via the coding overlay and focus mode
+                            EmptyView()
                         }
                     }
                 }
@@ -92,9 +120,9 @@ struct ContentView: View {
     }
 
     private var header: some View {
-        VStack(spacing: 16) {
+        VStack(spacing: DSLayout.spacing(.space16)) {
             HStack {
-                VStack(alignment: .leading, spacing: 4) {
+                VStack(alignment: .leading, spacing: DSLayout.spacing(.space4)) {
                     Text(L10n.Content.appTitle)
                         .font(.system(size: 24, weight: .bold))
                         .foregroundColor(theme.colors.textPrimary)
@@ -106,8 +134,8 @@ struct ContentView: View {
 
                 Spacer()
 
-                HStack(spacing: 12) {
-                    VStack(alignment: .trailing, spacing: 2) {
+                HStack(spacing: DSLayout.spacing(.space12)) {
+                    VStack(alignment: .trailing, spacing: DSLayout.spacing(.space2)) {
                         Text(L10n.Content.progressCount( presenter.solvedProblems, presenter.totalProblems))
                             .font(.system(size: 14, weight: .semibold))
                             .foregroundColor(theme.colors.textPrimary)
@@ -145,16 +173,16 @@ struct ContentView: View {
             }
 
             DSSegmentedControl(
-                items: Tab.allCases.map { DSSegmentItem(id: $0.id, title: $0.title) },
+                items: Tab.macTabs.map { DSSegmentItem(id: $0.id, title: $0.title) },
                 state: .init(selectedId: coordinator.selectedTab.id),
                 onSelect: { selected in
-                    if let tab = Tab.allCases.first(where: { $0.id == selected }) {
+                    if let tab = Tab.macTabs.first(where: { $0.id == selected }) {
                         coordinator.selectTab(tab)
                     }
                 }
             )
         }
-        .padding(20)
+        .padding(DSLayout.spacing(20))
         .background(theme.colors.surface)
         .shadow(color: theme.shadow.color, radius: theme.shadow.radius, x: theme.shadow.x, y: theme.shadow.y)
     }

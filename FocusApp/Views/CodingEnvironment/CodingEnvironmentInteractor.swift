@@ -107,7 +107,7 @@ final class CodingEnvironmentInteractor {
         }
         return try await submissionService.submit(
             code: code,
-            language: language,
+            languageSlug: language.langSlug,
             slug: slug,
             questionId: questionId,
             auth: auth

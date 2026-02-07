@@ -19,8 +19,8 @@ extension ModernOutputView {
     @ViewBuilder
     var resultContent: some View {
         if isRunning, !hasTestResults {
-            VStack(spacing: 12) {
-                HStack(spacing: 10) {
+            VStack(spacing: DSLayout.spacing(12)) {
+                HStack(spacing: DSLayout.spacing(10)) {
                     if !output.isEmpty {
                         coloredProgressText(output)
                     } else {
@@ -36,7 +36,7 @@ extension ModernOutputView {
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
         } else if !hasTestResults && output.isEmpty && error.isEmpty {
-            VStack(spacing: 8) {
+            VStack(spacing: DSLayout.spacing(8)) {
                 Image(systemName: "play.circle")
                     .font(.system(size: 28))
                     .foregroundColor(theme.colors.textSecondary)
@@ -47,19 +47,19 @@ extension ModernOutputView {
             .frame(maxWidth: .infinity, maxHeight: .infinity)
         } else if hasTestResults {
             ScrollView {
-                VStack(alignment: .leading, spacing: 12) {
+                VStack(alignment: .leading, spacing: DSLayout.spacing(12)) {
                     ForEach(Array(testCases.enumerated()), id: \.element.id) { index, testCase in
                         if let passed = testCase.passed {
                             testResultRow(index: index, testCase: testCase, passed: passed)
                         }
                     }
                 }
-                .padding(12)
+                .padding(DSLayout.spacing(12))
             }
         } else if !error.isEmpty {
             ScrollView {
-                VStack(alignment: .leading, spacing: 8) {
-                    HStack(spacing: 6) {
+                VStack(alignment: .leading, spacing: DSLayout.spacing(8)) {
+                    HStack(spacing: DSLayout.spacing(6)) {
                         Image(systemName: "exclamationmark.triangle.fill")
                             .foregroundColor(theme.colors.danger)
                         Text(L10n.Coding.Output.compilationError)
@@ -72,7 +72,7 @@ extension ModernOutputView {
                         .foregroundColor(theme.colors.danger)
                         .textSelection(.enabled)
                 }
-                .padding(12)
+                .padding(DSLayout.spacing(12))
             }
         } else {
             outputContent
@@ -80,7 +80,7 @@ extension ModernOutputView {
     }
 
     func testResultRow(index: Int, testCase: TestCase, passed: Bool) -> some View {
-        VStack(alignment: .leading, spacing: 8) {
+        VStack(alignment: .leading, spacing: DSLayout.spacing(8)) {
             HStack {
                 Image(systemName: passed ? "checkmark.circle.fill" : "xmark.circle.fill")
                     .font(.system(size: 12))
@@ -100,8 +100,8 @@ extension ModernOutputView {
             }
 
             if !passed {
-                VStack(alignment: .leading, spacing: 6) {
-                    HStack(alignment: .top, spacing: 4) {
+                VStack(alignment: .leading, spacing: DSLayout.spacing(6)) {
+                    HStack(alignment: .top, spacing: DSLayout.spacing(4)) {
                         Text(L10n.Coding.Output.inputLabel)
                             .font(.system(size: 10))
                             .foregroundColor(theme.colors.textSecondary)
@@ -111,7 +111,7 @@ extension ModernOutputView {
                             .foregroundColor(theme.colors.textPrimary)
                     }
 
-                    HStack(alignment: .top, spacing: 4) {
+                    HStack(alignment: .top, spacing: DSLayout.spacing(4)) {
                         Text(L10n.Coding.Output.expectedLabel)
                             .font(.system(size: 10))
                             .foregroundColor(theme.colors.textSecondary)
@@ -122,7 +122,7 @@ extension ModernOutputView {
                     }
 
                     if let actual = testCase.actualOutput {
-                        HStack(alignment: .top, spacing: 4) {
+                        HStack(alignment: .top, spacing: DSLayout.spacing(4)) {
                             Text(L10n.Coding.Output.outputLabel)
                                 .font(.system(size: 10))
                                 .foregroundColor(theme.colors.textSecondary)
@@ -133,12 +133,12 @@ extension ModernOutputView {
                         }
                     }
                 }
-                .padding(8)
+                .padding(DSLayout.spacing(8))
                 .background(theme.colors.surfaceElevated)
                 .clipShape(RoundedRectangle(cornerRadius: 4))
             }
         }
-        .padding(10)
+        .padding(DSLayout.spacing(10))
         .background(
             RoundedRectangle(cornerRadius: 6)
                 .fill(theme.colors.surfaceElevated.opacity(0.7))
@@ -148,7 +148,7 @@ extension ModernOutputView {
     @ViewBuilder
     var outputContent: some View {
         if output.isEmpty {
-            VStack(spacing: 8) {
+            VStack(spacing: DSLayout.spacing(8)) {
                 Image(systemName: "terminal")
                     .font(.system(size: 28))
                     .foregroundColor(theme.colors.textSecondary)
@@ -159,12 +159,12 @@ extension ModernOutputView {
             .frame(maxWidth: .infinity, maxHeight: .infinity)
         } else {
             ScrollView {
-                VStack(alignment: .leading, spacing: 8) {
+                VStack(alignment: .leading, spacing: DSLayout.spacing(8)) {
                     if !output.isEmpty {
                         ConsoleOutputView(output: output)
                     }
                 }
-                .padding(12)
+                .padding(DSLayout.spacing(12))
             }
         }
     }
@@ -172,7 +172,7 @@ extension ModernOutputView {
     @ViewBuilder
     var debugContent: some View {
         if error.isEmpty && executionEntries.isEmpty && diagnostics.isEmpty {
-            VStack(spacing: 8) {
+            VStack(spacing: DSLayout.spacing(8)) {
                 Image(systemName: "ladybug")
                     .font(.system(size: 26))
                     .foregroundColor(theme.colors.textSecondary)
@@ -183,18 +183,18 @@ extension ModernOutputView {
             .frame(maxWidth: .infinity, maxHeight: .infinity)
         } else {
             ScrollView {
-                VStack(alignment: .leading, spacing: 8) {
+                VStack(alignment: .leading, spacing: DSLayout.spacing(8)) {
                     if !diagnostics.isEmpty {
                         Text("Diagnostics")
                             .font(.system(size: 10, weight: .medium))
                             .foregroundColor(theme.colors.danger)
 
-                        VStack(spacing: 6) {
+                        VStack(spacing: DSLayout.spacing(6)) {
                             ForEach(diagnostics, id: \.self) { diagnostic in
                                 diagnosticRow(diagnostic)
                             }
                         }
-                        .padding(.bottom, 4)
+                        .padding(.bottom, DSLayout.spacing(4))
                     }
 
                     if !error.isEmpty {
@@ -206,7 +206,7 @@ extension ModernOutputView {
                             .font(.system(size: 11, design: .monospaced))
                             .foregroundColor(theme.colors.danger)
                             .textSelection(.enabled)
-                            .padding(8)
+                            .padding(DSLayout.spacing(8))
                             .background(theme.colors.danger.opacity(0.1))
                             .clipShape(RoundedRectangle(cornerRadius: 6))
                     }
@@ -217,22 +217,22 @@ extension ModernOutputView {
                             .foregroundColor(theme.colors.textSecondary)
                             .padding(.top, (error.isEmpty && diagnostics.isEmpty) ? 0 : 6)
 
-                        VStack(spacing: 8) {
+                        VStack(spacing: DSLayout.spacing(8)) {
                             ForEach(executionEntries) { entry in
                                 DebugLogRow(entry: entry)
                             }
                         }
                     }
                 }
-                .padding(12)
+                .padding(DSLayout.spacing(12))
             }
         }
     }
 
     @ViewBuilder
     private func diagnosticRow(_ diagnostic: CodeEditorDiagnostic) -> some View {
-        HStack(alignment: .top, spacing: 8) {
-            VStack(alignment: .leading, spacing: 2) {
+        HStack(alignment: .top, spacing: DSLayout.spacing(8)) {
+            VStack(alignment: .leading, spacing: DSLayout.spacing(2)) {
                 Text(diagnosticLocation(diagnostic))
                     .font(.system(size: 10, design: .monospaced))
                     .foregroundColor(theme.colors.danger)
@@ -244,17 +244,14 @@ extension ModernOutputView {
 
             Spacer(minLength: 0)
 
-            Button(
-                action: { copyDiagnostic(diagnostic) },
-                label: {
-                    Image(systemName: "doc.on.doc")
-                        .font(.system(size: 9))
-                        .foregroundColor(theme.colors.textSecondary)
-                }
-            )
-            .buttonStyle(.plain)
+            DSButton(
+                "Copy",
+                config: .init(style: .ghost, size: .small, icon: Image(systemName: "doc.on.doc"))
+            ) {
+                copyDiagnostic(diagnostic)
+            }
         }
-        .padding(8)
+        .padding(DSLayout.spacing(8))
         .background(theme.colors.danger.opacity(0.1))
         .clipShape(RoundedRectangle(cornerRadius: 6))
     }
@@ -293,19 +290,19 @@ extension ModernOutputView {
                 let passSegment = String(remainder[remainder.startIndex..<crossIndex])
                 let failSegment = String(remainder[crossIndex...])
 
-                HStack(spacing: 0) {
+                HStack(spacing: DSLayout.spacing(0)) {
                     Text(prefix).font(font).foregroundColor(baseColor)
                     Text(passSegment).font(font).foregroundColor(theme.colors.success)
                     Text(failSegment).font(font).foregroundColor(theme.colors.danger)
                 }
             } else {
-                HStack(spacing: 0) {
+                HStack(spacing: DSLayout.spacing(0)) {
                     Text(prefix).font(font).foregroundColor(baseColor)
                     Text(remainder).font(font).foregroundColor(theme.colors.success)
                 }
             }
         } else {
-            HStack(spacing: 0) {
+            HStack(spacing: DSLayout.spacing(0)) {
                 Text(text).font(font).foregroundColor(baseColor)
             }
         }

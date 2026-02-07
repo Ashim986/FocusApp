@@ -38,14 +38,14 @@ struct HeapView: View {
     }
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 10) {
+        VStack(alignment: .leading, spacing: DSLayout.spacing(10)) {
             // Label
-            HStack(spacing: 6) {
+            HStack(spacing: DSLayout.spacing(6)) {
                 Text(isMinHeap ? "min-heap" : "max-heap")
                     .font(.system(size: 9, weight: .medium))
                     .foregroundColor(palette.purple)
-                    .padding(.horizontal, 6)
-                    .padding(.vertical, 2)
+                    .padding(.horizontal, DSLayout.spacing(6))
+                    .padding(.vertical, DSLayout.spacing(2))
                     .background(
                         RoundedRectangle(cornerRadius: 4)
                             .fill(palette.purple.opacity(0.15))
@@ -73,7 +73,7 @@ struct HeapView: View {
             )
 
             // Separator with "tree view" label
-            HStack(spacing: 6) {
+            HStack(spacing: DSLayout.spacing(6)) {
                 Rectangle()
                     .fill(palette.gray700.opacity(0.4))
                     .frame(height: 1)

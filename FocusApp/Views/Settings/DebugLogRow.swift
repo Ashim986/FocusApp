@@ -10,15 +10,15 @@ struct DebugLogRow: View {
     @Environment(\.dsTheme) var theme
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 8) {
-            HStack(alignment: .top, spacing: 10) {
+        VStack(alignment: .leading, spacing: DSLayout.spacing(8)) {
+            HStack(alignment: .top, spacing: DSLayout.spacing(10)) {
                 Circle()
                     .fill(levelColor)
                     .frame(width: 8, height: 8)
-                    .padding(.top, 6)
+                    .padding(.top, DSLayout.spacing(6))
 
-                VStack(alignment: .leading, spacing: 4) {
-                    HStack(alignment: .center, spacing: 8) {
+                VStack(alignment: .leading, spacing: DSLayout.spacing(4)) {
+                    HStack(alignment: .center, spacing: DSLayout.spacing(8)) {
                         Text(entry.title)
                             .font(.system(size: 12, weight: .semibold))
                             .foregroundColor(theme.colors.textPrimary)
@@ -29,12 +29,12 @@ struct DebugLogRow: View {
                         Image(systemName: isExpanded ? "chevron.down" : "chevron.right")
                             .font(.system(size: 10, weight: .semibold))
                             .foregroundColor(theme.colors.textSecondary)
-                        Button(action: copyEntry) {
-                            Image(systemName: "doc.on.doc")
-                                .font(.system(size: 10))
-                                .foregroundColor(theme.colors.textSecondary)
+                        DSButton(
+                            "Copy",
+                            config: .init(style: .ghost, size: .small, icon: Image(systemName: "doc.on.doc"))
+                        ) {
+                            copyEntry()
                         }
-                        .buttonStyle(.plain)
                         .help("Copy log")
                     }
 
@@ -73,7 +73,7 @@ struct DebugLogRow: View {
                 }
             }
         }
-        .padding(10)
+        .padding(DSLayout.spacing(10))
         .background(
             RoundedRectangle(cornerRadius: 10)
                 .fill(levelBackground)
@@ -209,21 +209,18 @@ struct DebugLogRow: View {
 
     @ViewBuilder
     private func detailSection(title: String, value: String) -> some View {
-        VStack(alignment: .leading, spacing: 4) {
+        VStack(alignment: .leading, spacing: DSLayout.spacing(4)) {
             HStack {
                 Text(title)
                     .font(.system(size: 10, weight: .semibold))
                     .foregroundColor(theme.colors.textSecondary)
                 Spacer()
-                Button(
-                    action: { copySection(title: title, value: value) },
-                    label: {
-                        Image(systemName: "doc.on.doc")
-                            .font(.system(size: 9))
-                            .foregroundColor(theme.colors.textSecondary)
-                    }
-                )
-                .buttonStyle(.plain)
+                DSButton(
+                    "Copy",
+                    config: .init(style: .ghost, size: .small, icon: Image(systemName: "doc.on.doc"))
+                ) {
+                    copySection(title: title, value: value)
+                }
                 .help("Copy \(title.lowercased())")
             }
             Text(value)
@@ -232,17 +229,17 @@ struct DebugLogRow: View {
                 .textSelection(.enabled)
                 .fixedSize(horizontal: false, vertical: true)
         }
-        .padding(8)
+        .padding(DSLayout.spacing(8))
         .background(theme.colors.surfaceElevated.opacity(0.6))
         .clipShape(RoundedRectangle(cornerRadius: 6))
     }
 
     @ViewBuilder
     private func metadataSection(_ items: [(key: String, value: String)]) -> some View {
-        VStack(alignment: .leading, spacing: 2) {
+        VStack(alignment: .leading, spacing: DSLayout.spacing(2)) {
             ForEach(items, id: \.key) { key, value in
                 if value.contains("\n") {
-                    VStack(alignment: .leading, spacing: 2) {
+                    VStack(alignment: .leading, spacing: DSLayout.spacing(2)) {
                         Text("\(key):")
                             .font(.system(size: 10, weight: .semibold))
                             .foregroundColor(theme.colors.textSecondary)

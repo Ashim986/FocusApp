@@ -1,3 +1,4 @@
+#if os(macOS)
 import Foundation
 
 extension SwiftExecutor {
@@ -59,6 +60,7 @@ extension SwiftExecutor {
 
     func trimForLog(_ value: String, limit: Int = 240) -> String {
         guard value.count > limit else { return value }
-        return String(value.prefix(limit)) + "…"
+        return String(value.prefix(limit)) + "..."
     }
 }
+#endif

@@ -9,7 +9,7 @@ struct OutputPanelView: View {
     @Environment(\.dsTheme) var theme
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 0) {
+        VStack(alignment: .leading, spacing: DSLayout.spacing(0)) {
             // Header
             HStack {
                 Text(L10n.Output.title)
@@ -19,7 +19,7 @@ struct OutputPanelView: View {
                 Spacer()
 
                 if isRunning {
-                    HStack(spacing: 6) {
+                    HStack(spacing: DSLayout.spacing(6)) {
                         ProgressView()
                             .scaleEffect(0.6)
                             .frame(width: 12, height: 12)
@@ -29,15 +29,15 @@ struct OutputPanelView: View {
                     }
                 }
             }
-            .padding(.horizontal, 12)
-            .padding(.vertical, 8)
+            .padding(.horizontal, DSLayout.spacing(12))
+            .padding(.vertical, DSLayout.spacing(8))
             .background(theme.colors.surfaceElevated)
 
             Divider()
                 .background(theme.colors.border)
 
             ScrollView {
-                VStack(alignment: .leading, spacing: 12) {
+                VStack(alignment: .leading, spacing: DSLayout.spacing(12)) {
                     // Test results
                     if !testCases.isEmpty {
                         testResultsSection
@@ -58,7 +58,7 @@ struct OutputPanelView: View {
                         emptyState
                     }
                 }
-                .padding(12)
+                .padding(DSLayout.spacing(12))
                 .frame(maxWidth: .infinity, alignment: .leading)
             }
             .background(theme.colors.surface)

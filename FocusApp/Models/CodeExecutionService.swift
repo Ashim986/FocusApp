@@ -6,6 +6,7 @@ protocol CodeExecuting {
     func cancelExecution()
 }
 
+#if os(macOS)
 /// Main service that coordinates code execution across different languages
 final class CodeExecutionService: CodeExecuting {
     private let executors: [ProgrammingLanguage: LanguageExecutor]
@@ -105,3 +106,4 @@ enum ExecutorFactory {
         ]
     }
 }
+#endif

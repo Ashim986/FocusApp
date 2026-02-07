@@ -10,13 +10,13 @@ struct DayCard: View {
 
     var body: some View {
         DSCard(config: .init(style: .elevated, padding: 0)) {
-            VStack(spacing: 0) {
-                Button(action: {
+            VStack(spacing: DSLayout.spacing(0)) {
+                DSActionButton(action: {
                     withAnimation(.spring(response: 0.3, dampingFraction: 0.8)) {
                         isExpanded.toggle()
                     }
-                }, label: {
-                    HStack(spacing: 16) {
+                }) {
+                    HStack(spacing: DSLayout.spacing(16)) {
                         ZStack {
                             Circle()
                                 .fill(viewModel.isFullyCompleted ? theme.colors.success : theme.colors.primary)
@@ -33,7 +33,7 @@ struct DayCard: View {
                             }
                         }
 
-                        VStack(alignment: .leading, spacing: 2) {
+                        VStack(alignment: .leading, spacing: DSLayout.spacing(2)) {
                             Text(viewModel.topic)
                                 .font(.system(size: 15, weight: .semibold))
                                 .foregroundColor(theme.colors.textPrimary)
@@ -45,7 +45,7 @@ struct DayCard: View {
 
                         Spacer()
 
-                        HStack(spacing: 4) {
+                        HStack(spacing: DSLayout.spacing(4)) {
                             ForEach(viewModel.problems) { problem in
                                 Circle()
                                     .fill(problem.isCompleted ? theme.colors.success : theme.colors.border)
@@ -57,16 +57,15 @@ struct DayCard: View {
                             .font(.system(size: 14, weight: .medium))
                             .foregroundColor(theme.colors.textSecondary)
                     }
-                    .padding(16)
+                    .padding(DSLayout.spacing(16))
                     .contentShape(Rectangle())
-                })
-                .buttonStyle(.plain)
+                }
 
                 if isExpanded {
                     Divider()
-                        .padding(.horizontal, 16)
+                        .padding(.horizontal, DSLayout.spacing(16))
 
-                    VStack(spacing: 0) {
+                    VStack(spacing: DSLayout.spacing(0)) {
                         ForEach(viewModel.problems) { problem in
                             ProblemRow(
                                 problem: problem.problem,
@@ -81,11 +80,11 @@ struct DayCard: View {
 
                             if problem.index < viewModel.problems.count - 1 {
                                 Divider()
-                                    .padding(.leading, 44)
+                                    .padding(.leading, DSLayout.spacing(44))
                             }
                         }
                     }
-                    .padding(.bottom, 8)
+                    .padding(.bottom, DSLayout.spacing(8))
                 }
             }
         }

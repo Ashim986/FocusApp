@@ -45,7 +45,7 @@ extension DataJourneyView {
             .frame(height: sliderHeight)
 
             if isTruncated {
-                HStack(spacing: 6) {
+                HStack(spacing: DSLayout.spacing(6)) {
                     Image(systemName: "exclamationmark.triangle.fill")
                         .font(.system(size: textSize, weight: .semibold))
                         .foregroundColor(palette.amber)
@@ -56,29 +56,28 @@ extension DataJourneyView {
             }
 
             ScrollView(.horizontal, showsIndicators: false) {
-                HStack(spacing: 6) {
+                HStack(spacing: DSLayout.spacing(6)) {
                     ForEach(playbackEvents) { event in
-                        Button(action: {
+                        DSActionButton(action: {
                             selectEvent(event)
-                        }, label: {
-                            HStack(spacing: 6) {
+                        }) {
+                            HStack(spacing: DSLayout.spacing(6)) {
                                 Circle()
                                     .fill(event.id == selectedEventID ? palette.purple : palette.gray600)
                                     .frame(width: 6, height: 6)
                                 Text(stepLabel(for: event))
                                     .font(.system(size: chipFontSize, weight: .semibold))
                             }
-                            .padding(.horizontal, 8)
+                            .padding(.horizontal, DSLayout.spacing(8))
                             .padding(.vertical, chipVerticalPadding)
                                 .background(
                                     RoundedRectangle(cornerRadius: 6)
                                         .fill(event.id == selectedEventID ? palette.purple.opacity(0.2) : palette.gray800)
                                 )
-                        })
-                        .buttonStyle(.plain)
+                        }
                     }
                 }
-                .padding(.horizontal, 2)
+                .padding(.horizontal, DSLayout.spacing(2))
             }
         }
         .padding(controlPadding)
@@ -131,7 +130,7 @@ extension DataJourneyView {
             .frame(height: sliderHeight)
 
             if isTruncated {
-                HStack(spacing: 6) {
+                HStack(spacing: DSLayout.spacing(6)) {
                     Image(systemName: "exclamationmark.triangle.fill")
                         .font(.system(size: textSize, weight: .semibold))
                         .foregroundColor(palette.amber)
@@ -142,29 +141,28 @@ extension DataJourneyView {
             }
 
             ScrollView(.horizontal, showsIndicators: false) {
-                HStack(spacing: 6) {
+                HStack(spacing: DSLayout.spacing(6)) {
                     ForEach(playbackEvents) { event in
-                        Button(action: {
+                        DSActionButton(action: {
                             selectEvent(event)
-                        }, label: {
-                            HStack(spacing: 6) {
+                        }) {
+                            HStack(spacing: DSLayout.spacing(6)) {
                                 Circle()
                                     .fill(event.id == selectedEventID ? palette.purple : palette.gray600)
                                     .frame(width: 6, height: 6)
                                 Text(stepLabel(for: event))
                                     .font(.system(size: chipFontSize, weight: .semibold))
                             }
-                            .padding(.horizontal, 8)
+                            .padding(.horizontal, DSLayout.spacing(8))
                             .padding(.vertical, chipVerticalPadding)
                                 .background(
                                     RoundedRectangle(cornerRadius: 6)
                                         .fill(event.id == selectedEventID ? palette.purple.opacity(0.2) : palette.gray800)
                                 )
-                        })
-                        .buttonStyle(.plain)
+                        }
                     }
                 }
-                .padding(.horizontal, 2)
+                .padding(.horizontal, DSLayout.spacing(2))
             }
         }
     }
@@ -177,28 +175,25 @@ extension DataJourneyView {
         isEmbedded: Bool
     ) -> some View {
         HStack(alignment: .center, spacing: spacing) {
-            HStack(spacing: 12) {
-                Button(action: selectPrevious) {
+            HStack(spacing: DSLayout.spacing(12)) {
+                DSActionButton(action: selectPrevious) {
                     Image(systemName: "backward.fill")
                         .font(.system(size: iconSize, weight: .bold))
                 }
-                .buttonStyle(.plain)
                 .foregroundColor(currentPlaybackIndex == 0 ? palette.gray600 : palette.gray300)
                 .disabled(currentPlaybackIndex == 0)
 
-                Button(action: togglePlayback) {
+                DSActionButton(action: togglePlayback) {
                     Image(systemName: isPlaying ? "pause.fill" : "play.fill")
                         .font(.system(size: iconSize, weight: .bold))
                 }
-                .buttonStyle(.plain)
                 .foregroundColor(playbackEvents.count > 1 ? palette.gray300 : palette.gray600)
                 .disabled(playbackEvents.count <= 1)
 
-                Button(action: selectNext) {
+                DSActionButton(action: selectNext) {
                     Image(systemName: "forward.fill")
                         .font(.system(size: iconSize, weight: .bold))
                 }
-                .buttonStyle(.plain)
                 .foregroundColor(currentPlaybackIndex >= playbackEvents.count - 1 ? palette.gray600 : palette.gray300)
                 .disabled(currentPlaybackIndex >= playbackEvents.count - 1)
             }
@@ -211,7 +206,7 @@ extension DataJourneyView {
 
             Spacer()
 
-            HStack(spacing: 8) {
+            HStack(spacing: DSLayout.spacing(8)) {
                 Picker("Speed", selection: $playbackSpeed) {
                     Text("0.5x").tag(0.5)
                     Text("1x").tag(1.0)
@@ -222,18 +217,11 @@ extension DataJourneyView {
                 .frame(width: pickerWidth)
 
                 ZStack {
-                    Button(action: { selectIndex(0) }, label: {
-                        Text("Start Over")
-                            .font(.system(size: textSize, weight: .semibold))
-                            .foregroundColor(palette.gray200)
-                            .padding(.horizontal, 12)
-                            .padding(.vertical, 4)
-                            .background(
-                                RoundedRectangle(cornerRadius: 6)
-                                    .fill(palette.gray800.opacity(0.3))
-                            )
-                    })
-                    .buttonStyle(.plain)
+                    DSButton(
+                        "Start Over",
+                        config: .init(style: .secondary, size: .small),
+                        action: { selectIndex(0) }
+                    )
                     .opacity(!isPlaying && currentPlaybackIndex >= playbackEvents.count - 1 ? 1 : 0)
                     .disabled(isPlaying || currentPlaybackIndex < playbackEvents.count - 1)
                 }

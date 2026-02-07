@@ -12,8 +12,8 @@ struct HabitToggle: View {
     @Environment(\.dsTheme) var theme
 
     var body: some View {
-        Button(action: onToggle) {
-            HStack(spacing: 4) {
+        DSActionButton(action: onToggle) {
+            HStack(spacing: DSLayout.spacing(4)) {
                 Image(systemName: done ? "checkmark.circle.fill" : icon)
                     .font(.system(size: 11))
                     .foregroundColor(done ? theme.colors.success : theme.colors.textSecondary)
@@ -22,8 +22,8 @@ struct HabitToggle: View {
                     .font(.system(size: 10, weight: .medium))
                     .foregroundColor(done ? theme.colors.success : theme.colors.textSecondary)
             }
-            .padding(.horizontal, 10)
-            .padding(.vertical, 6)
+            .padding(.horizontal, DSLayout.spacing(10))
+            .padding(.vertical, DSLayout.spacing(6))
             .background(
                 Capsule()
                     .fill(
@@ -42,7 +42,6 @@ struct HabitToggle: View {
                     )
             )
         }
-        .buttonStyle(.plain)
         .onHover { hovering in
             isHovering = hovering
             if hovering {

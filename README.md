@@ -78,6 +78,12 @@ High-risk edge cases:
 ## Project Structure
 ```
 FocusApp/
+  Packages/
+    FocusShared/
+      Sources/
+        FocusDomain/
+        FocusData/
+      Tests/
   FocusApp.xcodeproj/
   FocusApp/
     FocusApp.swift
@@ -100,6 +106,8 @@ FocusApp/
     Support/
     Tests/
   INTEGRATION_TESTS.md
+  Docs/
+    IOS_APP_EXECUTION_ROADMAP.md
 ```
 
 ## Known Limitations
@@ -116,6 +124,9 @@ xcodebuild test -project FocusApp.xcodeproj -scheme FocusApp -destination 'platf
 ```
 
 Integration test strategy, structure, and execution are documented in `INTEGRATION_TESTS.md`.
+iOS/iPad implementation sequencing and package architecture are documented in `Docs/IOS_APP_EXECUTION_ROADMAP.md`.
+
+Shared package scaffolding for cross-platform logic is in `Packages/FocusShared`.
 
 Inspect coverage:
 ```bash

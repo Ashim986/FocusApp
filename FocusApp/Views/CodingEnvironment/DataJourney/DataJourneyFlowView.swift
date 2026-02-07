@@ -23,28 +23,24 @@ struct DataJourneyFlowView: View {
         }
 
         return AnyView(
-            VStack(alignment: .leading, spacing: 6) {
-                Button(
+            VStack(alignment: .leading, spacing: DSLayout.spacing(6)) {
+                DSButton(
+                    "Flow Overview",
+                    config: .init(
+                        style: .ghost,
+                        size: .small,
+                        icon: Image(systemName: isExpanded ? "chevron.down" : "chevron.right"),
+                        iconPosition: .leading
+                    ),
                     action: {
                         withAnimation(.easeInOut(duration: 0.2)) { isExpanded.toggle() }
-                    },
-                    label: {
-                        HStack(spacing: 4) {
-                            Image(systemName: isExpanded ? "chevron.down" : "chevron.right")
-                                .font(.system(size: 8, weight: .bold))
-                                .foregroundColor(palette.gray400)
-                            Text("Flow Overview")
-                                .font(.system(size: 9, weight: .semibold))
-                                .foregroundColor(palette.gray400)
-                            Spacer()
-                        }
                     }
                 )
-                .buttonStyle(.plain)
+                .frame(maxWidth: .infinity, alignment: .leading)
 
                 if isExpanded {
                     ScrollView(.horizontal, showsIndicators: false) {
-                        HStack(spacing: 0) {
+                        HStack(spacing: DSLayout.spacing(0)) {
                             ForEach(
                                 Array(keyEvents.enumerated()),
                                 id: \.element.id
@@ -57,12 +53,12 @@ struct DataJourneyFlowView: View {
                                 }
                             }
                         }
-                        .padding(.horizontal, 4)
-                        .padding(.vertical, 8)
+                        .padding(.horizontal, DSLayout.spacing(4))
+                        .padding(.vertical, DSLayout.spacing(8))
                     }
                 }
             }
-            .padding(8)
+            .padding(DSLayout.spacing(8))
             .background(
                 RoundedRectangle(cornerRadius: 6)
                     .fill(palette.gray900.opacity(0.3))
@@ -122,8 +118,8 @@ struct DataJourneyFlowView: View {
     // MARK: - Card View
 
     private func flowCard(for event: DataJourneyEvent) -> some View {
-        VStack(alignment: .leading, spacing: 4) {
-            HStack(spacing: 4) {
+        VStack(alignment: .leading, spacing: DSLayout.spacing(4)) {
+            HStack(spacing: DSLayout.spacing(4)) {
                 cardIcon(for: event)
                 Text(cardTitle(for: event))
                     .font(.system(size: 8, weight: .bold))
@@ -134,7 +130,7 @@ struct DataJourneyFlowView: View {
             let displayKeys = Array(sortedKeys.prefix(3))
             ForEach(displayKeys, id: \.self) { key in
                 if let value = event.values[key] {
-                    HStack(spacing: 4) {
+                    HStack(spacing: DSLayout.spacing(4)) {
                         Text(key)
                             .font(.system(size: 7, weight: .medium))
                             .foregroundColor(palette.gray400)
@@ -156,7 +152,7 @@ struct DataJourneyFlowView: View {
                     .foregroundColor(palette.gray500)
             }
         }
-        .padding(8)
+        .padding(DSLayout.spacing(8))
         .frame(minWidth: 90, maxWidth: 140, alignment: .leading)
         .background(
             RoundedRectangle(cornerRadius: 6)
@@ -171,7 +167,7 @@ struct DataJourneyFlowView: View {
     // MARK: - Arrow
 
     private func flowArrow() -> some View {
-        HStack(spacing: 0) {
+        HStack(spacing: DSLayout.spacing(0)) {
             Rectangle()
                 .fill(palette.gray600)
                 .frame(width: 16, height: 1.5)
@@ -179,7 +175,7 @@ struct DataJourneyFlowView: View {
                 .font(.system(size: 6))
                 .foregroundColor(palette.gray600)
         }
-        .padding(.horizontal, 2)
+        .padding(.horizontal, DSLayout.spacing(2))
     }
 
     // MARK: - Card Styling

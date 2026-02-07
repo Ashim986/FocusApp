@@ -46,15 +46,15 @@ struct DictionaryStructureRow: View {
 
     var body: some View {
         ScrollView(.horizontal, showsIndicators: false) {
-            HStack(spacing: 12) {
+            HStack(spacing: DSLayout.spacing(12)) {
                 ForEach(Array(entries.enumerated()), id: \.element.id) { index, entry in
                     let model = dictionaryValueModel(for: entry.value, key: entry.key)
                     let keyFill = palette.gray700
                     let valueFill = model.fill
                     let pointerStack = pointersByIndex[index] ?? []
-                    VStack(spacing: 4) {
+                    VStack(spacing: DSLayout.spacing(4)) {
                         ZStack(alignment: .top) {
-                            HStack(spacing: 6) {
+                            HStack(spacing: DSLayout.spacing(6)) {
                                 TraceBubble(
                                     text: entry.key,
                                     fill: keyFill,
@@ -92,7 +92,7 @@ struct DictionaryStructureRow: View {
                     }
                 }
             }
-            .padding(.vertical, 2)
+            .padding(.vertical, DSLayout.spacing(2))
         }
     }
 

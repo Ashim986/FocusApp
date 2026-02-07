@@ -3,7 +3,7 @@ import SwiftUI
 
 extension FocusOverlay {
     var timerView: some View {
-        VStack(spacing: 40) {
+        VStack(spacing: DSLayout.spacing(40)) {
             ZStack {
                 DSProgressRing(
                     config: .init(size: 280, lineWidth: 12, style: .primary),
@@ -11,7 +11,7 @@ extension FocusOverlay {
                 )
                 .animation(.linear(duration: 1), value: presenter.progress)
 
-                VStack(spacing: 8) {
+                VStack(spacing: DSLayout.spacing(8)) {
                     Text(presenter.timeString)
                         .font(.system(size: 56, weight: .bold, design: .monospaced))
                         .foregroundColor(theme.colors.textPrimary)
@@ -28,7 +28,7 @@ extension FocusOverlay {
                 .font(.system(size: 18, weight: .medium))
                 .foregroundColor(theme.colors.textSecondary)
 
-            HStack(spacing: 20) {
+            HStack(spacing: DSLayout.spacing(20)) {
                 DSButton(
                     presenter.isPaused ? L10n.Focus.timerResume : L10n.Focus.timerPause,
                     config: .init(

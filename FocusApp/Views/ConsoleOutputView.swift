@@ -19,12 +19,12 @@ struct ConsoleOutputView: View {
     }
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 0) {
+        VStack(alignment: .leading, spacing: DSLayout.spacing(0)) {
             ForEach(lines) { line in
                 ConsoleLineView(line: line)
             }
         }
-        .padding(8)
+        .padding(DSLayout.spacing(8))
         .background(
             RoundedRectangle(cornerRadius: 6)
                 .fill(theme.colors.surfaceElevated.opacity(0.6))
@@ -108,24 +108,24 @@ struct ConsoleLineView: View {
 
     var body: some View {
         let lineColor = line.type.color(theme: theme)
-        HStack(alignment: .top, spacing: 0) {
+        HStack(alignment: .top, spacing: DSLayout.spacing(0)) {
             Text("\(line.number)")
                 .font(.system(size: 10, design: .monospaced))
                 .foregroundColor(theme.colors.textSecondary)
                 .frame(width: 28, alignment: .trailing)
-                .padding(.trailing, 8)
+                .padding(.trailing, DSLayout.spacing(8))
 
             Rectangle()
                 .fill(theme.colors.border)
                 .frame(width: 1)
-                .padding(.trailing, 8)
+                .padding(.trailing, DSLayout.spacing(8))
 
             if let icon = line.type.icon {
                 Image(systemName: icon)
                     .font(.system(size: 9))
                     .foregroundColor(lineColor)
                     .frame(width: 12)
-                    .padding(.trailing, 4)
+                    .padding(.trailing, DSLayout.spacing(4))
             }
 
             Text(line.content.isEmpty ? " " : line.content)
@@ -135,15 +135,15 @@ struct ConsoleLineView: View {
 
             Spacer(minLength: 0)
 
-            Button(action: copyLine) {
-                Image(systemName: "doc.on.doc")
-                    .font(.system(size: 9))
-                    .foregroundColor(theme.colors.textSecondary)
+            DSButton(
+                "Copy",
+                config: .init(style: .ghost, size: .small, icon: Image(systemName: "doc.on.doc"))
+            ) {
+                copyLine()
             }
-            .buttonStyle(.plain)
-            .padding(.leading, 8)
+            .padding(.leading, DSLayout.spacing(8))
         }
-        .padding(.vertical, 2)
+        .padding(.vertical, DSLayout.spacing(2))
         .background(
             line.type == .error ? theme.colors.danger.opacity(0.1) :
             line.type == .warning ? theme.colors.warning.opacity(0.1) :

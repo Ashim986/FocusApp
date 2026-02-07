@@ -3,7 +3,7 @@ import SwiftUI
 
 extension ToolbarWidgetView {
     var settingsSection: some View {
-        VStack(spacing: 8) {
+        VStack(spacing: DSLayout.spacing(8)) {
             HStack {
                 Text(L10n.Widget.leetcodeUsername)
                     .font(.system(size: 10, weight: .medium))
@@ -12,7 +12,7 @@ extension ToolbarWidgetView {
 
                 switch presenter.usernameValidationState {
                 case .valid:
-                    HStack(spacing: 2) {
+                    HStack(spacing: DSLayout.spacing(2)) {
                         Image(systemName: "checkmark.circle.fill")
                             .font(.system(size: 10))
                         Text(L10n.Widget.validationValid)
@@ -20,7 +20,7 @@ extension ToolbarWidgetView {
                     }
                     .foregroundColor(theme.colors.success)
                 case .invalid:
-                    HStack(spacing: 2) {
+                    HStack(spacing: DSLayout.spacing(2)) {
                         Image(systemName: "xmark.circle.fill")
                             .font(.system(size: 10))
                         Text(L10n.Widget.validationNotFound)
@@ -32,7 +32,7 @@ extension ToolbarWidgetView {
                 }
             }
 
-            HStack(spacing: 8) {
+            HStack(spacing: DSLayout.spacing(8)) {
                 let validation: DSTextFieldValidation = {
                     switch presenter.usernameValidationState {
                     case .valid:
@@ -57,37 +57,24 @@ extension ToolbarWidgetView {
                     presenter.resetValidationState()
                 }
 
-                Button(action: {
-                    presenter.validateAndSaveUsername()
-                }, label: {
-                    HStack(spacing: 4) {
-                        if presenter.isValidatingUsername {
-                            ProgressView()
-                                .scaleEffect(0.6)
-                                .frame(width: 12, height: 12)
-                        } else {
-                            Image(systemName: "arrow.clockwise")
-                                .font(.system(size: 10))
-                        }
-                        Text(presenter.isValidatingUsername
-                             ? L10n.Widget.checking
-                             : L10n.Widget.saveSync)
-                            .font(.system(size: 10, weight: .medium))
+                DSButton(
+                    presenter.isValidatingUsername
+                        ? L10n.Widget.checking
+                        : L10n.Widget.saveSync,
+                    config: .init(
+                        style: .primary,
+                        size: .small,
+                        icon: Image(systemName: "arrow.clockwise"),
+                        iconPosition: .leading
+                    ),
+                    state: .init(
+                        isEnabled: !presenter.isValidatingUsername,
+                        isLoading: presenter.isValidatingUsername
+                    ),
+                    action: {
+                        presenter.validateAndSaveUsername()
                     }
-                    .foregroundColor(theme.colors.surface)
-                    .padding(.horizontal, 8)
-                    .padding(.vertical, 6)
-                    .background(
-                        RoundedRectangle(cornerRadius: 6)
-                            .fill(
-                                presenter.isValidatingUsername
-                                    ? theme.colors.surfaceElevated.opacity(0.7)
-                                    : theme.colors.primary
-                            )
-                    )
-                })
-                .buttonStyle(.plain)
-                .disabled(presenter.isValidatingUsername)
+                )
             }
 
             HStack {

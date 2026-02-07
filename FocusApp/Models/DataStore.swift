@@ -1,3 +1,5 @@
+import FocusData
+import FocusDomain
 import Foundation
 
 protocol DateProviding {
@@ -173,28 +175,23 @@ final class AppStateStore: ObservableObject {
 
     @discardableResult
     func applySolvedSlugs(_ solvedSlugs: Set<String>) -> (syncedCount: Int, totalMatched: Int) {
-        var syncedCount = 0
-        var totalMatched = 0
+        let synchronizer = LeetCodeProgressSynchronizer()
+        let result = synchronizer.sync(
+            solvedSlugs: solvedSlugs,
+            plan: sharedStudyPlan(),
+            existingCompleted: completedProblemKeys()
+        )
 
-        for day in dsaPlan {
-            for (index, problem) in day.problems.enumerated() {
-                if let slug = LeetCodeSlugExtractor.extractSlug(from: problem.url),
-                   solvedSlugs.contains(slug) {
-                    totalMatched += 1
-                    if !isProblemCompleted(day: day.id, problemIndex: index) {
-                        data.progress["\(day.id)-\(index)"] = true
-                        syncedCount += 1
-                    }
-                }
-            }
+        for key in result.newlyCompleted {
+            data.progress[key.storageKey] = true
         }
 
         let didAdvance = advanceOffsetIfAhead()
-        if syncedCount > 0 || didAdvance {
+        if result.syncedCount > 0 || didAdvance {
             save()
         }
 
-        return (syncedCount, totalMatched)
+        return (result.syncedCount, result.totalMatched)
     }
 
     private func canCompleteFutureDay(_ day: Int, currentDay: Int) -> Bool {
@@ -243,5 +240,48 @@ final class AppStateStore: ObservableObject {
         }
         cleaned = cleaned.replacingOccurrences(of: "\\s+", with: "", options: .regularExpression)
         return cleaned
+    }
+
+    private func completedProblemKeys() -> Set<FocusDomain.ProblemKey> {
+        var keys: Set<FocusDomain.ProblemKey> = []
+        for (storageKey, isCompleted) in data.progress where isCompleted {
+            let parts = storageKey.split(separator: "-", maxSplits: 1).map(String.init)
+            guard parts.count == 2,
+                  let dayID = Int(parts[0]),
+                  let problemIndex = Int(parts[1]) else {
+                continue
+            }
+            keys.insert(FocusDomain.ProblemKey(dayID: dayID, problemIndex: problemIndex))
+        }
+        return keys
+    }
+
+    private func sharedStudyPlan() -> [FocusDomain.StudyDay] {
+        dsaPlan.map { day in
+            FocusDomain.StudyDay(
+                id: day.id,
+                date: day.date,
+                topic: day.topic,
+                problems: day.problems.map { problem in
+                    FocusDomain.Problem(
+                        name: problem.name,
+                        difficulty: sharedDifficulty(from: problem.difficulty),
+                        url: problem.url,
+                        leetcodeNumber: problem.leetcodeNumber
+                    )
+                }
+            )
+        }
+    }
+
+    private func sharedDifficulty(from difficulty: Difficulty) -> FocusDomain.Difficulty {
+        switch difficulty {
+        case .easy:
+            return .easy
+        case .medium:
+            return .medium
+        case .hard:
+            return .hard
+        }
     }
 }

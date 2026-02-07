@@ -17,14 +17,14 @@ extension SettingsView {
     var validationStatusView: some View {
         switch presenter.usernameValidationState {
         case .valid:
-            HStack(spacing: 6) {
+            HStack(spacing: DSLayout.spacing(6)) {
                 Image(systemName: "checkmark.circle.fill")
                 Text(L10n.Settings.validationValid)
             }
             .foregroundColor(.green)
             .font(.caption)
         case .invalid:
-            HStack(spacing: 6) {
+            HStack(spacing: DSLayout.spacing(6)) {
                 Image(systemName: "xmark.circle.fill")
                 Text(L10n.Settings.validationNotFound)
             }

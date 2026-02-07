@@ -14,8 +14,8 @@ struct LeetCodeLoginSheet: View {
     @Environment(\.dsTheme) var theme
 
     var body: some View {
-        VStack(spacing: 16) {
-            VStack(spacing: 6) {
+        VStack(spacing: DSLayout.spacing(16)) {
+            VStack(spacing: DSLayout.spacing(6)) {
                 Text(L10n.Settings.leetcodeLoginSheetTitle)
                     .font(.headline)
                     .foregroundColor(theme.colors.textPrimary)
@@ -42,7 +42,7 @@ struct LeetCodeLoginSheet: View {
                 .buttonStyle(.bordered)
             }
         }
-        .padding(16)
+        .padding(DSLayout.spacing(16))
         .background(theme.colors.background)
     }
 }

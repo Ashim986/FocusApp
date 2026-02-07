@@ -42,7 +42,7 @@ struct TraceBubble: View {
                 .foregroundColor(.white)
                 .lineLimit(1)
                 .minimumScaleFactor(0.6)
-                .padding(.horizontal, 4)
+                .padding(.horizontal, DSLayout.spacing(4))
         }
         .frame(width: size, height: size)
         .overlay(highlightOverlay)

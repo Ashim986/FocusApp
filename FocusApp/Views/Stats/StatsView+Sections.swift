@@ -4,9 +4,9 @@ import SwiftUI
 extension StatsView {
     var statCardsGrid: some View {
         LazyVGrid(columns: [
-            GridItem(.flexible(), spacing: 12),
-            GridItem(.flexible(), spacing: 12)
-        ], spacing: 12) {
+            GridItem(.flexible(), spacing: DSLayout.spacing(.space12)),
+            GridItem(.flexible(), spacing: DSLayout.spacing(.space12))
+        ], spacing: DSLayout.spacing(.space12)) {
             statCard(
                 title: L10n.Stats.cardProblemsSolved,
                 value: "\(presenter.viewModel.solvedProblems)/\(presenter.viewModel.totalProblems)",
@@ -43,7 +43,7 @@ extension StatsView {
 
     func statCard(title: String, value: String, icon: String, color: Color, progress: Double?) -> some View {
         DSCard(config: .init(style: .elevated)) {
-            VStack(alignment: .leading, spacing: 12) {
+            VStack(alignment: .leading, spacing: DSLayout.spacing(.space12)) {
                 HStack {
                     ZStack {
                         Circle()
@@ -86,7 +86,7 @@ extension StatsView {
 
     var preCompletedSection: some View {
         DSCard(config: .init(style: .elevated)) {
-            VStack(alignment: .leading, spacing: 12) {
+            VStack(alignment: .leading, spacing: DSLayout.spacing(.space12)) {
                 HStack {
                     Image(systemName: "trophy.fill")
                         .font(.system(size: 16))
@@ -103,9 +103,9 @@ extension StatsView {
                         .foregroundColor(theme.colors.success)
                 }
 
-                FlowLayout(spacing: 8) {
+                FlowLayout(spacing: DSLayout.spacing(.space8)) {
                     ForEach(preCompletedTopics, id: \.self) { topic in
-                        HStack(spacing: 4) {
+                        HStack(spacing: DSLayout.spacing(4)) {
                             Image(systemName: "checkmark")
                                 .font(.system(size: 10, weight: .bold))
 
@@ -113,8 +113,8 @@ extension StatsView {
                                 .font(.system(size: 12, weight: .medium))
                         }
                         .foregroundColor(theme.colors.success)
-                        .padding(.horizontal, 10)
-                        .padding(.vertical, 6)
+                        .padding(.horizontal, DSLayout.spacing(10))
+                        .padding(.vertical, DSLayout.spacing(6))
                         .background(
                             RoundedRectangle(cornerRadius: 16)
                                 .fill(theme.colors.success.opacity(0.15))
@@ -127,7 +127,7 @@ extension StatsView {
 
     var topicBreakdownSection: some View {
         DSCard(config: .init(style: .elevated)) {
-            VStack(alignment: .leading, spacing: 16) {
+            VStack(alignment: .leading, spacing: DSLayout.spacing(.space16)) {
                 Text(L10n.Stats.topicBreakdownTitle)
                     .font(.system(size: 16, weight: .semibold))
                     .foregroundColor(theme.colors.textPrimary)
@@ -140,7 +140,7 @@ extension StatsView {
     }
 
     func topicRow(day: TopicBreakdownViewModel) -> some View {
-        VStack(spacing: 8) {
+        VStack(spacing: DSLayout.spacing(.space8)) {
             HStack {
                 Text(day.topic)
                     .font(.system(size: 14, weight: .medium))

@@ -104,9 +104,3 @@ struct CodeSubmission: Codable, Identifiable, Equatable {
     let createdAt: Date
     let algorithmTag: String?
 }
-
-struct LeetCodeAuthSession: Codable, Equatable {
-    let session: String
-    let csrfToken: String
-    let updatedAt: Date
-}

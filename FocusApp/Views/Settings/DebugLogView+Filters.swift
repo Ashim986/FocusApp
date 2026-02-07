@@ -3,22 +3,22 @@ import SwiftUI
 
 extension DebugLogView {
     var filters: some View {
-        VStack(spacing: 12) {
+        VStack(spacing: DSLayout.spacing(12)) {
             ViewThatFits(in: .horizontal) {
-                HStack(spacing: 12) {
+                HStack(spacing: DSLayout.spacing(12)) {
                     levelSegmentedPicker
                     categorySegmentedPicker
                 }
 
-                VStack(spacing: 10) {
-                    HStack(spacing: 10) {
+                VStack(spacing: DSLayout.spacing(10)) {
+                    HStack(spacing: DSLayout.spacing(10)) {
                         levelMenuPicker
                         categoryMenuPicker
                     }
                 }
             }
 
-            HStack(spacing: 10) {
+            HStack(spacing: DSLayout.spacing(10)) {
                 Image(systemName: "magnifyingglass")
                     .foregroundColor(theme.colors.textSecondary)
                 DSTextField(
@@ -28,7 +28,7 @@ extension DebugLogView {
                 )
             }
         }
-        .padding(16)
+        .padding(DSLayout.spacing(16))
         .background(theme.colors.surfaceElevated)
     }
 

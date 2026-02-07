@@ -1,3 +1,4 @@
+#if os(macOS)
 import Foundation
 
 final class ProcessOutputCollector {
@@ -46,3 +47,4 @@ final class ProcessOutputCollector {
         }
     }
 }
+#endif

@@ -1,0 +1,7 @@
+{
+  "name": "FocusApp Screens Generator",
+  "id": "focusapp-screens-generator",
+  "api": "1.0.0",
+  "main": "code.js",
+  "editorType": ["figma"]
+}

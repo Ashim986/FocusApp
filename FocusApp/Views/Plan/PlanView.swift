@@ -9,7 +9,7 @@ struct PlanView: View {
 
     var body: some View {
         ScrollView {
-            VStack(spacing: 16) {
+            VStack(spacing: DSLayout.spacing(.space16)) {
                 preCompletedBanner
                 syncCard
 
@@ -30,14 +30,14 @@ struct PlanView: View {
 
                 bufferNote
             }
-            .padding(20)
+            .padding(DSLayout.spacing(20))
         }
         .background(theme.colors.background)
     }
 
     private var preCompletedBanner: some View {
         DSCard(config: .init(style: .elevated)) {
-            VStack(alignment: .leading, spacing: 12) {
+            VStack(alignment: .leading, spacing: DSLayout.spacing(.space12)) {
                 HStack {
                     Image(systemName: "checkmark.circle.fill")
                         .font(.system(size: 20))
@@ -54,9 +54,9 @@ struct PlanView: View {
                         .foregroundColor(theme.colors.textSecondary)
                 }
 
-                FlowLayout(spacing: 8) {
+                FlowLayout(spacing: DSLayout.spacing(.space8)) {
                     ForEach(preCompletedTopics, id: \.self) { topic in
-                        HStack(spacing: 4) {
+                        HStack(spacing: DSLayout.spacing(4)) {
                             Image(systemName: "checkmark")
                                 .font(.system(size: 10, weight: .bold))
 
@@ -64,8 +64,8 @@ struct PlanView: View {
                                 .font(.system(size: 12, weight: .medium))
                         }
                         .foregroundColor(theme.colors.success)
-                        .padding(.horizontal, 10)
-                        .padding(.vertical, 6)
+                        .padding(.horizontal, DSLayout.spacing(10))
+                        .padding(.vertical, DSLayout.spacing(6))
                         .background(
                             RoundedRectangle(cornerRadius: 16)
                                 .fill(theme.colors.success.opacity(0.15))
@@ -82,8 +82,8 @@ struct PlanView: View {
 
     private var syncCard: some View {
         DSCard(config: .init(style: .elevated)) {
-            HStack(spacing: 16) {
-                VStack(alignment: .leading, spacing: 4) {
+            HStack(spacing: DSLayout.spacing(.space16)) {
+                VStack(alignment: .leading, spacing: DSLayout.spacing(.space4)) {
                     Text(L10n.Plan.syncTitle)
                         .font(.system(size: 16, weight: .semibold))
                         .foregroundColor(theme.colors.textPrimary)
@@ -114,12 +114,12 @@ struct PlanView: View {
     }
 
     private var bufferNote: some View {
-        HStack(spacing: 12) {
+        HStack(spacing: DSLayout.spacing(.space12)) {
             Image(systemName: "calendar.badge.clock")
                 .font(.system(size: 20))
                 .foregroundColor(theme.colors.primary)
 
-            VStack(alignment: .leading, spacing: 2) {
+            VStack(alignment: .leading, spacing: DSLayout.spacing(2)) {
                 Text(L10n.Plan.bufferTitle)
                     .font(.system(size: 14, weight: .medium))
                     .foregroundColor(theme.colors.textPrimary)
@@ -131,9 +131,9 @@ struct PlanView: View {
 
             Spacer()
         }
-        .padding(16)
+        .padding(DSLayout.spacing(.space16))
         .background(
-            RoundedRectangle(cornerRadius: 12)
+            RoundedRectangle(cornerRadius: DSLayout.spacing(.space12))
                 .fill(theme.colors.primary.opacity(0.12))
         )
     }

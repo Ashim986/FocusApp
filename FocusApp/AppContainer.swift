@@ -10,7 +10,7 @@ final class AppContainer {
     let leetCodeSync: LeetCodeSyncInteractor
     let leetCodeClient: LeetCodeClientProtocol
     let leetCodeScheduler: LeetCodeSyncScheduler
-    let codeExecutionService: CodeExecutionService
+    let codeExecutionService: CodeExecuting
     let solutionStore: SolutionProviding
     let debugLogStore: DebugLogStore
 
@@ -64,7 +64,11 @@ final class AppContainer {
         self.leetCodeSync = leetCodeSync
         self.leetCodeScheduler = LeetCodeSyncScheduler(appStore: appStore, syncer: leetCodeSync)
 
+        #if os(macOS)
         let codeExecutionService = CodeExecutionService(logger: debugLogStore)
+        #else
+        let codeExecutionService = NoOpCodeExecutionService()
+        #endif
         self.codeExecutionService = codeExecutionService
 
         let topicStore = TopicSolutionStore()
@@ -154,7 +158,11 @@ final class AppContainer {
         leetCodeScheduler.start()
         self.leetCodeScheduler = leetCodeScheduler
 
+        #if os(macOS)
         let codeExecutionService = CodeExecutionService(logger: debugLogStore)
+        #else
+        let codeExecutionService = NoOpCodeExecutionService()
+        #endif
         self.codeExecutionService = codeExecutionService
 
         let topicStore = TopicSolutionStore()

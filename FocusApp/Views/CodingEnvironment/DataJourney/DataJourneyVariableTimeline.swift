@@ -20,28 +20,26 @@ struct VariableTimelineView: View {
             return AnyView(EmptyView())
         }
         return AnyView(
-            VStack(alignment: .leading, spacing: 6) {
-                Button(
-                    action: { withAnimation(.easeInOut(duration: 0.2)) { isExpanded.toggle() } },
-                    label: {
-                        HStack(spacing: 4) {
-                            Image(systemName: isExpanded ? "chevron.down" : "chevron.right")
-                                .font(.system(size: 8, weight: .bold))
-                                .foregroundColor(palette.gray400)
-                            Text("Timeline")
-                                .font(.system(size: 9, weight: .semibold))
-                                .foregroundColor(palette.gray400)
-                            Spacer()
-                        }
+            VStack(alignment: .leading, spacing: DSLayout.spacing(6)) {
+                DSButton(
+                    "Timeline",
+                    config: .init(
+                        style: .ghost,
+                        size: .small,
+                        icon: Image(systemName: isExpanded ? "chevron.down" : "chevron.right"),
+                        iconPosition: .leading
+                    ),
+                    action: {
+                        withAnimation(.easeInOut(duration: 0.2)) { isExpanded.toggle() }
                     }
                 )
-                .buttonStyle(.plain)
+                .frame(maxWidth: .infinity, alignment: .leading)
 
                 if isExpanded {
-                    VStack(alignment: .leading, spacing: 8) {
+                    VStack(alignment: .leading, spacing: DSLayout.spacing(8)) {
                         ForEach(variableNames, id: \.self) { name in
                             let series = extractSeries(for: name)
-                            HStack(alignment: .center, spacing: 8) {
+                            HStack(alignment: .center, spacing: DSLayout.spacing(8)) {
                                     Text(name)
                                         .font(.system(size: 9, weight: .medium))
                                         .foregroundColor(palette.gray300)
@@ -51,10 +49,10 @@ struct VariableTimelineView: View {
                             }
                         }
                     }
-                    .padding(.leading, 12)
+                    .padding(.leading, DSLayout.spacing(12))
                 }
             }
-            .padding(8)
+            .padding(DSLayout.spacing(8))
             .background(
                 RoundedRectangle(cornerRadius: 6)
                     .fill(palette.gray900.opacity(0.3))
@@ -148,7 +146,7 @@ struct VariableTimelineView: View {
     // MARK: - Dot View (mixed/boolean)
 
     private func dotView(series: [TimelinePoint]) -> some View {
-        HStack(spacing: 4) {
+        HStack(spacing: DSLayout.spacing(4)) {
             ForEach(Array(series.enumerated()), id: \.offset) { index, point in
                 let isCurrent = index == currentIndex
                 Circle()

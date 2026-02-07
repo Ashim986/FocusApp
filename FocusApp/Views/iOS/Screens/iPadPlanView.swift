@@ -1,36 +1,55 @@
+#if os(iOS)
 // iPadPlanView.swift
-// FocusApp — iPad Plan screen (two-column layout)
-// Spec: FIGMA_SETUP_GUIDE.md §5.2
+// FocusApp -- iPad Plan screen (two-column layout)
+// Wired to PlanPresenter for live data
 
 import FocusDesignSystem
 import SwiftUI
 
-// MARK: - Schedule Row State
-
-enum ScheduleRowState {
-    case active
-    case normal
-    case faded
-}
-
 struct iPadPlanView: View {
+    @ObservedObject var presenter: PlanPresenter
     @Environment(\.dsTheme) var theme
+    @Environment(\.openURL) var openURL
+
+    @State private var selectedDayId: Int?
 
     var body: some View {
         VStack(alignment: .leading, spacing: theme.spacing.lg) {
-            Text("Study Plan")
-                .font(.system(size: 24, weight: .bold))
-                .foregroundColor(theme.colors.textPrimary)
-                .padding(.horizontal, theme.spacing.xl)
-                .padding(.top, theme.spacing.xl)
+            // Title + Sync
+            HStack {
+                Text("Study Plan")
+                    .font(.system(size: 24, weight: .bold))
+                    .foregroundColor(theme.colors.textPrimary)
+
+                Spacer()
+
+                if !presenter.lastSyncResult.isEmpty {
+                    Text(presenter.lastSyncResult)
+                        .font(.system(size: 12, weight: .medium))
+                        .foregroundColor(theme.colors.textSecondary)
+                }
+
+                DSButton(
+                    "Sync",
+                    config: DSButtonConfig(
+                        style: .secondary,
+                        size: .small,
+                        icon: Image(systemName: "arrow.clockwise")
+                    )
+                ) {
+                    presenter.syncNow()
+                }
+            }
+            .padding(.horizontal, theme.spacing.xl)
+            .padding(.top, theme.spacing.xl)
 
             // Two-column layout
             HStack(alignment: .top, spacing: theme.spacing.md) {
-                // Left column: Calendar
-                calendarGrid
+                // Left column: Day list
+                dayListColumn
 
-                // Right column: Schedule
-                scheduleColumn
+                // Right column: Day detail
+                dayDetailColumn
             }
             .padding(.horizontal, theme.spacing.xl)
 
@@ -38,203 +57,258 @@ struct iPadPlanView: View {
         }
     }
 
-    // MARK: - Calendar Grid
+    // MARK: - Day List Column
 
-    private var calendarGrid: some View {
-        iPadCalendarGridView(theme: theme)
+    private var dayListColumn: some View {
+        ScrollView {
+            VStack(spacing: theme.spacing.sm) {
+                ForEach(presenter.days) { day in
+                    iPadPlanDayRow(
+                        day: day,
+                        isSelected: selectedDayId == day.id,
+                        theme: theme,
+                        onTap: { selectedDayId = day.id }
+                    )
+                }
+            }
+            .padding(theme.spacing.sm)
+        }
+        .background(theme.colors.surface)
+        .cornerRadius(theme.radii.md)
+        .overlay(
+            RoundedRectangle(cornerRadius: theme.radii.md)
+                .stroke(theme.colors.border, lineWidth: 1)
+        )
+        .frame(maxWidth: 280)
     }
 
-    // MARK: - Schedule Column
+    // MARK: - Day Detail Column
 
-    private var scheduleColumn: some View {
-        VStack(alignment: .leading, spacing: theme.spacing.md) {
-            Text("Schedule for February 7th")
-                .font(.system(size: 20, weight: .semibold))
-                .foregroundColor(theme.colors.textPrimary)
-
-            iPadScheduleRow(
-                time: "09:00 AM",
-                title: "Morning Review",
-                subtitle: "Review yesterday's problems",
-                state: .active,
-                theme: theme
-            )
-
-            iPadScheduleRow(
-                time: "10:30 AM",
-                title: "Graph Theory",
-                subtitle: "BFS and DFS practice",
-                state: .normal,
-                theme: theme
-            )
-
-            iPadScheduleRow(
-                time: "02:00 PM",
-                title: "Mock Interview",
-                subtitle: "System Design with Peer",
-                state: .faded,
-                theme: theme
-            )
-
-            Spacer()
+    private var dayDetailColumn: some View {
+        Group {
+            if let dayId = selectedDayId,
+               let day = presenter.days.first(where: { $0.id == dayId }) {
+                dayDetail(for: day)
+            } else if let firstDay = presenter.days.first {
+                dayDetail(for: firstDay)
+                    .onAppear { selectedDayId = firstDay.id }
+            } else {
+                emptyDetail
+            }
         }
     }
-}
 
-// MARK: - Calendar Grid View
-
-private struct iPadCalendarGridView: View {
-    var theme: DSTheme
-    @State private var selectedDate: Int = 7
-    var month: String = "February 2026"
-
-    private let weekdays = ["SU", "MO", "TU", "WE", "TH", "FR", "SA"]
-    private let daysInMonth = 28
-    private let startOffset = 0
-
-    var body: some View {
-        DSCard(config: DSCardConfig(style: .outlined)) {
-            VStack(spacing: theme.spacing.lg) {
-                // Header: Month + arrows
+    private func dayDetail(for day: PlanDayViewModel) -> some View {
+        ScrollView {
+            VStack(alignment: .leading, spacing: theme.spacing.md) {
+                // Day header
                 HStack {
-                    Button { } label: {
-                        Image(systemName: "chevron.left")
-                            .font(.system(size: 16))
-                            .foregroundColor(Color(hex: 0x6B7280))
+                    VStack(alignment: .leading, spacing: theme.spacing.xs) {
+                        Text("Day \(day.id) - \(day.topic)")
+                            .font(.system(size: 20, weight: .semibold))
+                            .foregroundColor(theme.colors.textPrimary)
+
+                        Text(day.date)
+                            .font(theme.typography.caption)
+                            .foregroundColor(theme.colors.textSecondary)
                     }
-                    .buttonStyle(.plain)
 
                     Spacer()
 
-                    Text(month)
-                        .font(.system(size: 20, weight: .semibold))
-                        .foregroundColor(theme.colors.textPrimary)
-
-                    Spacer()
-
-                    Button { } label: {
-                        Image(systemName: "chevron.right")
-                            .font(.system(size: 16))
-                            .foregroundColor(Color(hex: 0x6B7280))
-                    }
-                    .buttonStyle(.plain)
+                    // Progress badge
+                    DSBadge(
+                        "\(day.completedCount)/\(day.problems.count)",
+                        style: day.isFullyCompleted ? .success : .neutral
+                    )
                 }
 
-                // Weekday labels
-                HStack(spacing: 0) {
-                    ForEach(weekdays, id: \.self) { day in
-                        Text(day)
-                            .font(.system(size: 12, weight: .semibold))
-                            .foregroundColor(Color(hex: 0x9CA3AF))
-                            .frame(maxWidth: .infinity)
+                // Progress bar
+                GeometryReader { geo in
+                    let progress = day.problems.isEmpty
+                        ? 0.0
+                        : CGFloat(day.completedCount) / CGFloat(day.problems.count)
+                    ZStack(alignment: .leading) {
+                        Capsule()
+                            .fill(theme.colors.border)
+                            .frame(height: 6)
+                        Capsule()
+                            .fill(day.isFullyCompleted ? theme.colors.success : theme.colors.primary)
+                            .frame(width: geo.size.width * progress, height: 6)
                     }
                 }
+                .frame(height: 6)
 
-                // Date grid
-                let totalCells = startOffset + daysInMonth
-                let rows = (totalCells + 6) / 7
-
-                VStack(spacing: theme.spacing.xs) {
-                    ForEach(0..<rows, id: \.self) { row in
-                        HStack(spacing: 0) {
-                            ForEach(0..<7, id: \.self) { col in
-                                let index = row * 7 + col
-                                let day = index - startOffset + 1
-
-                                if day >= 1 && day <= daysInMonth {
-                                    Button {
-                                        selectedDate = day
-                                    } label: {
-                                        ZStack {
-                                            if day == selectedDate {
-                                                Circle()
-                                                    .fill(Color(hex: 0x6366F1))
-                                                    .frame(width: 36, height: 36)
-                                            }
-
-                                            Text("\(day)")
-                                                .font(theme.typography.body)
-                                                .foregroundColor(
-                                                    day == selectedDate
-                                                        ? .white
-                                                        : theme.colors.textPrimary
-                                                )
-                                        }
-                                        .frame(maxWidth: .infinity)
-                                        .frame(height: 44)
-                                    }
-                                    .buttonStyle(.plain)
-                                } else {
-                                    Color.clear
-                                        .frame(maxWidth: .infinity)
-                                        .frame(height: 44)
+                // Problem list
+                VStack(spacing: 0) {
+                    ForEach(Array(day.problems.enumerated()), id: \.element.id) { offset, problem in
+                        iPadPlanProblemRow(
+                            problem: problem,
+                            theme: theme,
+                            onTap: {
+                                if let url = URL(string: problem.problem.url) {
+                                    openURL(url)
                                 }
                             }
+                        )
+
+                        if offset < day.problems.count - 1 {
+                            Divider().padding(.leading, 44)
                         }
                     }
                 }
-
-                // Selected date label
-                Text("You selected Feb \(selectedDate), 2026.")
-                    .font(.system(size: 14, weight: .regular))
-                    .foregroundColor(Color(hex: 0x6B7280))
+                .background(theme.colors.surface)
+                .cornerRadius(theme.radii.md)
+                .overlay(
+                    RoundedRectangle(cornerRadius: theme.radii.md)
+                        .stroke(theme.colors.border, lineWidth: 1)
+                )
             }
+            .padding(theme.spacing.md)
         }
+        .background(theme.colors.surface)
+        .cornerRadius(theme.radii.md)
+        .overlay(
+            RoundedRectangle(cornerRadius: theme.radii.md)
+                .stroke(theme.colors.border, lineWidth: 1)
+        )
     }
-}
 
-// MARK: - Schedule Row
-
-private struct iPadScheduleRow: View {
-    var time: String
-    var title: String
-    var subtitle: String
-    var state: ScheduleRowState = .normal
-    var theme: DSTheme
-
-    var body: some View {
-        HStack(spacing: theme.spacing.lg) {
-            Text(time)
-                .font(.system(size: 14, weight: .semibold))
-                .foregroundColor(timeColor)
-                .frame(width: 60, alignment: .leading)
-
-            VStack(alignment: .leading, spacing: 2) {
-                Text(title)
-                    .font(.system(size: 16, weight: .semibold))
-                    .foregroundColor(theme.colors.textPrimary)
-
-                Text(subtitle)
-                    .font(theme.typography.caption)
-                    .foregroundColor(Color(hex: 0x6B7280))
-            }
-
+    private var emptyDetail: some View {
+        VStack {
+            Spacer()
+            Text("No plan data available")
+                .font(theme.typography.body)
+                .foregroundColor(theme.colors.textSecondary)
             Spacer()
         }
-        .padding(theme.spacing.lg)
-        .frame(height: 72)
-        .background(backgroundColor)
-        .cornerRadius(theme.radii.md)
-        .opacity(state == .faded ? 0.5 : 1.0)
+        .frame(maxWidth: .infinity)
     }
+}
 
-    private var timeColor: Color {
-        switch state {
-        case .active: return Color(hex: 0x6366F1)
-        case .normal: return Color(hex: 0x6B7280)
-        case .faded: return Color(hex: 0x9CA3AF)
-        }
-    }
+// MARK: - Plan Day Row
 
-    private var backgroundColor: Color {
-        switch state {
-        case .active: return Color(hex: 0x6366F1).opacity(0.08)
-        case .normal, .faded: return Color.clear
+private struct iPadPlanDayRow: View {
+    let day: PlanDayViewModel
+    let isSelected: Bool
+    let theme: DSTheme
+    let onTap: () -> Void
+
+    var body: some View {
+        DSActionButton(action: onTap) {
+            HStack(spacing: theme.spacing.md) {
+                // Day number circle
+                ZStack {
+                    Circle()
+                        .fill(
+                            day.isFullyCompleted
+                                ? theme.colors.success
+                                : isSelected
+                                    ? theme.colors.primary
+                                    : theme.colors.border
+                        )
+                        .frame(width: 32, height: 32)
+
+                    if day.isFullyCompleted {
+                        Image(systemName: "checkmark")
+                            .font(.system(size: 12, weight: .bold))
+                            .foregroundColor(.white)
+                    } else {
+                        Text("\(day.id)")
+                            .font(.system(size: 14, weight: .semibold))
+                            .foregroundColor(
+                                isSelected ? .white : theme.colors.textPrimary
+                            )
+                    }
+                }
+
+                VStack(alignment: .leading, spacing: 2) {
+                    Text(day.topic)
+                        .font(.system(size: 14, weight: .semibold))
+                        .foregroundColor(theme.colors.textPrimary)
+                        .lineLimit(1)
+
+                    Text("\(day.completedCount)/\(day.problems.count) problems")
+                        .font(theme.typography.caption)
+                        .foregroundColor(theme.colors.textSecondary)
+                }
+
+                Spacer()
+
+                Text(day.date)
+                    .font(theme.typography.caption)
+                    .foregroundColor(theme.colors.textSecondary)
+            }
+            .padding(.horizontal, theme.spacing.md)
+            .padding(.vertical, theme.spacing.sm)
+            .background(
+                isSelected
+                    ? theme.colors.primary.opacity(0.08)
+                    : Color.clear
+            )
+            .cornerRadius(theme.radii.sm)
         }
     }
 }
 
-#Preview {
-    iPadPlanView()
-        .frame(width: 574, height: 1194)
+// MARK: - Plan Problem Row
+
+private struct iPadPlanProblemRow: View {
+    let problem: PlanProblemViewModel
+    let theme: DSTheme
+    let onTap: () -> Void
+
+    var body: some View {
+        DSActionButton(action: onTap) {
+            HStack(spacing: 12) {
+                // Status icon
+                if problem.isCompleted {
+                    ZStack {
+                        Circle()
+                            .fill(theme.colors.success)
+                            .frame(width: 24, height: 24)
+                        Image(systemName: "checkmark")
+                            .font(.system(size: 12, weight: .bold))
+                            .foregroundColor(.white)
+                    }
+                } else {
+                    Circle()
+                        .strokeBorder(theme.colors.border, lineWidth: 1.5)
+                        .frame(width: 24, height: 24)
+                }
+
+                // Problem name
+                Text(problem.problem.name)
+                    .font(.system(size: 15, weight: .medium))
+                    .foregroundColor(
+                        problem.isCompleted
+                            ? theme.colors.textSecondary
+                            : theme.colors.textPrimary
+                    )
+                    .strikethrough(problem.isCompleted)
+
+                Spacer()
+
+                // Difficulty
+                DSBadge(
+                    problem.problem.difficulty.rawValue,
+                    style: badgeStyle(for: problem.problem.difficulty)
+                )
+
+                Image(systemName: "arrow.up.right")
+                    .font(.system(size: 12))
+                    .foregroundColor(theme.colors.textSecondary)
+            }
+            .padding(.horizontal, theme.spacing.lg)
+            .frame(height: 52)
+        }
+    }
+
+    private func badgeStyle(for difficulty: Difficulty) -> DSBadgeStyle {
+        switch difficulty {
+        case .easy: return .success
+        case .medium: return .warning
+        case .hard: return .danger
+        }
+    }
 }
+#endif

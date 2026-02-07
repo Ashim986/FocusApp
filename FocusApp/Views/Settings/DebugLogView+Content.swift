@@ -6,7 +6,7 @@ extension DebugLogView {
         let filtered = filteredEntries
         return Group {
             if filtered.isEmpty {
-                VStack(spacing: 8) {
+                VStack(spacing: DSLayout.spacing(8)) {
                     Image(systemName: "doc.text.magnifyingglass")
                         .font(.system(size: 32))
                         .foregroundColor(theme.colors.textSecondary)
@@ -29,19 +29,19 @@ extension DebugLogView {
                             resetFilters()
                         }
                         .buttonStyle(.borderedProminent)
-                        .padding(.top, 6)
+                        .padding(.top, DSLayout.spacing(6))
                     }
                 }
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
                 .background(theme.colors.surface)
             } else {
                 ScrollView {
-                    LazyVStack(alignment: .leading, spacing: 10) {
+                    LazyVStack(alignment: .leading, spacing: DSLayout.spacing(10)) {
                         ForEach(filtered) { entry in
                             DebugLogRow(entry: entry)
                         }
                     }
-                    .padding(12)
+                    .padding(DSLayout.spacing(12))
                 }
                 .background(theme.colors.surface)
             }

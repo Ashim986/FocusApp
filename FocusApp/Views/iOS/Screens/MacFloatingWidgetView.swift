@@ -11,6 +11,7 @@ struct MacFloatingWidgetView: View {
     @State private var showSettings = false
     @State private var showTomorrow = false
     @State private var isSyncing = false
+    @State private var username = "ashim986"
 
     var body: some View {
         VStack(spacing: 0) {
@@ -24,7 +25,7 @@ struct MacFloatingWidgetView: View {
                 Spacer()
 
                 // Sync button
-                Button {
+                DSActionButton(action: {
                     isSyncing = true
                 } label: {
                     Image(systemName: isSyncing ? "arrow.triangle.2.circlepath" : "arrow.clockwise")
@@ -32,10 +33,9 @@ struct MacFloatingWidgetView: View {
                         .foregroundColor(theme.colors.textSecondary)
                         .rotationEffect(.degrees(isSyncing ? 360 : 0))
                 }
-                .buttonStyle(.plain)
 
                 // Settings button
-                Button {
+                DSActionButton(action: {
                     withAnimation(.easeInOut(duration: 0.2)) {
                         showSettings.toggle()
                     }
@@ -44,7 +44,6 @@ struct MacFloatingWidgetView: View {
                         .font(.system(size: 14))
                         .foregroundColor(theme.colors.textSecondary)
                 }
-                .buttonStyle(.plain)
             }
             .padding(.horizontal, theme.spacing.lg)
             .padding(.vertical, theme.spacing.md)
@@ -61,18 +60,16 @@ struct MacFloatingWidgetView: View {
                         .frame(maxWidth: .infinity, alignment: .leading)
 
                     HStack(spacing: theme.spacing.sm) {
-                        TextField("Username", text: .constant("ashim986"))
-                            .textFieldStyle(.roundedBorder)
-                            .font(theme.typography.body)
+                        DSTextField(
+                            placeholder: "Username",
+                            text: $username
+                        )
+                        .frame(maxWidth: .infinity)
 
-                        Button("Save & Sync") { }
-                            .font(theme.typography.caption)
-                            .fontWeight(.semibold)
-                            .foregroundColor(.white)
-                            .padding(.horizontal, theme.spacing.md)
-                            .padding(.vertical, theme.spacing.xs)
-                            .background(Color(hex: 0x6366F1))
-                            .cornerRadius(theme.radii.sm)
+                        DSButton(
+                            "Save & Sync",
+                            config: DSButtonConfig(style: .primary, size: .small)
+                        ) { }
                     }
                 }
                 .padding(theme.spacing.md)
@@ -232,7 +229,7 @@ struct MacFloatingWidgetView: View {
     }
 
     private func habitToggle(label: String, isOn: Bool) -> some View {
-        Button { } label: {
+        DSActionButton(action: {}) {
             HStack(spacing: theme.spacing.xs) {
                 Image(systemName: isOn ? "checkmark.circle.fill" : "circle")
                     .font(.system(size: 14))
@@ -247,14 +244,13 @@ struct MacFloatingWidgetView: View {
             .background(isOn ? Color(hex: 0x6366F1).opacity(0.08) : theme.colors.surfaceElevated)
             .cornerRadius(theme.radii.sm)
         }
-        .buttonStyle(.plain)
     }
 
     // MARK: - Tomorrow Section
 
     private var tomorrowSection: some View {
         VStack(alignment: .leading, spacing: theme.spacing.sm) {
-            Button {
+            DSActionButton(action: {
                 withAnimation { showTomorrow.toggle() }
             } label: {
                 HStack {
@@ -274,7 +270,6 @@ struct MacFloatingWidgetView: View {
                         .foregroundColor(theme.colors.textSecondary)
                 }
             }
-            .buttonStyle(.plain)
             .padding(.horizontal, theme.spacing.lg)
 
             if showTomorrow {

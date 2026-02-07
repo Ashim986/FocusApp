@@ -1,12 +1,16 @@
+#if os(iOS)
 // iPadStatsView.swift
-// FocusApp — iPad Stats screen (charts + metrics)
-// Spec: FIGMA_SETUP_GUIDE.md §5.3
+// FocusApp -- iPad Stats screen (charts + metrics)
+// Wired to StatsPresenter for live data
 
 import FocusDesignSystem
 import SwiftUI
 
 struct iPadStatsView: View {
+    @ObservedObject var presenter: StatsPresenter
     @Environment(\.dsTheme) var theme
+
+    private var vm: StatsViewModel { presenter.viewModel }
 
     var body: some View {
         ScrollView {
@@ -17,179 +21,212 @@ struct iPadStatsView: View {
                     .padding(.horizontal, theme.spacing.xl)
                     .padding(.top, theme.spacing.xl)
 
-                // Two charts side by side
-                HStack(alignment: .top, spacing: theme.spacing.md) {
-                    iPadBarChartView(
-                        data: [4, 6, 3, 7, 5, 2, 8],
-                        title: "Weekly Focus Time",
-                        theme: theme
-                    )
-
-                    iPadLineChartView(
-                        data: [3, 5, 4, 8, 6, 9, 7],
-                        title: "Problems Solved",
-                        theme: theme
-                    )
-                }
-                .padding(.horizontal, theme.spacing.xl)
-
-                // 4 metric cards in a row
+                // Metric cards row
                 HStack(spacing: theme.spacing.sm) {
-                    DSMetricCard(title: "Total Focus", value: "34h 12m")
-                    DSMetricCard(title: "Current Streak", value: "12 Days")
-                    DSMetricCard(title: "Problems Solved", value: "45")
-                    DSMetricCard(title: "Avg. Difficulty", value: "Medium")
+                    iPadMetricCard(
+                        title: "Problems Solved",
+                        value: "\(vm.solvedProblems)/\(vm.totalProblems)",
+                        icon: "checkmark.circle.fill",
+                        iconColor: theme.colors.success,
+                        theme: theme
+                    )
+                    iPadMetricCard(
+                        title: "Topics Complete",
+                        value: "\(vm.completedTopics)/\(vm.totalTopics)",
+                        icon: "book.closed.fill",
+                        iconColor: theme.colors.primary,
+                        theme: theme
+                    )
+                    iPadMetricCard(
+                        title: "Days Left",
+                        value: "\(vm.daysLeft)",
+                        icon: "calendar",
+                        iconColor: theme.colors.warning,
+                        theme: theme
+                    )
+                    iPadMetricCard(
+                        title: "Habits Today",
+                        value: "\(vm.habitsToday)/3",
+                        icon: "flame.fill",
+                        iconColor: Color(hex: 0xEA580C),
+                        theme: theme
+                    )
                 }
                 .padding(.horizontal, theme.spacing.xl)
+
+                // Overall progress ring + topic breakdown side by side
+                HStack(alignment: .top, spacing: theme.spacing.md) {
+                    overallProgressCard
+                    topicBreakdownCard
+                }
+                .padding(.horizontal, theme.spacing.xl)
+
+                // Topic progress bars
+                topicProgressSection
             }
             .padding(.bottom, 48)
         }
     }
-}
 
-// MARK: - Bar Chart
+    // MARK: - Overall Progress Card
 
-private struct iPadBarChartView: View {
-    var data: [CGFloat] = [4, 6, 3, 7, 5, 2, 8]
-    var labels: [String] = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
-    var maxValue: CGFloat = 8
-    var title: String = "Weekly Focus Time"
-    var theme: DSTheme
+    private var overallProgressCard: some View {
+        let progress = vm.totalProblems > 0
+            ? Double(vm.solvedProblems) / Double(vm.totalProblems)
+            : 0.0
 
-    var body: some View {
-        DSCard(config: DSCardConfig(style: .outlined)) {
-            VStack(alignment: .leading, spacing: theme.spacing.md) {
-                Text(title)
+        return DSCard(config: DSCardConfig(style: .outlined)) {
+            VStack(spacing: theme.spacing.md) {
+                Text("Overall Progress")
                     .font(.system(size: 16, weight: .semibold))
                     .foregroundColor(theme.colors.textPrimary)
 
-                GeometryReader { geo in
-                    let chartWidth = geo.size.width
-                    let chartHeight = geo.size.height - 24
-                    let barWidth: CGFloat = 32
-                    let totalBars = CGFloat(data.count)
-                    let spacing = (chartWidth - barWidth * totalBars) / (totalBars + 1)
+                DSProgressRing(
+                    progress: progress,
+                    size: 160,
+                    lineWidth: 12,
+                    color: theme.colors.primary
+                )
 
-                    ZStack(alignment: .bottomLeading) {
-                        // Grid lines (dashed)
-                        ForEach(0..<5, id: \.self) { i in
-                            let gridY = chartHeight * CGFloat(i) / 4
-                            Path { path in
-                                path.move(to: CGPoint(x: 0, y: gridY))
-                                path.addLine(to: CGPoint(x: chartWidth, y: gridY))
-                            }
-                            .stroke(
-                                theme.colors.border,
-                                style: StrokeStyle(lineWidth: 0.5, dash: [4])
-                            )
+                Text("\(Int(progress * 100))%")
+                    .font(.system(size: 32, weight: .bold))
+                    .foregroundColor(theme.colors.textPrimary)
+
+                Text("\(vm.solvedProblems) of \(vm.totalProblems) problems")
+                    .font(theme.typography.caption)
+                    .foregroundColor(theme.colors.textSecondary)
+            }
+            .frame(maxWidth: .infinity)
+        }
+    }
+
+    // MARK: - Topic Breakdown Card
+
+    private var topicBreakdownCard: some View {
+        DSCard(config: DSCardConfig(style: .outlined)) {
+            VStack(alignment: .leading, spacing: theme.spacing.md) {
+                Text("Topic Breakdown")
+                    .font(.system(size: 16, weight: .semibold))
+                    .foregroundColor(theme.colors.textPrimary)
+
+                ForEach(vm.topicBreakdown) { topic in
+                    HStack(spacing: theme.spacing.sm) {
+                        // Completion indicator
+                        if topic.isComplete {
+                            Image(systemName: "checkmark.circle.fill")
+                                .foregroundColor(theme.colors.success)
+                                .font(.system(size: 14))
+                        } else {
+                            Image(systemName: "circle")
+                                .foregroundColor(theme.colors.border)
+                                .font(.system(size: 14))
                         }
 
-                        // Bars
-                        HStack(alignment: .bottom, spacing: spacing) {
-                            ForEach(0..<data.count, id: \.self) { index in
-                                VStack(spacing: theme.spacing.xs) {
-                                    RoundedRectangle(cornerRadius: theme.radii.sm)
-                                        .fill(Color(hex: 0x6366F1))
-                                        .frame(
-                                            width: barWidth,
-                                            height: maxValue > 0
-                                                ? chartHeight * data[index] / maxValue
-                                                : 0
-                                        )
+                        Text(topic.topic)
+                            .font(.system(size: 13, weight: .medium))
+                            .foregroundColor(theme.colors.textPrimary)
+                            .lineLimit(1)
 
-                                    Text(labels[index])
-                                        .font(theme.typography.caption)
-                                        .foregroundColor(Color(hex: 0x9CA3AF))
-                                        .frame(width: barWidth)
-                                }
-                            }
-                        }
-                        .padding(.leading, spacing)
+                        Spacer()
+
+                        Text("\(topic.completed)/\(topic.total)")
+                            .font(.system(size: 12, weight: .semibold))
+                            .foregroundColor(theme.colors.textSecondary)
                     }
                 }
-                .frame(height: 200)
+            }
+        }
+    }
+
+    // MARK: - Topic Progress Section
+
+    private var topicProgressSection: some View {
+        VStack(alignment: .leading, spacing: theme.spacing.md) {
+            Text("Progress by Topic")
+                .font(.system(size: 18, weight: .semibold))
+                .foregroundColor(theme.colors.textPrimary)
+                .padding(.horizontal, theme.spacing.xl)
+
+            VStack(spacing: theme.spacing.sm) {
+                ForEach(vm.topicBreakdown) { topic in
+                    iPadTopicProgressRow(topic: topic, theme: theme)
+                }
+            }
+            .padding(.horizontal, theme.spacing.xl)
+        }
+    }
+}
+
+// MARK: - Metric Card
+
+private struct iPadMetricCard: View {
+    let title: String
+    let value: String
+    let icon: String
+    let iconColor: Color
+    let theme: DSTheme
+
+    var body: some View {
+        DSCard(config: DSCardConfig(style: .outlined)) {
+            VStack(alignment: .leading, spacing: theme.spacing.xs) {
+                HStack {
+                    Image(systemName: icon)
+                        .foregroundColor(iconColor)
+                        .font(.system(size: 14))
+                    Text(title)
+                        .font(.system(size: 12, weight: .semibold))
+                        .foregroundColor(theme.colors.textSecondary)
+                }
+                Text(value)
+                    .font(.system(size: 24, weight: .bold))
+                    .foregroundColor(theme.colors.textPrimary)
             }
         }
     }
 }
 
-// MARK: - Line Chart
+// MARK: - Topic Progress Row
 
-private struct iPadLineChartView: View {
-    var data: [CGFloat] = [3, 5, 4, 8, 6, 9, 7]
-    var labels: [String] = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
-    var maxValue: CGFloat = 12
-    var title: String = "Problems Solved"
-    var theme: DSTheme
+private struct iPadTopicProgressRow: View {
+    let topic: TopicBreakdownViewModel
+    let theme: DSTheme
 
     var body: some View {
-        DSCard(config: DSCardConfig(style: .outlined)) {
-            VStack(alignment: .leading, spacing: theme.spacing.md) {
-                Text(title)
-                    .font(.system(size: 16, weight: .semibold))
+        VStack(alignment: .leading, spacing: theme.spacing.xs) {
+            HStack {
+                Text("Day \(topic.id): \(topic.topic)")
+                    .font(.system(size: 14, weight: .medium))
                     .foregroundColor(theme.colors.textPrimary)
+                    .lineLimit(1)
 
-                GeometryReader { geo in
-                    let chartWidth = geo.size.width
-                    let chartHeight = geo.size.height - 24
+                Spacer()
 
-                    ZStack(alignment: .bottomLeading) {
-                        // Grid lines
-                        ForEach(0..<5, id: \.self) { i in
-                            let gridY = chartHeight - chartHeight * CGFloat(i) / 4
-                            Path { path in
-                                path.move(to: CGPoint(x: 0, y: gridY))
-                                path.addLine(to: CGPoint(x: chartWidth, y: gridY))
-                            }
-                            .stroke(
-                                theme.colors.border,
-                                style: StrokeStyle(lineWidth: 0.5, dash: [4])
-                            )
-                        }
-
-                        // Line path
-                        let points = data.enumerated().map { index, value -> CGPoint in
-                            let x = chartWidth * CGFloat(index) / CGFloat(max(data.count - 1, 1))
-                            let y = chartHeight - (maxValue > 0 ? chartHeight * value / maxValue : 0)
-                            return CGPoint(x: x, y: y)
-                        }
-
-                        Path { path in
-                            guard let first = points.first else { return }
-                            path.move(to: first)
-                            for point in points.dropFirst() {
-                                path.addLine(to: point)
-                            }
-                        }
-                        .stroke(theme.colors.success, lineWidth: 2)
-
-                        // Dot markers
-                        ForEach(0..<points.count, id: \.self) { i in
-                            Circle()
-                                .fill(theme.colors.success)
-                                .frame(width: 8, height: 8)
-                                .position(points[i])
-                        }
-
-                        // X-axis labels
-                        HStack(spacing: 0) {
-                            ForEach(0..<labels.count, id: \.self) { i in
-                                Text(labels[i])
-                                    .font(theme.typography.caption)
-                                    .foregroundColor(Color(hex: 0x9CA3AF))
-                                    .frame(maxWidth: .infinity)
-                            }
-                        }
-                        .offset(y: chartHeight + 8)
-                    }
-                }
-                .frame(height: 200)
+                Text("\(topic.completed)/\(topic.total)")
+                    .font(.system(size: 12, weight: .semibold))
+                    .foregroundColor(
+                        topic.isComplete ? theme.colors.success : theme.colors.textSecondary
+                    )
             }
+
+            GeometryReader { geo in
+                ZStack(alignment: .leading) {
+                    Capsule()
+                        .fill(theme.colors.border)
+                        .frame(height: 6)
+                    Capsule()
+                        .fill(topic.isComplete ? theme.colors.success : theme.colors.primary)
+                        .frame(width: geo.size.width * topic.progress, height: 6)
+                }
+            }
+            .frame(height: 6)
         }
+        .padding(theme.spacing.md)
+        .background(theme.colors.surface)
+        .cornerRadius(theme.radii.sm)
+        .overlay(
+            RoundedRectangle(cornerRadius: theme.radii.sm)
+                .stroke(theme.colors.border, lineWidth: 1)
+        )
     }
 }
-
-#Preview {
-    iPadStatsView()
-        .frame(width: 574, height: 1194)
-}
+#endif

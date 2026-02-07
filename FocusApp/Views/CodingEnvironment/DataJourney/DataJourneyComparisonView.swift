@@ -19,30 +19,26 @@ struct DataJourneyComparisonView: View {
             return AnyView(EmptyView())
         }
         return AnyView(
-            VStack(alignment: .leading, spacing: 6) {
-                Button(
+            VStack(alignment: .leading, spacing: DSLayout.spacing(6)) {
+                DSButton(
+                    "Compare Steps",
+                    config: .init(
+                        style: .ghost,
+                        size: .small,
+                        icon: Image(systemName: isExpanded ? "chevron.down" : "chevron.right"),
+                        iconPosition: .leading
+                    ),
                     action: {
                         withAnimation(.easeInOut(duration: 0.2)) { isExpanded.toggle() }
-                    },
-                    label: {
-                        HStack(spacing: 4) {
-                            Image(systemName: isExpanded ? "chevron.down" : "chevron.right")
-                                .font(.system(size: 8, weight: .bold))
-                                .foregroundColor(palette.gray400)
-                            Text("Compare Steps")
-                                .font(.system(size: 9, weight: .semibold))
-                                .foregroundColor(palette.gray400)
-                            Spacer()
-                        }
                     }
                 )
-                .buttonStyle(.plain)
+                .frame(maxWidth: .infinity, alignment: .leading)
 
                 if isExpanded {
                     comparisonContent
                 }
             }
-            .padding(8)
+            .padding(DSLayout.spacing(8))
             .background(
                 RoundedRectangle(cornerRadius: 6)
                     .fill(palette.gray900.opacity(0.3))
@@ -59,7 +55,7 @@ struct DataJourneyComparisonView: View {
         )
         let allKeys = collectAllKeys()
 
-        return HStack(alignment: .top, spacing: 8) {
+        return HStack(alignment: .top, spacing: DSLayout.spacing(8)) {
             // Previous step (left pane)
             comparisonPane(
                 title: paneTitle(for: previousEvent, label: "Previous"),
@@ -94,12 +90,12 @@ struct DataJourneyComparisonView: View {
         changedKeys: Set<String>,
         accent: Color
     ) -> some View {
-        VStack(alignment: .leading, spacing: 6) {
+        VStack(alignment: .leading, spacing: DSLayout.spacing(6)) {
             Text(title)
                 .font(.system(size: 8, weight: .bold))
                 .foregroundColor(accent)
-                .padding(.horizontal, 6)
-                .padding(.vertical, 2)
+                .padding(.horizontal, DSLayout.spacing(6))
+                .padding(.vertical, DSLayout.spacing(2))
                 .background(
                     RoundedRectangle(cornerRadius: 4)
                         .fill(accent.opacity(0.12))
@@ -108,7 +104,7 @@ struct DataJourneyComparisonView: View {
             ForEach(allKeys, id: \.self) { key in
                 let value = event?.values[key]
                 let isChanged = changedKeys.contains(key)
-                HStack(spacing: 6) {
+                HStack(spacing: DSLayout.spacing(6)) {
                     Text(key)
                         .font(.system(size: 8, weight: .semibold))
                         .foregroundColor(isChanged ? accent : palette.gray400)
@@ -126,8 +122,8 @@ struct DataJourneyComparisonView: View {
                             .foregroundColor(palette.gray600)
                     }
                 }
-                .padding(.vertical, 1)
-                .padding(.horizontal, 4)
+                .padding(.vertical, DSLayout.spacing(1))
+                .padding(.horizontal, DSLayout.spacing(4))
                 .background(
                     isChanged
                         ? RoundedRectangle(cornerRadius: 3)

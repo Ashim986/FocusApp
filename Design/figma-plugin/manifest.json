@@ -1,0 +1,7 @@
+{
+  "name": "FocusApp Variables Import",
+  "id": "focusapp-variables-import",
+  "api": "1.0.0",
+  "main": "code.js",
+  "editorType": ["figma"]
+}

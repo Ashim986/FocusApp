@@ -242,7 +242,7 @@ struct SequenceBubbleRow: View {
                 }
             }
             .frame(width: totalWidth, height: rowHeight)
-            .padding(.vertical, 2)
+            .padding(.vertical, DSLayout.spacing(2))
         }
         .animation(.spring(response: 0.35, dampingFraction: 0.82), value: renderItems)
         .animation(.spring(response: 0.35, dampingFraction: 0.82), value: pointers.map(\.id))

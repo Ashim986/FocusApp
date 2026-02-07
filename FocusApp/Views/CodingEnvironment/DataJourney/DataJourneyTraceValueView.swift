@@ -48,10 +48,10 @@ struct TraceValueView: View {
     }
 
     private func objectView(_ map: [String: TraceValue]) -> some View {
-        VStack(alignment: .leading, spacing: 6) {
+        VStack(alignment: .leading, spacing: DSLayout.spacing(6)) {
             ForEach(map.keys.sorted(), id: \.self) { key in
                 if let value = map[key] {
-                    HStack(spacing: 6) {
+                    HStack(spacing: DSLayout.spacing(6)) {
                         Text(key)
                             .font(.system(size: 9, weight: .semibold))
                             .foregroundColor(palette.gray400)

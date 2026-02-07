@@ -6,8 +6,8 @@ extension DataJourneyStructureCanvasView {
         Text(title)
             .font(.system(size: 9, weight: .semibold))
             .foregroundColor(color)
-            .padding(.horizontal, 8)
-            .padding(.vertical, 4)
+            .padding(.horizontal, DSLayout.spacing(8))
+            .padding(.vertical, DSLayout.spacing(4))
             .background(
                 Capsule()
                     .fill(background)

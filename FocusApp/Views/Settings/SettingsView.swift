@@ -20,19 +20,21 @@ struct SettingsView: View {
         Form {
             Section {
                 if !presenter.notificationsAuthorized {
-                    VStack(alignment: .leading, spacing: 8) {
+                    VStack(alignment: .leading, spacing: DSLayout.spacing(.space8)) {
                         Text(L10n.Settings.notificationsDisabledTitle)
                             .font(.headline)
                         Text(L10n.Settings.notificationsDisabledBody)
                             .font(.caption)
                             .foregroundColor(.secondary)
-                        DSButton(L10n.Settings.enableNotifications) {
+                        DSButton(
+                            L10n.Settings.enableNotifications,
+                            config: .init(style: .primary, size: .small)
+                        ) {
                             presenter.requestAuthorization()
                         }
-                        .buttonStyle(.borderedProminent)
-                        .padding(.top, 4)
+                        .padding(.top, DSLayout.spacing(.space4))
                     }
-                    .padding(.vertical, 8)
+                    .padding(.vertical, DSLayout.spacing(.space8))
                 }
             } header: {
                 Text(L10n.Settings.notificationStatus)
@@ -81,12 +83,12 @@ struct SettingsView: View {
                     displayedComponents: .date
                 )
 
-                Button(action: {
+                DSButton(
+                    L10n.Settings.planStartReset,
+                    config: .init(style: .secondary, size: .small)
+                ) {
                     presenter.resetPlanStartDateToToday()
-                }, label: {
-                    Text(L10n.Settings.planStartReset)
-                })
-                .buttonStyle(.bordered)
+                }
             } header: {
                 Text(L10n.Settings.planStartHeader)
             } footer: {
@@ -94,8 +96,8 @@ struct SettingsView: View {
             }
 
             Section {
-                VStack(alignment: .leading, spacing: 8) {
-                    HStack(spacing: 6) {
+                VStack(alignment: .leading, spacing: DSLayout.spacing(.space8)) {
+                    HStack(spacing: DSLayout.spacing(6)) {
                         Image(systemName: "trophy.fill")
                         Text(L10n.Settings.topicCompletion)
                     }
@@ -104,10 +106,10 @@ struct SettingsView: View {
                         .font(.caption)
                         .foregroundColor(.secondary)
                 }
-                .padding(.vertical, 4)
+                .padding(.vertical, DSLayout.spacing(.space4))
 
-                VStack(alignment: .leading, spacing: 8) {
-                    HStack(spacing: 6) {
+                VStack(alignment: .leading, spacing: DSLayout.spacing(.space8)) {
+                    HStack(spacing: DSLayout.spacing(6)) {
                         Image(systemName: "checkmark.circle.fill")
                         Text(L10n.Settings.allHabitsDone)
                     }
@@ -116,7 +118,7 @@ struct SettingsView: View {
                         .font(.caption)
                         .foregroundColor(.secondary)
                 }
-                .padding(.vertical, 4)
+                .padding(.vertical, DSLayout.spacing(.space4))
             } header: {
                 Text(L10n.Settings.celebrationHeader)
             } footer: {
@@ -124,7 +126,7 @@ struct SettingsView: View {
             }
 
             Section {
-                VStack(alignment: .leading, spacing: 8) {
+                VStack(alignment: .leading, spacing: DSLayout.spacing(.space8)) {
                     HStack {
                         Text(L10n.Settings.leetcodeUsername)
                             .font(.subheadline)
@@ -132,7 +134,7 @@ struct SettingsView: View {
                         validationStatusView
                     }
 
-                    HStack(spacing: 8) {
+                    HStack(spacing: DSLayout.spacing(.space8)) {
                         let validation: DSTextFieldValidation = {
                             switch presenter.usernameValidationState {
                             case .valid:
@@ -154,24 +156,19 @@ struct SettingsView: View {
                             presenter.resetValidationState()
                         }
 
-                        Button(action: {
+                        DSButton(
+                            L10n.Settings.validateSync,
+                            config: .init(style: .primary, size: .small),
+                            state: .init(isEnabled: !presenter.isValidatingUsername, isLoading: presenter.isValidatingUsername)
+                        ) {
                             presenter.validateAndSaveUsername()
-                        }, label: {
-                            if presenter.isValidatingUsername {
-                                ProgressView()
-                                    .progressViewStyle(.circular)
-                            } else {
-                                Text(L10n.Settings.validateSync)
-                            }
-                        })
-                        .buttonStyle(.borderedProminent)
-                        .disabled(presenter.isValidatingUsername)
+                        }
                     }
                 }
 
                 Divider()
 
-                VStack(alignment: .leading, spacing: 10) {
+                VStack(alignment: .leading, spacing: DSLayout.spacing(10)) {
                     HStack {
                         Text(L10n.Settings.leetcodeLoginTitle)
                             .font(.subheadline)
@@ -183,17 +180,21 @@ struct SettingsView: View {
                         .font(.caption)
                         .foregroundColor(.secondary)
 
-                    HStack(spacing: 8) {
-                        DSButton(L10n.Settings.leetcodeLoginButton) {
+                    HStack(spacing: DSLayout.spacing(.space8)) {
+                        DSButton(
+                            L10n.Settings.leetcodeLoginButton,
+                            config: .init(style: .primary, size: .small)
+                        ) {
                             isShowingLeetCodeLogin = true
                         }
-                        .buttonStyle(.borderedProminent)
 
                         if presenter.leetCodeAuth != nil {
-                            DSButton(L10n.Settings.leetcodeLogoutButton) {
+                            DSButton(
+                                L10n.Settings.leetcodeLogoutButton,
+                                config: .init(style: .secondary, size: .small)
+                            ) {
                                 presenter.clearLeetCodeAuth()
                             }
-                            .buttonStyle(.bordered)
                         }
                     }
                 }
@@ -204,7 +205,7 @@ struct SettingsView: View {
             }
 
             Section {
-                VStack(alignment: .leading, spacing: 8) {
+                VStack(alignment: .leading, spacing: DSLayout.spacing(.space8)) {
                     Text(L10n.Settings.aiProviderLabel)
                         .font(.subheadline)
 
@@ -216,7 +217,7 @@ struct SettingsView: View {
                     .pickerStyle(.segmented)
                 }
 
-                VStack(alignment: .leading, spacing: 8) {
+                VStack(alignment: .leading, spacing: DSLayout.spacing(.space8)) {
                     Text(L10n.Settings.aiApiKeyLabel)
                         .font(.subheadline)
 
@@ -225,13 +226,12 @@ struct SettingsView: View {
                         text: $presenter.aiProviderApiKey,
                         config: DSTextFieldConfig(style: .outlined, size: .medium, isSecure: true)
                     )
-                    .textFieldStyle(.roundedBorder)
                     .onChange(of: presenter.aiProviderApiKey) { _, _ in
                         presenter.saveAIProviderSettings()
                     }
                 }
 
-                VStack(alignment: .leading, spacing: 8) {
+                VStack(alignment: .leading, spacing: DSLayout.spacing(.space8)) {
                     Text(L10n.Settings.aiModelLabel)
                         .font(.subheadline)
 
@@ -263,21 +263,21 @@ struct SettingsView: View {
             )
 
             Section {
-                VStack(alignment: .leading, spacing: 4) {
+                VStack(alignment: .leading, spacing: DSLayout.spacing(4)) {
                     Text(L10n.Settings.appName)
                         .font(.headline)
                     Text(L10n.Settings.versionLabel)
                         .font(.caption)
                         .foregroundColor(.secondary)
                 }
-                .padding(.vertical, 4)
+                .padding(.vertical, DSLayout.spacing(.space4))
             } header: {
                 Text(L10n.Settings.aboutHeader)
             }
 
             Section {
                 HStack {
-                    VStack(alignment: .leading, spacing: 4) {
+                    VStack(alignment: .leading, spacing: DSLayout.spacing(4)) {
                         Text(L10n.Debug.logsTitle)
                             .font(.subheadline)
                         Text(L10n.Debug.logsSubtitle)
@@ -285,12 +285,14 @@ struct SettingsView: View {
                             .foregroundColor(.secondary)
                     }
                     Spacer()
-                    DSButton(L10n.Debug.openLogs) {
+                    DSButton(
+                        L10n.Debug.openLogs,
+                        config: .init(style: .secondary, size: .small)
+                    ) {
                         isShowingLogs = true
                     }
-                    .buttonStyle(.bordered)
                 }
-                .padding(.vertical, 4)
+                .padding(.vertical, DSLayout.spacing(.space4))
             } header: {
                 Text(L10n.Debug.header)
             } footer: {
@@ -372,7 +374,7 @@ private struct AITestCasesSectionView: View {
 
     var body: some View {
         Section {
-            VStack(alignment: .leading, spacing: 6) {
+            VStack(alignment: .leading, spacing: DSLayout.spacing(6)) {
                 if summary.exists {
                     Text(L10n.Settings.aiTestCasesSummary(summary.entryCount, summary.testCaseCount))
                         .font(.subheadline)
@@ -393,19 +395,23 @@ private struct AITestCasesSectionView: View {
                         .foregroundColor(.secondary)
                 }
             }
-            .padding(.vertical, 4)
+            .padding(.vertical, DSLayout.spacing(.space4))
 
-            HStack(spacing: 8) {
-                DSButton(L10n.Settings.aiTestCasesView) {
+            HStack(spacing: DSLayout.spacing(.space8)) {
+                DSButton(
+                    L10n.Settings.aiTestCasesView,
+                    config: .init(style: .secondary, size: .small)
+                ) {
                     onView()
                 }
-                .buttonStyle(.bordered)
                 .disabled(!summary.exists)
 
-                DSButton(L10n.Settings.aiTestCasesExport) {
+                DSButton(
+                    L10n.Settings.aiTestCasesExport,
+                    config: .init(style: .primary, size: .small)
+                ) {
                     onExport()
                 }
-                .buttonStyle(.borderedProminent)
                 .disabled(!summary.exists)
             }
         } header: {
@@ -422,15 +428,17 @@ private struct AITestCaseViewerSheet: View {
     let onClose: () -> Void
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 12) {
+        VStack(alignment: .leading, spacing: DSLayout.spacing(.space12)) {
             HStack {
                 Text(L10n.Settings.aiTestCasesTitle)
                     .font(.headline)
                 Spacer()
-                DSButton(L10n.Settings.close) {
+                DSButton(
+                    L10n.Settings.close,
+                    config: .init(style: .secondary, size: .small)
+                ) {
                     onClose()
                 }
-                .buttonStyle(.bordered)
             }
 
             Text(L10n.Settings.aiTestCasesPath(fileURL.path))

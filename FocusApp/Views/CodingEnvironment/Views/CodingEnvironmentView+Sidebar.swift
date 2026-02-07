@@ -8,19 +8,19 @@ extension CodingEnvironmentView {
     }
 
     var problemSidebar: some View {
-        VStack(spacing: 0) {
+        VStack(spacing: DSLayout.spacing(0)) {
             sidebarHeader
 
             Divider()
                 .background(theme.colors.border)
 
             ScrollView {
-                VStack(alignment: .leading, spacing: 16) {
+                VStack(alignment: .leading, spacing: DSLayout.spacing(16)) {
                     ForEach(presenter.problemSections) { section in
                         sectionView(section)
                     }
                 }
-                .padding(12)
+                .padding(DSLayout.spacing(12))
             }
         }
         .background(theme.colors.surface)
@@ -28,15 +28,15 @@ extension CodingEnvironmentView {
     }
 
     private var problemDetailPanel: some View {
-        VStack(spacing: 0) {
+        VStack(spacing: DSLayout.spacing(0)) {
             detailTabBar
 
             ScrollView {
-                VStack(alignment: .leading, spacing: 20) {
+                VStack(alignment: .leading, spacing: DSLayout.spacing(20)) {
                     detailHeader
                     detailContent
                 }
-                .padding(18)
+                .padding(DSLayout.spacing(18))
                 .frame(maxWidth: .infinity, alignment: .leading)
             }
         }
@@ -62,17 +62,17 @@ extension CodingEnvironmentView {
                 .font(theme.typography.caption)
                 .foregroundColor(theme.colors.textSecondary)
         }
-        .padding(.horizontal, 12)
-        .padding(.vertical, 10)
+        .padding(.horizontal, DSLayout.spacing(12))
+        .padding(.vertical, DSLayout.spacing(10))
         .background(theme.colors.surfaceElevated)
     }
 
     private var detailHeader: some View {
         DSCard(config: .init(style: .outlined, padding: 16, cornerRadius: 12)) {
-            VStack(alignment: .leading, spacing: 8) {
+            VStack(alignment: .leading, spacing: DSLayout.spacing(8)) {
             if let problem = presenter.selectedProblem {
-                HStack(alignment: .top, spacing: 12) {
-                    VStack(alignment: .leading, spacing: 6) {
+                HStack(alignment: .top, spacing: DSLayout.spacing(12)) {
+                    VStack(alignment: .leading, spacing: DSLayout.spacing(6)) {
                         Text(problem.displayName)
                             .font(.system(size: 20, weight: .bold))
                             .foregroundColor(theme.colors.textPrimary)
@@ -90,7 +90,7 @@ extension CodingEnvironmentView {
                     statusBadge(isSolved: isSelectedProblemSolved)
                 }
 
-                HStack(spacing: 8) {
+                HStack(spacing: DSLayout.spacing(8)) {
                     difficultyBadge(problem.difficulty)
                     infoBadge(title: presenter.selectedDayTopic, icon: "tag")
                     infoBadge(title: L10n.Coding.sidebarDayBadge(selectedDayLabel), icon: "calendar")
@@ -119,8 +119,8 @@ extension CodingEnvironmentView {
                 }
             )
         }
-        .padding(.horizontal, 18)
-        .padding(.vertical, 10)
+        .padding(.horizontal, DSLayout.spacing(18))
+        .padding(.vertical, DSLayout.spacing(10))
         .background(theme.colors.surface)
         .overlay(
             Rectangle()
@@ -128,28 +128,6 @@ extension CodingEnvironmentView {
                 .frame(height: 1),
             alignment: .bottom
         )
-    }
-
-    private func detailTabButton(_ tab: ProblemDetailTab) -> some View {
-        Button(action: {
-            codingCoordinator.detailTab = tab
-        }, label: {
-            HStack(spacing: 6) {
-                Image(systemName: tab.icon)
-                    .font(.system(size: 10, weight: .semibold))
-                Text(tab.title)
-                    .font(.system(size: 11, weight: codingCoordinator.detailTab == tab ? .semibold : .regular))
-            }
-            .foregroundColor(codingCoordinator.detailTab == tab ? theme.colors.textPrimary : theme.colors.textSecondary)
-            .padding(.vertical, 8)
-            .overlay(
-                Rectangle()
-                    .fill(codingCoordinator.detailTab == tab ? theme.colors.primary : Color.clear)
-                    .frame(height: 2),
-                alignment: .bottom
-            )
-        })
-        .buttonStyle(.plain)
     }
 
     private func difficultyBadge(_ difficulty: Difficulty) -> some View {
@@ -164,15 +142,15 @@ extension CodingEnvironmentView {
     }
 
     private func infoBadge(title: String, icon: String) -> some View {
-        HStack(spacing: 4) {
+        HStack(spacing: DSLayout.spacing(4)) {
             Image(systemName: icon)
                 .font(.system(size: 9, weight: .semibold))
             Text(title)
                 .font(theme.typography.caption)
         }
         .foregroundColor(theme.colors.textSecondary)
-        .padding(.horizontal, 8)
-        .padding(.vertical, 4)
+        .padding(.horizontal, DSLayout.spacing(8))
+        .padding(.vertical, DSLayout.spacing(4))
         .background(
             RoundedRectangle(cornerRadius: 6)
                 .fill(theme.colors.surfaceElevated)

@@ -33,21 +33,10 @@ struct iPadCodingView: View {
                 .padding(theme.spacing.md)
 
             // Search bar
-            HStack(spacing: theme.spacing.sm) {
-                Image(systemName: "magnifyingglass")
-                    .font(.system(size: 16))
-                    .foregroundColor(Color(hex: 0x9CA3AF))
-
-                TextField("Search problems...", text: $searchText)
-                    .font(theme.typography.body)
-                    .foregroundColor(theme.colors.textPrimary)
-
-                Spacer()
-            }
-            .padding(.horizontal, theme.spacing.md)
-            .frame(height: 44)
-            .background(Color(hex: 0xF3F4F6))
-            .cornerRadius(theme.radii.md)
+            DSTextField(
+                placeholder: "Search problems...",
+                text: $searchText
+            )
             .padding(.horizontal, theme.spacing.md)
             .padding(.bottom, theme.spacing.sm)
 
@@ -211,7 +200,7 @@ private struct iPadCodingProblemRow: View {
     var onTap: () -> Void
 
     var body: some View {
-        Button(action: onTap) {
+        DSActionButton(action: onTap) {
             HStack(spacing: theme.spacing.sm) {
                 VStack(alignment: .leading, spacing: 2) {
                     Text(title)
@@ -243,7 +232,6 @@ private struct iPadCodingProblemRow: View {
             )
             .cornerRadius(theme.radii.sm)
         }
-        .buttonStyle(.plain)
     }
 }
 

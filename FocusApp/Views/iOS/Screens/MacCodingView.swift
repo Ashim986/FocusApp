@@ -74,38 +74,24 @@ struct MacCodingView: View {
             macLanguageToggle
 
             // Run button
-            Button { } label: {
-                HStack(spacing: theme.spacing.xs) {
-                    Image(systemName: "play.fill")
-                        .font(.system(size: 12))
-                    Text("Run")
-                        .font(theme.typography.body)
-                        .fontWeight(.semibold)
-                }
-                .foregroundColor(.white)
-                .padding(.horizontal, theme.spacing.lg)
-                .frame(height: 34)
-                .background(Color(hex: 0x10B981))
-                .cornerRadius(theme.radii.sm)
-            }
-            .buttonStyle(.plain)
+            DSButton(
+                "Run",
+                config: DSButtonConfig(
+                    style: .primary,
+                    size: .small,
+                    icon: Image(systemName: "play.fill")
+                )
+            ) { }
 
             // Submit button
-            Button { } label: {
-                HStack(spacing: theme.spacing.xs) {
-                    Image(systemName: "paperplane.fill")
-                        .font(.system(size: 12))
-                    Text("Submit")
-                        .font(theme.typography.body)
-                        .fontWeight(.semibold)
-                }
-                .foregroundColor(.white)
-                .padding(.horizontal, theme.spacing.lg)
-                .frame(height: 34)
-                .background(Color(hex: 0x6366F1))
-                .cornerRadius(theme.radii.sm)
-            }
-            .buttonStyle(.plain)
+            DSButton(
+                "Submit",
+                config: DSButtonConfig(
+                    style: .secondary,
+                    size: .small,
+                    icon: Image(systemName: "paperplane.fill")
+                )
+            ) { }
         }
         .padding(.horizontal, theme.spacing.lg)
         .frame(height: 48)
@@ -117,7 +103,7 @@ struct MacCodingView: View {
     private var macLanguageToggle: some View {
         HStack(spacing: 0) {
             ForEach(CodingLanguage.allCases, id: \.self) { lang in
-                Button {
+                DSActionButton(action: {
                     selectedLanguage = lang
                 } label: {
                     Text(lang.rawValue)
@@ -137,7 +123,6 @@ struct MacCodingView: View {
                         )
                         .cornerRadius(theme.radii.sm)
                 }
-                .buttonStyle(.plain)
             }
         }
         .padding(2)
@@ -150,20 +135,10 @@ struct MacCodingView: View {
     private var macProblemSidebar: some View {
         VStack(alignment: .leading, spacing: 0) {
             // Search
-            HStack(spacing: theme.spacing.sm) {
-                Image(systemName: "magnifyingglass")
-                    .font(.system(size: 14))
-                    .foregroundColor(theme.colors.textSecondary)
-
-                TextField("Search problems...", text: $searchText)
-                    .font(theme.typography.body)
-                    .foregroundColor(theme.colors.textPrimary)
-                    .textFieldStyle(.plain)
-            }
-            .padding(.horizontal, theme.spacing.md)
-            .frame(height: 40)
-            .background(theme.colors.surfaceElevated)
-            .cornerRadius(theme.radii.sm)
+            DSTextField(
+                placeholder: "Search problems...",
+                text: $searchText
+            )
             .padding(theme.spacing.md)
 
             Divider()
@@ -234,7 +209,7 @@ struct MacCodingView: View {
         difficulty: String,
         isSolved: Bool
     ) -> some View {
-        Button {
+        DSActionButton(action: {
             selectedProblem = title
         } label: {
             HStack(spacing: theme.spacing.sm) {
@@ -271,7 +246,6 @@ struct MacCodingView: View {
             )
             .cornerRadius(theme.radii.sm)
         }
-        .buttonStyle(.plain)
     }
 
     private func macDifficultyColor(_ difficulty: String) -> Color {

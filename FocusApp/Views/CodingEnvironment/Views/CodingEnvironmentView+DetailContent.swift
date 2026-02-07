@@ -5,7 +5,7 @@ extension CodingEnvironmentView {
     @ViewBuilder
     var descriptionContent: some View {
         if presenter.isLoadingProblem {
-            VStack(spacing: 10) {
+            VStack(spacing: DSLayout.spacing(10)) {
                 ProgressView()
                 Text(L10n.Coding.loadingProblem)
                     .font(.system(size: 13))
@@ -13,7 +13,7 @@ extension CodingEnvironmentView {
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
         } else if let content = presenter.problemContent {
-            VStack(alignment: .leading, spacing: 12) {
+            VStack(alignment: .leading, spacing: DSLayout.spacing(12)) {
                 Text(attributedDescription(from: content.content))
                     .font(.system(size: 14))
                     .foregroundColor(theme.colors.textPrimary)
@@ -22,7 +22,7 @@ extension CodingEnvironmentView {
             }
             .frame(maxWidth: .infinity, alignment: .leading)
         } else {
-            VStack(spacing: 8) {
+            VStack(spacing: DSLayout.spacing(8)) {
                 Image(systemName: "doc.text")
                     .font(.system(size: 22))
                     .foregroundColor(theme.colors.textSecondary)
@@ -36,7 +36,7 @@ extension CodingEnvironmentView {
 
     @ViewBuilder
     var editorialContent: some View {
-        VStack(alignment: .leading, spacing: 12) {
+        VStack(alignment: .leading, spacing: DSLayout.spacing(12)) {
             solutionSection(title: L10n.Coding.editorialVisualTitle) {
                 DataJourneyView(
                     events: presenter.dataJourney,
@@ -70,7 +70,7 @@ extension CodingEnvironmentView {
 
     @ViewBuilder
     var pastSubmissionsContent: some View {
-        VStack(alignment: .leading, spacing: 12) {
+        VStack(alignment: .leading, spacing: DSLayout.spacing(12)) {
             hiddenTestsBadge
 
             if let problem = presenter.selectedProblem {
@@ -81,7 +81,7 @@ extension CodingEnvironmentView {
                         .foregroundColor(theme.colors.textSecondary)
                         .frame(maxWidth: .infinity, alignment: .leading)
                 } else {
-                    VStack(alignment: .leading, spacing: 10) {
+                    VStack(alignment: .leading, spacing: DSLayout.spacing(10)) {
                         ForEach(submissions) { submission in
                             submissionRow(submission, problem: problem)
                         }
@@ -98,7 +98,7 @@ extension CodingEnvironmentView {
     }
 
     private var hiddenTestsBadge: some View {
-        HStack(spacing: 8) {
+        HStack(spacing: DSLayout.spacing(8)) {
             Image(systemName: hiddenTestStatusIcon)
                 .font(.system(size: 12, weight: .semibold))
                 .foregroundColor(hiddenTestStatusColor)
@@ -121,7 +121,7 @@ extension CodingEnvironmentView {
 
             Spacer()
         }
-        .padding(10)
+        .padding(DSLayout.spacing(10))
         .background(
             RoundedRectangle(cornerRadius: 8)
                 .fill(theme.colors.surfaceElevated)
@@ -150,9 +150,9 @@ extension CodingEnvironmentView {
             Text(L10n.Coding.walkthroughEmpty)
         } else {
             let cases = presenter.testCases.prefix(2)
-            VStack(alignment: .leading, spacing: 8) {
+            VStack(alignment: .leading, spacing: DSLayout.spacing(8)) {
                 ForEach(Array(cases.enumerated()), id: \.offset) { index, testCase in
-                    VStack(alignment: .leading, spacing: 4) {
+                    VStack(alignment: .leading, spacing: DSLayout.spacing(4)) {
                         Text(L10n.Coding.walkthroughCaseLabel( index + 1))
                             .font(.system(size: 10, weight: .semibold))
                             .foregroundColor(theme.colors.textSecondary)
@@ -171,7 +171,7 @@ extension CodingEnvironmentView {
     }
 
     private func solutionSection(title: String, @ViewBuilder content: () -> some View) -> some View {
-        VStack(alignment: .leading, spacing: 6) {
+        VStack(alignment: .leading, spacing: DSLayout.spacing(6)) {
             Text(title)
                 .font(.system(size: 11, weight: .semibold))
                 .foregroundColor(theme.colors.textPrimary)
@@ -179,7 +179,7 @@ extension CodingEnvironmentView {
                 .font(.system(size: 11))
                 .foregroundColor(theme.colors.textSecondary)
         }
-        .padding(10)
+        .padding(DSLayout.spacing(10))
         .background(
             RoundedRectangle(cornerRadius: 8)
                 .fill(theme.colors.surfaceElevated)
@@ -195,7 +195,7 @@ extension CodingEnvironmentView {
                 .frame(maxWidth: .infinity, alignment: .leading)
         }
         .frame(maxHeight: 220)
-        .padding(8)
+        .padding(DSLayout.spacing(8))
         .background(theme.colors.surfaceElevated)
         .clipShape(RoundedRectangle(cornerRadius: 6))
     }
@@ -221,7 +221,7 @@ extension CodingEnvironmentView {
                     .foregroundColor(theme.colors.textSecondary)
             }
         }
-        .padding(10)
+        .padding(DSLayout.spacing(10))
         .background(
             RoundedRectangle(cornerRadius: 8)
                 .fill(theme.colors.surfaceElevated)

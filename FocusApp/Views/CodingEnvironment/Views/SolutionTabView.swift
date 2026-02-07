@@ -7,7 +7,7 @@ struct SolutionTabView: View {
     @Environment(\.dsTheme) var theme
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 16) {
+        VStack(alignment: .leading, spacing: DSLayout.spacing(16)) {
             if let solution = solution {
                 solutionContent(solution)
             } else {
@@ -19,7 +19,7 @@ struct SolutionTabView: View {
     // MARK: - Empty State
 
     private var emptySolutionView: some View {
-        VStack(spacing: 12) {
+        VStack(spacing: DSLayout.spacing(12)) {
             Image(systemName: "checkmark.seal")
                 .font(.system(size: 28))
                 .foregroundColor(theme.colors.textSecondary)
@@ -37,7 +37,7 @@ struct SolutionTabView: View {
     // MARK: - Solution Content
 
     private func solutionContent(_ solution: ProblemSolution) -> some View {
-        VStack(alignment: .leading, spacing: 16) {
+        VStack(alignment: .leading, spacing: DSLayout.spacing(16)) {
             summaryCard(solution.summary)
 
             if solution.approaches.count > 1 {
@@ -55,7 +55,7 @@ struct SolutionTabView: View {
 
     private func summaryCard(_ summary: String) -> some View {
         DSCard(config: .init(style: .outlined, padding: 12, cornerRadius: 10)) {
-            VStack(alignment: .leading, spacing: 8) {
+            VStack(alignment: .leading, spacing: DSLayout.spacing(8)) {
                 HStack {
                     Image(systemName: "lightbulb.fill")
                         .font(.system(size: 14))
@@ -78,7 +78,7 @@ struct SolutionTabView: View {
 
     private func approachSelector(_ approaches: [SolutionApproach]) -> some View {
         ScrollView(.horizontal, showsIndicators: false) {
-            HStack(spacing: 8) {
+            HStack(spacing: DSLayout.spacing(8)) {
                 ForEach(Array(approaches.enumerated()), id: \.element.id) { index, approach in
                     approachPill(approach, isSelected: index == selectedApproachIndex) {
                         withAnimation(.easeInOut(duration: 0.2)) {
@@ -87,7 +87,7 @@ struct SolutionTabView: View {
                     }
                 }
             }
-            .padding(.horizontal, 2)
+            .padding(.horizontal, DSLayout.spacing(2))
         }
     }
 
@@ -96,16 +96,16 @@ struct SolutionTabView: View {
         isSelected: Bool,
         action: @escaping () -> Void
     ) -> some View {
-        Button(action: action) {
-            HStack(spacing: 6) {
+        DSActionButton(action: action) {
+            HStack(spacing: DSLayout.spacing(6)) {
                 Text(approach.name)
                     .font(.system(size: 13, weight: isSelected ? .semibold : .medium))
 
                 complexityBadge(approach.complexity.time)
             }
             .foregroundColor(isSelected ? theme.colors.textPrimary : theme.colors.textSecondary)
-            .padding(.horizontal, 12)
-            .padding(.vertical, 8)
+            .padding(.horizontal, DSLayout.spacing(12))
+            .padding(.vertical, DSLayout.spacing(8))
             .background(
                 RoundedRectangle(cornerRadius: 8)
                     .fill(isSelected ? theme.colors.primary.opacity(0.2) : theme.colors.surfaceElevated)
@@ -118,7 +118,6 @@ struct SolutionTabView: View {
                     )
             )
         }
-        .buttonStyle(.plain)
     }
 
     private func complexityBadge(_ complexity: String) -> some View {

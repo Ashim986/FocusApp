@@ -18,7 +18,7 @@ struct SolutionApproachView: View {
     }
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 12) {
+        VStack(alignment: .leading, spacing: DSLayout.spacing(12)) {
             collapsibleSection(
                 title: L10n.Coding.Solution.intuitionTitle,
                 icon: "brain.head.profile",
@@ -88,7 +88,7 @@ struct SolutionApproachView: View {
         section: SolutionSection,
         @ViewBuilder content: () -> Content
     ) -> some View {
-        VStack(alignment: .leading, spacing: 0) {
+        VStack(alignment: .leading, spacing: DSLayout.spacing(0)) {
             Button {
                 withAnimation(.easeInOut(duration: 0.2)) {
                     if expandedSections.contains(section) {
@@ -114,14 +114,14 @@ struct SolutionApproachView: View {
                         .font(.system(size: 12, weight: .semibold))
                         .foregroundColor(theme.colors.textSecondary)
                 }
-                .padding(10)
+                .padding(DSLayout.spacing(10))
                 .background(theme.colors.surfaceElevated)
             }
             .buttonStyle(.plain)
 
             if expandedSections.contains(section) {
                 content()
-                    .padding(12)
+                    .padding(DSLayout.spacing(12))
                     .background(theme.colors.surface)
             }
         }
@@ -135,7 +135,7 @@ struct SolutionApproachView: View {
     // MARK: - Code Block
 
     private func codeBlock(_ code: String) -> some View {
-        VStack(alignment: .leading, spacing: 8) {
+        VStack(alignment: .leading, spacing: DSLayout.spacing(8)) {
             HStack {
                 Text("Swift")
                     .font(.system(size: 12, weight: .semibold))
@@ -147,15 +147,15 @@ struct SolutionApproachView: View {
                     NSPasteboard.general.clearContents()
                     NSPasteboard.general.setString(code, forType: .string)
                 } label: {
-                    HStack(spacing: 4) {
+                    HStack(spacing: DSLayout.spacing(4)) {
                         Image(systemName: "doc.on.doc")
                             .font(.system(size: 12))
                         Text(L10n.Coding.Solution.copyCode)
                             .font(.system(size: 12, weight: .medium))
                     }
                     .foregroundColor(theme.colors.textSecondary)
-                    .padding(.horizontal, 8)
-                    .padding(.vertical, 4)
+                    .padding(.horizontal, DSLayout.spacing(8))
+                    .padding(.vertical, DSLayout.spacing(4))
                     .background(theme.colors.surfaceElevated)
                     .clipShape(RoundedRectangle(cornerRadius: 4))
                 }
@@ -172,7 +172,7 @@ struct SolutionApproachView: View {
             .frame(minHeight: 220, maxHeight: 320)
             .clipShape(RoundedRectangle(cornerRadius: 6))
         }
-        .padding(10)
+        .padding(DSLayout.spacing(10))
         .background(theme.colors.surfaceElevated)
         .clipShape(RoundedRectangle(cornerRadius: 6))
     }
@@ -180,7 +180,7 @@ struct SolutionApproachView: View {
     // MARK: - Complexity Detail
 
     private func complexityDetail(_ complexity: ComplexityAnalysis) -> some View {
-        VStack(alignment: .leading, spacing: 12) {
+        VStack(alignment: .leading, spacing: DSLayout.spacing(12)) {
             complexityRow(
                 title: L10n.Coding.Solution.timeComplexity,
                 value: complexity.time,
@@ -203,8 +203,8 @@ struct SolutionApproachView: View {
         explanation: String?,
         color: Color
     ) -> some View {
-        VStack(alignment: .leading, spacing: 4) {
-            HStack(spacing: 8) {
+        VStack(alignment: .leading, spacing: DSLayout.spacing(4)) {
+            HStack(spacing: DSLayout.spacing(8)) {
                 Text(title)
                     .font(.system(size: 13, weight: .medium))
                     .foregroundColor(theme.colors.textSecondary)

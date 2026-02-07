@@ -1,0 +1,467 @@
+/* ==========================================================================
+   CodeMirror Editor Styles for FocusApp iOS
+   Lightweight code editor CSS — themed via CSS custom properties set in index.html
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. Editor Container
+   -------------------------------------------------------------------------- */
+
+.cm-editor {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    display: flex;
+    flex-direction: row;
+    background: var(--bg);
+    color: var(--fg);
+    font-family: var(--editor-font-family);
+    font-size: var(--editor-font-size);
+    line-height: var(--editor-line-height);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* --------------------------------------------------------------------------
+   2. Gutter / Line Numbers
+   -------------------------------------------------------------------------- */
+
+.cm-gutter {
+    flex-shrink: 0;
+    width: 52px;
+    min-width: 52px;
+    background: var(--gutter-bg);
+    border-right: 1px solid var(--gutter-border);
+    overflow: hidden;
+    user-select: none;
+    -webkit-user-select: none;
+    text-align: right;
+    padding: 0;
+}
+
+.cm-gutter-inner {
+    padding-top: 8px;
+}
+
+.cm-line-number {
+    display: block;
+    padding: 0 10px 0 0;
+    font-size: var(--editor-font-size);
+    line-height: var(--editor-line-height);
+    color: var(--gutter-fg);
+    font-family: var(--editor-font-family);
+    transition: color 0.15s ease;
+}
+
+.cm-line-number.cm-active-line-number {
+    color: var(--fg);
+    font-weight: 600;
+}
+
+/* --------------------------------------------------------------------------
+   3. Editing Area (textarea + highlight overlay)
+   -------------------------------------------------------------------------- */
+
+.cm-content-wrapper {
+    position: relative;
+    flex: 1;
+    overflow: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+/* Shared text layout for perfect alignment */
+.cm-shared-text {
+    font-family: var(--editor-font-family);
+    font-size: var(--editor-font-size);
+    line-height: var(--editor-line-height);
+    tab-size: 4;
+    -moz-tab-size: 4;
+    white-space: pre;
+    word-wrap: normal;
+    overflow-wrap: normal;
+    padding: 8px 8px 200px 8px;
+    margin: 0;
+    border: none;
+    outline: none;
+}
+
+/* Syntax highlighting overlay */
+.cm-highlight-layer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    pointer-events: none;
+    z-index: 1;
+    color: var(--fg);
+    overflow: hidden;
+    min-height: 100%;
+}
+
+/* The actual textarea for input */
+.cm-input-layer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    min-height: 100%;
+    resize: none;
+    background: transparent;
+    color: transparent;
+    caret-color: var(--cursor);
+    z-index: 2;
+    -webkit-text-fill-color: transparent;
+    /* Let iOS handle selection natively */
+    -webkit-user-select: text;
+    user-select: text;
+}
+
+.cm-input-layer::selection {
+    background: var(--selection);
+    -webkit-text-fill-color: transparent;
+}
+
+.cm-input-layer::-moz-selection {
+    background: var(--selection);
+}
+
+.cm-input-layer:focus {
+    outline: none;
+}
+
+/* --------------------------------------------------------------------------
+   4. Active Line Highlighting
+   -------------------------------------------------------------------------- */
+
+.cm-active-line-bg {
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: calc(var(--editor-font-size) * var(--editor-line-height));
+    background: var(--active-line);
+    pointer-events: none;
+    z-index: 0;
+    transition: top 0.05s ease;
+}
+
+/* --------------------------------------------------------------------------
+   5. Syntax Highlighting Token Colors
+   -------------------------------------------------------------------------- */
+
+.cm-tok-keyword {
+    color: var(--syn-keyword);
+    font-weight: 500;
+}
+
+.cm-tok-type {
+    color: var(--syn-type);
+}
+
+.cm-tok-function {
+    color: var(--syn-function);
+}
+
+.cm-tok-string {
+    color: var(--syn-string);
+}
+
+.cm-tok-number {
+    color: var(--syn-number);
+}
+
+.cm-tok-comment {
+    color: var(--syn-comment);
+    font-style: italic;
+}
+
+.cm-tok-operator {
+    color: var(--syn-operator);
+}
+
+.cm-tok-property {
+    color: var(--syn-property);
+}
+
+.cm-tok-builtin {
+    color: var(--syn-builtin);
+}
+
+.cm-tok-punctuation {
+    color: var(--fg);
+    opacity: 0.8;
+}
+
+.cm-tok-decorator {
+    color: var(--syn-function);
+    font-style: italic;
+}
+
+/* --------------------------------------------------------------------------
+   6. Bracket Matching
+   -------------------------------------------------------------------------- */
+
+.cm-bracket-match {
+    background: var(--bracket-match-bg);
+    border-bottom: 2px solid var(--bracket-match-border);
+    border-radius: 2px;
+}
+
+/* --------------------------------------------------------------------------
+   7. Search & Replace Overlay
+   -------------------------------------------------------------------------- */
+
+.cm-search-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    background: var(--gutter-bg);
+    border-bottom: 1px solid var(--gutter-border);
+    padding: 8px 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.cm-search-input {
+    flex: 1;
+    font-family: var(--editor-font-family);
+    font-size: 13px;
+    padding: 6px 10px;
+    border: 1px solid var(--gutter-border);
+    border-radius: 6px;
+    background: var(--bg);
+    color: var(--fg);
+    outline: none;
+    -webkit-appearance: none;
+    appearance: none;
+}
+
+.cm-search-input:focus {
+    border-color: var(--syn-keyword);
+    box-shadow: 0 0 0 2px rgba(203, 166, 247, 0.2);
+}
+
+.cm-search-btn {
+    font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+    font-size: 13px;
+    padding: 6px 12px;
+    border: 1px solid var(--gutter-border);
+    border-radius: 6px;
+    background: var(--gutter-bg);
+    color: var(--fg);
+    cursor: pointer;
+    -webkit-appearance: none;
+    appearance: none;
+    touch-action: manipulation;
+}
+
+.cm-search-btn:active {
+    opacity: 0.7;
+}
+
+.cm-search-close {
+    font-size: 18px;
+    line-height: 1;
+    padding: 4px 8px;
+    border: none;
+    background: transparent;
+    color: var(--gutter-fg);
+    cursor: pointer;
+    touch-action: manipulation;
+}
+
+.cm-search-count {
+    font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+    font-size: 12px;
+    color: var(--gutter-fg);
+    white-space: nowrap;
+    min-width: 60px;
+    text-align: center;
+}
+
+/* Search match highlighting in the editor */
+.cm-search-highlight {
+    background: var(--search-match);
+    border-radius: 2px;
+}
+
+.cm-search-highlight-current {
+    background: var(--search-current);
+    border-radius: 2px;
+    outline: 1px solid var(--syn-function);
+}
+
+/* --------------------------------------------------------------------------
+   8. Scrollbar Styling
+   -------------------------------------------------------------------------- */
+
+.cm-content-wrapper::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+.cm-content-wrapper::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.cm-content-wrapper::-webkit-scrollbar-thumb {
+    background: var(--gutter-border);
+    border-radius: 4px;
+}
+
+.cm-content-wrapper::-webkit-scrollbar-thumb:hover {
+    background: var(--gutter-fg);
+}
+
+/* --------------------------------------------------------------------------
+   9. Read-Only State
+   -------------------------------------------------------------------------- */
+
+.cm-editor.cm-readonly .cm-input-layer {
+    caret-color: transparent;
+    opacity: 0.85;
+}
+
+.cm-editor.cm-readonly .cm-gutter {
+    opacity: 0.6;
+}
+
+/* --------------------------------------------------------------------------
+   10. iOS / Mobile Optimizations
+   -------------------------------------------------------------------------- */
+
+/* Prevent zoom on double-tap */
+.cm-editor * {
+    touch-action: manipulation;
+}
+
+/* Ensure textarea fills to enable iOS scrolling */
+.cm-input-layer {
+    -webkit-appearance: none;
+    appearance: none;
+    border-radius: 0;
+}
+
+/* Prevent iOS from adding inner shadows */
+.cm-input-layer,
+.cm-search-input {
+    -webkit-appearance: none;
+    appearance: none;
+}
+
+/* Extra bottom padding to account for iOS keyboard */
+.cm-highlight-layer,
+.cm-input-layer {
+    padding-bottom: 300px;
+}
+
+/* Safe area insets */
+@supports (padding: env(safe-area-inset-bottom)) {
+    .cm-highlight-layer,
+    .cm-input-layer {
+        padding-bottom: calc(300px + env(safe-area-inset-bottom));
+    }
+}
+
+/* Smooth scroll for content area */
+.cm-content-wrapper {
+    scroll-behavior: smooth;
+}
+
+/* --------------------------------------------------------------------------
+   11. Selection on highlight layer (visual only)
+   -------------------------------------------------------------------------- */
+
+.cm-selection-layer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    pointer-events: none;
+    z-index: 0;
+}
+
+.cm-selection-rect {
+    position: absolute;
+    background: var(--selection);
+    border-radius: 2px;
+}
+
+/* --------------------------------------------------------------------------
+   12. Minimap (optional, hidden by default)
+   -------------------------------------------------------------------------- */
+
+.cm-minimap {
+    display: none;
+}
+
+/* --------------------------------------------------------------------------
+   13. Placeholder
+   -------------------------------------------------------------------------- */
+
+.cm-placeholder {
+    position: absolute;
+    top: 8px;
+    left: 8px;
+    color: var(--gutter-fg);
+    font-style: italic;
+    pointer-events: none;
+    z-index: 1;
+    font-family: var(--editor-font-family);
+    font-size: var(--editor-font-size);
+    line-height: var(--editor-line-height);
+    opacity: 0.6;
+}
+
+/* --------------------------------------------------------------------------
+   14. Animations & Transitions
+   -------------------------------------------------------------------------- */
+
+@keyframes cm-cursor-blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
+}
+
+/* Smooth theme transitions */
+.cm-editor,
+.cm-gutter,
+.cm-content-wrapper,
+.cm-highlight-layer,
+.cm-line-number {
+    transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+}
+
+/* --------------------------------------------------------------------------
+   15. High Contrast / Accessibility
+   -------------------------------------------------------------------------- */
+
+@media (prefers-contrast: high) {
+    .cm-tok-comment {
+        opacity: 0.9;
+    }
+
+    .cm-line-number {
+        opacity: 0.8;
+    }
+
+    .cm-active-line-bg {
+        background: var(--selection);
+    }
+}
+
+/* Reduce motion preference */
+@media (prefers-reduced-motion: reduce) {
+    .cm-editor,
+    .cm-gutter,
+    .cm-content-wrapper,
+    .cm-highlight-layer,
+    .cm-line-number,
+    .cm-active-line-bg {
+        transition: none;
+    }
+}

@@ -65,30 +65,16 @@ struct MacSettingsView: View {
                                 .foregroundColor(theme.colors.textPrimary)
 
                             HStack(spacing: theme.spacing.sm) {
-                                TextField("Enter username", text: $leetCodeUsername)
-                                    .font(theme.typography.body)
-                                    .foregroundColor(theme.colors.textPrimary)
-                                    .textFieldStyle(.plain)
-                                    .padding(.horizontal, theme.spacing.md)
-                                    .frame(height: 40)
-                                    .background(theme.colors.surfaceElevated)
-                                    .cornerRadius(theme.radii.sm)
-                                    .overlay(
-                                        RoundedRectangle(cornerRadius: theme.radii.sm)
-                                            .stroke(theme.colors.border, lineWidth: 1)
-                                    )
+                                DSTextField(
+                                    placeholder: "Enter username",
+                                    text: $leetCodeUsername
+                                )
+                                .frame(maxWidth: .infinity)
 
-                                Button { } label: {
-                                    Text("Save & Sync")
-                                        .font(theme.typography.body)
-                                        .fontWeight(.semibold)
-                                        .foregroundColor(.white)
-                                        .padding(.horizontal, theme.spacing.lg)
-                                        .frame(height: 40)
-                                        .background(Color(hex: 0x6366F1))
-                                        .cornerRadius(theme.radii.sm)
-                                }
-                                .buttonStyle(.plain)
+                                DSButton(
+                                    "Save & Sync",
+                                    config: DSButtonConfig(style: .primary, size: .medium)
+                                ) { }
                             }
                         }
 
@@ -148,18 +134,11 @@ struct MacSettingsView: View {
                                 .fontWeight(.semibold)
                                 .foregroundColor(theme.colors.textPrimary)
 
-                            SecureField("Enter API key", text: $apiKey)
-                                .font(theme.typography.body)
-                                .foregroundColor(theme.colors.textPrimary)
-                                .textFieldStyle(.plain)
-                                .padding(.horizontal, theme.spacing.md)
-                                .frame(height: 40)
-                                .background(theme.colors.surfaceElevated)
-                                .cornerRadius(theme.radii.sm)
-                                .overlay(
-                                    RoundedRectangle(cornerRadius: theme.radii.sm)
-                                        .stroke(theme.colors.border, lineWidth: 1)
-                                )
+                            DSTextField(
+                                placeholder: "Enter API key",
+                                text: $apiKey,
+                                config: DSTextFieldConfig(isSecure: true)
+                            )
                         }
                     }
                     .padding(theme.spacing.lg)
@@ -255,53 +234,27 @@ struct MacSettingsView: View {
         options: [String],
         onSelect: @escaping (String) -> Void
     ) -> some View {
-        Menu {
-            ForEach(options, id: \.self) { option in
-                Button(option) {
-                    onSelect(option)
-                }
-            }
-        } label: {
-            HStack {
-                Text(selected)
-                    .font(theme.typography.body)
-                    .foregroundColor(theme.colors.textPrimary)
-
-                Spacer()
-
-                Image(systemName: "chevron.up.chevron.down")
-                    .font(.system(size: 10))
-                    .foregroundColor(theme.colors.textSecondary)
-            }
-            .padding(.horizontal, theme.spacing.md)
-            .frame(height: 40)
-            .background(theme.colors.surfaceElevated)
-            .cornerRadius(theme.radii.sm)
-            .overlay(
-                RoundedRectangle(cornerRadius: theme.radii.sm)
-                    .stroke(theme.colors.border, lineWidth: 1)
-            )
+        DSSelect(
+            placeholder: "Select",
+            items: options.map { DSSelectItem(id: $0, title: $0) },
+            state: DSSelectState(selectedId: selected)
+        ) { item in
+            onSelect(item.id)
         }
     }
 
     // MARK: - Sign Out Button
 
     private var macSignOutButton: some View {
-        Button { } label: {
-            HStack(spacing: theme.spacing.sm) {
-                Image(systemName: "rectangle.portrait.and.arrow.right")
-                    .font(.system(size: 16))
-                Text("Sign Out")
-                    .font(theme.typography.body)
-                    .fontWeight(.semibold)
-            }
-            .foregroundColor(theme.colors.danger)
-            .frame(maxWidth: .infinity)
-            .frame(height: 48)
-            .background(theme.colors.danger.opacity(0.1))
-            .cornerRadius(theme.radii.md)
-        }
-        .buttonStyle(.plain)
+        DSButton(
+            "Sign Out",
+            config: DSButtonConfig(
+                style: .destructive,
+                size: .large,
+                icon: Image(systemName: "rectangle.portrait.and.arrow.right")
+            )
+        ) { }
+        .frame(maxWidth: .infinity)
     }
 }
 

@@ -1,3 +1,4 @@
+#if os(macOS)
 import Foundation
 
 actor ProcessRunState {
@@ -32,3 +33,4 @@ actor ProcessRunState {
         (wasCancelled, didTimeout)
     }
 }
+#endif

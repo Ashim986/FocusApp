@@ -1,3 +1,4 @@
+#if os(macOS)
 import AppKit
 import FocusDesignSystem
 import SwiftUI
@@ -41,21 +42,6 @@ struct FocusApp: App {
                     debugLogStore: coordinator.container.debugLogStore
                 )
             }
-        }
-    }
-}
-
-private struct DesignSystemRoot<Content: View>: View {
-    @Environment(\.colorScheme) private var colorScheme
-    private let content: Content
-
-    init(@ViewBuilder content: () -> Content) {
-        self.content = content()
-    }
-
-    var body: some View {
-        DSThemeProvider(theme: colorScheme == .dark ? .dark : .light) {
-            content
         }
     }
 }
@@ -121,3 +107,4 @@ final class FloatingWidgetController {
         self.panel = panel
     }
 }
+#endif

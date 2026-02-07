@@ -15,7 +15,7 @@ struct WidgetCard<Content: View>: View {
         let fillColor = fill ?? theme.colors.surfaceElevated.opacity(theme.kind == .dark ? 0.5 : 0.9)
         let borderColor = theme.colors.border.opacity(theme.kind == .dark ? 0.35 : 0.7)
         content
-            .padding(12)
+            .padding(DSLayout.spacing(12))
             .background(
                 RoundedRectangle(cornerRadius: 12)
                     .fill(fillColor)

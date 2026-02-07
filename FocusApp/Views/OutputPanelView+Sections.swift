@@ -4,7 +4,7 @@ import SwiftUI
 extension OutputPanelView {
     @ViewBuilder
     var testResultsSection: some View {
-        VStack(alignment: .leading, spacing: 8) {
+        VStack(alignment: .leading, spacing: DSLayout.spacing(8)) {
             Text(L10n.Output.testResults)
                 .font(.system(size: 11, weight: .semibold))
                 .foregroundColor(theme.colors.textSecondary)
@@ -16,8 +16,8 @@ extension OutputPanelView {
     }
 
     func testCaseRow(index: Int, testCase: TestCase) -> some View {
-        VStack(alignment: .leading, spacing: 6) {
-            HStack(spacing: 8) {
+        VStack(alignment: .leading, spacing: DSLayout.spacing(6)) {
+            HStack(spacing: DSLayout.spacing(8)) {
                 if let passed = testCase.passed {
                     Image(systemName: passed ? "checkmark.circle.fill" : "xmark.circle.fill")
                         .font(.system(size: 14))
@@ -40,8 +40,8 @@ extension OutputPanelView {
             }
 
             if testCase.passed == false, let actual = testCase.actualOutput {
-                VStack(alignment: .leading, spacing: 4) {
-                    HStack(spacing: 4) {
+                VStack(alignment: .leading, spacing: DSLayout.spacing(4)) {
+                    HStack(spacing: DSLayout.spacing(4)) {
                         Text(L10n.Output.expected)
                             .font(.system(size: 10, weight: .medium))
                             .foregroundColor(theme.colors.textSecondary)
@@ -49,7 +49,7 @@ extension OutputPanelView {
                             .font(.system(size: 10, design: .monospaced))
                             .foregroundColor(theme.colors.textPrimary.opacity(0.8))
                     }
-                    HStack(spacing: 4) {
+                    HStack(spacing: DSLayout.spacing(4)) {
                         Text(L10n.Output.actual)
                             .font(.system(size: 10, weight: .medium))
                             .foregroundColor(theme.colors.textSecondary)
@@ -58,10 +58,10 @@ extension OutputPanelView {
                             .foregroundColor(theme.colors.danger)
                     }
                 }
-                .padding(.leading, 22)
+                .padding(.leading, DSLayout.spacing(22))
             }
         }
-        .padding(8)
+        .padding(DSLayout.spacing(8))
         .background(
             RoundedRectangle(cornerRadius: 6)
                 .fill(theme.colors.surfaceElevated.opacity(0.5))
@@ -70,8 +70,8 @@ extension OutputPanelView {
 
     @ViewBuilder
     var consoleOutputSection: some View {
-        VStack(alignment: .leading, spacing: 6) {
-            HStack(spacing: 6) {
+        VStack(alignment: .leading, spacing: DSLayout.spacing(6)) {
+            HStack(spacing: DSLayout.spacing(6)) {
                 Image(systemName: "terminal.fill")
                     .font(.system(size: 10))
                     .foregroundColor(theme.colors.success)
@@ -86,8 +86,8 @@ extension OutputPanelView {
                 Text(L10n.Output.lineCount(lineCount))
                     .font(.system(size: 9))
                     .foregroundColor(theme.colors.textSecondary)
-                    .padding(.horizontal, 6)
-                    .padding(.vertical, 2)
+                    .padding(.horizontal, DSLayout.spacing(6))
+                    .padding(.vertical, DSLayout.spacing(2))
                     .background(theme.colors.surfaceElevated)
                     .cornerRadius(4)
             }
@@ -98,8 +98,8 @@ extension OutputPanelView {
 
     @ViewBuilder
     var errorSection: some View {
-        VStack(alignment: .leading, spacing: 6) {
-            HStack(spacing: 6) {
+        VStack(alignment: .leading, spacing: DSLayout.spacing(6)) {
+            HStack(spacing: DSLayout.spacing(6)) {
                 Image(systemName: "exclamationmark.triangle.fill")
                     .font(.system(size: 10))
                     .foregroundColor(theme.colors.danger)
@@ -113,7 +113,7 @@ extension OutputPanelView {
                 .font(.system(size: 12, design: .monospaced))
                 .foregroundColor(theme.colors.danger)
                 .textSelection(.enabled)
-                .padding(10)
+                .padding(DSLayout.spacing(10))
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .background(
                     RoundedRectangle(cornerRadius: 6)
@@ -128,7 +128,7 @@ extension OutputPanelView {
 
     @ViewBuilder
     var emptyState: some View {
-        VStack(spacing: 8) {
+        VStack(spacing: DSLayout.spacing(8)) {
             Image(systemName: "terminal")
                 .font(.system(size: 24))
                 .foregroundColor(theme.colors.textSecondary)
@@ -138,6 +138,6 @@ extension OutputPanelView {
                 .foregroundColor(theme.colors.textSecondary)
         }
         .frame(maxWidth: .infinity)
-        .padding(.vertical, 24)
+        .padding(.vertical, DSLayout.spacing(24))
     }
 }

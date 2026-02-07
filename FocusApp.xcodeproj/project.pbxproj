@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		F0A1B2C3D4E5F60789ABCDEF /* FocusDesignSystem in Frameworks */ = {isa = PBXBuildFile; productRef = A1B2C3D4E5F60789ABCDEF12 /* FocusDesignSystem */; };
+		F1B2C3D4E5F60718293A4B5C /* FocusDomain in Frameworks */ = {isa = PBXBuildFile; productRef = D1E2F30415263748596A7B8C /* FocusDomain */; };
+		F2C3D4E5F60718293A4B5C6D /* FocusData in Frameworks */ = {isa = PBXBuildFile; productRef = E1F2031425364758697A8B9C /* FocusData */; };
 		C6D2A91F4E3F78068E5FC3D2 /* DataJourneyDiffTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5A1B82C3D4E69015F3E9D6B /* DataJourneyDiffTests.swift */; };
 		EA1516627B724865A0050FB3 /* AITestCaseStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CB007B91B0B4FF7AA0B0907 /* AITestCaseStore.swift */; };
 		08A269B616E94156AC24094C /* LeetCodeSubmissionService.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF2E7F77CE194F7AB1E598D5 /* LeetCodeSubmissionService.swift */; };
@@ -602,6 +604,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				F0A1B2C3D4E5F60789ABCDEF /* FocusDesignSystem in Frameworks */,
+				F1B2C3D4E5F60718293A4B5C /* FocusDomain in Frameworks */,
+				F2C3D4E5F60718293A4B5C6D /* FocusData in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1280,6 +1284,8 @@
 			);
 			packageProductDependencies = (
 				A1B2C3D4E5F60789ABCDEF12 /* FocusDesignSystem */,
+				D1E2F30415263748596A7B8C /* FocusDomain */,
+				E1F2031425364758697A8B9C /* FocusData */,
 			);
 			name = FocusApp;
 			productName = FocusApp;
@@ -1319,6 +1325,7 @@
 			productRefGroup = A10005003 /* Products */;
 			packageReferences = (
 				B2C3D4E5F60789ABCDEF1234 /* XCRemoteSwiftPackageReference "DSFocusFlow" */,
+				C1D2E3F405162738495A6B7C /* XCLocalSwiftPackageReference "Packages/FocusShared" */,
 			);
 			projectDirPath = "";
 			projectRoot = "";
@@ -1991,6 +1998,13 @@
 		};
 /* End XCBuildConfiguration section */
 
+/* Begin XCLocalSwiftPackageReference section */
+		C1D2E3F405162738495A6B7C /* XCLocalSwiftPackageReference "Packages/FocusShared" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = Packages/FocusShared;
+		};
+/* End XCLocalSwiftPackageReference section */
+
 /* Begin XCRemoteSwiftPackageReference section */
 		B2C3D4E5F60789ABCDEF1234 /* XCRemoteSwiftPackageReference "DSFocusFlow" */ = {
 			isa = XCRemoteSwiftPackageReference;
@@ -2007,6 +2021,16 @@
 			isa = XCSwiftPackageProductDependency;
 			package = B2C3D4E5F60789ABCDEF1234 /* XCRemoteSwiftPackageReference "DSFocusFlow" */;
 			productName = FocusDesignSystem;
+		};
+		D1E2F30415263748596A7B8C /* FocusDomain */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C1D2E3F405162738495A6B7C /* XCLocalSwiftPackageReference "Packages/FocusShared" */;
+			productName = FocusDomain;
+		};
+		E1F2031425364758697A8B9C /* FocusData */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C1D2E3F405162738495A6B7C /* XCLocalSwiftPackageReference "Packages/FocusShared" */;
+			productName = FocusData;
 		};
 /* End XCSwiftPackageProductDependency section */
 

@@ -1,3 +1,4 @@
+#if os(macOS)
 import Foundation
 
 /// Executes Swift code by compiling and running
@@ -273,3 +274,4 @@ final class SwiftExecutor: LanguageExecutor {
     }
 
 }
+#endif

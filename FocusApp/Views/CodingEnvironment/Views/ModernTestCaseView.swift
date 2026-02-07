@@ -8,24 +8,29 @@ struct ModernTestCaseView: View {
     @Environment(\.dsTheme) var theme
 
     var body: some View {
-        VStack(spacing: 0) {
-            HStack(spacing: 0) {
+        VStack(spacing: DSLayout.spacing(0)) {
+            HStack(spacing: DSLayout.spacing(0)) {
             Text(L10n.Coding.Testcase.title)
                     .font(theme.typography.subtitle)
                     .foregroundColor(theme.colors.textPrimary)
-                    .padding(.horizontal, 12)
-                    .padding(.vertical, 8)
+                    .padding(.horizontal, DSLayout.spacing(12))
+                    .padding(.vertical, DSLayout.spacing(8))
 
                 Spacer()
 
-                HStack(spacing: 6) {
-                    headerIconButton(systemName: "plus", action: presenter.addManualTestCase)
+                HStack(spacing: DSLayout.spacing(6)) {
                     headerIconButton(
+                        title: L10n.Coding.Testcase.add,
+                        systemName: "plus",
+                        action: presenter.addManualTestCase
+                    )
+                    headerIconButton(
+                        title: isCollapsed ? "Expand" : "Collapse",
                         systemName: isCollapsed ? "chevron.up" : "chevron.down",
                         action: { isCollapsed.toggle() }
                     )
                 }
-                .padding(.trailing, 12)
+                .padding(.trailing, DSLayout.spacing(12))
             }
             .background(theme.colors.surfaceElevated)
             .overlay(
@@ -38,7 +43,7 @@ struct ModernTestCaseView: View {
             if isCollapsed {
                 EmptyView()
             } else if presenter.testCases.isEmpty {
-                VStack(spacing: 8) {
+                VStack(spacing: DSLayout.spacing(8)) {
                     Image(systemName: "doc.text")
                         .font(.system(size: 20))
                         .foregroundColor(theme.colors.textSecondary)
@@ -54,15 +59,15 @@ struct ModernTestCaseView: View {
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
                 .background(theme.colors.surface)
             } else {
-                VStack(spacing: 0) {
+                VStack(spacing: DSLayout.spacing(0)) {
                     ScrollView(.horizontal, showsIndicators: false) {
-                        HStack(spacing: 4) {
+                        HStack(spacing: DSLayout.spacing(4)) {
                             ForEach(Array(presenter.testCases.enumerated()), id: \.element.id) { index, testCase in
                                 testCaseTab(index: index, testCase: testCase)
                             }
                         }
-                        .padding(.horizontal, 8)
-                        .padding(.vertical, 6)
+                        .padding(.horizontal, DSLayout.spacing(8))
+                        .padding(.vertical, DSLayout.spacing(6))
                     }
                     .background(theme.colors.surface)
 
@@ -86,11 +91,11 @@ struct ModernTestCaseView: View {
     private func testCaseTab(index: Int, testCase: TestCase) -> some View {
         let isSelected = selectedTestIndex == index
 
-        return Button(action: {
+        return DSActionButton(action: {
             selectedTestIndex = index
             presenter.showJourneyForTestCase(index)
-        }, label: {
-            HStack(spacing: 4) {
+        }) {
+            HStack(spacing: DSLayout.spacing(4)) {
                 if let passed = testCase.passed {
                     Circle()
                         .fill(passed ? theme.colors.success : theme.colors.danger)
@@ -101,14 +106,13 @@ struct ModernTestCaseView: View {
                     .font(.system(size: 10, weight: isSelected ? .semibold : .regular))
                     .foregroundColor(isSelected ? theme.colors.textPrimary : theme.colors.textSecondary)
             }
-            .padding(.horizontal, 10)
-            .padding(.vertical, 5)
+            .padding(.horizontal, DSLayout.spacing(10))
+            .padding(.vertical, DSLayout.spacing(5))
             .background(
                 RoundedRectangle(cornerRadius: 4)
                     .fill(isSelected ? theme.colors.surfaceElevated : Color.clear)
             )
-        })
-        .buttonStyle(.plain)
+        }
         .contextMenu {
             DSButton(
                 "Delete",
@@ -126,8 +130,8 @@ struct ModernTestCaseView: View {
         let testCase = presenter.testCases[index]
 
         return AnyView(ScrollView {
-            VStack(alignment: .leading, spacing: 12) {
-                VStack(alignment: .leading, spacing: 4) {
+            VStack(alignment: .leading, spacing: DSLayout.spacing(12)) {
+                VStack(alignment: .leading, spacing: DSLayout.spacing(4)) {
                     Text(L10n.Coding.Testcase.inputLabel)
                         .font(.system(size: 10, weight: .medium))
                         .foregroundColor(theme.colors.textSecondary)
@@ -142,8 +146,8 @@ struct ModernTestCaseView: View {
                     )
                 }
 
-                VStack(alignment: .leading, spacing: 4) {
-                    HStack(spacing: 4) {
+                VStack(alignment: .leading, spacing: DSLayout.spacing(4)) {
+                    HStack(spacing: DSLayout.spacing(4)) {
                         Text(L10n.Coding.Testcase.expectedLabel)
                             .font(.system(size: 10, weight: .medium))
                             .foregroundColor(theme.colors.textSecondary)
@@ -166,24 +170,21 @@ struct ModernTestCaseView: View {
                     )
                 }
             }
-            .padding(10)
+            .padding(DSLayout.spacing(10))
         }
         .background(theme.colors.surface))
     }
 
-    private func headerIconButton(systemName: String, action: @escaping () -> Void) -> some View {
-        Button(action: action) {
-            Image(systemName: systemName)
-                .font(.system(size: 11, weight: .medium))
-                .foregroundColor(theme.colors.textSecondary)
-                .frame(width: 24, height: 24)
-                .background(theme.colors.surface)
-                .clipShape(RoundedRectangle(cornerRadius: 6))
-                .overlay(
-                    RoundedRectangle(cornerRadius: 6)
-                        .stroke(theme.colors.border, lineWidth: 1)
-                )
-        }
-        .buttonStyle(.plain)
+    private func headerIconButton(title: String, systemName: String, action: @escaping () -> Void) -> some View {
+        DSButton(
+            title,
+            config: .init(
+                style: .secondary,
+                size: .small,
+                icon: Image(systemName: systemName),
+                iconPosition: .leading
+            ),
+            action: action
+        )
     }
 }

@@ -9,7 +9,7 @@ struct TodayView: View {
 
     var body: some View {
         ScrollView {
-            VStack(spacing: 20) {
+            VStack(spacing: DSLayout.spacing(20)) {
                 codingCTACard
                 syncCard
 
@@ -19,7 +19,7 @@ struct TodayView: View {
                     dayCard(day: day)
                 }
             }
-            .padding(20)
+            .padding(DSLayout.spacing(20))
         }
         .background(theme.colors.background)
     }

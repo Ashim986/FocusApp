@@ -3,7 +3,7 @@ import SwiftUI
 
 extension ToolbarWidgetView {
     var todaysProblemsSection: some View {
-        VStack(spacing: 0) {
+        VStack(spacing: DSLayout.spacing(0)) {
             HStack {
                 Text(L10n.Widget.problemsTitle)
                     .font(.system(size: 11, weight: .semibold))
@@ -21,8 +21,8 @@ extension ToolbarWidgetView {
                             ? theme.colors.success
                             : theme.colors.textSecondary
                     )
-                    .padding(.horizontal, 8)
-                    .padding(.vertical, 3)
+                    .padding(.horizontal, DSLayout.spacing(8))
+                    .padding(.vertical, DSLayout.spacing(3))
                     .background(
                         Capsule()
                             .fill(
@@ -32,12 +32,12 @@ extension ToolbarWidgetView {
                             )
                     )
             }
-            .padding(.horizontal, 2)
-            .padding(.top, 4)
-            .padding(.bottom, 6)
+            .padding(.horizontal, DSLayout.spacing(2))
+            .padding(.top, DSLayout.spacing(4))
+            .padding(.bottom, DSLayout.spacing(6))
 
             ScrollView {
-                VStack(spacing: 2) {
+                VStack(spacing: DSLayout.spacing(2)) {
                     ForEach(Array(presenter.todaysProblems.enumerated()), id: \.element.id) { index, problem in
                         ProblemRowWidget(
                             problem: problem,
@@ -51,7 +51,7 @@ extension ToolbarWidgetView {
                         )
                     }
                 }
-                .padding(.horizontal, 2)
+                .padding(.horizontal, DSLayout.spacing(2))
             }
             .frame(maxHeight: 180)
         }
@@ -65,33 +65,21 @@ extension ToolbarWidgetView {
                 .font(.system(size: 11, weight: .medium))
                 .foregroundColor(theme.colors.success)
             Spacer()
-            Button(action: {
-                presenter.advanceToNextDay()
-            }, label: {
-                HStack(spacing: 4) {
-                    Text(L10n.Widget.problemsStartDayFormat(presenter.tomorrowDayNumber))
-                        .font(.system(size: 10, weight: .semibold))
-                    Image(systemName: "arrow.right.circle.fill")
-                        .font(.system(size: 12))
+            DSButton(
+                L10n.Widget.problemsStartDayFormat(presenter.tomorrowDayNumber),
+                config: .init(
+                    style: .primary,
+                    size: .small,
+                    icon: Image(systemName: "arrow.right.circle.fill"),
+                    iconPosition: .trailing
+                ),
+                action: {
+                    presenter.advanceToNextDay()
                 }
-                .foregroundColor(theme.colors.surface)
-                .padding(.horizontal, 10)
-                .padding(.vertical, 5)
-                .background(
-                    RoundedRectangle(cornerRadius: 6)
-                        .fill(
-                            LinearGradient(
-                                colors: [theme.colors.primary, theme.colors.accent],
-                                startPoint: .leading,
-                                endPoint: .trailing
-                            )
-                        )
-                )
-            })
-            .buttonStyle(.plain)
+            )
         }
-        .padding(.horizontal, 8)
-        .padding(.vertical, 6)
+        .padding(.horizontal, DSLayout.spacing(8))
+        .padding(.vertical, DSLayout.spacing(6))
         .background(
             RoundedRectangle(cornerRadius: 10)
                 .fill(theme.colors.surfaceElevated.opacity(0.35))

@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, viewport-fit=cover">
+    <meta name="format-detection" content="telephone=no">
+    <link rel="stylesheet" href="codemirror.min.css">
+    <style>
+        :root {
+            --editor-font-size: 14px;
+            --editor-line-height: 1.5;
+            --editor-font-family: "SF Mono", "Menlo", "Monaco", "Courier New", monospace;
+
+            /* Light theme defaults */
+            --bg: #ffffff;
+            --fg: #24292e;
+            --gutter-bg: #f6f8fa;
+            --gutter-fg: #959da5;
+            --gutter-border: #e1e4e8;
+            --active-line: rgba(0, 0, 0, 0.04);
+            --selection: rgba(3, 102, 214, 0.2);
+            --cursor: #24292e;
+            --bracket-match-bg: rgba(3, 102, 214, 0.15);
+            --bracket-match-border: rgba(3, 102, 214, 0.4);
+            --search-match: rgba(255, 223, 93, 0.4);
+            --search-current: rgba(255, 223, 93, 0.7);
+
+            /* Syntax colors - Light */
+            --syn-keyword: #d73a49;
+            --syn-type: #005cc5;
+            --syn-function: #6f42c1;
+            --syn-string: #22863a;
+            --syn-number: #e36209;
+            --syn-comment: #6a737d;
+            --syn-operator: #d73a49;
+            --syn-property: #005cc5;
+            --syn-builtin: #6f42c1;
+        }
+
+        .dark-theme {
+            --bg: #1e1e2e;
+            --fg: #cdd6f4;
+            --gutter-bg: #181825;
+            --gutter-fg: #585b70;
+            --gutter-border: #313244;
+            --active-line: rgba(255, 255, 255, 0.04);
+            --selection: rgba(137, 180, 250, 0.2);
+            --cursor: #cdd6f4;
+            --bracket-match-bg: rgba(137, 180, 250, 0.15);
+            --bracket-match-border: rgba(137, 180, 250, 0.4);
+            --search-match: rgba(249, 226, 175, 0.25);
+            --search-current: rgba(249, 226, 175, 0.5);
+
+            /* Syntax colors - Dark */
+            --syn-keyword: #cba6f7;
+            --syn-type: #89dceb;
+            --syn-function: #f9e2af;
+            --syn-string: #a6e3a1;
+            --syn-number: #fab387;
+            --syn-comment: #6c7086;
+            --syn-operator: #89b4fa;
+            --syn-property: #89dceb;
+            --syn-builtin: #f9e2af;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background: var(--bg);
+            color: var(--fg);
+            font-family: var(--editor-font-family);
+            -webkit-text-size-adjust: 100%;
+            -webkit-tap-highlight-color: transparent;
+            -webkit-touch-callout: none;
+        }
+
+        #editor {
+            width: 100%;
+            height: 100%;
+            position: relative;
+        }
+    </style>
+</head>
+<body>
+    <div id="editor"></div>
+    <script src="codemirror-bundle.min.js"></script>
+    <script>
+        (function() {
+            "use strict";
+
+            var editor = null;
+            var debounceTimer = null;
+            var DEBOUNCE_MS = 100;
+
+            function initEditor() {
+                var container = document.getElementById("editor");
+
+                editor = new CodeMirrorEditor(container, {
+                    language: "swift",
+                    theme: "dark",
+                    readOnly: false,
+                    fontSize: 14,
+                    lineNumbers: true,
+                    bracketMatching: true,
+                    autoCloseBrackets: true,
+                    indentWithSpaces: true,
+                    tabSize: 4
+                });
+
+                editor.onChange(function(code) {
+                    if (debounceTimer) {
+                        clearTimeout(debounceTimer);
+                    }
+                    debounceTimer = setTimeout(function() {
+                        postMessage({ type: "codeChange", code: code });
+                    }, DEBOUNCE_MS);
+                });
+
+                postMessage({ type: "ready" });
+            }
+
+            function postMessage(msg) {
+                try {
+                    if (window.webkit &&
+                        window.webkit.messageHandlers &&
+                        window.webkit.messageHandlers.codeEditor) {
+                        window.webkit.messageHandlers.codeEditor.postMessage(msg);
+                    }
+                } catch (e) {
+                    // Silently ignore if handler not available (e.g. testing in browser)
+                    console.log("[CodeEditor] postMessage:", JSON.stringify(msg));
+                }
+            }
+
+            // Swift -> JS bridge functions
+            window.setCode = function(code) {
+                if (editor) {
+                    editor.setValue(code);
+                }
+            };
+
+            window.getCode = function() {
+                var code = editor ? editor.getValue() : "";
+                postMessage({ type: "getCodeResponse", code: code });
+            };
+
+            window.setLanguage = function(lang) {
+                if (editor) {
+                    editor.setLanguage(lang);
+                }
+            };
+
+            window.setTheme = function(theme) {
+                if (editor) {
+                    editor.setTheme(theme);
+                }
+            };
+
+            window.setReadOnly = function(readOnly) {
+                if (editor) {
+                    editor.setReadOnly(readOnly);
+                }
+            };
+
+            window.setFontSize = function(size) {
+                if (editor) {
+                    editor.setFontSize(size);
+                }
+            };
+
+            // Initialize when DOM is ready
+            if (document.readyState === "loading") {
+                document.addEventListener("DOMContentLoaded", initEditor);
+            } else {
+                initEditor();
+            }
+        })();
+    </script>
+</body>
+</html>

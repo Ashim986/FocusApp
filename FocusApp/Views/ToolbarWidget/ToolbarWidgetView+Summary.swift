@@ -3,7 +3,7 @@ import SwiftUI
 
 extension ToolbarWidgetView {
     var daySummary: some View {
-        HStack(spacing: 12) {
+        HStack(spacing: DSLayout.spacing(12)) {
             ZStack {
                 Circle()
                     .stroke(theme.colors.border.opacity(0.4), lineWidth: 5)
@@ -26,8 +26,8 @@ extension ToolbarWidgetView {
             }
             .frame(width: 52, height: 52)
 
-            VStack(alignment: .leading, spacing: 2) {
-                HStack(spacing: 4) {
+            VStack(alignment: .leading, spacing: DSLayout.spacing(2)) {
+                HStack(spacing: DSLayout.spacing(4)) {
                     Text(L10n.Widget.summaryDayFormat( presenter.currentDayNumber))
                         .font(.system(size: 13, weight: .semibold))
                         .foregroundColor(theme.colors.textPrimary)
@@ -49,7 +49,7 @@ extension ToolbarWidgetView {
 
             Spacer()
 
-            VStack(alignment: .trailing, spacing: 2) {
+            VStack(alignment: .trailing, spacing: DSLayout.spacing(2)) {
                 Text(L10n.Widget.summaryHabitsTitle)
                     .font(.system(size: 9))
                     .foregroundColor(theme.colors.textSecondary)

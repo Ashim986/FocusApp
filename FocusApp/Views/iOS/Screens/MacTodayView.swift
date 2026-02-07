@@ -55,9 +55,10 @@ struct MacTodayView: View {
 
                     Spacer()
 
-                    Button("View Full Plan") { }
-                        .font(theme.typography.body)
-                        .foregroundColor(Color(hex: 0x6366F1))
+                    DSButton(
+                        "View Full Plan",
+                        config: DSButtonConfig(style: .ghost, size: .small)
+                    ) { }
                 }
                 .padding(.horizontal, theme.spacing.xl)
 
@@ -230,7 +231,7 @@ struct MacTodayView: View {
     // MARK: - Start Focus CTA
 
     private var macStartFocusCTA: some View {
-        Button {
+        DSActionButton(action: {
             onStartFocus?()
         } label: {
             VStack(spacing: theme.spacing.xs) {
@@ -258,7 +259,6 @@ struct MacTodayView: View {
                     )
             )
         }
-        .buttonStyle(.plain)
     }
 
     // MARK: - Task Row

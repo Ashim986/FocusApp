@@ -1,3 +1,4 @@
+#if os(macOS)
 import Foundation
 
 /// Protocol for language-specific code executors
@@ -18,3 +19,4 @@ struct ExecutionConfig {
         )
     }
 }
+#endif

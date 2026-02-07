@@ -7,7 +7,7 @@ struct ProblemSelectionView: View {
     @Environment(\.dsTheme) var theme
 
     var body: some View {
-        VStack(spacing: 0) {
+        VStack(spacing: DSLayout.spacing(0)) {
             // Header
             header
 
@@ -16,34 +16,38 @@ struct ProblemSelectionView: View {
 
             // Problem list
             ScrollView {
-                VStack(spacing: 16) {
+                VStack(spacing: DSLayout.spacing(16)) {
                     ForEach(presenter.problemSections) { section in
                         sectionBlock(section)
                     }
                 }
-                .padding(20)
+                .padding(DSLayout.spacing(20))
             }
         }
         .background(theme.colors.background)
     }
 
     private var header: some View {
-        VStack(spacing: 12) {
+        VStack(spacing: DSLayout.spacing(12)) {
             HStack {
-                Button(action: onBack) {
-                    HStack(spacing: 4) {
-                        Image(systemName: "chevron.left")
-                        Text(L10n.ProblemSelection.backToTimer)
+                DSButton(
+                    L10n.ProblemSelection.backToTimer,
+                    config: .init(
+                        style: .ghost,
+                        size: .small,
+                        icon: Image(systemName: "chevron.left"),
+                        iconPosition: .leading
+                    ),
+                    action: {
+                        onBack()
                     }
-                    .font(.system(size: 13))
-                    .foregroundColor(theme.colors.textSecondary)
-                }
-                .buttonStyle(.plain)
+                )
+                .tint(theme.colors.textSecondary)
 
                 Spacer()
             }
 
-            VStack(spacing: 4) {
+            VStack(spacing: DSLayout.spacing(4)) {
                 Text(L10n.ProblemSelection.title)
                     .font(.system(size: 20, weight: .bold))
                     .foregroundColor(theme.colors.textPrimary)
@@ -53,12 +57,12 @@ struct ProblemSelectionView: View {
                     .foregroundColor(theme.colors.textSecondary)
             }
         }
-        .padding(20)
+        .padding(DSLayout.spacing(20))
         .background(theme.colors.surfaceElevated)
     }
 
     private func sectionBlock(_ section: CodingProblemSection) -> some View {
-        VStack(alignment: .leading, spacing: 10) {
+        VStack(alignment: .leading, spacing: DSLayout.spacing(10)) {
             HStack {
                 Text(section.isToday
                      ? L10n.ProblemSelection.sectionToday( section.dayId)
@@ -73,7 +77,7 @@ struct ProblemSelectionView: View {
                     .foregroundColor(theme.colors.textSecondary)
             }
 
-            VStack(spacing: 12) {
+            VStack(spacing: DSLayout.spacing(12)) {
                 ForEach(section.problems) { item in
                     problemCard(item)
                 }
@@ -82,10 +86,10 @@ struct ProblemSelectionView: View {
     }
 
     private func problemCard(_ item: CodingProblemItem) -> some View {
-        Button(action: {
+        DSActionButton(action: {
             presenter.selectProblem(item)
-        }, label: {
-            HStack(spacing: 12) {
+        }) {
+            HStack(spacing: DSLayout.spacing(12)) {
                 // Completion indicator
                 ZStack {
                     Circle()
@@ -99,13 +103,13 @@ struct ProblemSelectionView: View {
                     }
                 }
 
-                VStack(alignment: .leading, spacing: 4) {
+                VStack(alignment: .leading, spacing: DSLayout.spacing(4)) {
                     Text(item.problem.displayName)
                         .font(.system(size: 14, weight: .medium))
                         .foregroundColor(theme.colors.textPrimary)
                         .lineLimit(1)
 
-                    HStack(spacing: 8) {
+                    HStack(spacing: DSLayout.spacing(8)) {
                         difficultyBadge(item.problem.difficulty)
 
                         if item.isCompleted {
@@ -122,7 +126,7 @@ struct ProblemSelectionView: View {
                     .font(.system(size: 12))
                     .foregroundColor(theme.colors.textSecondary)
             }
-            .padding(16)
+            .padding(DSLayout.spacing(16))
             .background(
                 RoundedRectangle(cornerRadius: 12)
                     .fill(theme.colors.surfaceElevated.opacity(0.5))
@@ -131,8 +135,7 @@ struct ProblemSelectionView: View {
                 RoundedRectangle(cornerRadius: 12)
                     .stroke(theme.colors.border, lineWidth: 1)
             )
-        })
-        .buttonStyle(.plain)
+        }
     }
 
     private func difficultyBadge(_ difficulty: Difficulty) -> some View {

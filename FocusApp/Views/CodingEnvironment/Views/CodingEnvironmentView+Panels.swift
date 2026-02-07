@@ -4,9 +4,9 @@ import SwiftUI
 extension CodingEnvironmentView {
     var codeEditorPanel: some View {
         DSCard(config: .init(style: .surface, padding: 0, cornerRadius: 12)) {
-            VStack(spacing: 0) {
-                HStack(spacing: 12) {
-                    VStack(alignment: .leading, spacing: 2) {
+            VStack(spacing: DSLayout.spacing(0)) {
+                HStack(spacing: DSLayout.spacing(12)) {
+                    VStack(alignment: .leading, spacing: DSLayout.spacing(2)) {
                         Text(L10n.Coding.codeTitle)
                             .font(theme.typography.subtitle)
                             .foregroundColor(theme.colors.textPrimary)
@@ -20,8 +20,8 @@ extension CodingEnvironmentView {
 
                     languageSelect
                 }
-                .padding(.horizontal, 12)
-                .padding(.vertical, 10)
+                .padding(.horizontal, DSLayout.spacing(12))
+                .padding(.vertical, DSLayout.spacing(10))
                 .background(theme.colors.surface)
                 .overlay(
                     Rectangle()
@@ -31,7 +31,7 @@ extension CodingEnvironmentView {
                 )
 
                 if let notice = presenter.codeResetNotice {
-                    HStack(spacing: 8) {
+                    HStack(spacing: DSLayout.spacing(8)) {
                         Image(systemName: "exclamationmark.triangle.fill")
                             .font(.system(size: 12, weight: .semibold))
                             .foregroundColor(theme.colors.warning)
@@ -39,15 +39,15 @@ extension CodingEnvironmentView {
                             .font(theme.typography.caption)
                             .foregroundColor(theme.colors.textPrimary)
                         Spacer()
-                        Button(action: { presenter.codeResetNotice = nil }, label: {
-                            Image(systemName: "xmark.circle.fill")
-                                .font(.system(size: 12))
-                                .foregroundColor(theme.colors.textSecondary)
-                        })
-                        .buttonStyle(.plain)
+                        DSButton(
+                            "Dismiss",
+                            config: .init(style: .ghost, size: .small, icon: Image(systemName: "xmark.circle.fill"))
+                        ) {
+                            presenter.codeResetNotice = nil
+                        }
                     }
-                    .padding(.horizontal, 12)
-                    .padding(.vertical, 6)
+                    .padding(.horizontal, DSLayout.spacing(12))
+                    .padding(.vertical, DSLayout.spacing(6))
                     .background(theme.colors.warning.opacity(0.12))
                     .overlay(
                         Rectangle()
@@ -102,7 +102,7 @@ extension CodingEnvironmentView {
 
     private var bottomPanel: some View {
         DSCard(config: .init(style: .surface, padding: 0, cornerRadius: 12)) {
-            VStack(spacing: 0) {
+            VStack(spacing: DSLayout.spacing(0)) {
                 ModernTestCaseView(
                     presenter: presenter,
                     isCollapsed: $codingCoordinator.isBottomPanelCollapsed

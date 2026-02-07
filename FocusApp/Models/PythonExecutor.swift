@@ -1,3 +1,4 @@
+#if os(macOS)
 import Foundation
 
 /// Executes Python code directly via interpreter
@@ -108,6 +109,7 @@ final class PythonExecutor: LanguageExecutor {
 
     private func trimForLog(_ value: String, limit: Int = 240) -> String {
         guard value.count > limit else { return value }
-        return String(value.prefix(limit)) + "…"
+        return String(value.prefix(limit)) + "..."
     }
 }
+#endif

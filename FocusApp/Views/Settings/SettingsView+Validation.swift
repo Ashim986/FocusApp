@@ -1,3 +1,4 @@
+import FocusDesignSystem
 import SwiftUI
 
 extension SettingsView {
@@ -16,13 +17,19 @@ extension SettingsView {
     var validationStatusView: some View {
         switch presenter.usernameValidationState {
         case .valid:
-            Label(L10n.Settings.validationValid, systemImage: "checkmark.circle.fill")
-                .foregroundColor(.green)
-                .font(.caption)
+            HStack(spacing: 6) {
+                DSImage(systemName: "checkmark.circle.fill")
+                DSText(L10n.Settings.validationValid)
+            }
+            .foregroundColor(.green)
+            .font(.caption)
         case .invalid:
-            Label(L10n.Settings.validationNotFound, systemImage: "xmark.circle.fill")
-                .foregroundColor(.red)
-                .font(.caption)
+            HStack(spacing: 6) {
+                DSImage(systemName: "xmark.circle.fill")
+                DSText(L10n.Settings.validationNotFound)
+            }
+            .foregroundColor(.red)
+            .font(.caption)
         case .none:
             EmptyView()
         }

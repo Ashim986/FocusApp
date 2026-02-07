@@ -95,8 +95,11 @@ struct SettingsView: View {
 
             Section {
                 VStack(alignment: .leading, spacing: 8) {
-                    Label(L10n.Settings.topicCompletion, systemImage: "trophy.fill")
-                        .foregroundColor(.yellow)
+                    HStack(spacing: 6) {
+                        DSImage(systemName: "trophy.fill")
+                        DSText(L10n.Settings.topicCompletion)
+                    }
+                    .foregroundColor(.yellow)
                     DSText(L10n.Settings.topicCompletionBody)
                         .font(.caption)
                         .foregroundColor(.secondary)
@@ -104,8 +107,11 @@ struct SettingsView: View {
                 .padding(.vertical, 4)
 
                 VStack(alignment: .leading, spacing: 8) {
-                    Label(L10n.Settings.allHabitsDone, systemImage: "checkmark.circle.fill")
-                        .foregroundColor(.green)
+                    HStack(spacing: 6) {
+                        DSImage(systemName: "checkmark.circle.fill")
+                        DSText(L10n.Settings.allHabitsDone)
+                    }
+                    .foregroundColor(.green)
                     DSText(L10n.Settings.allHabitsDoneBody)
                         .font(.caption)
                         .foregroundColor(.secondary)
@@ -214,9 +220,10 @@ struct SettingsView: View {
                     DSText(L10n.Settings.aiApiKeyLabel)
                         .font(.subheadline)
 
-                    SecureField(
-                        L10n.Settings.aiApiKeyPlaceholder,
-                        text: $presenter.aiProviderApiKey
+                    DSTextField(
+                        placeholder: L10n.Settings.aiApiKeyPlaceholder,
+                        text: $presenter.aiProviderApiKey,
+                        config: DSTextFieldConfig(style: .outlined, size: .medium, isSecure: true)
                     )
                     .textFieldStyle(.roundedBorder)
                     .onChange(of: presenter.aiProviderApiKey) { _, _ in

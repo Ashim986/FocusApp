@@ -110,11 +110,12 @@ struct ModernTestCaseView: View {
         })
         .buttonStyle(.plain)
         .contextMenu {
-            DSButton(role: .destructive, action: {
+            DSButton(
+                "Delete",
+                config: DSButtonConfig(style: .destructive, size: .small)
+            ) {
                 presenter.removeTestCase(at: index)
-            }, label: {
-                Label("Delete", systemImage: "trash")
-            })
+            }
         }
     }
 
@@ -131,16 +132,14 @@ struct ModernTestCaseView: View {
                         .font(.system(size: 10, weight: .medium))
                         .foregroundColor(theme.colors.textSecondary)
 
-                    TextField("Enter input...", text: Binding(
-                        get: { testCase.input },
-                        set: { presenter.updateTestCaseInput(at: index, input: $0) }
-                    ), axis: .vertical)
-                    .textFieldStyle(.plain)
-                    .font(.system(size: 12, design: .monospaced))
-                    .foregroundColor(theme.colors.textPrimary)
-                    .padding(8)
-                    .background(theme.colors.surfaceElevated)
-                    .clipShape(RoundedRectangle(cornerRadius: 6))
+                    DSTextArea(
+                        placeholder: "Enter input...",
+                        text: Binding(
+                            get: { testCase.input },
+                            set: { presenter.updateTestCaseInput(at: index, input: $0) }
+                        ),
+                        config: DSTextAreaConfig(minHeight: 90, isResizable: true)
+                    )
                 }
 
                 VStack(alignment: .leading, spacing: 4) {
@@ -157,16 +156,14 @@ struct ModernTestCaseView: View {
                         }
                     }
 
-                    TextField("Enter expected output...", text: Binding(
-                        get: { testCase.expectedOutput },
-                        set: { presenter.updateTestCaseExpectedOutput(at: index, output: $0) }
-                    ), axis: .vertical)
-                    .textFieldStyle(.plain)
-                    .font(.system(size: 12, design: .monospaced))
-                    .foregroundColor(theme.colors.textPrimary)
-                    .padding(8)
-                    .background(theme.colors.surfaceElevated)
-                    .clipShape(RoundedRectangle(cornerRadius: 6))
+                    DSTextArea(
+                        placeholder: "Enter expected output...",
+                        text: Binding(
+                            get: { testCase.expectedOutput },
+                            set: { presenter.updateTestCaseExpectedOutput(at: index, output: $0) }
+                        ),
+                        config: DSTextAreaConfig(minHeight: 90, isResizable: true)
+                    )
                 }
             }
             .padding(10)

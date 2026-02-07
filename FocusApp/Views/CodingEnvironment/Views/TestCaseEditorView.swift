@@ -63,16 +63,14 @@ struct TestCaseEditorView: View {
                         .font(.system(size: 10))
                         .foregroundColor(theme.colors.textSecondary)
 
-                    TextField("", text: Binding(
-                        get: { testCase.input },
-                        set: { presenter.updateTestCaseInput(at: index, input: $0) }
-                    ))
-                    .textFieldStyle(.plain)
-                    .font(.system(size: 11, design: .monospaced))
-                    .foregroundColor(theme.colors.textPrimary)
-                    .padding(6)
-                    .background(theme.colors.surfaceElevated)
-                    .cornerRadius(4)
+                    DSTextField(
+                        placeholder: "",
+                        text: Binding(
+                            get: { testCase.input },
+                            set: { presenter.updateTestCaseInput(at: index, input: $0) }
+                        ),
+                        config: DSTextFieldConfig(style: .outlined, size: .small)
+                    )
                 }
 
                 VStack(alignment: .leading, spacing: 2) {
@@ -80,16 +78,14 @@ struct TestCaseEditorView: View {
                         .font(.system(size: 10))
                         .foregroundColor(theme.colors.textSecondary)
 
-                    TextField("", text: Binding(
-                        get: { testCase.expectedOutput },
-                        set: { presenter.updateTestCaseExpectedOutput(at: index, output: $0) }
-                    ))
-                    .textFieldStyle(.plain)
-                    .font(.system(size: 11, design: .monospaced))
-                    .foregroundColor(theme.colors.textPrimary)
-                    .padding(6)
-                    .background(theme.colors.surfaceElevated)
-                    .cornerRadius(4)
+                    DSTextField(
+                        placeholder: "",
+                        text: Binding(
+                            get: { testCase.expectedOutput },
+                            set: { presenter.updateTestCaseExpectedOutput(at: index, output: $0) }
+                        ),
+                        config: DSTextFieldConfig(style: .outlined, size: .small)
+                    )
                 }
             }
         }

@@ -37,29 +37,35 @@ extension FocusOverlay {
                     .font(.system(size: 14))
                     .foregroundColor(theme.colors.textSecondary)
 
-                TextField("", value: $presenter.duration, format: .number)
-                    .textFieldStyle(.plain)
-                    .font(.system(size: 18, weight: .semibold))
-                    .foregroundColor(theme.colors.textPrimary)
-                    .frame(width: 60)
-                    .padding(.horizontal, 12)
-                    .padding(.vertical, 8)
-                    .background(
-                        RoundedRectangle(cornerRadius: 8)
-                            .fill(theme.colors.surfaceElevated)
-                    )
+                let durationText = Binding<String>(
+                    get: { "\(presenter.duration)" },
+                    set: { newValue in
+                        if let value = Int(newValue) {
+                            presenter.duration = value
+                        }
+                    }
+                )
+
+                DSTextField(
+                    placeholder: "",
+                    text: durationText,
+                    config: DSTextFieldConfig(style: .outlined, size: .small)
+                )
+                .frame(width: 80)
 
                 DSText(L10n.Focus.durationMinutesLabel)
                     .font(.system(size: 14))
                     .foregroundColor(theme.colors.textSecondary)
             }
 
-            DSButton(
-                L10n.Focus.durationStartButton,
-                config: .init(style: .primary, size: .large, icon: DSImage(systemName: "play.fill"))
-            ) {
+            DSButton(config: .init(style: .primary, size: .large), action: {
                 presenter.startTimer()
-            }
+            }, label: {
+                HStack(spacing: 8) {
+                    DSImage(systemName: "play.fill")
+                    DSText(L10n.Focus.durationStartButton)
+                }
+            })
 
             DSButton(action: {
                 closeSession()

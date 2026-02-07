@@ -14,12 +14,15 @@ struct ModernOutputView: View {
 
     enum OutputTab: CaseIterable {
         case result
+        case console
         case debug
 
         var title: String {
             switch self {
             case .result:
                 return L10n.Coding.Output.tabResult
+            case .console:
+                return "Console"
             case .debug:
                 return L10n.Coding.Output.tabDebug
             }
@@ -80,6 +83,8 @@ struct ModernOutputView: View {
                 switch selectedTab {
                 case .result:
                     resultContent
+                case .console:
+                    outputContent
                 case .debug:
                     debugContent
                 }
@@ -122,9 +127,9 @@ struct ModernOutputView: View {
 
     private var availableTabs: [OutputTab] {
         if hasDebugData {
-            return [.result, .debug]
+            return [.result, .console, .debug]
         }
-        return [.result]
+        return [.result, .console]
     }
 
     private var hasDebugData: Bool {

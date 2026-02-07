@@ -1,4 +1,7 @@
 import SwiftUI
+#if canImport(AppKit)
+import AppKit
+#endif
 
 enum Tab: CaseIterable {
     case plan
@@ -119,6 +122,24 @@ struct ContentView: View {
                             .font(.system(size: 10, weight: .semibold))
                             .foregroundColor(Color.appGray700)
                     }
+
+                    Button(action: openSettings) {
+                        HStack(spacing: 6) {
+                            Image(systemName: "slider.horizontal.3")
+                                .font(.system(size: 12, weight: .semibold))
+                            Text(L10n.Content.settingsButton)
+                                .font(.system(size: 12, weight: .semibold))
+                        }
+                        .foregroundColor(Color.appGray700)
+                        .padding(.horizontal, 10)
+                        .padding(.vertical, 8)
+                        .background(
+                            RoundedRectangle(cornerRadius: 8)
+                                .fill(Color.appGray100)
+                        )
+                    }
+                    .buttonStyle(.plain)
+                    .help(L10n.Content.settingsButton)
                 }
 
             }
@@ -168,5 +189,11 @@ struct ContentView: View {
             )
         })
         .buttonStyle(.plain)
+    }
+
+    private func openSettings() {
+        #if canImport(AppKit)
+        NSApp.sendAction(Selector(("showSettingsWindow:")), to: nil, from: nil)
+        #endif
     }
 }

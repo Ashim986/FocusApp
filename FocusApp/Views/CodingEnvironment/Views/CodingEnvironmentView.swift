@@ -41,6 +41,15 @@ struct CodingEnvironmentView: View {
         .sheet(isPresented: $presenter.showSubmissionTagPrompt) {
             submissionTagSheet
         }
+        .sheet(isPresented: $presenter.showLeetCodeLogin) {
+            LeetCodeLoginSheet(
+                onAuthCaptured: { auth in
+                    presenter.updateLeetCodeAuth(auth)
+                    presenter.showLeetCodeLogin = false
+                },
+                onClose: { presenter.showLeetCodeLogin = false }
+            )
+        }
         .sheet(item: $codingCoordinator.activeSheet) { sheet in
             switch sheet {
             case .debugLogs:

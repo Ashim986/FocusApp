@@ -413,6 +413,9 @@ enum L10n {
         static func progressCount(_ args: CVarArg...) -> String {
             tr("content.progress_count", args)
         }
+        static var settingsButton: String {
+            tr("content.settings_button")
+        }
         static var subtitle: String {
             tr("content.subtitle")
         }

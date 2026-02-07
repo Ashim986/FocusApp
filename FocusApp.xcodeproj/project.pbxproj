@@ -192,6 +192,7 @@
 		A10001097 /* L10n+Plural.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002097 /* L10n+Plural.swift */; };
 		A10001098 /* AppMessages.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002098 /* AppMessages.swift */; };
 		A10001100 /* Solutions.json in Resources */ = {isa = PBXBuildFile; fileRef = A10002099 /* Solutions.json */; };
+		A10001102 /* problem-manifest.json in Resources */ = {isa = PBXBuildFile; fileRef = A10002100 /* problem-manifest.json */; };
 		A15AEF6BDA9B4D0A8E548C28 /* CodeEditorView+CoordinatorHighlightingCommon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A9C160FDBA2426DBDFD6986 /* CodeEditorView+CoordinatorHighlightingCommon.swift */; };
 		A1B2C3D4E5F6A7B8C9D0E1A1 /* SolutionModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D4E5F6A7B8C9D0E2A1 /* SolutionModels.swift */; };
 		A1B2C3D4E5F6A7B8C9D0E1A2 /* SolutionStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D4E5F6A7B8C9D0E2A2 /* SolutionStore.swift */; };
@@ -481,6 +482,7 @@
 		A10002097 /* L10n+Plural.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "L10n+Plural.swift"; sourceTree = "<group>"; };
 		A10002098 /* AppMessages.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppMessages.swift; sourceTree = "<group>"; };
 		A10002099 /* Solutions.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = Solutions.json; sourceTree = "<group>"; };
+		A10002100 /* problem-manifest.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "problem-manifest.json"; sourceTree = "<group>"; };
 		A10003001 /* FocusApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FocusApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A111678A69A8452C97563307 /* SharedDataStoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedDataStoreTests.swift; sourceTree = "<group>"; };
 		A1B2C3D4E5F6A7B8C9D0E2A1 /* SolutionModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SolutionModels.swift; sourceTree = "<group>"; };
@@ -1079,6 +1081,7 @@
 				A10002093 /* Localizable.xcstrings */,
 				A10002094 /* Plan.json */,
 				A10002099 /* Solutions.json */,
+				A10002100 /* problem-manifest.json */,
 				A10002096 /* Plurals.stringsdict */,
 				61C6ACE8B3D7E4B88158183B /* Solutions */,
 			);
@@ -1342,6 +1345,7 @@
 				A10001093 /* Localizable.xcstrings in Resources */,
 				A10001094 /* Plan.json in Resources */,
 				A10001100 /* Solutions.json in Resources */,
+				A10001102 /* problem-manifest.json in Resources */,
 				A10001096 /* Plurals.stringsdict in Resources */,
 				D1DE7AFB63DC55F9DC102042 /* index.json in Resources */,
 				B99E2DBA62D1949CBCCC7E64 /* arrays-hashing.json in Resources */,

@@ -28,6 +28,7 @@ final class CodingEnvironmentPresenter: ObservableObject {
     @Published var submissionTagInput: String = ""
     @Published var errorDiagnostics: [CodeEditorDiagnostic] = []
     @Published var currentSolution: ProblemSolution?
+    @Published var showLeetCodeLogin: Bool = false
     @Published private(set) var dataJourney: [DataJourneyEvent] = []
     @Published var selectedJourneyEventID: UUID?
     @Published var highlightedExecutionLine: Int?
@@ -171,6 +172,10 @@ final class CodingEnvironmentPresenter: ObservableObject {
     func loadSolution(for problem: Problem) {
         currentSolution = interactor.solution(for: problem)
         applySolutionTestCaseFallback()
+    }
+
+    func updateLeetCodeAuth(_ auth: LeetCodeAuthSession) {
+        interactor.updateLeetCodeAuth(auth)
     }
 
     func clearJourney() {

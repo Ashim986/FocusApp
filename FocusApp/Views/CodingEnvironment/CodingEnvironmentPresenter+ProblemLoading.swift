@@ -175,7 +175,7 @@ extension CodingEnvironmentPresenter {
             "<strong>Output:</strong>\\s*",
             "(?:<pre[^>]*>\\s*<code[^>]*>|<pre[^>]*>|<code[^>]*>)?\\s*",
             "([\\s\\S]*?)\\s*",
-            "(?:</code>\\s*</pre>|</pre>|</code>|</p>|<strong>|$)"
+            "(?:</code>\\s*</pre>|</pre>|</code>|</p>|(?=<strong>)|$)"
         ].joined()
         guard let regex = try? NSRegularExpression(pattern: pattern, options: [.caseInsensitive]) else {
             return []

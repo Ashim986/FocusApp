@@ -12,8 +12,12 @@ extension CodingEnvironmentPresenter {
     }
 
     func runTests() {
-        guard !testCases.isEmpty else { return }
-        executeTests(saveSubmission: true)
+        guard !isRunning else { return }
+        if testCases.isEmpty {
+            submitWithoutLocalTests()
+        } else {
+            executeTests(saveSubmission: true)
+        }
     }
 
     func stopExecution() {
@@ -82,8 +86,149 @@ extension CodingEnvironmentPresenter {
     }
 
     // swiftlint:disable cyclomatic_complexity function_body_length
+    private func submitWithoutLocalTests() {
+        clearJourney()
+        isRunning = true
+        compilationOutput = ""
+        errorOutput = ""
+        executionLogAnchor = Date()
+        showSubmissionTagPrompt = false
+        pendingSubmission = nil
+        submissionTagInput = ""
+
+        runTask?.cancel()
+        runTask = Task { [weak self] in
+            guard let self else { return }
+            defer {
+                Task { @MainActor in
+                    self.runTask = nil
+                }
+            }
+
+            // Step 1: Resolve AI test cases
+            let aiCases = await self.resolveAITestCasesForPanel()
+            guard !aiCases.isEmpty, !Task.isCancelled else {
+                await MainActor.run {
+                    self.isRunning = false
+                }
+                return
+            }
+
+            // Step 2: Populate them into the test case panel
+            let localTestCases = aiCases.map { TestCase(input: $0.input, expectedOutput: $0.expectedOutput) }
+            await MainActor.run {
+                self.testCases = localTestCases
+            }
+
+            // Step 3: Run user's code against each AI test case
+            var updatedTestCases = localTestCases
+            var consoleLogs: [String] = []
+            var errorLogs: [String] = []
+            let executionCode = self.wrappedCodeForExecution()
+            var allPassed = true
+
+            for index in updatedTestCases.indices {
+                if Task.isCancelled { break }
+                await MainActor.run {
+                    self.compilationOutput = "Running AI test \(index + 1) of \(updatedTestCases.count)…"
+                }
+                let result = await interactor.executeCode(
+                    code: executionCode,
+                    language: language,
+                    input: updatedTestCases[index].input
+                )
+
+                if Task.isCancelled { break }
+                let parsed = parseTraceOutput(result.output)
+                await MainActor.run {
+                    if result.wasCancelled {
+                        updatedTestCases[index].actualOutput = "Stopped"
+                        updatedTestCases[index].passed = false
+                    } else if result.timedOut {
+                        updatedTestCases[index].actualOutput = "Timed out"
+                        updatedTestCases[index].passed = false
+                    } else if result.exitCode != 0 {
+                        updatedTestCases[index].actualOutput = "Error: \(result.error)"
+                        updatedTestCases[index].passed = false
+                    } else {
+                        let normalizedExpected = updatedTestCases[index].expectedOutput
+                            .trimmingCharacters(in: .whitespacesAndNewlines)
+                        let normalized = self.normalizeOutputForComparison(
+                            parsed.cleanOutput,
+                            expected: normalizedExpected
+                        )
+                        updatedTestCases[index].actualOutput = normalized.displayValue
+                        if normalizedExpected.isEmpty {
+                            updatedTestCases[index].passed = nil
+                        } else {
+                            updatedTestCases[index].passed = normalized.comparisonValue == normalizedExpected
+                        }
+                    }
+                    if updatedTestCases[index].passed != true {
+                        allPassed = false
+                    }
+                    self.testCases = updatedTestCases
+                    if result.exitCode == 0, !result.timedOut, !result.wasCancelled, !parsed.events.isEmpty {
+                        self.traceEventsByTestCase[index] = (
+                            events: parsed.events, truncated: parsed.isTruncated
+                        )
+                        if index == 0 {
+                            self.updateJourney(parsed.events, truncated: parsed.isTruncated)
+                        }
+                    }
+                }
+
+                if !parsed.cleanOutput.isEmpty {
+                    consoleLogs.append("Test \(index + 1):\n\(parsed.cleanOutput)")
+                }
+                if !result.error.isEmpty {
+                    errorLogs.append("Test \(index + 1):\n\(result.error)")
+                }
+            }
+
+            guard !Task.isCancelled else { return }
+
+            // Step 4: If all passed, submit to LeetCode
+            if allPassed {
+                let submissionOutcome = await self.submitToLeetCodeDirect()
+                if let console = submissionOutcome.consoleMessage, !console.isEmpty {
+                    consoleLogs.append(console)
+                }
+                if let error = submissionOutcome.errorMessage, !error.isEmpty {
+                    errorLogs.append(error)
+                }
+                if submissionOutcome.didSubmit {
+                    await MainActor.run {
+                        self.recordSubmission()
+                    }
+                }
+            }
+
+            await MainActor.run {
+                if !consoleLogs.isEmpty {
+                    self.compilationOutput = consoleLogs
+                        .joined(separator: "\n\n")
+                        .trimmingCharacters(in: .whitespacesAndNewlines)
+                }
+                if !errorLogs.isEmpty {
+                    self.errorOutput = errorLogs
+                        .joined(separator: "\n\n")
+                        .trimmingCharacters(in: .whitespacesAndNewlines)
+                }
+                let combinedError = errorLogs.joined(separator: "\n")
+                self.errorDiagnostics = self.extractDiagnostics(
+                    from: combinedError,
+                    language: self.language,
+                    code: self.code
+                )
+                self.isRunning = false
+            }
+        }
+    }
+    // swiftlint:enable cyclomatic_complexity function_body_length
+
+    // swiftlint:disable cyclomatic_complexity function_body_length
     private func executeTests(saveSubmission: Bool) {
-        guard !isRunning else { return }
         clearJourney()
         isRunning = true
         compilationOutput = ""
@@ -167,7 +312,7 @@ extension CodingEnvironmentPresenter {
 
             guard !Task.isCancelled else { return }
             if saveSubmission, allPassed {
-                let submissionOutcome = await self.submitToLeetCodeIfAllowed()
+                let submissionOutcome = await self.submitToLeetCodeDirect()
                 if let console = submissionOutcome.consoleMessage, !console.isEmpty {
                     consoleLogs.append(console)
                 }

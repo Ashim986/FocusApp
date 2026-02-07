@@ -92,6 +92,10 @@ final class CodingEnvironmentInteractor {
         appStore.leetCodeAuth()
     }
 
+    func updateLeetCodeAuth(_ auth: LeetCodeAuthSession) {
+        appStore.updateLeetCodeAuth(auth)
+    }
+
     func submitToLeetCode(
         code: String,
         language: ProgrammingLanguage,
@@ -114,6 +118,21 @@ final class CodingEnvironmentInteractor {
 
     func testCaseProvider() -> (any TestCaseAIProviding)? {
         SolutionAIServiceFactory.makeTestCaseProvider(from: appStore.data)
+    }
+
+    struct AIProviderDebugInfo {
+        let kind: String
+        let apiKeyLength: Int
+        let model: String
+    }
+
+    func aiProviderDebugInfo() -> AIProviderDebugInfo {
+        let data = appStore.data
+        return AIProviderDebugInfo(
+            kind: data.aiProviderKind,
+            apiKeyLength: data.aiProviderApiKey.trimmingCharacters(in: .whitespacesAndNewlines).count,
+            model: data.aiProviderModel
+        )
     }
 
     func manifestProblem(for slug: String) -> ManifestProblem? {

@@ -1,4 +1,7 @@
 import SwiftUI
+#if canImport(AppKit)
+import AppKit
+#endif
 
 extension CodingEnvironmentView {
     var headerBar: some View {
@@ -104,8 +107,6 @@ extension CodingEnvironmentView {
                         .clipShape(RoundedRectangle(cornerRadius: 6))
                     })
                     .buttonStyle(.plain)
-                    .disabled(presenter.testCases.isEmpty)
-                    .opacity(presenter.testCases.isEmpty ? 0.5 : 1)
                     .keyboardShortcut(KeyEquivalent.return, modifiers: [.command, .shift])
 
                     Button(action: { codingCoordinator.showDebugLogs() }, label: {
@@ -118,6 +119,17 @@ extension CodingEnvironmentView {
                     })
                     .buttonStyle(.plain)
                     .help(L10n.Debug.logsTitle)
+
+                    Button(action: openSettings, label: {
+                        Image(systemName: "slider.horizontal.3")
+                            .font(.system(size: 11, weight: .semibold))
+                            .foregroundColor(Color.appGray300)
+                            .frame(width: 32, height: 32)
+                            .background(Color.appGray800)
+                            .clipShape(RoundedRectangle(cornerRadius: 6))
+                    })
+                    .buttonStyle(.plain)
+                    .help(L10n.Content.settingsButton)
                 }
             }
             .padding(.trailing, 12)
@@ -180,5 +192,11 @@ extension CodingEnvironmentView {
             RoundedRectangle(cornerRadius: 8)
                 .stroke(Color.appGray700, lineWidth: 1)
         )
+    }
+
+    private func openSettings() {
+        #if canImport(AppKit)
+        NSApp.sendAction(Selector(("showSettingsWindow:")), to: nil, from: nil)
+        #endif
     }
 }

@@ -62,7 +62,15 @@ struct LeetCodeSubmissionService {
         )
 
         let submitData = try await executor.execute(request)
-        let submitResponse = try decoder.decode(LeetCodeSubmitResponse.self, from: submitData)
+        let submitResponse: LeetCodeSubmitResponse
+        do {
+            submitResponse = try decoder.decode(LeetCodeSubmitResponse.self, from: submitData)
+        } catch {
+            let body = String(data: submitData.prefix(500), encoding: .utf8) ?? "<binary>"
+            throw LeetCodeSubmissionError.submissionFailed(
+                "Unexpected response from LeetCode (decode error). Preview: \(body)"
+            )
+        }
         if let error = submitResponse.error, !error.isEmpty {
             throw LeetCodeSubmissionError.submissionFailed(error)
         }
@@ -88,6 +96,8 @@ struct LeetCodeSubmissionService {
         }
 
         var attempts = 0
+        var decodeFailures = 0
+        let maxDecodeFailures = 5
         while attempts < 40 {
             if Task.isCancelled { throw CancellationError() }
             let request = try buildRequest(
@@ -97,7 +107,20 @@ struct LeetCodeSubmissionService {
                 slug: slug
             )
             let data = try await executor.execute(request)
-            let status = try decoder.decode(LeetCodeSubmissionCheck.self, from: data)
+            let status: LeetCodeSubmissionCheck
+            do {
+                status = try decoder.decode(LeetCodeSubmissionCheck.self, from: data)
+            } catch {
+                decodeFailures += 1
+                if decodeFailures >= maxDecodeFailures {
+                    let body = String(data: data.prefix(500), encoding: .utf8) ?? "<binary>"
+                    throw LeetCodeSubmissionError.submissionFailed(
+                        "LeetCode returned unreadable responses (\(decodeFailures) times). Preview: \(body)"
+                    )
+                }
+                try await Task.sleep(nanoseconds: 1_000_000_000)
+                continue
+            }
             if status.isComplete {
                 return status
             }

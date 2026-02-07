@@ -2,13 +2,9 @@ import SwiftUI
 
 struct CodingEnvironmentView: View {
     @ObservedObject var presenter: CodingEnvironmentPresenter
+    @ObservedObject var codingCoordinator: CodingCoordinator
     @ObservedObject var debugLogStore: DebugLogStore
     let onBack: () -> Void
-    @State var showProblemPicker = false
-    @State var showProblemSidebar = false
-    @State var detailTab: ProblemDetailTab = .description
-    @State var isBottomPanelCollapsed = false
-    @State var isShowingDebugLogs = false
     @StateObject var focusPresenter = FocusPresenter()
 
     private let focusTimer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
@@ -31,31 +27,37 @@ struct CodingEnvironmentView: View {
                         .frame(width: rightWidth)
                 }
                 .overlay(alignment: .leading) {
-                    if showProblemSidebar {
+                    if codingCoordinator.isProblemSidebarShown {
                         problemSidebar
                             .frame(width: 280)
                             .transition(.move(edge: .leading))
                             .zIndex(1)
                     }
                 }
-                .animation(.easeInOut(duration: 0.2), value: showProblemSidebar)
+                .animation(.easeInOut(duration: 0.2), value: codingCoordinator.isProblemSidebarShown)
             }
         }
         .background(Color.appGray900)
         .sheet(isPresented: $presenter.showSubmissionTagPrompt) {
             submissionTagSheet
         }
-        .sheet(isPresented: $isShowingDebugLogs) {
-            DebugLogView(
-                store: debugLogStore,
-                onClose: { isShowingDebugLogs = false }
-            )
+        .sheet(item: $codingCoordinator.activeSheet) { sheet in
+            switch sheet {
+            case .debugLogs:
+                DebugLogView(
+                    store: debugLogStore,
+                    onClose: { codingCoordinator.dismissSheet() }
+                )
+            case .submissionTag:
+                EmptyView()
+            }
         }
         .onAppear {
             presenter.ensureProblemSelection()
             startFocusIfNeeded()
         }
         .onChange(of: presenter.selectedProblem?.id) { _, _ in
+            codingCoordinator.resetForNewProblem()
             startFocusIfNeeded(forceRestart: true)
         }
         .onReceive(focusTimer) { _ in

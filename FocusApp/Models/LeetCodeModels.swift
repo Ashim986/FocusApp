@@ -133,6 +133,7 @@ struct LeetCodeGraphQLQuestion: Decodable {
     let difficulty: String
     let codeSnippets: [LeetCodeRestCodeSnippet]
     let metaData: String?
+    let questionId: String?
 }
 
 struct LeetCodeMetaData: Decodable {

@@ -30,7 +30,8 @@ extension LeetCodeRestClient {
                 sampleTestCase: response.sampleTestCase,
                 difficulty: response.difficulty.isEmpty ? "Unknown" : response.difficulty,
                 codeSnippets: snippets,
-                metaData: response.metaData
+                metaData: response.metaData,
+                questionId: nil
             )
         } catch {
             // Fall through to GraphQL fallback
@@ -72,7 +73,8 @@ extension LeetCodeRestClient {
             sampleTestCase: sampleTestCase,
             difficulty: difficulty.isEmpty ? "Unknown" : difficulty,
             codeSnippets: snippets,
-            metaData: metaData
+            metaData: metaData,
+            questionId: primary.questionId ?? fallback.questionId
         )
     }
 }

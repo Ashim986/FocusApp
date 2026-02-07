@@ -202,9 +202,11 @@ extension DataJourneyView {
                 .disabled(currentPlaybackIndex >= playbackEvents.count - 1)
             }
 
-            Text(stepLabel(for: playbackEvents[currentPlaybackIndex]))
-                .font(.system(size: textSize, weight: .semibold))
-                .foregroundColor(Color.appGray300)
+            if playbackEvents.indices.contains(currentPlaybackIndex) {
+                Text(stepLabel(for: playbackEvents[currentPlaybackIndex]))
+                    .font(.system(size: textSize, weight: .semibold))
+                    .foregroundColor(Color.appGray300)
+            }
 
             Spacer()
 

@@ -6,17 +6,26 @@ final class CodingEnvironmentInteractor {
     private let leetCodeClient: LeetCodeClientProtocol
     private let executionService: CodeExecuting
     private let solutionStore: SolutionProviding
+    private let submissionService: LeetCodeSubmissionService
+    private let manifestStore: ProblemManifestStore
+    private let aiTestCaseStore: AITestCaseStore
 
     init(
         appStore: AppStateStore,
         leetCodeClient: LeetCodeClientProtocol,
         executionService: CodeExecuting,
-        solutionStore: SolutionProviding
+        solutionStore: SolutionProviding,
+        submissionService: LeetCodeSubmissionService,
+        manifestStore: ProblemManifestStore = .shared,
+        aiTestCaseStore: AITestCaseStore = AITestCaseStore()
     ) {
         self.appStore = appStore
         self.leetCodeClient = leetCodeClient
         self.executionService = executionService
         self.solutionStore = solutionStore
+        self.submissionService = submissionService
+        self.manifestStore = manifestStore
+        self.aiTestCaseStore = aiTestCaseStore
     }
 
     func todaysProblems() -> [Problem] {
@@ -75,5 +84,57 @@ final class CodingEnvironmentInteractor {
             return nil
         }
         return solutionStore.solution(for: slug)
+    }
+
+    // MARK: - LeetCode Auth + Submission
+
+    func leetCodeAuth() -> LeetCodeAuthSession? {
+        appStore.leetCodeAuth()
+    }
+
+    func submitToLeetCode(
+        code: String,
+        language: ProgrammingLanguage,
+        slug: String,
+        questionId: String
+    ) async throws -> LeetCodeSubmissionCheck {
+        guard let auth = appStore.leetCodeAuth() else {
+            throw LeetCodeSubmissionError.missingAuth
+        }
+        return try await submissionService.submit(
+            code: code,
+            language: language,
+            slug: slug,
+            questionId: questionId,
+            auth: auth
+        )
+    }
+
+    // MARK: - AI Test Cases
+
+    func testCaseProvider() -> (any TestCaseAIProviding)? {
+        SolutionAIServiceFactory.makeTestCaseProvider(from: appStore.data)
+    }
+
+    func manifestProblem(for slug: String) -> ManifestProblem? {
+        manifestStore.problem(for: slug)
+    }
+
+    func cachedAITestCases(for slug: String) -> [SolutionTestCase] {
+        aiTestCaseStore.testCases(for: slug)
+    }
+
+    func saveAITestCases(
+        _ testCases: [SolutionTestCase],
+        for slug: String,
+        leetCodeNumber: Int?,
+        questionId: String?
+    ) {
+        aiTestCaseStore.save(
+            testCases: testCases,
+            for: slug,
+            leetCodeNumber: leetCodeNumber,
+            questionId: questionId
+        )
     }
 }

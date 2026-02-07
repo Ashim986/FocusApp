@@ -82,6 +82,14 @@ struct ModernTestCaseView: View {
             }
         }
         .frame(height: isCollapsed ? 36 : 180)
+        .onChange(of: presenter.testCases.map(\.id)) { _, _ in
+            if selectedTestIndex >= presenter.testCases.count {
+                selectedTestIndex = 0
+            }
+        }
+        .onChange(of: presenter.selectedProblem?.id) { _, _ in
+            selectedTestIndex = 0
+        }
     }
 
     private func testCaseTab(index: Int, testCase: TestCase) -> some View {
@@ -120,9 +128,12 @@ struct ModernTestCaseView: View {
     }
 
     private func testCaseContent(index: Int) -> some View {
+        guard presenter.testCases.indices.contains(index) else {
+            return AnyView(EmptyView())
+        }
         let testCase = presenter.testCases[index]
 
-        return ScrollView {
+        return AnyView(ScrollView {
             VStack(alignment: .leading, spacing: 12) {
                 VStack(alignment: .leading, spacing: 4) {
                     Text(L10n.Coding.Testcase.inputLabel)
@@ -169,6 +180,6 @@ struct ModernTestCaseView: View {
             }
             .padding(10)
         }
-        .background(Color.appGray900)
+        .background(Color.appGray900))
     }
 }

@@ -17,7 +17,7 @@ extension TodayView {
                 Spacer()
 
                 Button(action: {
-                    showCodeEnvironment = true
+                    onOpenCodingEnvironment?()
                 }, label: {
                     HStack(spacing: 6) {
                         Image(systemName: "chevron.left.slash.chevron.right")

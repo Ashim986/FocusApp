@@ -84,6 +84,19 @@ extension TraceTree {
     }
 }
 
+struct TraceTrieNode: Equatable {
+    let id: String
+    let character: String
+    let isEnd: Bool
+    let children: [String]
+}
+
+struct TraceTrie: Equatable {
+    let nodes: [TraceTrieNode]
+    let rootId: String?
+    let isTruncated: Bool
+}
+
 indirect enum TraceValue: Equatable {
     case null
     case bool(Bool)
@@ -95,6 +108,7 @@ indirect enum TraceValue: Equatable {
     case listPointer(String)
     case tree(TraceTree)
     case treePointer(String)
+    case trie(TraceTrie)
     case typed(String, TraceValue)
 
     static func from(json: Any) -> TraceValue {
@@ -130,6 +144,7 @@ extension TraceValue {
         return nil
     }
 
+    // swiftlint:disable:next cyclomatic_complexity
     fileprivate static func typedValue(from dictValue: [String: Any]) -> TraceValue? {
         guard let type = dictValue["__type"] as? String else { return nil }
         switch type.lowercased() {
@@ -166,6 +181,11 @@ extension TraceValue {
             if let id = dictValue["id"] as? String {
                 return .treePointer(id)
             }
+        case "trie":
+            let nodes = TraceValue.trieNodes(from: dictValue["nodes"])
+            let rootId = dictValue["rootId"] as? String
+            let isTruncated = (dictValue["truncated"] as? Bool) ?? false
+            return .trie(TraceTrie(nodes: nodes, rootId: rootId, isTruncated: isTruncated))
         default:
             if let value = dictValue["value"] {
                 return .typed(type, TraceValue.from(json: value))
@@ -193,6 +213,18 @@ extension TraceValue {
                   let id = dict["id"] as? String else { return nil }
             let value = dict["value"].map { TraceValue.from(json: $0) } ?? .null
             return TraceListNode(id: id, value: value)
+        }
+    }
+
+    fileprivate static func trieNodes(from value: Any?) -> [TraceTrieNode] {
+        guard let rawNodes = value as? [Any] else { return [] }
+        return rawNodes.compactMap { entry in
+            guard let dict = entry as? [String: Any],
+                  let id = dict["id"] as? String else { return nil }
+            let character = (dict["character"] as? String) ?? (dict["char"] as? String) ?? ""
+            let isEnd = (dict["isEnd"] as? Bool) ?? false
+            let children = (dict["children"] as? [String]) ?? []
+            return TraceTrieNode(id: id, character: character, isEnd: isEnd, children: children)
         }
     }
 

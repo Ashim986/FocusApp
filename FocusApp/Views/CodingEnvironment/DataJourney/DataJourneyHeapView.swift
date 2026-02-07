@@ -100,14 +100,12 @@ struct HeapView: View {
 
     /// Convert array-index-based pointers to tree-node-ID-based pointers.
     private func treePointers(for tree: TraceTree) -> [PointerMarker] {
-        pointers.compactMap { pointer in
+        pointers.compactMap { pointer -> PointerMarker? in
             guard let index = pointer.index else { return nil }
             let nodeId = "i\(index)"
             guard tree.nodes.contains(where: { $0.id == nodeId }) else { return nil }
             return PointerMarker(
                 name: pointer.name,
-                color: pointer.color,
-                index: nil,
                 nodeId: nodeId
             )
         }

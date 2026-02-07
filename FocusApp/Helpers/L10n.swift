@@ -116,6 +116,45 @@ enum L10n {
         static var stop: String {
             tr("coding.stop")
         }
+        static func submitAiGenerationFailed(_ args: CVarArg...) -> String {
+            tr("coding.submit_ai_generation_failed", args)
+        }
+        static func submitAiTestsFailed(_ args: CVarArg...) -> String {
+            tr("coding.submit_ai_tests_failed", args)
+        }
+        static func submitFailed(_ args: CVarArg...) -> String {
+            tr("coding.submit_failed", args)
+        }
+        static var submitGeneratingTests: String {
+            tr("coding.submit_generating_tests")
+        }
+        static var submitMissingAIProvider: String {
+            tr("coding.submit_missing_ai_provider")
+        }
+        static var submitMissingAuth: String {
+            tr("coding.submit_missing_auth")
+        }
+        static var submitMissingManifest: String {
+            tr("coding.submit_missing_manifest")
+        }
+        static var submitMissingProblem: String {
+            tr("coding.submit_missing_problem")
+        }
+        static var submitMissingQuestionId: String {
+            tr("coding.submit_missing_question_id")
+        }
+        static var submitMissingReferenceSolution: String {
+            tr("coding.submit_missing_reference_solution")
+        }
+        static func submitResult(_ args: CVarArg...) -> String {
+            tr("coding.submit_result", args)
+        }
+        static func submitResultWithCounts(_ args: CVarArg...) -> String {
+            tr("coding.submit_result_with_counts", args)
+        }
+        static func submitRunningAiTests(_ args: CVarArg...) -> String {
+            tr("coding.submit_running_ai_tests", args)
+        }
         static var submissionTagBody: String {
             tr("coding.submission_tag_body")
         }
@@ -617,6 +656,33 @@ enum L10n {
         static var aiProviderLabel: String {
             tr("settings.ai_provider_label")
         }
+        static var aiTestCasesExport: String {
+            tr("settings.ai_test_cases_export")
+        }
+        static var aiTestCasesFooter: String {
+            tr("settings.ai_test_cases_footer")
+        }
+        static var aiTestCasesHeader: String {
+            tr("settings.ai_test_cases_header")
+        }
+        static var aiTestCasesEmpty: String {
+            tr("settings.ai_test_cases_empty")
+        }
+        static func aiTestCasesPath(_ args: CVarArg...) -> String {
+            tr("settings.ai_test_cases_path", args)
+        }
+        static func aiTestCasesSummary(_ args: CVarArg...) -> String {
+            tr("settings.ai_test_cases_summary", args)
+        }
+        static var aiTestCasesTitle: String {
+            tr("settings.ai_test_cases_title")
+        }
+        static func aiTestCasesUpdated(_ args: CVarArg...) -> String {
+            tr("settings.ai_test_cases_updated", args)
+        }
+        static var aiTestCasesView: String {
+            tr("settings.ai_test_cases_view")
+        }
         static var allHabitsDone: String {
             tr("settings.all_habits_done")
         }
@@ -647,11 +713,38 @@ enum L10n {
         static var habitRemindersHeader: String {
             tr("settings.habit_reminders_header")
         }
+        static var close: String {
+            tr("settings.close")
+        }
         static var leetcodeFooter: String {
             tr("settings.leetcode_footer")
         }
         static var leetcodeHeader: String {
             tr("settings.leetcode_header")
+        }
+        static var leetcodeLoginBody: String {
+            tr("settings.leetcode_login_body")
+        }
+        static var leetcodeLoginButton: String {
+            tr("settings.leetcode_login_button")
+        }
+        static var leetcodeLoginSheetBody: String {
+            tr("settings.leetcode_login_sheet_body")
+        }
+        static var leetcodeLoginSheetTitle: String {
+            tr("settings.leetcode_login_sheet_title")
+        }
+        static var leetcodeLoginStatusConnected: String {
+            tr("settings.leetcode_login_status_connected")
+        }
+        static var leetcodeLoginStatusDisconnected: String {
+            tr("settings.leetcode_login_status_disconnected")
+        }
+        static var leetcodeLoginTitle: String {
+            tr("settings.leetcode_login_title")
+        }
+        static var leetcodeLogoutButton: String {
+            tr("settings.leetcode_logout_button")
         }
         static var leetcodeUsername: String {
             tr("settings.leetcode_username")

@@ -532,7 +532,7 @@ final class PythonTraceTests: XCTestCase {
             paramsCount: 2,
             arguments: [
                 "    arg0 = _to_int(args[0])",
-                "    arg1 = _to_int(args[1])",
+                "    arg1 = _to_int(args[1])"
             ],
             callLine: "    result = solution.solve(arg0, arg1)",
             outputExpression: "result",
@@ -563,7 +563,7 @@ final class PythonTraceTests: XCTestCase {
             paramsCount: 2,
             arguments: [
                 "    arg0 = _to_int(args[0])",
-                "    arg1 = _to_int(args[1])",
+                "    arg1 = _to_int(args[1])"
             ],
             callLine: "    result = solution.solve(arg0, arg1)",
             outputExpression: "result",
@@ -581,7 +581,7 @@ final class PythonTraceTests: XCTestCase {
             arguments: [
                 "    arg0 = _to_int(args[0])",
                 "    arg1 = _to_int(args[1])",
-                "    arg2 = _to_int(args[2])",
+                "    arg2 = _to_int(args[2])"
             ],
             callLine: "    result = solution.solve(arg0, arg1, arg2)",
             outputExpression: "result",

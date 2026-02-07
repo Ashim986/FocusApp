@@ -25,6 +25,8 @@ struct TraceValueView: View {
             treeView(tree)
         case .treePointer:
             bubble(for: .string("ptr"))
+        case .trie:
+            bubble(for: .string("trie"))
         case .typed(let type, let inner):
             typedView(type: type, value: inner)
         }

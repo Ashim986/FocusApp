@@ -22,21 +22,9 @@ enum Tab: CaseIterable {
     }
 }
 
-struct ContentRouter {
-    let makePlan: (_ onSelectProblem: @escaping (Problem, Int, Int) -> Void) -> PlanView
-    let makeToday: (
-        _ showCodeEnvironment: Binding<Bool>,
-        _ onSelectProblem: @escaping (Problem, Int, Int) -> Void
-    ) -> TodayView
-    let makeStats: () -> StatsView
-    let makeCoding: (_ isPresented: Binding<Bool>) -> CodingEnvironmentView
-    let selectProblem: (_ problem: Problem, _ day: Int, _ index: Int) -> Void
-}
-
 struct ContentView: View {
     @ObservedObject var presenter: ContentPresenter
-    let router: ContentRouter
-    @State private var showCodeEnvironment = false
+    @ObservedObject var coordinator: ContentCoordinator
 
     var body: some View {
         NavigationStack {
@@ -45,32 +33,49 @@ struct ContentView: View {
                     header
 
                     Group {
-                        switch presenter.selectedTab {
+                        switch coordinator.selectedTab {
                         case .plan:
-                            router.makePlan(openCodingEnvironment)
+                            PlanView(
+                                presenter: coordinator.container.planPresenter,
+                                onSelectProblem: { problem, day, index in
+                                    coordinator.openCodingEnvironment(
+                                        problem: problem, day: day, index: index
+                                    )
+                                }
+                            )
                         case .today:
-                            router.makeToday($showCodeEnvironment, openCodingEnvironment)
+                            TodayView(
+                                presenter: coordinator.container.todayPresenter,
+                                onOpenCodingEnvironment: {
+                                    coordinator.openCodingEnvironmentGeneric()
+                                },
+                                onSelectProblem: { problem, day, index in
+                                    coordinator.openCodingEnvironment(
+                                        problem: problem, day: day, index: index
+                                    )
+                                }
+                            )
                         case .stats:
-                            router.makeStats()
+                            StatsView(presenter: coordinator.container.statsPresenter)
                         }
                     }
                 }
-                .allowsHitTesting(!showCodeEnvironment)
+                .allowsHitTesting(!coordinator.isCodingPresented)
 
-                if showCodeEnvironment {
-                    router.makeCoding($showCodeEnvironment)
-                        .transition(.move(edge: .trailing))
-                        .zIndex(1)
+                if coordinator.isCodingPresented {
+                    CodingEnvironmentView(
+                        presenter: coordinator.container.codingEnvironmentPresenter,
+                        codingCoordinator: coordinator.codingCoordinator,
+                        debugLogStore: coordinator.container.debugLogStore,
+                        onBack: { coordinator.closeCodingEnvironment() }
+                    )
+                    .transition(.move(edge: .trailing))
+                    .zIndex(1)
                 }
             }
-            .animation(.easeInOut(duration: 0.3), value: showCodeEnvironment)
+            .animation(.easeInOut(duration: 0.3), value: coordinator.isCodingPresented)
             .onAppear { presenter.onAppear() }
         }
-    }
-
-    private func openCodingEnvironment(_ problem: Problem, _ day: Int, _ index: Int) {
-        router.selectProblem(problem, day, index)
-        showCodeEnvironment = true
     }
 
     private var header: some View {
@@ -136,7 +141,7 @@ struct ContentView: View {
 
     private func tabButton(_ tab: Tab) -> some View {
         Button(action: {
-            presenter.selectedTab = tab
+            coordinator.selectTab(tab)
         }, label: {
             HStack(spacing: 6) {
                 Image(systemName: tab.icon)
@@ -145,17 +150,17 @@ struct ContentView: View {
                 Text(tab.title)
                     .font(.system(
                         size: 13,
-                        weight: presenter.selectedTab == tab ? .semibold : .medium
+                        weight: coordinator.selectedTab == tab ? .semibold : .medium
                     ))
             }
-            .foregroundColor(presenter.selectedTab == tab ? Color.appPurple : Color.appGray500)
+            .foregroundColor(coordinator.selectedTab == tab ? Color.appPurple : Color.appGray500)
             .padding(.horizontal, 16)
             .padding(.vertical, 8)
             .background(
                 RoundedRectangle(cornerRadius: 8)
-                    .fill(presenter.selectedTab == tab ? Color.white : Color.clear)
+                    .fill(coordinator.selectedTab == tab ? Color.white : Color.clear)
                     .shadow(
-                        color: presenter.selectedTab == tab ? Color.black.opacity(0.05) : Color.clear,
+                        color: coordinator.selectedTab == tab ? Color.black.opacity(0.05) : Color.clear,
                         radius: 2,
                         x: 0,
                         y: 1

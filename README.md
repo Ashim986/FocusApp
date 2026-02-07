@@ -93,6 +93,13 @@ FocusApp/
     Services/
     Stores/
     Support/
+  FocusAppIntegrationTests/   # Integration tests (see INTEGRATION_TESTS.md)
+    PageObjects/
+    Flows/
+    Fixtures/
+    Support/
+    Tests/
+  INTEGRATION_TESTS.md
 ```
 
 ## Known Limitations
@@ -107,6 +114,8 @@ Run tests with coverage:
 ```bash
 xcodebuild test -project FocusApp.xcodeproj -scheme FocusApp -destination 'platform=macOS' -enableCodeCoverage YES
 ```
+
+Integration test strategy, structure, and execution are documented in `INTEGRATION_TESTS.md`.
 
 Inspect coverage:
 ```bash

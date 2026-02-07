@@ -19,6 +19,7 @@ extension DataJourneyStructureCanvasView {
             if handleTyped(value: value, fallback: &fallback) { continue }
             if handleArray(value: value, name: key, fallback: &fallback) { continue }
             if handleTree(value: value, fallback: &fallback) { continue }
+            if handleTrie(value: value, fallback: &fallback) { continue }
             if handleObject(value: value, fallback: &fallback) { continue }
             if handleString(value: value, fallback: &fallback) { continue }
         }
@@ -54,6 +55,18 @@ extension DataJourneyStructureCanvasView {
             fallback = fallback ?? .queue(typedItems)
             return true
         }
+        if lowered == "minheap" || lowered == "min-heap" || lowered == "min_heap" {
+            fallback = fallback ?? .heap(typedItems, isMinHeap: true)
+            return true
+        }
+        if lowered == "maxheap" || lowered == "max-heap" || lowered == "max_heap" {
+            fallback = fallback ?? .heap(typedItems, isMinHeap: false)
+            return true
+        }
+        if lowered == "heap" {
+            fallback = fallback ?? .heap(typedItems, isMinHeap: true)
+            return true
+        }
         return false
     }
 
@@ -64,6 +77,11 @@ extension DataJourneyStructureCanvasView {
     ) -> Bool {
         guard case .array(let items) = value else { return false }
         let loweredName = name.lowercased()
+        if loweredName.contains("heap") {
+            let isMin = loweredName.contains("min")
+            fallback = fallback ?? .heap(items, isMinHeap: isMin || !loweredName.contains("max"))
+            return true
+        }
         if loweredName.contains("stack") {
             fallback = fallback ?? .stack(items)
             return true
@@ -97,6 +115,15 @@ extension DataJourneyStructureCanvasView {
         return true
     }
 
+    private static func handleTrie(
+        value: TraceValue,
+        fallback: inout TraceStructure?
+    ) -> Bool {
+        guard case .trie(let trieData) = value else { return false }
+        fallback = fallback ?? .trie(trieData)
+        return true
+    }
+
     private static func handleObject(
         value: TraceValue,
         fallback: inout TraceStructure?
@@ -111,8 +138,9 @@ extension DataJourneyStructureCanvasView {
         fallback: inout TraceStructure?
     ) -> Bool {
         guard case .string(let stringValue) = value else { return false }
-        let items = stringValue.map { TraceValue.string(String($0)) }
-        fallback = fallback ?? .array(items)
+        guard stringValue.count >= 2 else { return false }
+        let chars = stringValue.map { TraceValue.string(String($0)) }
+        fallback = fallback ?? .stringSequence(stringValue, chars)
         return true
     }
 

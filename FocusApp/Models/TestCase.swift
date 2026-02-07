@@ -98,4 +98,5 @@ struct QuestionContent {
     let difficulty: String
     let codeSnippets: [String: String]  // langSlug -> code
     let metaData: String?
+    let questionId: String?
 }

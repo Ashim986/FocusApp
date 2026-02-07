@@ -5,15 +5,18 @@ final class SettingsInteractor {
     private let notificationManager: NotificationManaging
     private let appStore: AppStateStore
     private let leetCodeSync: LeetCodeSyncInteractor
+    private let aiTestCaseStore: AITestCaseStore
 
     init(
         notificationManager: NotificationManaging,
         appStore: AppStateStore,
-        leetCodeSync: LeetCodeSyncInteractor
+        leetCodeSync: LeetCodeSyncInteractor,
+        aiTestCaseStore: AITestCaseStore = AITestCaseStore()
     ) {
         self.notificationManager = notificationManager
         self.appStore = appStore
         self.leetCodeSync = leetCodeSync
+        self.aiTestCaseStore = aiTestCaseStore
     }
 
     func loadSettings() -> NotificationSettings {
@@ -72,5 +75,29 @@ final class SettingsInteractor {
 
     func updateAIProviderSettings(kind: AIProviderKind, apiKey: String, model: String) {
         appStore.updateAIProviderSettings(kind: kind.rawValue, apiKey: apiKey, model: model)
+    }
+
+    func currentLeetCodeAuth() -> LeetCodeAuthSession? {
+        appStore.leetCodeAuth()
+    }
+
+    func updateLeetCodeAuth(_ auth: LeetCodeAuthSession) {
+        appStore.updateLeetCodeAuth(auth)
+    }
+
+    func clearLeetCodeAuth() {
+        appStore.clearLeetCodeAuth()
+    }
+
+    func aiTestCaseSummary() -> AITestCaseStoreSummary {
+        aiTestCaseStore.summary()
+    }
+
+    func aiTestCaseRawJSON() -> String? {
+        aiTestCaseStore.rawJSONString()
+    }
+
+    func aiTestCaseFileURL() -> URL {
+        aiTestCaseStore.locationURL
     }
 }

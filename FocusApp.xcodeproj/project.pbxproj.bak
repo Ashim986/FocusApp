@@ -1,0 +1,2002 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		C6D2A91F4E3F78068E5FC3D2 /* DataJourneyDiffTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5A1B82C3D4E69015F3E9D6B /* DataJourneyDiffTests.swift */; };
+		D4F6A81C5D9B72034G5FB3D1 /* AutoInstrumenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3E5D72B4C8A61023F4E7A9C /* AutoInstrumenter.swift */; };
+		A2C3B91E4D2E68057E4FB2C1 /* DataJourneyDiff.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1D4F82A3B7C59014F2E8D5A /* DataJourneyDiff.swift */; };
+		D4F6C82E1A3B79054F2E8C3A /* PythonTraceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7E3A91F4C2D58067E3FA1B2 /* PythonTraceTests.swift */; };
+		F2CC59FD5FC545F3B90A5A4E /* AsyncTestHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F4F15A2AF5C43EDB9A7208F /* AsyncTestHelpers.swift */; };
+		4FBB1082F33E4E4A95BE31B5 /* TestDoubles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7940ADE6E7204461B732F325 /* TestDoubles.swift */; };
+		6722A5727A874069AB700567 /* IntegrationTestHarness.swift in Sources */ = {isa = PBXBuildFile; fileRef = 088F06E4E37F4054B9F8B7D0 /* IntegrationTestHarness.swift */; };
+		003478FA59F742F5AB24A475 /* TestDateFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C8C538616234F6FA1C82DC4 /* TestDateFactory.swift */; };
+		72A2D77EBFAF472391554007 /* TestProblemFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B2C3FDFF70A43CBBD710B1F /* TestProblemFactory.swift */; };
+		9FC1D39FFAD14981AF2C355F /* TestContentFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5F667DEF8AE4203AA494758 /* TestContentFactory.swift */; };
+		9A2747CA94D84A12B757C379 /* CodingEnvironmentPages.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF527610D1FD42B487521B26 /* CodingEnvironmentPages.swift */; };
+		390878BC428D4086900184B7 /* CodingEnvironmentFlows.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E13C921E8B943FB93121244 /* CodingEnvironmentFlows.swift */; };
+		C042EC4BA2814C58BFBCCFB4 /* CodingEnvironmentIntegrationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3BD4A184CA04CD3AF8B4F19 /* CodingEnvironmentIntegrationTests.swift */; };
+		03937CED56E14BF681F06586 /* LeetCodeRestClient+Requests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2D70A846ECA406EAD5C00EA /* LeetCodeRestClient+Requests.swift */; };
+		074E2BCBD6F74E9B99BF53E4 /* CodingEnvironmentPresenterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29FB46B09F3E414695FCE546 /* CodingEnvironmentPresenterTests.swift */; };
+		083FCCE4C2EE974E745D0F9C /* ProblemManifestStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F9FB7FF7D18DD14E20106F2 /* ProblemManifestStore.swift */; };
+		08B22C296990445EB7C8B796 /* DebugLogView+Content.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE7369E0350240A3AEA56363 /* DebugLogView+Content.swift */; };
+		0A1BA9D5346842E6BF0C6DBB /* ProgrammingLanguageTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72999C0BC3F3402687B3BB9E /* ProgrammingLanguageTests.swift */; };
+		0B151C1E36FF47B2BB934C73 /* DataJourneyStructureCanvasView+CombinedList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7268D1DCFE4143A88A1746F9 /* DataJourneyStructureCanvasView+CombinedList.swift */; };
+		0C10B0596DC14FCC8EC377F2 /* LeetCodeTemplateBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29631B7C8972461E8CFE5A4C /* LeetCodeTemplateBuilder.swift */; };
+		0F871AE1ABD84FF1841AD8A6 /* DataJourneyTreeGraphView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0587D0FFC3444B3BAF623ED6 /* DataJourneyTreeGraphView.swift */; };
+		FAE34936781FB08DD3BC6A94 /* DataJourneyMatrixGridView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 053517450BF8C23F9B24B4F2 /* DataJourneyMatrixGridView.swift */; };
+		F7B2C93D5E4A81036G6HC4E2 /* DataJourneyHeapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8D3E71A4F5B92047H7ID5F3 /* DataJourneyHeapView.swift */; };
+		A5E4D82F6G5B93048H8JE6G4 /* DataJourneyStringSequenceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9F4E82B5G6C04159I9KF7H5 /* DataJourneyStringSequenceView.swift */; };
+		C6F5E93G7H6C04259J0LG8I6 /* DataJourneyTrieGraphView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0G6F93C8I7D15360K1MH9J7 /* DataJourneyTrieGraphView.swift */; };
+		E7G6F04H8I7D26471L2NI0K8 /* DataJourneyVariableTimeline.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1H7G15I9J8E37582M3OJ1L9 /* DataJourneyVariableTimeline.swift */; };
+		G2I8H16J0K9F48693N4PK2M0 /* DataJourneyFlowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = H3J9I27K1L0G59704O5QL3N1 /* DataJourneyFlowView.swift */; };
+		I4K0J38L2M1H60815P6RM4O2 /* DataJourneyComparisonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = J5L1K49M3N2I71926Q7SN5P3 /* DataJourneyComparisonView.swift */; };
+		111A709F246047A6AB319D04 /* CodingEnvironmentPresenter+ExecutionDiagnostics.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB829ACA59D542A1BAFB7E98 /* CodingEnvironmentPresenter+ExecutionDiagnostics.swift */; };
+		19D175AD93CC47759E0F6BCA /* ProcessRunState.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2C628C5EB52415F9AB50D7E /* ProcessRunState.swift */; };
+		1C9332DFB01F4B57805EC9A6 /* ExecutorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2C29BF0F588499DBE85FD5D /* ExecutorTests.swift */; };
+		1D29FED19302FE41B27B05C0 /* CodingEnvironmentSnippetSelectionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D92D1385DE9ECF6085B0EFAC /* CodingEnvironmentSnippetSelectionTests.swift */; };
+		1D57E79208E74453BD0275FC /* DataJourneyStructureDetectionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54AF08543519447B87977A9E /* DataJourneyStructureDetectionTests.swift */; };
+		1FDAC8DA41B44813A6128FF4 /* LeetCodeModelsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84B888743F7248DBA5F3A94F /* LeetCodeModelsTests.swift */; };
+		213754056157F7C69749A0C4 /* LeetCodeExecutionWrapperTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00747953C3ED4D3784EA4B98 /* LeetCodeExecutionWrapperTests.swift */; };
+		26B2211C5D33315D24B3D008 /* LeetCodeExecutionWrapperEdgeCaseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 867FE0756AF39CB9438B1288 /* LeetCodeExecutionWrapperEdgeCaseTests.swift */; };
+		21D1539A6F4B4DEEBC6A1924 /* CodingEnvironmentPresenter+ExecutionTrace.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8668759D89D46E6AFEFDB91 /* CodingEnvironmentPresenter+ExecutionTrace.swift */; };
+		299C1DCB1B9A47B7A808C51A /* SolutionApproachView+TestCases.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3990D61D6ADE47A184465754 /* SolutionApproachView+TestCases.swift */; };
+		345ABF38D5A6403F98251750 /* DebugLogView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 442A3E5BF10148F0B6B191C1 /* DebugLogView.swift */; };
+		3593EBC0C2634B2E949F8AC3 /* LeetCodeExecutionWrapper+TypeParsing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91545BFE73ED44268B3DC9E8 /* LeetCodeExecutionWrapper+TypeParsing.swift */; };
+		377053C695BA483995EC3E8C /* SolutionStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1E5AADCE4CF46FC8ECEDAC1 /* SolutionStoreTests.swift */; };
+		0D2575DAB1A573FCD705E7CA /* TopicSolutionModelsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D5CBCB82A24F473AA132CD0 /* TopicSolutionModelsTests.swift */; };
+		7D5E84A37E0A1AC32E2934A6 /* TopicSolutionStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C84350CE003789F809564AC4 /* TopicSolutionStoreTests.swift */; };
+		37F10CA80A0244568EB8BB77 /* DebugLogRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = A070BC5C8E654C24B432BBEF /* DebugLogRow.swift */; };
+		3A7F0B1E6B7E4B5A9A6F3E12 /* DataJourneyPointerMotionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C42E1B6E2A84B9E9D4E7D23 /* DataJourneyPointerMotionTests.swift */; };
+		3B6C3674D3C641F59EFAA0F4 /* CodingEnvironmentView+SidebarRows.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09ABF9970ACB4A2F8011CC20 /* CodingEnvironmentView+SidebarRows.swift */; };
+		3CF15D2918D44DE19C42C77C /* CodeEditorView+CoordinatorHighlightingSwift.swift in Sources */ = {isa = PBXBuildFile; fileRef = C970BACB7D254352948CFF1A /* CodeEditorView+CoordinatorHighlightingSwift.swift */; };
+		3FEA7F7554D2424C8706C6D8 /* LeetCodeRestClient+ProblemContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAB330A1AD40462BBD64A817 /* LeetCodeRestClient+ProblemContent.swift */; };
+		3FFCA891F2C84F28A935EB36 /* DataJourneyStructureCanvasView+Structure.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3EC2C34544F48628DBADAC2 /* DataJourneyStructureCanvasView+Structure.swift */; };
+		416DC1D624AC4D8C83D0820A /* LeetCodeNetworkingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AF2BC50D7A04A59A72BD4CC /* LeetCodeNetworkingTests.swift */; };
+		4A2814BAABFD4DCAAAFFD6F9 /* DebugLogView+Styles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E30623F430E4A7F84DE5C39 /* DebugLogView+Styles.swift */; };
+		4A4258A35DCA45AFB546E5A4 /* DebugLogView+Filters.swift in Sources */ = {isa = PBXBuildFile; fileRef = 779FDA23FDEA4F84865F4D50 /* DebugLogView+Filters.swift */; };
+		4C00121006CA4BA8AA4CB6ED /* DataJourneyGraphView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC393A6615DF41B0AA863A6E /* DataJourneyGraphView.swift */; };
+		4FD27FB3E21589771E1216D2 /* CodingEnvironmentTestSupport.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D88CF0FA93F63C2D827B118 /* CodingEnvironmentTestSupport.swift */; };
+		55C3B4ADCD3C450593E4212C /* NotificationManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65251E426E5243F79306F201 /* NotificationManagerTests.swift */; };
+		571D3D46E3FAFB7887E0E410 /* LeetCodeTemplateBuilderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7771295A59E81FAD37E80A4E /* LeetCodeTemplateBuilderTests.swift */; };
+		572EA792E3E940E0AC6DFC34 /* LeetCodeExecutionWrapper+PythonRunner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39FCBCC646DF4102AFB6EB95 /* LeetCodeExecutionWrapper+PythonRunner.swift */; };
+		3DBF10CF797F5158640DB139 /* LeetCodeExecutionWrapper+PythonTrace.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61EBAF88E89C2265C6E96CBA /* LeetCodeExecutionWrapper+PythonTrace.swift */; };
+		58F2001E816D4775D81926F7 /* CodingEnvironmentOutputNormalizationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 547FCC10780C70175DB6A578 /* CodingEnvironmentOutputNormalizationTests.swift */; };
+		5AD100ED084B4A999AEE1AA4 /* SwiftExecutor+Logging.swift in Sources */ = {isa = PBXBuildFile; fileRef = C47F33827B1A4CAAAF7ACC2C /* SwiftExecutor+Logging.swift */; };
+		5B87C0B6275146F8B726CA73 /* LeetCodeExecutionWrapper+Swift.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40DF70BDE518480BA3A08BE4 /* LeetCodeExecutionWrapper+Swift.swift */; };
+		5B9ADEFB983A4EF5AF6A67D2 /* ProcessRunnerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 085FEBCD150F43019CE9B529 /* ProcessRunnerTests.swift */; };
+		653A1BCD45DC478A8FA88001 /* CodingEnvironmentView+Sidebar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A4E0753FE4C4032A9C53AAA /* CodingEnvironmentView+Sidebar.swift */; };
+		665139E8C51F498995BE1303 /* LeetCodeExecutionWrapper+SignatureParsing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11B1220325C143EAA1510779 /* LeetCodeExecutionWrapper+SignatureParsing.swift */; };
+		6B40050EBF6E4B0B93331C19 /* DataJourneyTraceValueView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F16BF57E1EEC4D76BA0E66B2 /* DataJourneyTraceValueView.swift */; };
+		6BF0AA24F0624D879DACE0A3 /* LeetCodeRestClient+GraphQL.swift in Sources */ = {isa = PBXBuildFile; fileRef = D994FDB1D9524F1E880ED0BF /* LeetCodeRestClient+GraphQL.swift */; };
+		6D3A4C30A09F40249E1C1523 /* DataJourneySequenceBubbleRow+Layout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C57D54B89C74BEAB7CF8701 /* DataJourneySequenceBubbleRow+Layout.swift */; };
+		6EEBF43AE0B646038DE6BD8D /* LeetCodeExecutionWrapper+SwiftRunner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4792F237BA3A45A8940718F1 /* LeetCodeExecutionWrapper+SwiftRunner.swift */; };
+		73808C4E9624456A861FC287 /* CodeEditorView+CoordinatorHighlightingPython.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21780F4451B945FAB9CEFE94 /* CodeEditorView+CoordinatorHighlightingPython.swift */; };
+		76E45EE927B7400B8F88BED1 /* LeetCodeSyncInteractorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6568D60DBB854206882E1ECE /* LeetCodeSyncInteractorTests.swift */; };
+		7A54FF72EBC246CE8251C431 /* CodingEnvironmentPresenter+ExecutionOutput.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9046CC2CE464F6CAA10E00D /* CodingEnvironmentPresenter+ExecutionOutput.swift */; };
+		7D1847D18492434F83E7148A /* LeetCodeExecutionWrapper+Python.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6BCD363384E4C13B37495DE /* LeetCodeExecutionWrapper+Python.swift */; };
+		81CB68C852BA4D08900D8C64 /* PlanCalendarTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F4280AC0DB14B018B8F3B43 /* PlanCalendarTests.swift */; };
+		865EEC6EABBD4E7AB00F78AA /* CodeExecutionServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09B826590C1C4423B22A0B64 /* CodeExecutionServiceTests.swift */; };
+		91FDD3EABEDF479194B14E55 /* ProcessOutputCollector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C27ED53D78F405EA1AFB969 /* ProcessOutputCollector.swift */; };
+		9A6C1EB57AD94E4B8255D78A /* DataJourneyStructureCanvasView+Labels.swift in Sources */ = {isa = PBXBuildFile; fileRef = FEB3C86A7CC34CB9B7365800 /* DataJourneyStructureCanvasView+Labels.swift */; };
+		A10001001 /* FocusApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002001 /* FocusApp.swift */; };
+		A10001002 /* DSAPlan.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002002 /* DSAPlan.swift */; };
+		A10001003 /* AppData.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002003 /* AppData.swift */; };
+		A10001004 /* DataStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002004 /* DataStore.swift */; };
+		A10001005 /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002005 /* Colors.swift */; };
+		A10001006 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002006 /* ContentView.swift */; };
+		A10001007 /* PlanView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002007 /* PlanView.swift */; };
+		A10001008 /* TodayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002008 /* TodayView.swift */; };
+		A10001009 /* StatsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002009 /* StatsView.swift */; };
+		A1000100A /* FocusOverlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000200A /* FocusOverlay.swift */; };
+		A1000100B /* DayCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000200B /* DayCard.swift */; };
+		A1000100C /* ProblemRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000200C /* ProblemRow.swift */; };
+		A1000100D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A1000200D /* Assets.xcassets */; };
+		A1000100E /* NotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000200F /* NotificationManager.swift */; };
+		A1000100F /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002010 /* SettingsView.swift */; };
+		A10001010 /* SharedDataStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002011 /* SharedDataStore.swift */; };
+		A10001011 /* OutputPanelView+Sections.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002012 /* OutputPanelView+Sections.swift */; };
+		A10001012 /* ConsoleOutputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002013 /* ConsoleOutputView.swift */; };
+		A10001013 /* LeetCodeService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002014 /* LeetCodeService.swift */; };
+		A10001014 /* AppContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002015 /* AppContainer.swift */; };
+		A10001015 /* ToolbarWidgetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002016 /* ToolbarWidgetView.swift */; };
+		A10001016 /* TestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002017 /* TestCase.swift */; };
+		A10001017 /* CodeExecutionService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002018 /* CodeExecutionService.swift */; };
+		A10001018 /* CodingEnvironmentPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002019 /* CodingEnvironmentPresenter.swift */; };
+		A10001019 /* CodeEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000201A /* CodeEditorView.swift */; };
+		A1000101A /* OutputPanelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000201B /* OutputPanelView.swift */; };
+		A1000101B /* ProblemSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000201C /* ProblemSelectionView.swift */; };
+		A1000101C /* CodingEnvironmentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000201D /* CodingEnvironmentView.swift */; };
+		A1000101D /* ProcessRunner.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000201E /* ProcessRunner.swift */; };
+		A1000101E /* LanguageExecutor.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000201F /* LanguageExecutor.swift */; };
+		A1000101F /* SwiftExecutor.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002020 /* SwiftExecutor.swift */; };
+		A10001020 /* PythonExecutor.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002021 /* PythonExecutor.swift */; };
+		A10001021 /* ContentInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002022 /* ContentInteractor.swift */; };
+		A10001022 /* ContentPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002023 /* ContentPresenter.swift */; };
+		A10001023 /* PlanInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002024 /* PlanInteractor.swift */; };
+		A10001024 /* PlanPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002025 /* PlanPresenter.swift */; };
+		A10001025 /* TodayInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002026 /* TodayInteractor.swift */; };
+		A10001026 /* TodayPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002027 /* TodayPresenter.swift */; };
+		A10001027 /* StatsInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002028 /* StatsInteractor.swift */; };
+		A10001028 /* StatsPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002029 /* StatsPresenter.swift */; };
+		A10001029 /* SettingsInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002030 /* SettingsInteractor.swift */; };
+		A10001030 /* SettingsPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002031 /* SettingsPresenter.swift */; };
+		A10001031 /* ToolbarWidgetInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002032 /* ToolbarWidgetInteractor.swift */; };
+		A10001032 /* ToolbarWidgetPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002033 /* ToolbarWidgetPresenter.swift */; };
+		A10001033 /* FocusInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002034 /* FocusInteractor.swift */; };
+		A10001034 /* FocusPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002035 /* FocusPresenter.swift */; };
+		A10001035 /* CodingEnvironmentInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002036 /* CodingEnvironmentInteractor.swift */; };
+		A10001036 /* CodeEditorView+Coordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002037 /* CodeEditorView+Coordinator.swift */; };
+		A10001037 /* CodeEditorView+CoordinatorInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002038 /* CodeEditorView+CoordinatorInput.swift */; };
+		A10001038 /* CodeEditorView+CoordinatorHighlighting.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002039 /* CodeEditorView+CoordinatorHighlighting.swift */; };
+		A10001039 /* SettingsView+Bindings.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002040 /* SettingsView+Bindings.swift */; };
+		A10001040 /* SettingsView+Validation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002041 /* SettingsView+Validation.swift */; };
+		A10001041 /* SettingsView+Preview.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002042 /* SettingsView+Preview.swift */; };
+		A10001042 /* TodayView+Sections.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002043 /* TodayView+Sections.swift */; };
+		A10001043 /* TodayView+Preview.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002044 /* TodayView+Preview.swift */; };
+		A10001044 /* StatsView+Sections.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002045 /* StatsView+Sections.swift */; };
+		A10001045 /* StatsView+Preview.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002046 /* StatsView+Preview.swift */; };
+		A10001046 /* FocusOverlay+Sections.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002047 /* FocusOverlay+Sections.swift */; };
+		A10001047 /* ToolbarWidgetView+Header.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002048 /* ToolbarWidgetView+Header.swift */; };
+		A10001048 /* ToolbarWidgetView+Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002049 /* ToolbarWidgetView+Settings.swift */; };
+		A10001049 /* ToolbarWidgetView+Summary.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002050 /* ToolbarWidgetView+Summary.swift */; };
+		A10001050 /* ToolbarWidgetView+Problems.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002051 /* ToolbarWidgetView+Problems.swift */; };
+		A10001051 /* ToolbarWidgetView+Habits.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002052 /* ToolbarWidgetView+Habits.swift */; };
+		A10001052 /* ToolbarWidgetView+Tomorrow.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002053 /* ToolbarWidgetView+Tomorrow.swift */; };
+		A10001053 /* ToolbarWidgetView+Preview.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002054 /* ToolbarWidgetView+Preview.swift */; };
+		A10001054 /* WidgetCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002055 /* WidgetCard.swift */; };
+		A10001055 /* ProblemRowWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002056 /* ProblemRowWidget.swift */; };
+		A10001056 /* HabitToggle.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002057 /* HabitToggle.swift */; };
+		A10001057 /* CarryoverProblemRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002058 /* CarryoverProblemRow.swift */; };
+		A10001058 /* TomorrowProblemRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002059 /* TomorrowProblemRow.swift */; };
+		A10001059 /* CodingEnvironmentPresenter+Execution.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002060 /* CodingEnvironmentPresenter+Execution.swift */; };
+		A10001060 /* CodingEnvironmentPresenter+ProblemLoading.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002061 /* CodingEnvironmentPresenter+ProblemLoading.swift */; };
+		A10001061 /* CodingEnvironmentPresenter+Persistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002062 /* CodingEnvironmentPresenter+Persistence.swift */; };
+		A10001063 /* CodingEnvironmentView+Header.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002064 /* CodingEnvironmentView+Header.swift */; };
+		A10001064 /* CodingEnvironmentView+Panels.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002065 /* CodingEnvironmentView+Panels.swift */; };
+		A10001065 /* ModernTestCaseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002066 /* ModernTestCaseView.swift */; };
+		A10001066 /* ModernOutputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002067 /* ModernOutputView.swift */; };
+		A10001067 /* ModernOutputView+Sections.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002068 /* ModernOutputView+Sections.swift */; };
+		A10001068 /* TestCaseEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002069 /* TestCaseEditorView.swift */; };
+		A10001069 /* NotificationSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002070 /* NotificationSettings.swift */; };
+		A10001070 /* NotificationSettingsStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002071 /* NotificationSettingsStore.swift */; };
+		A10001071 /* NotificationScheduler.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002072 /* NotificationScheduler.swift */; };
+		A10001072 /* LeetCodeNetworking.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002073 /* LeetCodeNetworking.swift */; };
+		A10001074 /* LeetCodeErrors.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002075 /* LeetCodeErrors.swift */; };
+		A10001075 /* LeetCodeModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002076 /* LeetCodeModels.swift */; };
+		A10001077 /* LeetCodeConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002078 /* LeetCodeConstants.swift */; };
+		A10001078 /* LeetCodeSlugExtractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002079 /* LeetCodeSlugExtractor.swift */; };
+		A10001079 /* CodeEditorView+CoordinatorIndentation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000207A /* CodeEditorView+CoordinatorIndentation.swift */; };
+		A1000107A /* CodeEditorView+CoordinatorBrackets.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000207B /* CodeEditorView+CoordinatorBrackets.swift */; };
+		A1000107B /* CodingEnvironmentView+ProblemPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000207C /* CodingEnvironmentView+ProblemPicker.swift */; };
+		A1000107C /* FocusOverlay+TimerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000207D /* FocusOverlay+TimerView.swift */; };
+		A1000107D /* FocusOverlay+CompletionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000207E /* FocusOverlay+CompletionView.swift */; };
+		A1000107E /* StatsView+FocusReminder.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000207F /* StatsView+FocusReminder.swift */; };
+		A1000107F /* TodayView+FocusCTA.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002080 /* TodayView+FocusCTA.swift */; };
+		A10001080 /* ContentView+Preview.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002081 /* ContentView+Preview.swift */; };
+		A10001090 /* SwiftDataStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002090 /* SwiftDataStorage.swift */; };
+		A10001091 /* CodeEditorLineNumberRulerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002091 /* CodeEditorLineNumberRulerView.swift */; };
+		A10001092 /* AppStrings.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002092 /* AppStrings.swift */; };
+		A10001093 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = A10002093 /* Localizable.xcstrings */; };
+		A10001094 /* Plan.json in Resources */ = {isa = PBXBuildFile; fileRef = A10002094 /* Plan.json */; };
+		A10001095 /* L10n.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002095 /* L10n.swift */; };
+		A10001096 /* Plurals.stringsdict in Resources */ = {isa = PBXBuildFile; fileRef = A10002096 /* Plurals.stringsdict */; };
+		A10001097 /* L10n+Plural.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002097 /* L10n+Plural.swift */; };
+		A10001098 /* AppMessages.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002098 /* AppMessages.swift */; };
+		A10001100 /* Solutions.json in Resources */ = {isa = PBXBuildFile; fileRef = A10002099 /* Solutions.json */; };
+		A15AEF6BDA9B4D0A8E548C28 /* CodeEditorView+CoordinatorHighlightingCommon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A9C160FDBA2426DBDFD6986 /* CodeEditorView+CoordinatorHighlightingCommon.swift */; };
+		A1B2C3D4E5F6A7B8C9D0E1A1 /* SolutionModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D4E5F6A7B8C9D0E2A1 /* SolutionModels.swift */; };
+		A1B2C3D4E5F6A7B8C9D0E1A2 /* SolutionStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D4E5F6A7B8C9D0E2A2 /* SolutionStore.swift */; };
+		A1B2C3D4E5F6A7B8C9D0E1A3 /* SolutionTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D4E5F6A7B8C9D0E3A1 /* SolutionTabView.swift */; };
+		A1B2C3D4E5F6A7B8C9D0E1B4 /* SolutionApproachView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D4E5F6A7B8C9D0E3B2 /* SolutionApproachView.swift */; };
+		A30AF7E21FB62F3F28515335 /* CodingEnvironmentTraceParsingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73DD0E92E41BEC71C5DC5CBE /* CodingEnvironmentTraceParsingTests.swift */; };
+		A7805BF5C9D74FBF9F3F6660 /* LeetCodeTemplateBuilder+Python.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AB00E6A026C4053B5CE8E45 /* LeetCodeTemplateBuilder+Python.swift */; };
+		AC5E3A8CA8E344E4BC8DBC67 /* DataJourneyView+Selection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4209C8FF6FF7461BBDC6412C /* DataJourneyView+Selection.swift */; };
+		ACEFDAC310824100961E48F0 /* LeetCodeExecutionWrapper+SwiftTrace.swift in Sources */ = {isa = PBXBuildFile; fileRef = B41BDEB1E3F242098830391D /* LeetCodeExecutionWrapper+SwiftTrace.swift */; };
+		B1D2C3D4E5F6A7B8C9D0E1F3 /* CodingEnvironmentView+DetailContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1D2C3D4E5F6A7B8C9D0E1F2 /* CodingEnvironmentView+DetailContent.swift */; };
+		B1D2C3D4E5F6A7B8C9D0E1F7 /* DataJourneyModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1D2C3D4E5F6A7B8C9D0E1F9 /* DataJourneyModels.swift */; };
+		B1D2C3D4E5F6A7B8C9D0E1F8 /* DataJourneyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1D2C3D4E5F6A7B8C9D0E1FA /* DataJourneyView.swift */; };
+		B2C3D4E5F6A7B8C9D0E1F4F6 /* LeetCodeSyncScheduler.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2C3D4E5F6A7B8C9D0E1F4F5 /* LeetCodeSyncScheduler.swift */; };
+		B4AA6352E4E8478C9BB1AFB1 /* LeetCodeValueType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77109ADB4E7D49D79A7EAE35 /* LeetCodeValueType.swift */; };
+		BAF6DBF89171499D947621DE /* DataJourneyView+Playback.swift in Sources */ = {isa = PBXBuildFile; fileRef = 577B7342AFEB4588BF7030CB /* DataJourneyView+Playback.swift */; };
+		BC8250DBC6624F53B264A98B /* LeetCodeRestClient+SolvedSlugs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87848ED42D674540A01E5EDE /* LeetCodeRestClient+SolvedSlugs.swift */; };
+		BE29F221FB004AF4806318D8 /* LeetCodeSyncInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46393003B20C411B876AB671 /* LeetCodeSyncInteractor.swift */; };
+		BFE680EAC1784B1D9D8C388B /* DataJourneyDictionaryStructureRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC770C1132534029922B331B /* DataJourneyDictionaryStructureRow.swift */; };
+		C22BC59965C2413F860C4D4E /* DebugLogFilters.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8464C02CEE2D484AB8DADC22 /* DebugLogFilters.swift */; };
+		C2978C5869F84459BDC98091 /* SharedDataStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A111678A69A8452C97563307 /* SharedDataStoreTests.swift */; };
+		C5548308289242C8BEA283B4 /* LeetCodeTemplateBuilder+Swift.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C16AAEDECD6437486584DA0 /* LeetCodeTemplateBuilder+Swift.swift */; };
+		C7720954D2BECE71047F4F81 /* DataJourneyModelsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBFB63DC75C1BF86F68057A0 /* DataJourneyModelsTests.swift */; };
+		C7D8E9F0A1B2C3D4E5F60709 /* LeetCodeSyncSchedulerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7D8E9F0A1B2C3D4E5F60708 /* LeetCodeSyncSchedulerTests.swift */; };
+		C9EA7A4E9DEF427EA4E50A21 /* Fixtures.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D6F90158D1A49A4B723EC53 /* Fixtures.swift */; };
+		CB0805C549E94B40B1CE6960 /* CodingEnvironmentProblemModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6EA4BEC926540C884CA828B /* CodingEnvironmentProblemModels.swift */; };
+		CCC8CE8123ED4177A81A2BFB /* DebugLogView+Header.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1636D7B6A764DFE88778306 /* DebugLogView+Header.swift */; };
+		D2B2BF952C3D438CBC245708 /* DebugLogView+Metrics.swift in Sources */ = {isa = PBXBuildFile; fileRef = C132E5EEF912453BBDC5AF07 /* DebugLogView+Metrics.swift */; };
+		D2EC195B48254E0B914D8A01 /* LeetCodeRestClientTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C981502C4EC54673BA39B39A /* LeetCodeRestClientTests.swift */; };
+		D40612CA23FC4DE38C5BA87E /* DataJourneyStructureCanvasView+Pointers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EA3FC6CB81A4E3AA66A5308 /* DataJourneyStructureCanvasView+Pointers.swift */; };
+		D54D3C6A91FC412DA4C9AC74 /* ProblemDetailTab.swift in Sources */ = {isa = PBXBuildFile; fileRef = 048A8082F2A440128C75C769 /* ProblemDetailTab.swift */; };
+		D6C8B7E1F0A44B2F9C11A1D2 /* DataJourneyPointerModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6C8B7E1F0A44B2F9C11A1D1 /* DataJourneyPointerModels.swift */; };
+		D6C8B7E1F0A44B2F9C11A1D4 /* DataJourneyStructureCanvasView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6C8B7E1F0A44B2F9C11A1D3 /* DataJourneyStructureCanvasView.swift */; };
+		D9A9ECBA32F44AC48A6AD189 /* CodingEnvironmentPresenter+SnippetSelection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7693146EF45044699B367836 /* CodingEnvironmentPresenter+SnippetSelection.swift */; };
+		DDC480478CB549E5A6250DEB /* LeetCodeTemplateBuilder+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F0B79BF20F546EA9997FAB1 /* LeetCodeTemplateBuilder+Helpers.swift */; };
+		DSAT001001 /* DSAPlanTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DSAT002001 /* DSAPlanTests.swift */; };
+		DSAT001002 /* LeetCodeErrorsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DSAT002002 /* LeetCodeErrorsTests.swift */; };
+		DSAT001003 /* ExecutionConfigTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DSAT002003 /* ExecutionConfigTests.swift */; };
+		DSAT001004 /* LeetCodeConstantsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DSAT002004 /* LeetCodeConstantsTests.swift */; };
+		E325663DD9574C9390341D12 /* AppDataTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D26C0ABCC3347D490B3E48B /* AppDataTests.swift */; };
+		ED40D4F4327C4E33870978A4 /* LeetCodeRestClient+Validation.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED0D7E4D8DD24373B162DB1A /* LeetCodeRestClient+Validation.swift */; };
+		EFFD1AD00A274FAFAE85E0E6 /* LeetCodeExecutionWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85429B444E874474A60434FC /* LeetCodeExecutionWrapper.swift */; };
+		F12BB13EE8394916BEA7150D /* DataJourneyView+Layout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C63CCD5E6354405894DF177 /* DataJourneyView+Layout.swift */; };
+		F16E69D9C175439EA2255A91 /* AppStateStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A1DED48D1ED467BB0BF7B84 /* AppStateStoreTests.swift */; };
+		F2BA7EF3DAB446118E5F4A47 /* DataJourneyTraceBubble.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8963F787148943C99BBFB5D8 /* DataJourneyTraceBubble.swift */; };
+		F8EADBBBFBDA4DA2B4832A14 /* SolutionModelsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B078C530E1944479844C13E /* SolutionModelsTests.swift */; };
+		F9A2DABABABF4C3ABE903F0B /* LeetCodeSlugExtractorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCC76528BB9347DA886CDFBD /* LeetCodeSlugExtractorTests.swift */; };
+		FDA5DE4E59854F6EA8DD7C86 /* DataJourneySequenceBubbleRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F87412C2357454BB94E8138 /* DataJourneySequenceBubbleRow.swift */; };
+		IT001001 /* ContentInteractorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = IT002001 /* ContentInteractorTests.swift */; };
+		IT001002 /* PlanInteractorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = IT002002 /* PlanInteractorTests.swift */; };
+		IT001003 /* TodayInteractorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = IT002003 /* TodayInteractorTests.swift */; };
+		IT001004 /* StatsInteractorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = IT002004 /* StatsInteractorTests.swift */; };
+		IT001005 /* SettingsInteractorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = IT002005 /* SettingsInteractorTests.swift */; };
+		IT001006 /* ToolbarWidgetInteractorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = IT002006 /* ToolbarWidgetInteractorTests.swift */; };
+		IT001007 /* CodingEnvironmentInteractorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = IT002007 /* CodingEnvironmentInteractorTests.swift */; };
+		PT001001 /* FocusPresenterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = PT002001 /* FocusPresenterTests.swift */; };
+		PT001002 /* ContentPresenterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = PT002002 /* ContentPresenterTests.swift */; };
+		PT001003 /* PlanPresenterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = PT002003 /* PlanPresenterTests.swift */; };
+		PT001004 /* TodayPresenterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = PT002004 /* TodayPresenterTests.swift */; };
+		PT001005 /* StatsPresenterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = PT002005 /* StatsPresenterTests.swift */; };
+		PT001006 /* SettingsPresenterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = PT002006 /* SettingsPresenterTests.swift */; };
+		PT001007 /* ToolbarWidgetPresenterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = PT002007 /* ToolbarWidgetPresenterTests.swift */; };
+		RT001001 /* ContentRouterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = RT002001 /* ContentRouterTests.swift */; };
+		33350B941D8818A1F0B6046F /* TopicSolutionModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = B28A8462CA30A176A921BB7B /* TopicSolutionModels.swift */; };
+		0B3BB5B771124F47756486F7 /* TopicSolutionStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAB28E8181C60EBCBD3A980F /* TopicSolutionStore.swift */; };
+		A7F3B2C1D8E9F0A1B2C3D4E5 /* SolutionAIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7F3B2C1D8E9F0A1B2C3D4E6 /* SolutionAIService.swift */; };
+		D1DE7AFB63DC55F9DC102042 /* index.json in Resources */ = {isa = PBXBuildFile; fileRef = C707308BDCC0CA175F9CA73E /* index.json */; };
+		B99E2DBA62D1949CBCCC7E64 /* arrays-hashing.json in Resources */ = {isa = PBXBuildFile; fileRef = 2A6D6D5B7FB656D067770817 /* arrays-hashing.json */; };
+		C47A67B33D1E3182880018FA /* two-pointers.json in Resources */ = {isa = PBXBuildFile; fileRef = C47F4F9B2A62B792A9E9012D /* two-pointers.json */; };
+		F797ECF8446BD1FA1A82EA6B /* sliding-window.json in Resources */ = {isa = PBXBuildFile; fileRef = D42B9DB70746A8F45FF44908 /* sliding-window.json */; };
+		D724B091550FC405CB6478BC /* stack.json in Resources */ = {isa = PBXBuildFile; fileRef = D9EA14A74BB7B5170E76C909 /* stack.json */; };
+		A590A3CA4CDA65938428D3AB /* binary-search.json in Resources */ = {isa = PBXBuildFile; fileRef = CF5CD45901BBDDE4447370F9 /* binary-search.json */; };
+		98DC6308DDB00FE763710941 /* linked-list.json in Resources */ = {isa = PBXBuildFile; fileRef = 2E8737B49473DD67005DAD55 /* linked-list.json */; };
+		E87A1BF7C9CD09720BDD1A15 /* trees.json in Resources */ = {isa = PBXBuildFile; fileRef = DAA205B39791172D9A37DCC4 /* trees.json */; };
+		6BED3A66D6408A0FAE3DF3ED /* tries.json in Resources */ = {isa = PBXBuildFile; fileRef = 8BB48FA0F6350B64D30E1A87 /* tries.json */; };
+		144B02A32A1DF2B3266C5403 /* heap-priority-queue.json in Resources */ = {isa = PBXBuildFile; fileRef = 2849B4B1C166E5F1500A8148 /* heap-priority-queue.json */; };
+		172A67AF987838E66C01388B /* backtracking.json in Resources */ = {isa = PBXBuildFile; fileRef = DE7B0E3FCE96090627B5951B /* backtracking.json */; };
+		6E1F51704612CE87EC183A06 /* graphs.json in Resources */ = {isa = PBXBuildFile; fileRef = FE447CCE48C5EE33A0B17755 /* graphs.json */; };
+		185EB01B251DE728AF74AA2A /* dynamic-programming.json in Resources */ = {isa = PBXBuildFile; fileRef = 929AADACAB6D707E83CFF6A8 /* dynamic-programming.json */; };
+		8053682CF5F98285D3635D37 /* greedy.json in Resources */ = {isa = PBXBuildFile; fileRef = F7EEEEA00AF4A750861C0A1A /* greedy.json */; };
+		90BCA5CC8425E2BC5AF07984 /* intervals.json in Resources */ = {isa = PBXBuildFile; fileRef = 0AF0A291F14C0BAB8F319AB5 /* intervals.json */; };
+		F4F72663669F72AAC84CEFD4 /* math-geometry.json in Resources */ = {isa = PBXBuildFile; fileRef = 9AE152CBFCD19688753A9A19 /* math-geometry.json */; };
+		054408BF3C0C3912E96F5519 /* bit-manipulation.json in Resources */ = {isa = PBXBuildFile; fileRef = 918B09B9D8F04D713131E487 /* bit-manipulation.json */; };
+		4EF267D64DE9F29FCC1674C0 /* misc.json in Resources */ = {isa = PBXBuildFile; fileRef = FD6F41F4A8BE91CA32C32400 /* misc.json */; };
+		6ECCF7C83218F14741671596 /* Coordinating.swift in Sources */ = {isa = PBXBuildFile; fileRef = 560D1116B41DB726D1AB7CEA /* Coordinating.swift */; };
+		2A651AFFC470B33B7A4BF91E /* NavigationState.swift in Sources */ = {isa = PBXBuildFile; fileRef = A080BC3482F4FBA659C40FE8 /* NavigationState.swift */; };
+		A0B4C2352A17680F9B6E87CD /* AppCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F06613745415F0D4F143DF9E /* AppCoordinator.swift */; };
+		60956CCE18FC29D34C195771 /* ContentCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E18E9251143613E3B2A1B71 /* ContentCoordinator.swift */; };
+		E4021FD367EBBF2425179EC4 /* CodingCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 684D37749FDE863A438A0FAC /* CodingCoordinator.swift */; };
+		73E23C00B4586707FE3F4CB6 /* WidgetCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82DD31BA66FA7335916CA15A /* WidgetCoordinator.swift */; };
+		906597E1525E4525DB48C9D3 /* FocusCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2ED2E0B36206968E8B3A57CE /* FocusCoordinator.swift */; };
+		D7A10002BBBB111122223333 /* ContentCoordinatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7A10001AAAA111122223333 /* ContentCoordinatorTests.swift */; };
+		D7A10004DDDD111122223333 /* CodingCoordinatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7A10003CCCC111122223333 /* CodingCoordinatorTests.swift */; };
+		D7A10006FFFF111122223333 /* WidgetCoordinatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7A10005EEEE111122223333 /* WidgetCoordinatorTests.swift */; };
+		D7A10008BBBB222233334444 /* FocusCoordinatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7A10007AAAA222233334444 /* FocusCoordinatorTests.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		BC76266BB8004E60817433C2 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A10007001 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = A10006001;
+			remoteInfo = FocusApp;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		B3E5D72B4C8A61023F4E7A9C /* AutoInstrumenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutoInstrumenter.swift; sourceTree = "<group>"; };
+		E1D4F82A3B7C59014F2E8D5A /* DataJourneyDiff.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataJourneyDiff.swift; sourceTree = "<group>"; };
+		00747953C3ED4D3784EA4B98 /* LeetCodeExecutionWrapperTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeetCodeExecutionWrapperTests.swift; sourceTree = "<group>"; };
+		867FE0756AF39CB9438B1288 /* LeetCodeExecutionWrapperEdgeCaseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeetCodeExecutionWrapperEdgeCaseTests.swift; sourceTree = "<group>"; };
+		048A8082F2A440128C75C769 /* ProblemDetailTab.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProblemDetailTab.swift; sourceTree = "<group>"; };
+		0587D0FFC3444B3BAF623ED6 /* DataJourneyTreeGraphView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataJourneyTreeGraphView.swift; sourceTree = "<group>"; };
+		085FEBCD150F43019CE9B529 /* ProcessRunnerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProcessRunnerTests.swift; sourceTree = "<group>"; };
+		09ABF9970ACB4A2F8011CC20 /* CodingEnvironmentView+SidebarRows.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CodingEnvironmentView+SidebarRows.swift"; sourceTree = "<group>"; };
+		09B826590C1C4423B22A0B64 /* CodeExecutionServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodeExecutionServiceTests.swift; sourceTree = "<group>"; };
+		0B078C530E1944479844C13E /* SolutionModelsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SolutionModelsTests.swift; sourceTree = "<group>"; };
+		0D5CBCB82A24F473AA132CD0 /* TopicSolutionModelsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopicSolutionModelsTests.swift; sourceTree = "<group>"; };
+		C84350CE003789F809564AC4 /* TopicSolutionStoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopicSolutionStoreTests.swift; sourceTree = "<group>"; };
+		3F4F15A2AF5C43EDB9A7208F /* AsyncTestHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsyncTestHelpers.swift; sourceTree = "<group>"; };
+		7940ADE6E7204461B732F325 /* TestDoubles.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestDoubles.swift; sourceTree = "<group>"; };
+		088F06E4E37F4054B9F8B7D0 /* IntegrationTestHarness.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntegrationTestHarness.swift; sourceTree = "<group>"; };
+		5C8C538616234F6FA1C82DC4 /* TestDateFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestDateFactory.swift; sourceTree = "<group>"; };
+		7B2C3FDFF70A43CBBD710B1F /* TestProblemFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestProblemFactory.swift; sourceTree = "<group>"; };
+		F5F667DEF8AE4203AA494758 /* TestContentFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestContentFactory.swift; sourceTree = "<group>"; };
+		BF527610D1FD42B487521B26 /* CodingEnvironmentPages.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodingEnvironmentPages.swift; sourceTree = "<group>"; };
+		8E13C921E8B943FB93121244 /* CodingEnvironmentFlows.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodingEnvironmentFlows.swift; sourceTree = "<group>"; };
+		E3BD4A184CA04CD3AF8B4F19 /* CodingEnvironmentIntegrationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodingEnvironmentIntegrationTests.swift; sourceTree = "<group>"; };
+		0F9FB7FF7D18DD14E20106F2 /* ProblemManifestStore.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ProblemManifestStore.swift; sourceTree = "<group>"; };
+		11B1220325C143EAA1510779 /* LeetCodeExecutionWrapper+SignatureParsing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LeetCodeExecutionWrapper+SignatureParsing.swift"; sourceTree = "<group>"; };
+		1F87412C2357454BB94E8138 /* DataJourneySequenceBubbleRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataJourneySequenceBubbleRow.swift; sourceTree = "<group>"; };
+		21780F4451B945FAB9CEFE94 /* CodeEditorView+CoordinatorHighlightingPython.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CodeEditorView+CoordinatorHighlightingPython.swift"; sourceTree = "<group>"; };
+		29631B7C8972461E8CFE5A4C /* LeetCodeTemplateBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeetCodeTemplateBuilder.swift; sourceTree = "<group>"; };
+		29FB46B09F3E414695FCE546 /* CodingEnvironmentPresenterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodingEnvironmentPresenterTests.swift; sourceTree = "<group>"; };
+		3990D61D6ADE47A184465754 /* SolutionApproachView+TestCases.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SolutionApproachView+TestCases.swift"; sourceTree = "<group>"; };
+		39FCBCC646DF4102AFB6EB95 /* LeetCodeExecutionWrapper+PythonRunner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LeetCodeExecutionWrapper+PythonRunner.swift"; sourceTree = "<group>"; };
+		61EBAF88E89C2265C6E96CBA /* LeetCodeExecutionWrapper+PythonTrace.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LeetCodeExecutionWrapper+PythonTrace.swift"; sourceTree = "<group>"; };
+		3C16AAEDECD6437486584DA0 /* LeetCodeTemplateBuilder+Swift.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LeetCodeTemplateBuilder+Swift.swift"; sourceTree = "<group>"; };
+		3D6F90158D1A49A4B723EC53 /* Fixtures.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Fixtures.swift; sourceTree = "<group>"; };
+		40DF70BDE518480BA3A08BE4 /* LeetCodeExecutionWrapper+Swift.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LeetCodeExecutionWrapper+Swift.swift"; sourceTree = "<group>"; };
+		4209C8FF6FF7461BBDC6412C /* DataJourneyView+Selection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DataJourneyView+Selection.swift"; sourceTree = "<group>"; };
+		442A3E5BF10148F0B6B191C1 /* DebugLogView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DebugLogView.swift; sourceTree = "<group>"; };
+		46393003B20C411B876AB671 /* LeetCodeSyncInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeetCodeSyncInteractor.swift; sourceTree = "<group>"; };
+		4792F237BA3A45A8940718F1 /* LeetCodeExecutionWrapper+SwiftRunner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LeetCodeExecutionWrapper+SwiftRunner.swift"; sourceTree = "<group>"; };
+		547FCC10780C70175DB6A578 /* CodingEnvironmentOutputNormalizationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodingEnvironmentOutputNormalizationTests.swift; sourceTree = "<group>"; };
+		54AF08543519447B87977A9E /* DataJourneyStructureDetectionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataJourneyStructureDetectionTests.swift; sourceTree = "<group>"; };
+		577B7342AFEB4588BF7030CB /* DataJourneyView+Playback.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DataJourneyView+Playback.swift"; sourceTree = "<group>"; };
+		58471227E33B481BB4F4357B /* FocusAppTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FocusAppTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		FDEE8AFA09E34A0296EA58FC /* FocusAppIntegrationTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FocusAppIntegrationTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		5A9C160FDBA2426DBDFD6986 /* CodeEditorView+CoordinatorHighlightingCommon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CodeEditorView+CoordinatorHighlightingCommon.swift"; sourceTree = "<group>"; };
+		65251E426E5243F79306F201 /* NotificationManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationManagerTests.swift; sourceTree = "<group>"; };
+		6568D60DBB854206882E1ECE /* LeetCodeSyncInteractorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeetCodeSyncInteractorTests.swift; sourceTree = "<group>"; };
+		6A1DED48D1ED467BB0BF7B84 /* AppStateStoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppStateStoreTests.swift; sourceTree = "<group>"; };
+		6AB00E6A026C4053B5CE8E45 /* LeetCodeTemplateBuilder+Python.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LeetCodeTemplateBuilder+Python.swift"; sourceTree = "<group>"; };
+		6C42E1B6E2A84B9E9D4E7D23 /* DataJourneyPointerMotionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataJourneyPointerMotionTests.swift; sourceTree = "<group>"; };
+		6C57D54B89C74BEAB7CF8701 /* DataJourneySequenceBubbleRow+Layout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DataJourneySequenceBubbleRow+Layout.swift"; sourceTree = "<group>"; };
+		6C63CCD5E6354405894DF177 /* DataJourneyView+Layout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DataJourneyView+Layout.swift"; sourceTree = "<group>"; };
+		6D88CF0FA93F63C2D827B118 /* CodingEnvironmentTestSupport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodingEnvironmentTestSupport.swift; sourceTree = "<group>"; };
+		6E30623F430E4A7F84DE5C39 /* DebugLogView+Styles.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DebugLogView+Styles.swift"; sourceTree = "<group>"; };
+		7268D1DCFE4143A88A1746F9 /* DataJourneyStructureCanvasView+CombinedList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DataJourneyStructureCanvasView+CombinedList.swift"; sourceTree = "<group>"; };
+		72999C0BC3F3402687B3BB9E /* ProgrammingLanguageTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgrammingLanguageTests.swift; sourceTree = "<group>"; };
+		B7E3A91F4C2D58067E3FA1B2 /* PythonTraceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PythonTraceTests.swift; sourceTree = "<group>"; };
+		73DD0E92E41BEC71C5DC5CBE /* CodingEnvironmentTraceParsingTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodingEnvironmentTraceParsingTests.swift; sourceTree = "<group>"; };
+		7693146EF45044699B367836 /* CodingEnvironmentPresenter+SnippetSelection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CodingEnvironmentPresenter+SnippetSelection.swift"; sourceTree = "<group>"; };
+		77109ADB4E7D49D79A7EAE35 /* LeetCodeValueType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeetCodeValueType.swift; sourceTree = "<group>"; };
+		7771295A59E81FAD37E80A4E /* LeetCodeTemplateBuilderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeetCodeTemplateBuilderTests.swift; sourceTree = "<group>"; };
+		779FDA23FDEA4F84865F4D50 /* DebugLogView+Filters.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DebugLogView+Filters.swift"; sourceTree = "<group>"; };
+		7EA3FC6CB81A4E3AA66A5308 /* DataJourneyStructureCanvasView+Pointers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DataJourneyStructureCanvasView+Pointers.swift"; sourceTree = "<group>"; };
+		8464C02CEE2D484AB8DADC22 /* DebugLogFilters.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DebugLogFilters.swift; sourceTree = "<group>"; };
+		84B888743F7248DBA5F3A94F /* LeetCodeModelsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeetCodeModelsTests.swift; sourceTree = "<group>"; };
+		85429B444E874474A60434FC /* LeetCodeExecutionWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeetCodeExecutionWrapper.swift; sourceTree = "<group>"; };
+		87848ED42D674540A01E5EDE /* LeetCodeRestClient+SolvedSlugs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LeetCodeRestClient+SolvedSlugs.swift"; sourceTree = "<group>"; };
+		8963F787148943C99BBFB5D8 /* DataJourneyTraceBubble.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataJourneyTraceBubble.swift; sourceTree = "<group>"; };
+		8A4E0753FE4C4032A9C53AAA /* CodingEnvironmentView+Sidebar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CodingEnvironmentView+Sidebar.swift"; sourceTree = "<group>"; };
+		8C27ED53D78F405EA1AFB969 /* ProcessOutputCollector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProcessOutputCollector.swift; sourceTree = "<group>"; };
+		8F0B79BF20F546EA9997FAB1 /* LeetCodeTemplateBuilder+Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LeetCodeTemplateBuilder+Helpers.swift"; sourceTree = "<group>"; };
+		91545BFE73ED44268B3DC9E8 /* LeetCodeExecutionWrapper+TypeParsing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LeetCodeExecutionWrapper+TypeParsing.swift"; sourceTree = "<group>"; };
+		9AF2BC50D7A04A59A72BD4CC /* LeetCodeNetworkingTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeetCodeNetworkingTests.swift; sourceTree = "<group>"; };
+		9D26C0ABCC3347D490B3E48B /* AppDataTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDataTests.swift; sourceTree = "<group>"; };
+		9F4280AC0DB14B018B8F3B43 /* PlanCalendarTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlanCalendarTests.swift; sourceTree = "<group>"; };
+		A070BC5C8E654C24B432BBEF /* DebugLogRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DebugLogRow.swift; sourceTree = "<group>"; };
+		A10002001 /* FocusApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FocusApp.swift; sourceTree = "<group>"; };
+		A10002002 /* DSAPlan.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DSAPlan.swift; sourceTree = "<group>"; };
+		A10002003 /* AppData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppData.swift; sourceTree = "<group>"; };
+		A10002004 /* DataStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataStore.swift; sourceTree = "<group>"; };
+		A10002005 /* Colors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Colors.swift; sourceTree = "<group>"; };
+		A10002006 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		A10002007 /* PlanView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlanView.swift; sourceTree = "<group>"; };
+		A10002008 /* TodayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayView.swift; sourceTree = "<group>"; };
+		A10002009 /* StatsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsView.swift; sourceTree = "<group>"; };
+		A1000200A /* FocusOverlay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FocusOverlay.swift; sourceTree = "<group>"; };
+		A1000200B /* DayCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DayCard.swift; sourceTree = "<group>"; };
+		A1000200C /* ProblemRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProblemRow.swift; sourceTree = "<group>"; };
+		A1000200D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		A1000200E /* FocusApp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = FocusApp.entitlements; sourceTree = "<group>"; };
+		A1000200F /* NotificationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationManager.swift; sourceTree = "<group>"; };
+		A10002010 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		A10002011 /* SharedDataStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedDataStore.swift; sourceTree = "<group>"; };
+		A10002012 /* OutputPanelView+Sections.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "OutputPanelView+Sections.swift"; sourceTree = "<group>"; };
+		A10002013 /* ConsoleOutputView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConsoleOutputView.swift; sourceTree = "<group>"; };
+		A10002014 /* LeetCodeService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeetCodeService.swift; sourceTree = "<group>"; };
+		A10002015 /* AppContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppContainer.swift; sourceTree = "<group>"; };
+		A10002016 /* ToolbarWidgetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToolbarWidgetView.swift; sourceTree = "<group>"; };
+		A10002017 /* TestCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestCase.swift; sourceTree = "<group>"; };
+		A10002018 /* CodeExecutionService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodeExecutionService.swift; sourceTree = "<group>"; };
+		A10002019 /* CodingEnvironmentPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodingEnvironmentPresenter.swift; sourceTree = "<group>"; };
+		A1000201A /* CodeEditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodeEditorView.swift; sourceTree = "<group>"; };
+		A1000201B /* OutputPanelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OutputPanelView.swift; sourceTree = "<group>"; };
+		A1000201C /* ProblemSelectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProblemSelectionView.swift; sourceTree = "<group>"; };
+		A1000201D /* CodingEnvironmentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodingEnvironmentView.swift; sourceTree = "<group>"; };
+		A1000201E /* ProcessRunner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProcessRunner.swift; sourceTree = "<group>"; };
+		A1000201F /* LanguageExecutor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LanguageExecutor.swift; sourceTree = "<group>"; };
+		A10002020 /* SwiftExecutor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftExecutor.swift; sourceTree = "<group>"; };
+		A10002021 /* PythonExecutor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PythonExecutor.swift; sourceTree = "<group>"; };
+		A10002022 /* ContentInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentInteractor.swift; sourceTree = "<group>"; };
+		A10002023 /* ContentPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentPresenter.swift; sourceTree = "<group>"; };
+		A10002024 /* PlanInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlanInteractor.swift; sourceTree = "<group>"; };
+		A10002025 /* PlanPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlanPresenter.swift; sourceTree = "<group>"; };
+		A10002026 /* TodayInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayInteractor.swift; sourceTree = "<group>"; };
+		A10002027 /* TodayPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayPresenter.swift; sourceTree = "<group>"; };
+		A10002028 /* StatsInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsInteractor.swift; sourceTree = "<group>"; };
+		A10002029 /* StatsPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsPresenter.swift; sourceTree = "<group>"; };
+		A10002030 /* SettingsInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsInteractor.swift; sourceTree = "<group>"; };
+		A10002031 /* SettingsPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsPresenter.swift; sourceTree = "<group>"; };
+		A10002032 /* ToolbarWidgetInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToolbarWidgetInteractor.swift; sourceTree = "<group>"; };
+		A10002033 /* ToolbarWidgetPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToolbarWidgetPresenter.swift; sourceTree = "<group>"; };
+		A10002034 /* FocusInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FocusInteractor.swift; sourceTree = "<group>"; };
+		A10002035 /* FocusPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FocusPresenter.swift; sourceTree = "<group>"; };
+		A10002036 /* CodingEnvironmentInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodingEnvironmentInteractor.swift; sourceTree = "<group>"; };
+		A10002037 /* CodeEditorView+Coordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CodeEditorView+Coordinator.swift"; sourceTree = "<group>"; };
+		A10002038 /* CodeEditorView+CoordinatorInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CodeEditorView+CoordinatorInput.swift"; sourceTree = "<group>"; };
+		A10002039 /* CodeEditorView+CoordinatorHighlighting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CodeEditorView+CoordinatorHighlighting.swift"; sourceTree = "<group>"; };
+		A10002040 /* SettingsView+Bindings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SettingsView+Bindings.swift"; sourceTree = "<group>"; };
+		A10002041 /* SettingsView+Validation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SettingsView+Validation.swift"; sourceTree = "<group>"; };
+		A10002042 /* SettingsView+Preview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SettingsView+Preview.swift"; sourceTree = "<group>"; };
+		A10002043 /* TodayView+Sections.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TodayView+Sections.swift"; sourceTree = "<group>"; };
+		A10002044 /* TodayView+Preview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TodayView+Preview.swift"; sourceTree = "<group>"; };
+		A10002045 /* StatsView+Sections.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "StatsView+Sections.swift"; sourceTree = "<group>"; };
+		A10002046 /* StatsView+Preview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "StatsView+Preview.swift"; sourceTree = "<group>"; };
+		A10002047 /* FocusOverlay+Sections.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FocusOverlay+Sections.swift"; sourceTree = "<group>"; };
+		A10002048 /* ToolbarWidgetView+Header.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ToolbarWidgetView+Header.swift"; sourceTree = "<group>"; };
+		A10002049 /* ToolbarWidgetView+Settings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ToolbarWidgetView+Settings.swift"; sourceTree = "<group>"; };
+		A10002050 /* ToolbarWidgetView+Summary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ToolbarWidgetView+Summary.swift"; sourceTree = "<group>"; };
+		A10002051 /* ToolbarWidgetView+Problems.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ToolbarWidgetView+Problems.swift"; sourceTree = "<group>"; };
+		A10002052 /* ToolbarWidgetView+Habits.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ToolbarWidgetView+Habits.swift"; sourceTree = "<group>"; };
+		A10002053 /* ToolbarWidgetView+Tomorrow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ToolbarWidgetView+Tomorrow.swift"; sourceTree = "<group>"; };
+		A10002054 /* ToolbarWidgetView+Preview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ToolbarWidgetView+Preview.swift"; sourceTree = "<group>"; };
+		A10002055 /* WidgetCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetCard.swift; sourceTree = "<group>"; };
+		A10002056 /* ProblemRowWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProblemRowWidget.swift; sourceTree = "<group>"; };
+		A10002057 /* HabitToggle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HabitToggle.swift; sourceTree = "<group>"; };
+		A10002058 /* CarryoverProblemRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CarryoverProblemRow.swift; sourceTree = "<group>"; };
+		A10002059 /* TomorrowProblemRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TomorrowProblemRow.swift; sourceTree = "<group>"; };
+		A10002060 /* CodingEnvironmentPresenter+Execution.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CodingEnvironmentPresenter+Execution.swift"; sourceTree = "<group>"; };
+		A10002061 /* CodingEnvironmentPresenter+ProblemLoading.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CodingEnvironmentPresenter+ProblemLoading.swift"; sourceTree = "<group>"; };
+		A10002062 /* CodingEnvironmentPresenter+Persistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CodingEnvironmentPresenter+Persistence.swift"; sourceTree = "<group>"; };
+		A10002064 /* CodingEnvironmentView+Header.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CodingEnvironmentView+Header.swift"; sourceTree = "<group>"; };
+		A10002065 /* CodingEnvironmentView+Panels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CodingEnvironmentView+Panels.swift"; sourceTree = "<group>"; };
+		A10002066 /* ModernTestCaseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModernTestCaseView.swift; sourceTree = "<group>"; };
+		A10002067 /* ModernOutputView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModernOutputView.swift; sourceTree = "<group>"; };
+		A10002068 /* ModernOutputView+Sections.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ModernOutputView+Sections.swift"; sourceTree = "<group>"; };
+		A10002069 /* TestCaseEditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestCaseEditorView.swift; sourceTree = "<group>"; };
+		A10002070 /* NotificationSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationSettings.swift; sourceTree = "<group>"; };
+		A10002071 /* NotificationSettingsStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationSettingsStore.swift; sourceTree = "<group>"; };
+		A10002072 /* NotificationScheduler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationScheduler.swift; sourceTree = "<group>"; };
+		A10002073 /* LeetCodeNetworking.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeetCodeNetworking.swift; sourceTree = "<group>"; };
+		A10002075 /* LeetCodeErrors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeetCodeErrors.swift; sourceTree = "<group>"; };
+		A10002076 /* LeetCodeModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeetCodeModels.swift; sourceTree = "<group>"; };
+		A10002078 /* LeetCodeConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeetCodeConstants.swift; sourceTree = "<group>"; };
+		A10002079 /* LeetCodeSlugExtractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeetCodeSlugExtractor.swift; sourceTree = "<group>"; };
+		A1000207A /* CodeEditorView+CoordinatorIndentation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CodeEditorView+CoordinatorIndentation.swift"; sourceTree = "<group>"; };
+		A1000207B /* CodeEditorView+CoordinatorBrackets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CodeEditorView+CoordinatorBrackets.swift"; sourceTree = "<group>"; };
+		A1000207C /* CodingEnvironmentView+ProblemPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CodingEnvironmentView+ProblemPicker.swift"; sourceTree = "<group>"; };
+		A1000207D /* FocusOverlay+TimerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FocusOverlay+TimerView.swift"; sourceTree = "<group>"; };
+		A1000207E /* FocusOverlay+CompletionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FocusOverlay+CompletionView.swift"; sourceTree = "<group>"; };
+		A1000207F /* StatsView+FocusReminder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "StatsView+FocusReminder.swift"; sourceTree = "<group>"; };
+		A10002080 /* TodayView+FocusCTA.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TodayView+FocusCTA.swift"; sourceTree = "<group>"; };
+		A10002081 /* ContentView+Preview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ContentView+Preview.swift"; sourceTree = "<group>"; };
+		A10002090 /* SwiftDataStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftDataStorage.swift; sourceTree = "<group>"; };
+		A10002091 /* CodeEditorLineNumberRulerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodeEditorLineNumberRulerView.swift; sourceTree = "<group>"; };
+		A10002092 /* AppStrings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppStrings.swift; sourceTree = "<group>"; };
+		A10002093 /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
+		A10002094 /* Plan.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = Plan.json; sourceTree = "<group>"; };
+		A10002095 /* L10n.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = L10n.swift; sourceTree = "<group>"; };
+		A10002096 /* Plurals.stringsdict */ = {isa = PBXFileReference; lastKnownFileType = text.plist.stringsdict; path = Plurals.stringsdict; sourceTree = "<group>"; };
+		A10002097 /* L10n+Plural.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "L10n+Plural.swift"; sourceTree = "<group>"; };
+		A10002098 /* AppMessages.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppMessages.swift; sourceTree = "<group>"; };
+		A10002099 /* Solutions.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = Solutions.json; sourceTree = "<group>"; };
+		A10003001 /* FocusApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FocusApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		A111678A69A8452C97563307 /* SharedDataStoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedDataStoreTests.swift; sourceTree = "<group>"; };
+		A1B2C3D4E5F6A7B8C9D0E2A1 /* SolutionModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SolutionModels.swift; sourceTree = "<group>"; };
+		A1B2C3D4E5F6A7B8C9D0E2A2 /* SolutionStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SolutionStore.swift; sourceTree = "<group>"; };
+		A1B2C3D4E5F6A7B8C9D0E3A1 /* SolutionTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SolutionTabView.swift; sourceTree = "<group>"; };
+		A1B2C3D4E5F6A7B8C9D0E3B2 /* SolutionApproachView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SolutionApproachView.swift; sourceTree = "<group>"; };
+		A1E5AADCE4CF46FC8ECEDAC1 /* SolutionStoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SolutionStoreTests.swift; sourceTree = "<group>"; };
+		A2C29BF0F588499DBE85FD5D /* ExecutorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExecutorTests.swift; sourceTree = "<group>"; };
+		A6BCD363384E4C13B37495DE /* LeetCodeExecutionWrapper+Python.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LeetCodeExecutionWrapper+Python.swift"; sourceTree = "<group>"; };
+		A9046CC2CE464F6CAA10E00D /* CodingEnvironmentPresenter+ExecutionOutput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CodingEnvironmentPresenter+ExecutionOutput.swift"; sourceTree = "<group>"; };
+		AAB330A1AD40462BBD64A817 /* LeetCodeRestClient+ProblemContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LeetCodeRestClient+ProblemContent.swift"; sourceTree = "<group>"; };
+		AB829ACA59D542A1BAFB7E98 /* CodingEnvironmentPresenter+ExecutionDiagnostics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CodingEnvironmentPresenter+ExecutionDiagnostics.swift"; sourceTree = "<group>"; };
+		B1D2C3D4E5F6A7B8C9D0E1F2 /* CodingEnvironmentView+DetailContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CodingEnvironmentView+DetailContent.swift"; sourceTree = "<group>"; };
+		B1D2C3D4E5F6A7B8C9D0E1F9 /* DataJourneyModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataJourneyModels.swift; sourceTree = "<group>"; };
+		B1D2C3D4E5F6A7B8C9D0E1FA /* DataJourneyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataJourneyView.swift; sourceTree = "<group>"; };
+		B2C3D4E5F6A7B8C9D0E1F4F5 /* LeetCodeSyncScheduler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeetCodeSyncScheduler.swift; sourceTree = "<group>"; };
+		B41BDEB1E3F242098830391D /* LeetCodeExecutionWrapper+SwiftTrace.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LeetCodeExecutionWrapper+SwiftTrace.swift"; sourceTree = "<group>"; };
+		B8668759D89D46E6AFEFDB91 /* CodingEnvironmentPresenter+ExecutionTrace.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CodingEnvironmentPresenter+ExecutionTrace.swift"; sourceTree = "<group>"; };
+		BBFB63DC75C1BF86F68057A0 /* DataJourneyModelsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataJourneyModelsTests.swift; sourceTree = "<group>"; };
+		F5A1B82C3D4E69015F3E9D6B /* DataJourneyDiffTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataJourneyDiffTests.swift; sourceTree = "<group>"; };
+		BCC76528BB9347DA886CDFBD /* LeetCodeSlugExtractorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeetCodeSlugExtractorTests.swift; sourceTree = "<group>"; };
+		C132E5EEF912453BBDC5AF07 /* DebugLogView+Metrics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DebugLogView+Metrics.swift"; sourceTree = "<group>"; };
+		C2C628C5EB52415F9AB50D7E /* ProcessRunState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProcessRunState.swift; sourceTree = "<group>"; };
+		C3EC2C34544F48628DBADAC2 /* DataJourneyStructureCanvasView+Structure.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DataJourneyStructureCanvasView+Structure.swift"; sourceTree = "<group>"; };
+		C47F33827B1A4CAAAF7ACC2C /* SwiftExecutor+Logging.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SwiftExecutor+Logging.swift"; sourceTree = "<group>"; };
+		C7D8E9F0A1B2C3D4E5F60708 /* LeetCodeSyncSchedulerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeetCodeSyncSchedulerTests.swift; sourceTree = "<group>"; };
+		C970BACB7D254352948CFF1A /* CodeEditorView+CoordinatorHighlightingSwift.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CodeEditorView+CoordinatorHighlightingSwift.swift"; sourceTree = "<group>"; };
+		C981502C4EC54673BA39B39A /* LeetCodeRestClientTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeetCodeRestClientTests.swift; sourceTree = "<group>"; };
+		CC393A6615DF41B0AA863A6E /* DataJourneyGraphView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataJourneyGraphView.swift; sourceTree = "<group>"; };
+		053517450BF8C23F9B24B4F2 /* DataJourneyMatrixGridView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataJourneyMatrixGridView.swift; sourceTree = "<group>"; };
+		C8D3E71A4F5B92047H7ID5F3 /* DataJourneyHeapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataJourneyHeapView.swift; sourceTree = "<group>"; };
+		B9F4E82B5G6C04159I9KF7H5 /* DataJourneyStringSequenceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataJourneyStringSequenceView.swift; sourceTree = "<group>"; };
+		D0G6F93C8I7D15360K1MH9J7 /* DataJourneyTrieGraphView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataJourneyTrieGraphView.swift; sourceTree = "<group>"; };
+		F1H7G15I9J8E37582M3OJ1L9 /* DataJourneyVariableTimeline.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataJourneyVariableTimeline.swift; sourceTree = "<group>"; };
+		H3J9I27K1L0G59704O5QL3N1 /* DataJourneyFlowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataJourneyFlowView.swift; sourceTree = "<group>"; };
+		J5L1K49M3N2I71926Q7SN5P3 /* DataJourneyComparisonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataJourneyComparisonView.swift; sourceTree = "<group>"; };
+		D2D70A846ECA406EAD5C00EA /* LeetCodeRestClient+Requests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LeetCodeRestClient+Requests.swift"; sourceTree = "<group>"; };
+		D6C8B7E1F0A44B2F9C11A1D1 /* DataJourneyPointerModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataJourneyPointerModels.swift; sourceTree = "<group>"; };
+		D6C8B7E1F0A44B2F9C11A1D3 /* DataJourneyStructureCanvasView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataJourneyStructureCanvasView.swift; sourceTree = "<group>"; };
+		D6EA4BEC926540C884CA828B /* CodingEnvironmentProblemModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodingEnvironmentProblemModels.swift; sourceTree = "<group>"; };
+		D92D1385DE9ECF6085B0EFAC /* CodingEnvironmentSnippetSelectionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodingEnvironmentSnippetSelectionTests.swift; sourceTree = "<group>"; };
+		D994FDB1D9524F1E880ED0BF /* LeetCodeRestClient+GraphQL.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LeetCodeRestClient+GraphQL.swift"; sourceTree = "<group>"; };
+		DE7369E0350240A3AEA56363 /* DebugLogView+Content.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DebugLogView+Content.swift"; sourceTree = "<group>"; };
+		DSAT002001 /* DSAPlanTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DSAPlanTests.swift; sourceTree = "<group>"; };
+		DSAT002002 /* LeetCodeErrorsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeetCodeErrorsTests.swift; sourceTree = "<group>"; };
+		DSAT002003 /* ExecutionConfigTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExecutionConfigTests.swift; sourceTree = "<group>"; };
+		DSAT002004 /* LeetCodeConstantsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeetCodeConstantsTests.swift; sourceTree = "<group>"; };
+		ED0D7E4D8DD24373B162DB1A /* LeetCodeRestClient+Validation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LeetCodeRestClient+Validation.swift"; sourceTree = "<group>"; };
+		F1636D7B6A764DFE88778306 /* DebugLogView+Header.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DebugLogView+Header.swift"; sourceTree = "<group>"; };
+		F16BF57E1EEC4D76BA0E66B2 /* DataJourneyTraceValueView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataJourneyTraceValueView.swift; sourceTree = "<group>"; };
+		FC770C1132534029922B331B /* DataJourneyDictionaryStructureRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataJourneyDictionaryStructureRow.swift; sourceTree = "<group>"; };
+		FEB3C86A7CC34CB9B7365800 /* DataJourneyStructureCanvasView+Labels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DataJourneyStructureCanvasView+Labels.swift"; sourceTree = "<group>"; };
+		IT002001 /* ContentInteractorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentInteractorTests.swift; sourceTree = "<group>"; };
+		IT002002 /* PlanInteractorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlanInteractorTests.swift; sourceTree = "<group>"; };
+		IT002003 /* TodayInteractorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayInteractorTests.swift; sourceTree = "<group>"; };
+		IT002004 /* StatsInteractorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsInteractorTests.swift; sourceTree = "<group>"; };
+		IT002005 /* SettingsInteractorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsInteractorTests.swift; sourceTree = "<group>"; };
+		IT002006 /* ToolbarWidgetInteractorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToolbarWidgetInteractorTests.swift; sourceTree = "<group>"; };
+		IT002007 /* CodingEnvironmentInteractorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodingEnvironmentInteractorTests.swift; sourceTree = "<group>"; };
+		PT002001 /* FocusPresenterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FocusPresenterTests.swift; sourceTree = "<group>"; };
+		PT002002 /* ContentPresenterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentPresenterTests.swift; sourceTree = "<group>"; };
+		PT002003 /* PlanPresenterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlanPresenterTests.swift; sourceTree = "<group>"; };
+		PT002004 /* TodayPresenterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayPresenterTests.swift; sourceTree = "<group>"; };
+		PT002005 /* StatsPresenterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsPresenterTests.swift; sourceTree = "<group>"; };
+		PT002006 /* SettingsPresenterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsPresenterTests.swift; sourceTree = "<group>"; };
+		PT002007 /* ToolbarWidgetPresenterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToolbarWidgetPresenterTests.swift; sourceTree = "<group>"; };
+		RT002001 /* ContentRouterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentRouterTests.swift; sourceTree = "<group>"; };
+		B28A8462CA30A176A921BB7B /* TopicSolutionModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopicSolutionModels.swift; sourceTree = "<group>"; };
+		EAB28E8181C60EBCBD3A980F /* TopicSolutionStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopicSolutionStore.swift; sourceTree = "<group>"; };
+		A7F3B2C1D8E9F0A1B2C3D4E6 /* SolutionAIService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SolutionAIService.swift; sourceTree = "<group>"; };
+		C707308BDCC0CA175F9CA73E /* index.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = index.json; sourceTree = "<group>"; };
+		2A6D6D5B7FB656D067770817 /* arrays-hashing.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = arrays-hashing.json; sourceTree = "<group>"; };
+		C47F4F9B2A62B792A9E9012D /* two-pointers.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = two-pointers.json; sourceTree = "<group>"; };
+		D42B9DB70746A8F45FF44908 /* sliding-window.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = sliding-window.json; sourceTree = "<group>"; };
+		D9EA14A74BB7B5170E76C909 /* stack.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = stack.json; sourceTree = "<group>"; };
+		CF5CD45901BBDDE4447370F9 /* binary-search.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = binary-search.json; sourceTree = "<group>"; };
+		2E8737B49473DD67005DAD55 /* linked-list.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = linked-list.json; sourceTree = "<group>"; };
+		DAA205B39791172D9A37DCC4 /* trees.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = trees.json; sourceTree = "<group>"; };
+		8BB48FA0F6350B64D30E1A87 /* tries.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = tries.json; sourceTree = "<group>"; };
+		2849B4B1C166E5F1500A8148 /* heap-priority-queue.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = heap-priority-queue.json; sourceTree = "<group>"; };
+		DE7B0E3FCE96090627B5951B /* backtracking.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = backtracking.json; sourceTree = "<group>"; };
+		FE447CCE48C5EE33A0B17755 /* graphs.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = graphs.json; sourceTree = "<group>"; };
+		929AADACAB6D707E83CFF6A8 /* dynamic-programming.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = dynamic-programming.json; sourceTree = "<group>"; };
+		F7EEEEA00AF4A750861C0A1A /* greedy.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = greedy.json; sourceTree = "<group>"; };
+		0AF0A291F14C0BAB8F319AB5 /* intervals.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = intervals.json; sourceTree = "<group>"; };
+		9AE152CBFCD19688753A9A19 /* math-geometry.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = math-geometry.json; sourceTree = "<group>"; };
+		918B09B9D8F04D713131E487 /* bit-manipulation.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = bit-manipulation.json; sourceTree = "<group>"; };
+		FD6F41F4A8BE91CA32C32400 /* misc.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = misc.json; sourceTree = "<group>"; };
+		560D1116B41DB726D1AB7CEA /* Coordinating.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Coordinating.swift; sourceTree = "<group>"; };
+		A080BC3482F4FBA659C40FE8 /* NavigationState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationState.swift; sourceTree = "<group>"; };
+		F06613745415F0D4F143DF9E /* AppCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppCoordinator.swift; sourceTree = "<group>"; };
+		4E18E9251143613E3B2A1B71 /* ContentCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentCoordinator.swift; sourceTree = "<group>"; };
+		684D37749FDE863A438A0FAC /* CodingCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodingCoordinator.swift; sourceTree = "<group>"; };
+		82DD31BA66FA7335916CA15A /* WidgetCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetCoordinator.swift; sourceTree = "<group>"; };
+		2ED2E0B36206968E8B3A57CE /* FocusCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FocusCoordinator.swift; sourceTree = "<group>"; };
+		D7A10001AAAA111122223333 /* ContentCoordinatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentCoordinatorTests.swift; sourceTree = "<group>"; };
+		D7A10003CCCC111122223333 /* CodingCoordinatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodingCoordinatorTests.swift; sourceTree = "<group>"; };
+		D7A10005EEEE111122223333 /* WidgetCoordinatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetCoordinatorTests.swift; sourceTree = "<group>"; };
+		D7A10007AAAA222233334444 /* FocusCoordinatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FocusCoordinatorTests.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		01245FCF31E449B4A39FE54E /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A10004001 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		138EC7B62C204ED5A881E698 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		01F6AC2A2A6542818318F398 /* Focus */ = {
+			isa = PBXGroup;
+			children = (
+				PT002001 /* FocusPresenterTests.swift */,
+			);
+			path = Focus;
+			sourceTree = "<group>";
+		};
+		0BD4266DF2864218BDBED907 /* DataJourney */ = {
+			isa = PBXGroup;
+			children = (
+				B1D2C3D4E5F6A7B8C9D0E1FA /* DataJourneyView.swift */,
+				6C63CCD5E6354405894DF177 /* DataJourneyView+Layout.swift */,
+				577B7342AFEB4588BF7030CB /* DataJourneyView+Playback.swift */,
+				4209C8FF6FF7461BBDC6412C /* DataJourneyView+Selection.swift */,
+				B1D2C3D4E5F6A7B8C9D0E1F9 /* DataJourneyModels.swift */,
+				E1D4F82A3B7C59014F2E8D5A /* DataJourneyDiff.swift */,
+				D6C8B7E1F0A44B2F9C11A1D1 /* DataJourneyPointerModels.swift */,
+				F16BF57E1EEC4D76BA0E66B2 /* DataJourneyTraceValueView.swift */,
+				1F87412C2357454BB94E8138 /* DataJourneySequenceBubbleRow.swift */,
+				6C57D54B89C74BEAB7CF8701 /* DataJourneySequenceBubbleRow+Layout.swift */,
+				8963F787148943C99BBFB5D8 /* DataJourneyTraceBubble.swift */,
+				0587D0FFC3444B3BAF623ED6 /* DataJourneyTreeGraphView.swift */,
+				D6C8B7E1F0A44B2F9C11A1D3 /* DataJourneyStructureCanvasView.swift */,
+				C3EC2C34544F48628DBADAC2 /* DataJourneyStructureCanvasView+Structure.swift */,
+				7EA3FC6CB81A4E3AA66A5308 /* DataJourneyStructureCanvasView+Pointers.swift */,
+				7268D1DCFE4143A88A1746F9 /* DataJourneyStructureCanvasView+CombinedList.swift */,
+				FEB3C86A7CC34CB9B7365800 /* DataJourneyStructureCanvasView+Labels.swift */,
+				FC770C1132534029922B331B /* DataJourneyDictionaryStructureRow.swift */,
+				CC393A6615DF41B0AA863A6E /* DataJourneyGraphView.swift */,
+				053517450BF8C23F9B24B4F2 /* DataJourneyMatrixGridView.swift */,
+				C8D3E71A4F5B92047H7ID5F3 /* DataJourneyHeapView.swift */,
+				B9F4E82B5G6C04159I9KF7H5 /* DataJourneyStringSequenceView.swift */,
+				D0G6F93C8I7D15360K1MH9J7 /* DataJourneyTrieGraphView.swift */,
+				F1H7G15I9J8E37582M3OJ1L9 /* DataJourneyVariableTimeline.swift */,
+				H3J9I27K1L0G59704O5QL3N1 /* DataJourneyFlowView.swift */,
+				J5L1K49M3N2I71926Q7SN5P3 /* DataJourneyComparisonView.swift */,
+			);
+			path = DataJourney;
+			sourceTree = "<group>";
+		};
+		163F8A00F62547B6840711CF /* Content */ = {
+			isa = PBXGroup;
+			children = (
+				IT002001 /* ContentInteractorTests.swift */,
+				PT002002 /* ContentPresenterTests.swift */,
+				RT002001 /* ContentRouterTests.swift */,
+			);
+			path = Content;
+			sourceTree = "<group>";
+		};
+		1D94F8CDDDB748AFA2F7A894 /* Today */ = {
+			isa = PBXGroup;
+			children = (
+				IT002003 /* TodayInteractorTests.swift */,
+				PT002004 /* TodayPresenterTests.swift */,
+			);
+			path = Today;
+			sourceTree = "<group>";
+		};
+		26FD3EA4F75F41B4ADCED677 /* ToolbarWidget */ = {
+			isa = PBXGroup;
+			children = (
+				IT002006 /* ToolbarWidgetInteractorTests.swift */,
+				PT002007 /* ToolbarWidgetPresenterTests.swift */,
+			);
+			path = ToolbarWidget;
+			sourceTree = "<group>";
+		};
+		3F8D3EEAB6E34F2F8DC05850 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				A1000201D /* CodingEnvironmentView.swift */,
+				A10002064 /* CodingEnvironmentView+Header.swift */,
+				A10002065 /* CodingEnvironmentView+Panels.swift */,
+				A1000207C /* CodingEnvironmentView+ProblemPicker.swift */,
+				8A4E0753FE4C4032A9C53AAA /* CodingEnvironmentView+Sidebar.swift */,
+				09ABF9970ACB4A2F8011CC20 /* CodingEnvironmentView+SidebarRows.swift */,
+				B1D2C3D4E5F6A7B8C9D0E1F2 /* CodingEnvironmentView+DetailContent.swift */,
+				A10002067 /* ModernOutputView.swift */,
+				A10002068 /* ModernOutputView+Sections.swift */,
+				A10002066 /* ModernTestCaseView.swift */,
+				A10002069 /* TestCaseEditorView.swift */,
+				A1B2C3D4E5F6A7B8C9D0E3B2 /* SolutionApproachView.swift */,
+				3990D61D6ADE47A184465754 /* SolutionApproachView+TestCases.swift */,
+				A1B2C3D4E5F6A7B8C9D0E3A1 /* SolutionTabView.swift */,
+				048A8082F2A440128C75C769 /* ProblemDetailTab.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		4EACC8122DCD4FE493BACD8E /* Stats */ = {
+			isa = PBXGroup;
+			children = (
+				IT002004 /* StatsInteractorTests.swift */,
+				PT002005 /* StatsPresenterTests.swift */,
+			);
+			path = Stats;
+			sourceTree = "<group>";
+		};
+		50F172123351462DA7C6FA81 /* Support */ = {
+			isa = PBXGroup;
+			children = (
+				3D6F90158D1A49A4B723EC53 /* Fixtures.swift */,
+			);
+			path = Support;
+			sourceTree = "<group>";
+		};
+		574579FB3B5A4F61862BFD00 /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+				65251E426E5243F79306F201 /* NotificationManagerTests.swift */,
+				IT002005 /* SettingsInteractorTests.swift */,
+				PT002006 /* SettingsPresenterTests.swift */,
+			);
+			path = Settings;
+			sourceTree = "<group>";
+		};
+		5C108DC94D474B48A88136F5 /* AppState */ = {
+			isa = PBXGroup;
+			children = (
+				9D26C0ABCC3347D490B3E48B /* AppDataTests.swift */,
+				6A1DED48D1ED467BB0BF7B84 /* AppStateStoreTests.swift */,
+				A111678A69A8452C97563307 /* SharedDataStoreTests.swift */,
+				0B078C530E1944479844C13E /* SolutionModelsTests.swift */,
+				A1E5AADCE4CF46FC8ECEDAC1 /* SolutionStoreTests.swift */,
+				0D5CBCB82A24F473AA132CD0 /* TopicSolutionModelsTests.swift */,
+				C84350CE003789F809564AC4 /* TopicSolutionStoreTests.swift */,
+			);
+			path = AppState;
+			sourceTree = "<group>";
+		};
+		5F6A0D8D8D6E4765AAC99D3F /* LeetCode */ = {
+			isa = PBXGroup;
+			children = (
+				DSAT002004 /* LeetCodeConstantsTests.swift */,
+				DSAT002002 /* LeetCodeErrorsTests.swift */,
+				84B888743F7248DBA5F3A94F /* LeetCodeModelsTests.swift */,
+				9AF2BC50D7A04A59A72BD4CC /* LeetCodeNetworkingTests.swift */,
+				C981502C4EC54673BA39B39A /* LeetCodeRestClientTests.swift */,
+				BCC76528BB9347DA886CDFBD /* LeetCodeSlugExtractorTests.swift */,
+				6568D60DBB854206882E1ECE /* LeetCodeSyncInteractorTests.swift */,
+				C7D8E9F0A1B2C3D4E5F60708 /* LeetCodeSyncSchedulerTests.swift */,
+			);
+			path = LeetCode;
+			sourceTree = "<group>";
+		};
+		84AAED7F2BC2426CA0AD470D /* Snippets */ = {
+			isa = PBXGroup;
+			children = (
+				7693146EF45044699B367836 /* CodingEnvironmentPresenter+SnippetSelection.swift */,
+				29631B7C8972461E8CFE5A4C /* LeetCodeTemplateBuilder.swift */,
+				3C16AAEDECD6437486584DA0 /* LeetCodeTemplateBuilder+Swift.swift */,
+				6AB00E6A026C4053B5CE8E45 /* LeetCodeTemplateBuilder+Python.swift */,
+				8F0B79BF20F546EA9997FAB1 /* LeetCodeTemplateBuilder+Helpers.swift */,
+			);
+			path = Snippets;
+			sourceTree = "<group>";
+		};
+		8D8F9626ABE84F95AED666A6 /* Execution */ = {
+			isa = PBXGroup;
+			children = (
+				A10002060 /* CodingEnvironmentPresenter+Execution.swift */,
+				AB829ACA59D542A1BAFB7E98 /* CodingEnvironmentPresenter+ExecutionDiagnostics.swift */,
+				A9046CC2CE464F6CAA10E00D /* CodingEnvironmentPresenter+ExecutionOutput.swift */,
+				B8668759D89D46E6AFEFDB91 /* CodingEnvironmentPresenter+ExecutionTrace.swift */,
+				85429B444E874474A60434FC /* LeetCodeExecutionWrapper.swift */,
+				40DF70BDE518480BA3A08BE4 /* LeetCodeExecutionWrapper+Swift.swift */,
+				4792F237BA3A45A8940718F1 /* LeetCodeExecutionWrapper+SwiftRunner.swift */,
+				B41BDEB1E3F242098830391D /* LeetCodeExecutionWrapper+SwiftTrace.swift */,
+				11B1220325C143EAA1510779 /* LeetCodeExecutionWrapper+SignatureParsing.swift */,
+				A6BCD363384E4C13B37495DE /* LeetCodeExecutionWrapper+Python.swift */,
+				B3E5D72B4C8A61023F4E7A9C /* AutoInstrumenter.swift */,
+				39FCBCC646DF4102AFB6EB95 /* LeetCodeExecutionWrapper+PythonRunner.swift */,
+				61EBAF88E89C2265C6E96CBA /* LeetCodeExecutionWrapper+PythonTrace.swift */,
+				91545BFE73ED44268B3DC9E8 /* LeetCodeExecutionWrapper+TypeParsing.swift */,
+			);
+			path = Execution;
+			sourceTree = "<group>";
+		};
+		913E9EE29DCC433C9B30C330 /* CodingEnvironment */ = {
+			isa = PBXGroup;
+			children = (
+				IT002007 /* CodingEnvironmentInteractorTests.swift */,
+				29FB46B09F3E414695FCE546 /* CodingEnvironmentPresenterTests.swift */,
+				D92D1385DE9ECF6085B0EFAC /* CodingEnvironmentSnippetSelectionTests.swift */,
+				6D88CF0FA93F63C2D827B118 /* CodingEnvironmentTestSupport.swift */,
+				73DD0E92E41BEC71C5DC5CBE /* CodingEnvironmentTraceParsingTests.swift */,
+				547FCC10780C70175DB6A578 /* CodingEnvironmentOutputNormalizationTests.swift */,
+				BBFB63DC75C1BF86F68057A0 /* DataJourneyModelsTests.swift */,
+				F5A1B82C3D4E69015F3E9D6B /* DataJourneyDiffTests.swift */,
+				54AF08543519447B87977A9E /* DataJourneyStructureDetectionTests.swift */,
+				6C42E1B6E2A84B9E9D4E7D23 /* DataJourneyPointerMotionTests.swift */,
+				00747953C3ED4D3784EA4B98 /* LeetCodeExecutionWrapperTests.swift */,
+				867FE0756AF39CB9438B1288 /* LeetCodeExecutionWrapperEdgeCaseTests.swift */,
+				7771295A59E81FAD37E80A4E /* LeetCodeTemplateBuilderTests.swift */,
+				09B826590C1C4423B22A0B64 /* CodeExecutionServiceTests.swift */,
+				DSAT002003 /* ExecutionConfigTests.swift */,
+				A2C29BF0F588499DBE85FD5D /* ExecutorTests.swift */,
+				085FEBCD150F43019CE9B529 /* ProcessRunnerTests.swift */,
+				72999C0BC3F3402687B3BB9E /* ProgrammingLanguageTests.swift */,
+				B7E3A91F4C2D58067E3FA1B2 /* PythonTraceTests.swift */,
+			);
+			path = CodingEnvironment;
+			sourceTree = "<group>";
+		};
+		A10005001 = {
+			isa = PBXGroup;
+			children = (
+				A10005002 /* FocusApp */,
+				E3BDFC6AC2C94292AEFE137B /* FocusAppTests */,
+				63AF4C14DAD349D8921DAFF1 /* FocusAppIntegrationTests */,
+				A10005003 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		A10005002 /* FocusApp */ = {
+			isa = PBXGroup;
+			children = (
+				A10002001 /* FocusApp.swift */,
+				A10002015 /* AppContainer.swift */,
+				A1000200E /* FocusApp.entitlements */,
+				A1000200D /* Assets.xcassets */,
+				A10005010 /* Resources */,
+				A10005004 /* Models */,
+				A10005005 /* Views */,
+				A10005006 /* Helpers */,
+				A10005007 /* Shared */,
+				788C8E892E2EEC8E7371786E /* Coordination */,
+			);
+			path = FocusApp;
+			sourceTree = "<group>";
+		};
+		A10005003 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				A10003001 /* FocusApp.app */,
+				58471227E33B481BB4F4357B /* FocusAppTests.xctest */,
+				FDEE8AFA09E34A0296EA58FC /* FocusAppIntegrationTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		A10005004 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				A10002002 /* DSAPlan.swift */,
+				A10002003 /* AppData.swift */,
+				A10002004 /* DataStore.swift */,
+				A1000200F /* NotificationManager.swift */,
+				A10002070 /* NotificationSettings.swift */,
+				A10002071 /* NotificationSettingsStore.swift */,
+				A10002072 /* NotificationScheduler.swift */,
+				A10002014 /* LeetCodeService.swift */,
+				D2D70A846ECA406EAD5C00EA /* LeetCodeRestClient+Requests.swift */,
+				ED0D7E4D8DD24373B162DB1A /* LeetCodeRestClient+Validation.swift */,
+				87848ED42D674540A01E5EDE /* LeetCodeRestClient+SolvedSlugs.swift */,
+				D994FDB1D9524F1E880ED0BF /* LeetCodeRestClient+GraphQL.swift */,
+				AAB330A1AD40462BBD64A817 /* LeetCodeRestClient+ProblemContent.swift */,
+				A10002073 /* LeetCodeNetworking.swift */,
+				A10002075 /* LeetCodeErrors.swift */,
+				A10002076 /* LeetCodeModels.swift */,
+				77109ADB4E7D49D79A7EAE35 /* LeetCodeValueType.swift */,
+				A1B2C3D4E5F6A7B8C9D0E2A1 /* SolutionModels.swift */,
+				A1B2C3D4E5F6A7B8C9D0E2A2 /* SolutionStore.swift */,
+				A10002078 /* LeetCodeConstants.swift */,
+				B2C3D4E5F6A7B8C9D0E1F4F5 /* LeetCodeSyncScheduler.swift */,
+				46393003B20C411B876AB671 /* LeetCodeSyncInteractor.swift */,
+				A10002079 /* LeetCodeSlugExtractor.swift */,
+				A10002017 /* TestCase.swift */,
+				A10002018 /* CodeExecutionService.swift */,
+				A1000201E /* ProcessRunner.swift */,
+				C2C628C5EB52415F9AB50D7E /* ProcessRunState.swift */,
+				8C27ED53D78F405EA1AFB969 /* ProcessOutputCollector.swift */,
+				A1000201F /* LanguageExecutor.swift */,
+				A10002020 /* SwiftExecutor.swift */,
+				C47F33827B1A4CAAAF7ACC2C /* SwiftExecutor+Logging.swift */,
+				A10002021 /* PythonExecutor.swift */,
+				0F9FB7FF7D18DD14E20106F2 /* ProblemManifestStore.swift */,
+				B28A8462CA30A176A921BB7B /* TopicSolutionModels.swift */,
+				EAB28E8181C60EBCBD3A980F /* TopicSolutionStore.swift */,
+				A7F3B2C1D8E9F0A1B2C3D4E6 /* SolutionAIService.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		A10005005 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				A10005008 /* Content */,
+				A10005009 /* Plan */,
+				A1000500A /* Today */,
+				A1000500B /* Stats */,
+				A1000500C /* Focus */,
+				A1000500D /* Settings */,
+				A1000500E /* ToolbarWidget */,
+				A1000500F /* CodingEnvironment */,
+				A1000200B /* DayCard.swift */,
+				A1000200C /* ProblemRow.swift */,
+				A1000201A /* CodeEditorView.swift */,
+				A10002037 /* CodeEditorView+Coordinator.swift */,
+				A10002038 /* CodeEditorView+CoordinatorInput.swift */,
+				A10002039 /* CodeEditorView+CoordinatorHighlighting.swift */,
+				5A9C160FDBA2426DBDFD6986 /* CodeEditorView+CoordinatorHighlightingCommon.swift */,
+				C970BACB7D254352948CFF1A /* CodeEditorView+CoordinatorHighlightingSwift.swift */,
+				21780F4451B945FAB9CEFE94 /* CodeEditorView+CoordinatorHighlightingPython.swift */,
+				A1000207A /* CodeEditorView+CoordinatorIndentation.swift */,
+				A1000207B /* CodeEditorView+CoordinatorBrackets.swift */,
+				A10002091 /* CodeEditorLineNumberRulerView.swift */,
+				A1000201B /* OutputPanelView.swift */,
+				A10002012 /* OutputPanelView+Sections.swift */,
+				A10002013 /* ConsoleOutputView.swift */,
+				A1000201C /* ProblemSelectionView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		A10005006 /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				A10002005 /* Colors.swift */,
+				A10002092 /* AppStrings.swift */,
+				A10002095 /* L10n.swift */,
+				A10002097 /* L10n+Plural.swift */,
+				A10002098 /* AppMessages.swift */,
+			);
+			path = Helpers;
+			sourceTree = "<group>";
+		};
+		A10005007 /* Shared */ = {
+			isa = PBXGroup;
+			children = (
+				A10002011 /* SharedDataStore.swift */,
+				A10002090 /* SwiftDataStorage.swift */,
+			);
+			path = Shared;
+			sourceTree = "<group>";
+		};
+		A10005008 /* Content */ = {
+			isa = PBXGroup;
+			children = (
+				A10002006 /* ContentView.swift */,
+				A10002022 /* ContentInteractor.swift */,
+				A10002023 /* ContentPresenter.swift */,
+				A10002081 /* ContentView+Preview.swift */,
+			);
+			path = Content;
+			sourceTree = "<group>";
+		};
+		A10005009 /* Plan */ = {
+			isa = PBXGroup;
+			children = (
+				A10002007 /* PlanView.swift */,
+				A10002024 /* PlanInteractor.swift */,
+				A10002025 /* PlanPresenter.swift */,
+			);
+			path = Plan;
+			sourceTree = "<group>";
+		};
+		A1000500A /* Today */ = {
+			isa = PBXGroup;
+			children = (
+				A10002008 /* TodayView.swift */,
+				A10002026 /* TodayInteractor.swift */,
+				A10002027 /* TodayPresenter.swift */,
+				A10002043 /* TodayView+Sections.swift */,
+				A10002044 /* TodayView+Preview.swift */,
+				A10002080 /* TodayView+FocusCTA.swift */,
+			);
+			path = Today;
+			sourceTree = "<group>";
+		};
+		A1000500B /* Stats */ = {
+			isa = PBXGroup;
+			children = (
+				A10002009 /* StatsView.swift */,
+				A10002028 /* StatsInteractor.swift */,
+				A10002029 /* StatsPresenter.swift */,
+				A10002045 /* StatsView+Sections.swift */,
+				A10002046 /* StatsView+Preview.swift */,
+				A1000207F /* StatsView+FocusReminder.swift */,
+			);
+			path = Stats;
+			sourceTree = "<group>";
+		};
+		A1000500C /* Focus */ = {
+			isa = PBXGroup;
+			children = (
+				A1000200A /* FocusOverlay.swift */,
+				A10002034 /* FocusInteractor.swift */,
+				A10002035 /* FocusPresenter.swift */,
+				A10002047 /* FocusOverlay+Sections.swift */,
+				A1000207D /* FocusOverlay+TimerView.swift */,
+				A1000207E /* FocusOverlay+CompletionView.swift */,
+			);
+			path = Focus;
+			sourceTree = "<group>";
+		};
+		A1000500D /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+				A10002010 /* SettingsView.swift */,
+				442A3E5BF10148F0B6B191C1 /* DebugLogView.swift */,
+				F1636D7B6A764DFE88778306 /* DebugLogView+Header.swift */,
+				779FDA23FDEA4F84865F4D50 /* DebugLogView+Filters.swift */,
+				DE7369E0350240A3AEA56363 /* DebugLogView+Content.swift */,
+				C132E5EEF912453BBDC5AF07 /* DebugLogView+Metrics.swift */,
+				6E30623F430E4A7F84DE5C39 /* DebugLogView+Styles.swift */,
+				A070BC5C8E654C24B432BBEF /* DebugLogRow.swift */,
+				8464C02CEE2D484AB8DADC22 /* DebugLogFilters.swift */,
+				A10002030 /* SettingsInteractor.swift */,
+				A10002031 /* SettingsPresenter.swift */,
+				A10002040 /* SettingsView+Bindings.swift */,
+				A10002041 /* SettingsView+Validation.swift */,
+				A10002042 /* SettingsView+Preview.swift */,
+			);
+			path = Settings;
+			sourceTree = "<group>";
+		};
+		A1000500E /* ToolbarWidget */ = {
+			isa = PBXGroup;
+			children = (
+				A10002016 /* ToolbarWidgetView.swift */,
+				A10002032 /* ToolbarWidgetInteractor.swift */,
+				A10002033 /* ToolbarWidgetPresenter.swift */,
+				A10002048 /* ToolbarWidgetView+Header.swift */,
+				A10002049 /* ToolbarWidgetView+Settings.swift */,
+				A10002050 /* ToolbarWidgetView+Summary.swift */,
+				A10002051 /* ToolbarWidgetView+Problems.swift */,
+				A10002052 /* ToolbarWidgetView+Habits.swift */,
+				A10002053 /* ToolbarWidgetView+Tomorrow.swift */,
+				A10002054 /* ToolbarWidgetView+Preview.swift */,
+				A10002055 /* WidgetCard.swift */,
+				A10002056 /* ProblemRowWidget.swift */,
+				A10002057 /* HabitToggle.swift */,
+				A10002058 /* CarryoverProblemRow.swift */,
+				A10002059 /* TomorrowProblemRow.swift */,
+			);
+			path = ToolbarWidget;
+			sourceTree = "<group>";
+		};
+		A1000500F /* CodingEnvironment */ = {
+			isa = PBXGroup;
+			children = (
+				A10002019 /* CodingEnvironmentPresenter.swift */,
+				A10002036 /* CodingEnvironmentInteractor.swift */,
+				A10002061 /* CodingEnvironmentPresenter+ProblemLoading.swift */,
+				A10002062 /* CodingEnvironmentPresenter+Persistence.swift */,
+				D6EA4BEC926540C884CA828B /* CodingEnvironmentProblemModels.swift */,
+				8D8F9626ABE84F95AED666A6 /* Execution */,
+				84AAED7F2BC2426CA0AD470D /* Snippets */,
+				0BD4266DF2864218BDBED907 /* DataJourney */,
+				3F8D3EEAB6E34F2F8DC05850 /* Views */,
+			);
+			path = CodingEnvironment;
+			sourceTree = "<group>";
+		};
+		A10005010 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				A10002093 /* Localizable.xcstrings */,
+				A10002094 /* Plan.json */,
+				A10002099 /* Solutions.json */,
+				A10002096 /* Plurals.stringsdict */,
+				61C6ACE8B3D7E4B88158183B /* Solutions */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		61C6ACE8B3D7E4B88158183B /* Solutions */ = {
+			isa = PBXGroup;
+			children = (
+				2A6D6D5B7FB656D067770817 /* arrays-hashing.json */,
+				DE7B0E3FCE96090627B5951B /* backtracking.json */,
+				CF5CD45901BBDDE4447370F9 /* binary-search.json */,
+				918B09B9D8F04D713131E487 /* bit-manipulation.json */,
+				929AADACAB6D707E83CFF6A8 /* dynamic-programming.json */,
+				FE447CCE48C5EE33A0B17755 /* graphs.json */,
+				F7EEEEA00AF4A750861C0A1A /* greedy.json */,
+				2849B4B1C166E5F1500A8148 /* heap-priority-queue.json */,
+				C707308BDCC0CA175F9CA73E /* index.json */,
+				0AF0A291F14C0BAB8F319AB5 /* intervals.json */,
+				2E8737B49473DD67005DAD55 /* linked-list.json */,
+				9AE152CBFCD19688753A9A19 /* math-geometry.json */,
+				FD6F41F4A8BE91CA32C32400 /* misc.json */,
+				D42B9DB70746A8F45FF44908 /* sliding-window.json */,
+				D9EA14A74BB7B5170E76C909 /* stack.json */,
+				DAA205B39791172D9A37DCC4 /* trees.json */,
+				8BB48FA0F6350B64D30E1A87 /* tries.json */,
+				C47F4F9B2A62B792A9E9012D /* two-pointers.json */,
+			);
+			path = Solutions;
+			sourceTree = "<group>";
+		};
+		B394CBBBFDCB496F80FCCA8C /* Plan */ = {
+			isa = PBXGroup;
+			children = (
+				DSAT002001 /* DSAPlanTests.swift */,
+				9F4280AC0DB14B018B8F3B43 /* PlanCalendarTests.swift */,
+				IT002002 /* PlanInteractorTests.swift */,
+				PT002003 /* PlanPresenterTests.swift */,
+			);
+			path = Plan;
+			sourceTree = "<group>";
+		};
+		E3BDFC6AC2C94292AEFE137B /* FocusAppTests */ = {
+			isa = PBXGroup;
+			children = (
+				5C108DC94D474B48A88136F5 /* AppState */,
+				913E9EE29DCC433C9B30C330 /* CodingEnvironment */,
+				163F8A00F62547B6840711CF /* Content */,
+				01F6AC2A2A6542818318F398 /* Focus */,
+				5F6A0D8D8D6E4765AAC99D3F /* LeetCode */,
+				B394CBBBFDCB496F80FCCA8C /* Plan */,
+				574579FB3B5A4F61862BFD00 /* Settings */,
+				4EACC8122DCD4FE493BACD8E /* Stats */,
+				1D94F8CDDDB748AFA2F7A894 /* Today */,
+				26FD3EA4F75F41B4ADCED677 /* ToolbarWidget */,
+				50F172123351462DA7C6FA81 /* Support */,
+				D7A10009CCCC222233334444 /* Coordination */,
+			);
+			path = FocusAppTests;
+			sourceTree = "<group>";
+		};
+		63AF4C14DAD349D8921DAFF1 /* FocusAppIntegrationTests */ = {
+			isa = PBXGroup;
+			children = (
+				79033B763AD4459880F18AC1 /* PageObjects */,
+				E7C880A267F4482A818A46F7 /* Flows */,
+				58D89EEA3F9D499288982499 /* Fixtures */,
+				7D85E39FFBA84B659C4DC08C /* Support */,
+				BC40724F5E0E4E40B81DC73F /* Tests */,
+			);
+			path = FocusAppIntegrationTests;
+			sourceTree = "<group>";
+		};
+		79033B763AD4459880F18AC1 /* PageObjects */ = {
+			isa = PBXGroup;
+			children = (
+				BF527610D1FD42B487521B26 /* CodingEnvironmentPages.swift */,
+			);
+			path = PageObjects;
+			sourceTree = "<group>";
+		};
+		E7C880A267F4482A818A46F7 /* Flows */ = {
+			isa = PBXGroup;
+			children = (
+				8E13C921E8B943FB93121244 /* CodingEnvironmentFlows.swift */,
+			);
+			path = Flows;
+			sourceTree = "<group>";
+		};
+		58D89EEA3F9D499288982499 /* Fixtures */ = {
+			isa = PBXGroup;
+			children = (
+				5C8C538616234F6FA1C82DC4 /* TestDateFactory.swift */,
+				7B2C3FDFF70A43CBBD710B1F /* TestProblemFactory.swift */,
+				F5F667DEF8AE4203AA494758 /* TestContentFactory.swift */,
+			);
+			path = Fixtures;
+			sourceTree = "<group>";
+		};
+		7D85E39FFBA84B659C4DC08C /* Support */ = {
+			isa = PBXGroup;
+			children = (
+				3F4F15A2AF5C43EDB9A7208F /* AsyncTestHelpers.swift */,
+				7940ADE6E7204461B732F325 /* TestDoubles.swift */,
+				088F06E4E37F4054B9F8B7D0 /* IntegrationTestHarness.swift */,
+			);
+			path = Support;
+			sourceTree = "<group>";
+		};
+		BC40724F5E0E4E40B81DC73F /* Tests */ = {
+			isa = PBXGroup;
+			children = (
+				E3BD4A184CA04CD3AF8B4F19 /* CodingEnvironmentIntegrationTests.swift */,
+			);
+			path = Tests;
+			sourceTree = "<group>";
+		};
+		788C8E892E2EEC8E7371786E /* Coordination */ = {
+			isa = PBXGroup;
+			children = (
+				560D1116B41DB726D1AB7CEA /* Coordinating.swift */,
+				A080BC3482F4FBA659C40FE8 /* NavigationState.swift */,
+				F06613745415F0D4F143DF9E /* AppCoordinator.swift */,
+				4E18E9251143613E3B2A1B71 /* ContentCoordinator.swift */,
+				684D37749FDE863A438A0FAC /* CodingCoordinator.swift */,
+				82DD31BA66FA7335916CA15A /* WidgetCoordinator.swift */,
+				2ED2E0B36206968E8B3A57CE /* FocusCoordinator.swift */,
+			);
+			path = Coordination;
+			sourceTree = "<group>";
+		};
+		D7A10009CCCC222233334444 /* Coordination */ = {
+			isa = PBXGroup;
+			children = (
+				D7A10001AAAA111122223333 /* ContentCoordinatorTests.swift */,
+				D7A10003CCCC111122223333 /* CodingCoordinatorTests.swift */,
+				D7A10005EEEE111122223333 /* WidgetCoordinatorTests.swift */,
+				D7A10007AAAA222233334444 /* FocusCoordinatorTests.swift */,
+			);
+			path = Coordination;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		4C67B5983E414605B8C2BADA /* FocusAppTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 3BDC9BCA158F45F3A391466C /* Build configuration list for PBXNativeTarget "FocusAppTests" */;
+			buildPhases = (
+				F250B49CEB074B259AD2B1C8 /* Sources */,
+				01245FCF31E449B4A39FE54E /* Frameworks */,
+				5F4820C5DE7141A0814F4EF6 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				78ADC0828EBD4ABBA19F2BAC /* PBXTargetDependency */,
+			);
+			name = FocusAppTests;
+			productName = FocusAppTests;
+			productReference = 58471227E33B481BB4F4357B /* FocusAppTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		D5F35DF5251D430A850B74B6 /* FocusAppIntegrationTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 85B1B16816C649ABBC06F9F1 /* Build configuration list for PBXNativeTarget "FocusAppIntegrationTests" */;
+			buildPhases = (
+				C6980DD47C124E11957094DA /* Sources */,
+				138EC7B62C204ED5A881E698 /* Frameworks */,
+				56C0FC1A6F6D4FCA88A04FB4 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				36A4751A5ABF4638A5FCF7C9 /* PBXTargetDependency */,
+			);
+			name = FocusAppIntegrationTests;
+			productName = FocusAppIntegrationTests;
+			productReference = FDEE8AFA09E34A0296EA58FC /* FocusAppIntegrationTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		A10006001 /* FocusApp */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A10008001 /* Build configuration list for PBXNativeTarget "FocusApp" */;
+			buildPhases = (
+				CA217BC70C3CA43E5942B4E2 /* Run SwiftLint */,
+				A10004002 /* Sources */,
+				A10004001 /* Frameworks */,
+				A10004003 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = FocusApp;
+			productName = FocusApp;
+			productReference = A10003001 /* FocusApp.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		A10007001 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1500;
+				LastUpgradeCheck = 2600;
+			TargetAttributes = {
+				4C67B5983E414605B8C2BADA = {
+					CreatedOnToolsVersion = 15.0;
+				};
+				D5F35DF5251D430A850B74B6 = {
+					CreatedOnToolsVersion = 15.0;
+				};
+				A10006001 = {
+					CreatedOnToolsVersion = 15.0;
+				};
+			};
+			};
+			buildConfigurationList = A10008002 /* Build configuration list for PBXProject "FocusApp" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = A10005001;
+			productRefGroup = A10005003 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				A10006001 /* FocusApp */,
+				4C67B5983E414605B8C2BADA /* FocusAppTests */,
+				D5F35DF5251D430A850B74B6 /* FocusAppIntegrationTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		5F4820C5DE7141A0814F4EF6 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		56C0FC1A6F6D4FCA88A04FB4 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A10004003 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A1000100D /* Assets.xcassets in Resources */,
+				A10001093 /* Localizable.xcstrings in Resources */,
+				A10001094 /* Plan.json in Resources */,
+				A10001100 /* Solutions.json in Resources */,
+				A10001096 /* Plurals.stringsdict in Resources */,
+				D1DE7AFB63DC55F9DC102042 /* index.json in Resources */,
+				B99E2DBA62D1949CBCCC7E64 /* arrays-hashing.json in Resources */,
+				C47A67B33D1E3182880018FA /* two-pointers.json in Resources */,
+				F797ECF8446BD1FA1A82EA6B /* sliding-window.json in Resources */,
+				D724B091550FC405CB6478BC /* stack.json in Resources */,
+				A590A3CA4CDA65938428D3AB /* binary-search.json in Resources */,
+				98DC6308DDB00FE763710941 /* linked-list.json in Resources */,
+				E87A1BF7C9CD09720BDD1A15 /* trees.json in Resources */,
+				6BED3A66D6408A0FAE3DF3ED /* tries.json in Resources */,
+				144B02A32A1DF2B3266C5403 /* heap-priority-queue.json in Resources */,
+				172A67AF987838E66C01388B /* backtracking.json in Resources */,
+				6E1F51704612CE87EC183A06 /* graphs.json in Resources */,
+				185EB01B251DE728AF74AA2A /* dynamic-programming.json in Resources */,
+				8053682CF5F98285D3635D37 /* greedy.json in Resources */,
+				90BCA5CC8425E2BC5AF07984 /* intervals.json in Resources */,
+				F4F72663669F72AAC84CEFD4 /* math-geometry.json in Resources */,
+				054408BF3C0C3912E96F5519 /* bit-manipulation.json in Resources */,
+				4EF267D64DE9F29FCC1674C0 /* misc.json in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		CA217BC70C3CA43E5942B4E2 /* Run SwiftLint */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Run SwiftLint";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/swiftlint.stamp",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/bash;
+			shellScript = "\"${SRCROOT}/Scripts/swiftlint.sh\"";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		A10004002 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A10001001 /* FocusApp.swift in Sources */,
+				A10001014 /* AppContainer.swift in Sources */,
+				A10001002 /* DSAPlan.swift in Sources */,
+				A10001003 /* AppData.swift in Sources */,
+				A10001004 /* DataStore.swift in Sources */,
+				A10001005 /* Colors.swift in Sources */,
+				A10001092 /* AppStrings.swift in Sources */,
+				A10001095 /* L10n.swift in Sources */,
+				A10001097 /* L10n+Plural.swift in Sources */,
+				A10001098 /* AppMessages.swift in Sources */,
+				A10001006 /* ContentView.swift in Sources */,
+				A10001007 /* PlanView.swift in Sources */,
+				A10001008 /* TodayView.swift in Sources */,
+				A10001009 /* StatsView.swift in Sources */,
+				A1000100A /* FocusOverlay.swift in Sources */,
+				A1000100B /* DayCard.swift in Sources */,
+				A1000100C /* ProblemRow.swift in Sources */,
+				A1000100E /* NotificationManager.swift in Sources */,
+				A1000100F /* SettingsView.swift in Sources */,
+				345ABF38D5A6403F98251750 /* DebugLogView.swift in Sources */,
+				CCC8CE8123ED4177A81A2BFB /* DebugLogView+Header.swift in Sources */,
+				4A4258A35DCA45AFB546E5A4 /* DebugLogView+Filters.swift in Sources */,
+				08B22C296990445EB7C8B796 /* DebugLogView+Content.swift in Sources */,
+				D2B2BF952C3D438CBC245708 /* DebugLogView+Metrics.swift in Sources */,
+				4A2814BAABFD4DCAAAFFD6F9 /* DebugLogView+Styles.swift in Sources */,
+				37F10CA80A0244568EB8BB77 /* DebugLogRow.swift in Sources */,
+				C22BC59965C2413F860C4D4E /* DebugLogFilters.swift in Sources */,
+				A10001010 /* SharedDataStore.swift in Sources */,
+				A10001090 /* SwiftDataStorage.swift in Sources */,
+				A10001013 /* LeetCodeService.swift in Sources */,
+				03937CED56E14BF681F06586 /* LeetCodeRestClient+Requests.swift in Sources */,
+				ED40D4F4327C4E33870978A4 /* LeetCodeRestClient+Validation.swift in Sources */,
+				BC8250DBC6624F53B264A98B /* LeetCodeRestClient+SolvedSlugs.swift in Sources */,
+				6BF0AA24F0624D879DACE0A3 /* LeetCodeRestClient+GraphQL.swift in Sources */,
+				3FEA7F7554D2424C8706C6D8 /* LeetCodeRestClient+ProblemContent.swift in Sources */,
+				B4AA6352E4E8478C9BB1AFB1 /* LeetCodeValueType.swift in Sources */,
+				BE29F221FB004AF4806318D8 /* LeetCodeSyncInteractor.swift in Sources */,
+				A10001015 /* ToolbarWidgetView.swift in Sources */,
+				A10001016 /* TestCase.swift in Sources */,
+				A10001017 /* CodeExecutionService.swift in Sources */,
+				A10001018 /* CodingEnvironmentPresenter.swift in Sources */,
+				A10001019 /* CodeEditorView.swift in Sources */,
+				A10001091 /* CodeEditorLineNumberRulerView.swift in Sources */,
+				A1000101A /* OutputPanelView.swift in Sources */,
+				A1000101B /* ProblemSelectionView.swift in Sources */,
+				A1000101C /* CodingEnvironmentView.swift in Sources */,
+				A1000101D /* ProcessRunner.swift in Sources */,
+				19D175AD93CC47759E0F6BCA /* ProcessRunState.swift in Sources */,
+				91FDD3EABEDF479194B14E55 /* ProcessOutputCollector.swift in Sources */,
+				A1000101E /* LanguageExecutor.swift in Sources */,
+				A1000101F /* SwiftExecutor.swift in Sources */,
+				5AD100ED084B4A999AEE1AA4 /* SwiftExecutor+Logging.swift in Sources */,
+				A10001020 /* PythonExecutor.swift in Sources */,
+				A10001021 /* ContentInteractor.swift in Sources */,
+				A10001022 /* ContentPresenter.swift in Sources */,
+				A10001023 /* PlanInteractor.swift in Sources */,
+				A10001024 /* PlanPresenter.swift in Sources */,
+				A10001025 /* TodayInteractor.swift in Sources */,
+				A10001026 /* TodayPresenter.swift in Sources */,
+				A10001027 /* StatsInteractor.swift in Sources */,
+				A10001028 /* StatsPresenter.swift in Sources */,
+				A10001029 /* SettingsInteractor.swift in Sources */,
+				A10001030 /* SettingsPresenter.swift in Sources */,
+				A10001031 /* ToolbarWidgetInteractor.swift in Sources */,
+				A10001032 /* ToolbarWidgetPresenter.swift in Sources */,
+				A10001033 /* FocusInteractor.swift in Sources */,
+				A10001034 /* FocusPresenter.swift in Sources */,
+				A10001035 /* CodingEnvironmentInteractor.swift in Sources */,
+				A10001011 /* OutputPanelView+Sections.swift in Sources */,
+				A10001012 /* ConsoleOutputView.swift in Sources */,
+				A10001036 /* CodeEditorView+Coordinator.swift in Sources */,
+				A10001037 /* CodeEditorView+CoordinatorInput.swift in Sources */,
+				A10001038 /* CodeEditorView+CoordinatorHighlighting.swift in Sources */,
+				A15AEF6BDA9B4D0A8E548C28 /* CodeEditorView+CoordinatorHighlightingCommon.swift in Sources */,
+				3CF15D2918D44DE19C42C77C /* CodeEditorView+CoordinatorHighlightingSwift.swift in Sources */,
+				73808C4E9624456A861FC287 /* CodeEditorView+CoordinatorHighlightingPython.swift in Sources */,
+				A10001039 /* SettingsView+Bindings.swift in Sources */,
+				A10001040 /* SettingsView+Validation.swift in Sources */,
+				A10001041 /* SettingsView+Preview.swift in Sources */,
+				A10001042 /* TodayView+Sections.swift in Sources */,
+				A10001043 /* TodayView+Preview.swift in Sources */,
+				A10001044 /* StatsView+Sections.swift in Sources */,
+				A10001045 /* StatsView+Preview.swift in Sources */,
+				A10001046 /* FocusOverlay+Sections.swift in Sources */,
+				A10001047 /* ToolbarWidgetView+Header.swift in Sources */,
+				A10001048 /* ToolbarWidgetView+Settings.swift in Sources */,
+				A10001049 /* ToolbarWidgetView+Summary.swift in Sources */,
+				A10001050 /* ToolbarWidgetView+Problems.swift in Sources */,
+				A10001051 /* ToolbarWidgetView+Habits.swift in Sources */,
+				A10001052 /* ToolbarWidgetView+Tomorrow.swift in Sources */,
+				A10001053 /* ToolbarWidgetView+Preview.swift in Sources */,
+				A10001054 /* WidgetCard.swift in Sources */,
+				A10001055 /* ProblemRowWidget.swift in Sources */,
+				A10001056 /* HabitToggle.swift in Sources */,
+				A10001057 /* CarryoverProblemRow.swift in Sources */,
+				A10001058 /* TomorrowProblemRow.swift in Sources */,
+				A10001059 /* CodingEnvironmentPresenter+Execution.swift in Sources */,
+				A10001060 /* CodingEnvironmentPresenter+ProblemLoading.swift in Sources */,
+				A10001061 /* CodingEnvironmentPresenter+Persistence.swift in Sources */,
+				A10001063 /* CodingEnvironmentView+Header.swift in Sources */,
+				A10001064 /* CodingEnvironmentView+Panels.swift in Sources */,
+				A10001065 /* ModernTestCaseView.swift in Sources */,
+				A10001066 /* ModernOutputView.swift in Sources */,
+				A10001067 /* ModernOutputView+Sections.swift in Sources */,
+				A10001068 /* TestCaseEditorView.swift in Sources */,
+				A1B2C3D4E5F6A7B8C9D0E1A3 /* SolutionTabView.swift in Sources */,
+				A1B2C3D4E5F6A7B8C9D0E1B4 /* SolutionApproachView.swift in Sources */,
+				A10001069 /* NotificationSettings.swift in Sources */,
+				A10001070 /* NotificationSettingsStore.swift in Sources */,
+				A10001071 /* NotificationScheduler.swift in Sources */,
+				A10001072 /* LeetCodeNetworking.swift in Sources */,
+				A10001074 /* LeetCodeErrors.swift in Sources */,
+				A10001075 /* LeetCodeModels.swift in Sources */,
+				A1B2C3D4E5F6A7B8C9D0E1A1 /* SolutionModels.swift in Sources */,
+				A1B2C3D4E5F6A7B8C9D0E1A2 /* SolutionStore.swift in Sources */,
+				B2C3D4E5F6A7B8C9D0E1F4F6 /* LeetCodeSyncScheduler.swift in Sources */,
+				A10001077 /* LeetCodeConstants.swift in Sources */,
+				A10001078 /* LeetCodeSlugExtractor.swift in Sources */,
+				A10001079 /* CodeEditorView+CoordinatorIndentation.swift in Sources */,
+				A1000107A /* CodeEditorView+CoordinatorBrackets.swift in Sources */,
+				A1000107B /* CodingEnvironmentView+ProblemPicker.swift in Sources */,
+				CB0805C549E94B40B1CE6960 /* CodingEnvironmentProblemModels.swift in Sources */,
+				B1D2C3D4E5F6A7B8C9D0E1F7 /* DataJourneyModels.swift in Sources */,
+				A2C3B91E4D2E68057E4FB2C1 /* DataJourneyDiff.swift in Sources */,
+				B1D2C3D4E5F6A7B8C9D0E1F8 /* DataJourneyView.swift in Sources */,
+				D6C8B7E1F0A44B2F9C11A1D2 /* DataJourneyPointerModels.swift in Sources */,
+				D6C8B7E1F0A44B2F9C11A1D4 /* DataJourneyStructureCanvasView.swift in Sources */,
+				3FFCA891F2C84F28A935EB36 /* DataJourneyStructureCanvasView+Structure.swift in Sources */,
+				D40612CA23FC4DE38C5BA87E /* DataJourneyStructureCanvasView+Pointers.swift in Sources */,
+				0B151C1E36FF47B2BB934C73 /* DataJourneyStructureCanvasView+CombinedList.swift in Sources */,
+				9A6C1EB57AD94E4B8255D78A /* DataJourneyStructureCanvasView+Labels.swift in Sources */,
+				BFE680EAC1784B1D9D8C388B /* DataJourneyDictionaryStructureRow.swift in Sources */,
+				653A1BCD45DC478A8FA88001 /* CodingEnvironmentView+Sidebar.swift in Sources */,
+				B1D2C3D4E5F6A7B8C9D0E1F3 /* CodingEnvironmentView+DetailContent.swift in Sources */,
+				A1000107C /* FocusOverlay+TimerView.swift in Sources */,
+				A1000107D /* FocusOverlay+CompletionView.swift in Sources */,
+				A1000107E /* StatsView+FocusReminder.swift in Sources */,
+				A1000107F /* TodayView+FocusCTA.swift in Sources */,
+				A10001080 /* ContentView+Preview.swift in Sources */,
+				111A709F246047A6AB319D04 /* CodingEnvironmentPresenter+ExecutionDiagnostics.swift in Sources */,
+				7A54FF72EBC246CE8251C431 /* CodingEnvironmentPresenter+ExecutionOutput.swift in Sources */,
+				21D1539A6F4B4DEEBC6A1924 /* CodingEnvironmentPresenter+ExecutionTrace.swift in Sources */,
+				D9A9ECBA32F44AC48A6AD189 /* CodingEnvironmentPresenter+SnippetSelection.swift in Sources */,
+				0C10B0596DC14FCC8EC377F2 /* LeetCodeTemplateBuilder.swift in Sources */,
+				C5548308289242C8BEA283B4 /* LeetCodeTemplateBuilder+Swift.swift in Sources */,
+				A7805BF5C9D74FBF9F3F6660 /* LeetCodeTemplateBuilder+Python.swift in Sources */,
+				DDC480478CB549E5A6250DEB /* LeetCodeTemplateBuilder+Helpers.swift in Sources */,
+				EFFD1AD00A274FAFAE85E0E6 /* LeetCodeExecutionWrapper.swift in Sources */,
+				5B87C0B6275146F8B726CA73 /* LeetCodeExecutionWrapper+Swift.swift in Sources */,
+				6EEBF43AE0B646038DE6BD8D /* LeetCodeExecutionWrapper+SwiftRunner.swift in Sources */,
+				ACEFDAC310824100961E48F0 /* LeetCodeExecutionWrapper+SwiftTrace.swift in Sources */,
+				665139E8C51F498995BE1303 /* LeetCodeExecutionWrapper+SignatureParsing.swift in Sources */,
+				7D1847D18492434F83E7148A /* LeetCodeExecutionWrapper+Python.swift in Sources */,
+				D4F6A81C5D9B72034G5FB3D1 /* AutoInstrumenter.swift in Sources */,
+				572EA792E3E940E0AC6DFC34 /* LeetCodeExecutionWrapper+PythonRunner.swift in Sources */,
+				3DBF10CF797F5158640DB139 /* LeetCodeExecutionWrapper+PythonTrace.swift in Sources */,
+				3593EBC0C2634B2E949F8AC3 /* LeetCodeExecutionWrapper+TypeParsing.swift in Sources */,
+				4C00121006CA4BA8AA4CB6ED /* DataJourneyGraphView.swift in Sources */,
+				FDA5DE4E59854F6EA8DD7C86 /* DataJourneySequenceBubbleRow.swift in Sources */,
+				6D3A4C30A09F40249E1C1523 /* DataJourneySequenceBubbleRow+Layout.swift in Sources */,
+				F2BA7EF3DAB446118E5F4A47 /* DataJourneyTraceBubble.swift in Sources */,
+				6B40050EBF6E4B0B93331C19 /* DataJourneyTraceValueView.swift in Sources */,
+				0F871AE1ABD84FF1841AD8A6 /* DataJourneyTreeGraphView.swift in Sources */,
+				F12BB13EE8394916BEA7150D /* DataJourneyView+Layout.swift in Sources */,
+				BAF6DBF89171499D947621DE /* DataJourneyView+Playback.swift in Sources */,
+				AC5E3A8CA8E344E4BC8DBC67 /* DataJourneyView+Selection.swift in Sources */,
+				FAE34936781FB08DD3BC6A94 /* DataJourneyMatrixGridView.swift in Sources */,
+				F7B2C93D5E4A81036G6HC4E2 /* DataJourneyHeapView.swift in Sources */,
+				A5E4D82F6G5B93048H8JE6G4 /* DataJourneyStringSequenceView.swift in Sources */,
+				C6F5E93G7H6C04259J0LG8I6 /* DataJourneyTrieGraphView.swift in Sources */,
+				E7G6F04H8I7D26471L2NI0K8 /* DataJourneyVariableTimeline.swift in Sources */,
+				G2I8H16J0K9F48693N4PK2M0 /* DataJourneyFlowView.swift in Sources */,
+				I4K0J38L2M1H60815P6RM4O2 /* DataJourneyComparisonView.swift in Sources */,
+				3B6C3674D3C641F59EFAA0F4 /* CodingEnvironmentView+SidebarRows.swift in Sources */,
+				D54D3C6A91FC412DA4C9AC74 /* ProblemDetailTab.swift in Sources */,
+				299C1DCB1B9A47B7A808C51A /* SolutionApproachView+TestCases.swift in Sources */,
+				083FCCE4C2EE974E745D0F9C /* ProblemManifestStore.swift in Sources */,
+				33350B941D8818A1F0B6046F /* TopicSolutionModels.swift in Sources */,
+				0B3BB5B771124F47756486F7 /* TopicSolutionStore.swift in Sources */,
+				A7F3B2C1D8E9F0A1B2C3D4E5 /* SolutionAIService.swift in Sources */,
+				6ECCF7C83218F14741671596 /* Coordinating.swift in Sources */,
+				2A651AFFC470B33B7A4BF91E /* NavigationState.swift in Sources */,
+				A0B4C2352A17680F9B6E87CD /* AppCoordinator.swift in Sources */,
+				60956CCE18FC29D34C195771 /* ContentCoordinator.swift in Sources */,
+				E4021FD367EBBF2425179EC4 /* CodingCoordinator.swift in Sources */,
+				73E23C00B4586707FE3F4CB6 /* WidgetCoordinator.swift in Sources */,
+				906597E1525E4525DB48C9D3 /* FocusCoordinator.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F250B49CEB074B259AD2B1C8 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C9EA7A4E9DEF427EA4E50A21 /* Fixtures.swift in Sources */,
+				1FDAC8DA41B44813A6128FF4 /* LeetCodeModelsTests.swift in Sources */,
+				D2EC195B48254E0B914D8A01 /* LeetCodeRestClientTests.swift in Sources */,
+				416DC1D624AC4D8C83D0820A /* LeetCodeNetworkingTests.swift in Sources */,
+				5B9ADEFB983A4EF5AF6A67D2 /* ProcessRunnerTests.swift in Sources */,
+				1C9332DFB01F4B57805EC9A6 /* ExecutorTests.swift in Sources */,
+				C2978C5869F84459BDC98091 /* SharedDataStoreTests.swift in Sources */,
+				E325663DD9574C9390341D12 /* AppDataTests.swift in Sources */,
+				81CB68C852BA4D08900D8C64 /* PlanCalendarTests.swift in Sources */,
+				F16E69D9C175439EA2255A91 /* AppStateStoreTests.swift in Sources */,
+				F9A2DABABABF4C3ABE903F0B /* LeetCodeSlugExtractorTests.swift in Sources */,
+				0A1BA9D5346842E6BF0C6DBB /* ProgrammingLanguageTests.swift in Sources */,
+				76E45EE927B7400B8F88BED1 /* LeetCodeSyncInteractorTests.swift in Sources */,
+				55C3B4ADCD3C450593E4212C /* NotificationManagerTests.swift in Sources */,
+				865EEC6EABBD4E7AB00F78AA /* CodeExecutionServiceTests.swift in Sources */,
+				074E2BCBD6F74E9B99BF53E4 /* CodingEnvironmentPresenterTests.swift in Sources */,
+				1D29FED19302FE41B27B05C0 /* CodingEnvironmentSnippetSelectionTests.swift in Sources */,
+				4FD27FB3E21589771E1216D2 /* CodingEnvironmentTestSupport.swift in Sources */,
+				A30AF7E21FB62F3F28515335 /* CodingEnvironmentTraceParsingTests.swift in Sources */,
+				58F2001E816D4775D81926F7 /* CodingEnvironmentOutputNormalizationTests.swift in Sources */,
+				C7720954D2BECE71047F4F81 /* DataJourneyModelsTests.swift in Sources */,
+				C6D2A91F4E3F78068E5FC3D2 /* DataJourneyDiffTests.swift in Sources */,
+				1D57E79208E74453BD0275FC /* DataJourneyStructureDetectionTests.swift in Sources */,
+				3A7F0B1E6B7E4B5A9A6F3E12 /* DataJourneyPointerMotionTests.swift in Sources */,
+				213754056157F7C69749A0C4 /* LeetCodeExecutionWrapperTests.swift in Sources */,
+				26B2211C5D33315D24B3D008 /* LeetCodeExecutionWrapperEdgeCaseTests.swift in Sources */,
+				D4F6C82E1A3B79054F2E8C3A /* PythonTraceTests.swift in Sources */,
+				571D3D46E3FAFB7887E0E410 /* LeetCodeTemplateBuilderTests.swift in Sources */,
+				C7D8E9F0A1B2C3D4E5F60709 /* LeetCodeSyncSchedulerTests.swift in Sources */,
+				DSAT001001 /* DSAPlanTests.swift in Sources */,
+				DSAT001002 /* LeetCodeErrorsTests.swift in Sources */,
+				DSAT001003 /* ExecutionConfigTests.swift in Sources */,
+				DSAT001004 /* LeetCodeConstantsTests.swift in Sources */,
+				PT001001 /* FocusPresenterTests.swift in Sources */,
+				PT001002 /* ContentPresenterTests.swift in Sources */,
+				PT001003 /* PlanPresenterTests.swift in Sources */,
+				PT001004 /* TodayPresenterTests.swift in Sources */,
+				PT001005 /* StatsPresenterTests.swift in Sources */,
+				PT001006 /* SettingsPresenterTests.swift in Sources */,
+				PT001007 /* ToolbarWidgetPresenterTests.swift in Sources */,
+				IT001001 /* ContentInteractorTests.swift in Sources */,
+				IT001002 /* PlanInteractorTests.swift in Sources */,
+				IT001003 /* TodayInteractorTests.swift in Sources */,
+				IT001004 /* StatsInteractorTests.swift in Sources */,
+				IT001005 /* SettingsInteractorTests.swift in Sources */,
+				IT001006 /* ToolbarWidgetInteractorTests.swift in Sources */,
+				IT001007 /* CodingEnvironmentInteractorTests.swift in Sources */,
+				RT001001 /* ContentRouterTests.swift in Sources */,
+				F8EADBBBFBDA4DA2B4832A14 /* SolutionModelsTests.swift in Sources */,
+				377053C695BA483995EC3E8C /* SolutionStoreTests.swift in Sources */,
+				0D2575DAB1A573FCD705E7CA /* TopicSolutionModelsTests.swift in Sources */,
+				7D5E84A37E0A1AC32E2934A6 /* TopicSolutionStoreTests.swift in Sources */,
+				D7A10002BBBB111122223333 /* ContentCoordinatorTests.swift in Sources */,
+				D7A10004DDDD111122223333 /* CodingCoordinatorTests.swift in Sources */,
+				D7A10006FFFF111122223333 /* WidgetCoordinatorTests.swift in Sources */,
+				D7A10008BBBB222233334444 /* FocusCoordinatorTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C6980DD47C124E11957094DA /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F2CC59FD5FC545F3B90A5A4E /* AsyncTestHelpers.swift in Sources */,
+				4FBB1082F33E4E4A95BE31B5 /* TestDoubles.swift in Sources */,
+				6722A5727A874069AB700567 /* IntegrationTestHarness.swift in Sources */,
+				003478FA59F742F5AB24A475 /* TestDateFactory.swift in Sources */,
+				72A2D77EBFAF472391554007 /* TestProblemFactory.swift in Sources */,
+				9FC1D39FFAD14981AF2C355F /* TestContentFactory.swift in Sources */,
+				9A2747CA94D84A12B757C379 /* CodingEnvironmentPages.swift in Sources */,
+				390878BC428D4086900184B7 /* CodingEnvironmentFlows.swift in Sources */,
+				C042EC4BA2814C58BFBCCFB4 /* CodingEnvironmentIntegrationTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		78ADC0828EBD4ABBA19F2BAC /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = A10006001 /* FocusApp */;
+			targetProxy = BC76266BB8004E60817433C2 /* PBXContainerItemProxy */;
+		};
+		36A4751A5ABF4638A5FCF7C9 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = A10006001 /* FocusApp */;
+			targetProxy = BC76266BB8004E60817433C2 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		A10009001 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEAD_CODE_STRIPPING = YES;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		A10009002 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEAD_CODE_STRIPPING = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = macosx;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_COMPILATION_MODE = wholemodule;
+			};
+			name = Release;
+		};
+		A10009003 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = FocusApp/FocusApp.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEAD_CODE_STRIPPING = YES;
+				DEVELOPMENT_ASSET_PATHS = "";
+				DEVELOPMENT_TEAM = V29G6KEVJT;
+				ENABLE_APP_SANDBOX = NO;
+				ENABLE_DEBUG_DYLIB = NO;
+				ENABLE_PREVIEWS = YES;
+				ENABLE_USER_SELECTED_FILES = readwrite;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.productivity";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.dsafocus.FocusApp;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		A10009004 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = FocusApp/FocusApp.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEAD_CODE_STRIPPING = YES;
+				DEVELOPMENT_ASSET_PATHS = "";
+				DEVELOPMENT_TEAM = V29G6KEVJT;
+				ENABLE_APP_SANDBOX = NO;
+				ENABLE_PREVIEWS = YES;
+				ENABLE_USER_SELECTED_FILES = readwrite;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.productivity";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.dsafocus.FocusApp;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+		B96A036423E747AB95A690E0 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEAD_CODE_STRIPPING = YES;
+				DEVELOPMENT_TEAM = V29G6KEVJT;
+				ENABLE_TESTABILITY = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = FocusAppTests;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.dsafocus.FocusAppTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_VERSION = 5.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/FocusApp.app/Contents/MacOS/FocusApp";
+			};
+			name = Debug;
+		};
+		BF95B07906CE46F7AA435328 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEAD_CODE_STRIPPING = YES;
+				DEVELOPMENT_TEAM = V29G6KEVJT;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = FocusAppTests;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.dsafocus.FocusAppTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SWIFT_VERSION = 5.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/FocusApp.app/Contents/MacOS/FocusApp";
+			};
+			name = Release;
+		};
+		94D20F2A423C4E2785C06D1B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEAD_CODE_STRIPPING = YES;
+				DEVELOPMENT_TEAM = V29G6KEVJT;
+				ENABLE_TESTABILITY = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = FocusAppIntegrationTests;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.dsafocus.FocusAppIntegrationTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_VERSION = 5.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/FocusApp.app/Contents/MacOS/FocusApp";
+			};
+			name = Debug;
+		};
+		1091B86160EB49BDBAB3F6BB /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEAD_CODE_STRIPPING = YES;
+				DEVELOPMENT_TEAM = V29G6KEVJT;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = FocusAppIntegrationTests;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.dsafocus.FocusAppIntegrationTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SWIFT_VERSION = 5.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/FocusApp.app/Contents/MacOS/FocusApp";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		3BDC9BCA158F45F3A391466C /* Build configuration list for PBXNativeTarget "FocusAppTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B96A036423E747AB95A690E0 /* Debug */,
+				BF95B07906CE46F7AA435328 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		85B1B16816C649ABBC06F9F1 /* Build configuration list for PBXNativeTarget "FocusAppIntegrationTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				94D20F2A423C4E2785C06D1B /* Debug */,
+				1091B86160EB49BDBAB3F6BB /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		A10008001 /* Build configuration list for PBXNativeTarget "FocusApp" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A10009003 /* Debug */,
+				A10009004 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		A10008002 /* Build configuration list for PBXProject "FocusApp" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A10009001 /* Debug */,
+				A10009002 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = A10007001 /* Project object */;
+}

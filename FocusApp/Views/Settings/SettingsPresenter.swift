@@ -18,6 +18,8 @@ final class SettingsPresenter: ObservableObject {
     @Published var aiProviderKind: AIProviderKind
     @Published var aiProviderApiKey: String
     @Published var aiProviderModel: String
+    @Published var leetCodeAuth: LeetCodeAuthSession?
+    @Published var aiTestCaseSummary: AITestCaseStoreSummary
 
     private let interactor: SettingsInteractor
 
@@ -29,10 +31,13 @@ final class SettingsPresenter: ObservableObject {
         self.aiProviderKind = interactor.currentAIProviderKind()
         self.aiProviderApiKey = interactor.currentAIProviderApiKey()
         self.aiProviderModel = interactor.currentAIProviderModel()
+        self.leetCodeAuth = interactor.currentLeetCodeAuth()
+        self.aiTestCaseSummary = interactor.aiTestCaseSummary()
     }
 
     func onAppear() {
         planStartDate = interactor.currentPlanStartDate()
+        aiTestCaseSummary = interactor.aiTestCaseSummary()
         Task {
             let authorized = await interactor.checkAuthorizationStatus()
             notificationsAuthorized = authorized
@@ -99,10 +104,44 @@ final class SettingsPresenter: ObservableObject {
         )
     }
 
+    func updateLeetCodeAuth(_ auth: LeetCodeAuthSession) {
+        interactor.updateLeetCodeAuth(auth)
+        leetCodeAuth = auth
+    }
+
+    func clearLeetCodeAuth() {
+        interactor.clearLeetCodeAuth()
+        leetCodeAuth = nil
+    }
+
+    func aiTestCaseRawJSON() -> String? {
+        interactor.aiTestCaseRawJSON()
+    }
+
+    func aiTestCaseFileURL() -> URL {
+        interactor.aiTestCaseFileURL()
+    }
+
+    func aiTestCaseUpdatedText() -> String? {
+        guard let updatedAt = aiTestCaseSummary.updatedAt else { return nil }
+        let formatter = SettingsPresenter.aiTestCaseDateFormatter
+        if let date = ISO8601DateFormatter().date(from: updatedAt) {
+            return formatter.string(from: date)
+        }
+        return updatedAt
+    }
+
     private func scheduleValidationReset() {
         Task {
             try? await Task.sleep(nanoseconds: 3_000_000_000)
             usernameValidationState = .none
         }
     }
+
+    private static let aiTestCaseDateFormatter: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.dateStyle = .medium
+        formatter.timeStyle = .short
+        return formatter
+    }()
 }

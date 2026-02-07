@@ -1,4 +1,5 @@
 @testable import FocusApp
+import Foundation
 import XCTest
 
 @MainActor
@@ -14,11 +15,14 @@ func makeCodingInteractor() -> CodingEnvironmentInteractor {
         calendar: PlanCalendar(startDate: start),
         dateProvider: FixedDateProvider(date: start)
     )
+    let fakeExecutor = FakeRequestExecutor()
+    let submissionService = LeetCodeSubmissionService(executor: fakeExecutor)
     return CodingEnvironmentInteractor(
         appStore: store,
         leetCodeClient: FakeLeetCodeClient(),
         executionService: FakeCodeExecutor(),
-        solutionStore: FakeSolutionStore()
+        solutionStore: FakeSolutionStore(),
+        submissionService: submissionService
     )
 }
 
@@ -66,4 +70,79 @@ func problemLocation(
     XCTFail("Missing problem location for slug \(slug)", file: file, line: line)
     let fallback = problemWithSlug(slug, file: file, line: line)
     return ProblemLocation(problem: fallback, dayId: 1, index: 0)
+}
+
+// MARK: - Presenter Helpers
+
+struct ExecutionRequest {
+    let code: String
+    let language: ProgrammingLanguage
+    let input: String
+}
+
+struct CodingHarness {
+    let presenter: CodingEnvironmentPresenter
+    let store: AppStateStore
+    let executor: QueueCodeExecutor
+}
+
+final class QueueCodeExecutor: CodeExecuting {
+    var requests: [ExecutionRequest] = []
+    var results: [ExecutionResult] = []
+    var cancelCalled = false
+
+    func execute(code: String, language: ProgrammingLanguage, input: String) async -> ExecutionResult {
+        requests.append(ExecutionRequest(code: code, language: language, input: input))
+        if results.isEmpty {
+            return ExecutionResult.failure("Not configured")
+        }
+        return results.removeFirst()
+    }
+
+    func cancelExecution() {
+        cancelCalled = true
+    }
+}
+
+struct ThrowingLeetCodeClient: LeetCodeClientProtocol {
+    func validateUsername(_ username: String) async throws -> Bool { true }
+
+    func fetchSolvedSlugs(username: String, limit: Int) async throws -> Set<String> { [] }
+
+    func fetchProblemContent(slug: String) async throws -> QuestionContent? {
+        throw TestError()
+    }
+}
+
+@MainActor
+func makeHarness(
+    executor: QueueCodeExecutor = QueueCodeExecutor(),
+    client: LeetCodeClientProtocol = FakeLeetCodeClient(),
+    logger: DebugLogStore? = nil
+) -> CodingHarness {
+    let start = makeDate(year: 2026, month: 2, day: 3)
+    let store = AppStateStore(
+        storage: InMemoryAppStorage(),
+        calendar: PlanCalendar(startDate: start),
+        dateProvider: FixedDateProvider(date: start)
+    )
+    let interactor = CodingEnvironmentInteractor(
+        appStore: store,
+        leetCodeClient: client,
+        executionService: executor,
+        solutionStore: FakeSolutionStore(),
+        submissionService: LeetCodeSubmissionService(executor: FakeRequestExecutor())
+    )
+    let presenter = CodingEnvironmentPresenter(interactor: interactor, logger: logger)
+    return CodingHarness(presenter: presenter, store: store, executor: executor)
+}
+
+@MainActor
+func waitFor(_ condition: @escaping () -> Bool, timeout: TimeInterval = 1.0) async -> Bool {
+    let start = Date()
+    while Date().timeIntervalSince(start) < timeout {
+        if condition() { return true }
+        try? await Task.sleep(nanoseconds: 50_000_000)
+    }
+    return condition()
 }

@@ -31,7 +31,8 @@ final class CodingEnvironmentSnippetSelectionTests: XCTestCase {
             sampleTestCase: "",
             difficulty: "Easy",
             codeSnippets: ["swift": "class Solution { }"],
-            metaData: nil
+            metaData: nil,
+            questionId: nil
         )
         presenter.problemContentCache["reverse-linked-list"] = CodingEnvironmentPresenter.CachedContent(
             content: cached, timestamp: Date()
@@ -57,7 +58,8 @@ final class CodingEnvironmentSnippetSelectionTests: XCTestCase {
             sampleTestCase: "",
             difficulty: "Easy",
             codeSnippets: [:],
-            metaData: meta
+            metaData: meta,
+            questionId: nil
         )
         presenter.problemContentCache["two-sum"] = CodingEnvironmentPresenter.CachedContent(
             content: cached, timestamp: Date()
@@ -84,7 +86,8 @@ final class CodingEnvironmentSnippetSelectionTests: XCTestCase {
             sampleTestCase: "",
             difficulty: "Easy",
             codeSnippets: ["swift": "class Solution { }"],
-            metaData: nil
+            metaData: nil,
+            questionId: nil
         )
 
         presenter.applySnippetIfNeeded(from: content)
@@ -110,7 +113,8 @@ final class CodingEnvironmentSnippetSelectionTests: XCTestCase {
             sampleTestCase: "",
             difficulty: "Easy",
             codeSnippets: [:],
-            metaData: meta
+            metaData: meta,
+            questionId: nil
         )
 
         presenter.applySnippetIfNeeded(from: content)
@@ -127,7 +131,8 @@ final class CodingEnvironmentSnippetSelectionTests: XCTestCase {
             sampleTestCase: "",
             difficulty: "Easy",
             codeSnippets: ["python": "print('py')", "python3": "print('py3')"],
-            metaData: nil
+            metaData: nil,
+            questionId: nil
         )
 
         let presenter = CodingEnvironmentPresenter(interactor: makeCodingInteractor())

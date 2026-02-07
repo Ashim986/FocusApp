@@ -101,11 +101,11 @@ extension CodingEnvironmentView {
 
             bottomPanel
                 .frame(
-                    minHeight: isBottomPanelCollapsed ? 36 : 220,
-                    idealHeight: isBottomPanelCollapsed ? 36 : 280
+                    minHeight: codingCoordinator.isBottomPanelCollapsed ? 36 : 220,
+                    idealHeight: codingCoordinator.isBottomPanelCollapsed ? 36 : 280
                 )
         }
-        .animation(.easeInOut(duration: 0.2), value: isBottomPanelCollapsed)
+        .animation(.easeInOut(duration: 0.2), value: codingCoordinator.isBottomPanelCollapsed)
     }
 
     private var bottomPanel: some View {
@@ -113,10 +113,10 @@ extension CodingEnvironmentView {
             VStack(spacing: 0) {
                 ModernTestCaseView(
                     presenter: presenter,
-                    isCollapsed: $isBottomPanelCollapsed
+                    isCollapsed: $codingCoordinator.isBottomPanelCollapsed
                 )
 
-                if !isBottomPanelCollapsed {
+                if !codingCoordinator.isBottomPanelCollapsed {
                     ModernOutputView(
                         output: presenter.compilationOutput,
                         error: presenter.errorOutput,

@@ -25,9 +25,13 @@ extension CodingEnvironmentPresenter {
         errorOutput = "Execution stopped by user."
     }
 
-    private func wrappedCodeForExecution() -> String {
-        guard let meta = LeetCodeMetaData.decode(from: problemContent?.metaData) else { return code }
-        return LeetCodeExecutionWrapper.wrap(code: code, language: language, meta: meta)
+    func wrappedCodeForExecution() -> String {
+        wrappedCodeForExecution(code, language: language)
+    }
+
+    func wrappedCodeForExecution(_ source: String, language: ProgrammingLanguage) -> String {
+        guard let meta = LeetCodeMetaData.decode(from: problemContent?.metaData) else { return source }
+        return LeetCodeExecutionWrapper.wrap(code: source, language: language, meta: meta)
     }
 
     private func runSingle() {
@@ -163,8 +167,17 @@ extension CodingEnvironmentPresenter {
 
             guard !Task.isCancelled else { return }
             if saveSubmission, allPassed {
-                await MainActor.run {
-                    self.recordSubmission()
+                let submissionOutcome = await self.submitToLeetCodeIfAllowed()
+                if let console = submissionOutcome.consoleMessage, !console.isEmpty {
+                    consoleLogs.append(console)
+                }
+                if let error = submissionOutcome.errorMessage, !error.isEmpty {
+                    errorLogs.append(error)
+                }
+                if submissionOutcome.didSubmit {
+                    await MainActor.run {
+                        self.recordSubmission()
+                    }
                 }
             }
             await MainActor.run {

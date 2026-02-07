@@ -10,19 +10,22 @@ struct TraceBubble: View {
     let size: CGFloat
     let style: Style
     let highlighted: Bool
+    let changeType: ChangeType?
 
     init(
         text: String,
         fill: Color,
         size: CGFloat = 30,
         style: Style = .solid,
-        highlighted: Bool = false
+        highlighted: Bool = false,
+        changeType: ChangeType? = nil
     ) {
         self.text = text
         self.fill = fill
         self.size = size
         self.style = style
         self.highlighted = highlighted
+        self.changeType = changeType
     }
 
     var body: some View {
@@ -55,6 +58,28 @@ struct TraceBubble: View {
                 .stroke(Color.appCyan, lineWidth: 2)
                 .shadow(color: Color.appCyan.opacity(0.6), radius: 4)
         }
+        if let changeType {
+            changeTypeOverlay(changeType)
+        }
+    }
+
+    @ViewBuilder
+    private func changeTypeOverlay(_ type: ChangeType) -> some View {
+        switch type {
+        case .added:
+            Circle()
+                .stroke(Color.appGreen, lineWidth: 1.5)
+                .shadow(color: Color.appGreen.opacity(0.5), radius: 3)
+        case .removed:
+            Circle()
+                .fill(Color.appRed.opacity(0.25))
+        case .modified:
+            Circle()
+                .stroke(Color.appAmber, lineWidth: 1.5)
+                .shadow(color: Color.appAmber.opacity(0.5), radius: 3)
+        case .unchanged:
+            EmptyView()
+        }
     }
 }
 
@@ -62,6 +87,7 @@ struct TraceBubbleModel {
     let text: String
     let fill: Color
 
+    // swiftlint:disable:next cyclomatic_complexity
     static func from(_ value: TraceValue, compact: Bool = false) -> TraceBubbleModel {
         switch value {
         case .null:
@@ -90,6 +116,9 @@ struct TraceBubbleModel {
             return TraceBubbleModel(text: label, fill: Color.appGray700)
         case .listPointer, .treePointer:
             return TraceBubbleModel(text: "ptr", fill: Color.appGray700)
+        case .trie(let trieData):
+            let label = compact ? "\(trieData.nodes.count)" : "trie"
+            return TraceBubbleModel(text: label, fill: Color.appGray700)
         case .typed(let type, let inner):
             return typedBubbleModel(type: type, inner: inner, compact: compact)
         }

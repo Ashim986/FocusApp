@@ -206,6 +206,16 @@ final class FakeNotificationManager: NotificationManaging {
 
 // MARK: - Fake LeetCode Sync Interactor
 
+final class FakeRequestExecutor: RequestExecuting {
+    var result: Result<Data, Error> = .success(Data())
+    var lastRequest: URLRequest?
+
+    func execute(_ request: URLRequest) async throws -> Data {
+        lastRequest = request
+        return try result.get()
+    }
+}
+
 final class FakeLeetCodeSyncInteractor {
     var validateUsernameResult: Bool = true
     var validateUsernameCalled = false

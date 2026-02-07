@@ -303,6 +303,7 @@ extension SequenceBubbleRow {
         }
     }
 
+    // swiftlint:disable:next cyclomatic_complexity
     func identityKey(for value: TraceValue) -> String {
         switch value {
         case .null:
@@ -323,6 +324,8 @@ extension SequenceBubbleRow {
             return "t\(tree.nodes.count)-\(tree.rootId ?? "nil")"
         case .listPointer(let id), .treePointer(let id):
             return "p\(id)"
+        case .trie(let trieData):
+            return "trie\(trieData.nodes.count)-\(trieData.rootId ?? "nil")"
         case .typed(let type, let inner):
             return "t\(type)-\(identityKey(for: inner))"
         }

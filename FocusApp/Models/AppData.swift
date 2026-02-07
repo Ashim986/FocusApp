@@ -11,6 +11,7 @@ struct AppData: Codable {
     var aiProviderKind: String  // "groq" or "gemini"
     var aiProviderApiKey: String  // API key for the selected provider
     var aiProviderModel: String  // Model identifier (e.g. "llama-3.3-70b-versatile")
+    var leetCodeAuth: LeetCodeAuthSession?  // Logged-in session for leetcode.com
 
     init() {
         self.progress = [:]
@@ -23,6 +24,7 @@ struct AppData: Codable {
         self.aiProviderKind = "groq"
         self.aiProviderApiKey = ""
         self.aiProviderModel = ""
+        self.leetCodeAuth = nil
     }
 
     // Custom decoder to handle missing fields in old data files
@@ -38,6 +40,7 @@ struct AppData: Codable {
         aiProviderKind = try container.decodeIfPresent(String.self, forKey: .aiProviderKind) ?? "groq"
         aiProviderApiKey = try container.decodeIfPresent(String.self, forKey: .aiProviderApiKey) ?? ""
         aiProviderModel = try container.decodeIfPresent(String.self, forKey: .aiProviderModel) ?? ""
+        leetCodeAuth = try container.decodeIfPresent(LeetCodeAuthSession.self, forKey: .leetCodeAuth)
     }
 
     // Get completion status for a specific problem
@@ -100,4 +103,10 @@ struct CodeSubmission: Codable, Identifiable, Equatable {
     let code: String
     let createdAt: Date
     let algorithmTag: String?
+}
+
+struct LeetCodeAuthSession: Codable, Equatable {
+    let session: String
+    let csrfToken: String
+    let updatedAt: Date
 }

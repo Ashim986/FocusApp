@@ -1,5 +1,13 @@
 import Foundation
 
+/// Describes how an element changed between two consecutive steps.
+enum ChangeType: Equatable {
+    case added
+    case removed
+    case modified
+    case unchanged
+}
+
 /// Utilities for computing diffs between consecutive DataJourneyEvents.
 /// Used to highlight what changed between steps in the data journey visualization.
 enum TraceValueDiff {
@@ -12,12 +20,8 @@ enum TraceValueDiff {
         guard let previous, let current else { return current.map { Set($0.values.keys) } ?? [] }
         var changed = Set<String>()
         let allKeys = Set(previous.values.keys).union(current.values.keys)
-        for key in allKeys {
-            let prevValue = previous.values[key]
-            let currValue = current.values[key]
-            if prevValue != currValue {
-                changed.insert(key)
-            }
+        for key in allKeys where previous.values[key] != current.values[key] {
+            changed.insert(key)
         }
         return changed
     }
@@ -31,12 +35,10 @@ enum TraceValueDiff {
         let currItems = arrayItems(from: current)
         var changed = Set<Int>()
         let maxCount = max(prevItems.count, currItems.count)
-        for index in 0..<maxCount {
-            let prev = index < prevItems.count ? prevItems[index] : nil
-            let curr = index < currItems.count ? currItems[index] : nil
-            if prev != curr {
-                changed.insert(index)
-            }
+        for index in 0..<maxCount
+            where (index < prevItems.count ? prevItems[index] : nil)
+                != (index < currItems.count ? currItems[index] : nil) {
+            changed.insert(index)
         }
         return changed
     }
@@ -52,10 +54,8 @@ enum TraceValueDiff {
         let prevById = Dictionary(uniqueKeysWithValues: prevNodes.map { ($0.id, $0.value) })
         let currById = Dictionary(uniqueKeysWithValues: currNodes.map { ($0.id, $0.value) })
         let allIds = Set(prevById.keys).union(currById.keys)
-        for nodeId in allIds {
-            if prevById[nodeId] != currById[nodeId] {
-                changed.insert(nodeId)
-            }
+        for nodeId in allIds where prevById[nodeId] != currById[nodeId] {
+            changed.insert(nodeId)
         }
         return changed
     }
@@ -75,10 +75,8 @@ enum TraceValueDiff {
             uniqueKeysWithValues: currNodes.map { ($0.id, $0) }
         )
         let allIds = Set(prevById.keys).union(currById.keys)
-        for nodeId in allIds {
-            if prevById[nodeId] != currById[nodeId] {
-                changed.insert(nodeId)
-            }
+        for nodeId in allIds where prevById[nodeId] != currById[nodeId] {
+            changed.insert(nodeId)
         }
         return changed
     }
@@ -97,12 +95,10 @@ enum TraceValueDiff {
             let prevRow = row < prevGrid.count ? prevGrid[row] : []
             let currRow = row < currGrid.count ? currGrid[row] : []
             let maxCols = max(prevRow.count, currRow.count)
-            for col in 0..<maxCols {
-                let prev = col < prevRow.count ? prevRow[col] : nil
-                let curr = col < currRow.count ? currRow[col] : nil
-                if prev != curr {
-                    changed.insert(MatrixCell(row: row, col: col))
-                }
+            for col in 0..<maxCols
+                where (col < prevRow.count ? prevRow[col] : nil)
+                    != (col < currRow.count ? currRow[col] : nil) {
+                changed.insert(MatrixCell(row: row, col: col))
             }
         }
         return changed
@@ -117,12 +113,125 @@ enum TraceValueDiff {
         let currEntries = dictEntries(from: current)
         var changed = Set<String>()
         let allKeys = Set(prevEntries.keys).union(currEntries.keys)
-        for key in allKeys {
-            if prevEntries[key] != currEntries[key] {
-                changed.insert(key)
-            }
+        for key in allKeys where prevEntries[key] != currEntries[key] {
+            changed.insert(key)
         }
         return changed
+    }
+
+    // MARK: - Element-Level Change Types
+
+    /// Returns per-index change types for arrays using LCS-based diffing.
+    static func elementChanges(
+        previous: TraceValue?,
+        current: TraceValue?
+    ) -> [ChangeType] {
+        let prevItems = arrayItems(from: previous)
+        let currItems = arrayItems(from: current)
+
+        guard !prevItems.isEmpty || !currItems.isEmpty else { return [] }
+
+        // If sizes are the same, just compare element-by-element
+        if prevItems.count == currItems.count {
+            return currItems.enumerated().map { index, curr in
+                let prev = prevItems[index]
+                return prev == curr ? .unchanged : .modified
+            }
+        }
+
+        // Use LCS for differing sizes
+        let lcs = longestCommonSubsequence(prevItems, currItems)
+        var result = [ChangeType](repeating: .added, count: currItems.count)
+
+        var lcsIndex = 0
+        for (currIndex, currItem) in currItems.enumerated() {
+            if lcsIndex < lcs.count && currItem == lcs[lcsIndex] {
+                result[currIndex] = .unchanged
+                lcsIndex += 1
+            } else if prevItems.contains(currItem) {
+                result[currIndex] = .modified
+            }
+            // else stays .added
+        }
+
+        return result
+    }
+
+    /// Returns per-node change types for tree structures.
+    static func nodeChanges(
+        previous: TraceValue?,
+        current: TraceValue?
+    ) -> [String: ChangeType] {
+        let prevNodes = treeNodes(from: previous)
+        let currNodes = treeNodes(from: current)
+        let prevById = Dictionary(
+            uniqueKeysWithValues: prevNodes.map { ($0.id, $0) }
+        )
+        let currById = Dictionary(
+            uniqueKeysWithValues: currNodes.map { ($0.id, $0) }
+        )
+        var result: [String: ChangeType] = [:]
+
+        for (nodeId, currNode) in currById {
+            if let prevNode = prevById[nodeId] {
+                result[nodeId] = prevNode == currNode ? .unchanged : .modified
+            } else {
+                result[nodeId] = .added
+            }
+        }
+
+        // Mark removed nodes
+        for nodeId in prevById.keys where currById[nodeId] == nil {
+            result[nodeId] = .removed
+        }
+
+        return result
+    }
+
+    /// LCS helper for array diffing.
+    private static func longestCommonSubsequence(
+        _ lcsA: [TraceValue],
+        _ lcsB: [TraceValue]
+    ) -> [TraceValue] {
+        let lengthA = lcsA.count
+        let lengthB = lcsB.count
+        guard lengthA > 0, lengthB > 0 else { return [] }
+
+        // Cap at reasonable size to avoid performance issues
+        guard lengthA <= 200 && lengthB <= 200 else {
+            // Fall back to empty LCS for large arrays
+            return []
+        }
+
+        var dp = Array(
+            repeating: Array(repeating: 0, count: lengthB + 1),
+            count: lengthA + 1
+        )
+        for indexA in 1...lengthA {
+            for indexB in 1...lengthB {
+                if lcsA[indexA - 1] == lcsB[indexB - 1] {
+                    dp[indexA][indexB] = dp[indexA - 1][indexB - 1] + 1
+                } else {
+                    dp[indexA][indexB] = max(dp[indexA - 1][indexB], dp[indexA][indexB - 1])
+                }
+            }
+        }
+
+        var result: [TraceValue] = []
+        var indexA = lengthA
+        var indexB = lengthB
+        while indexA > 0 && indexB > 0 {
+            if lcsA[indexA - 1] == lcsB[indexB - 1] {
+                result.append(lcsA[indexA - 1])
+                indexA -= 1
+                indexB -= 1
+            } else if dp[indexA - 1][indexB] > dp[indexA][indexB - 1] {
+                indexA -= 1
+            } else {
+                indexB -= 1
+            }
+        }
+        return result.reversed()
     }
 
     // MARK: - Helpers

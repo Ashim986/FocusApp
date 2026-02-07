@@ -4,6 +4,12 @@
     "" : {
 
     },
+    "—" : {
+
+    },
+    "\"%@\"" : {
+
+    },
     "(unavailable)" : {
 
     },
@@ -36,6 +42,9 @@
     "%lld%%" : {
 
     },
+    "+%lld more" : {
+
+    },
     "0.5x" : {
 
     },
@@ -49,6 +58,9 @@
 
     },
     "Add `Trace.step(\"label\", [\"key\": value])` inside loops to visualize iterations." : {
+
+    },
+    "array" : {
 
     },
     "Close" : {
@@ -860,6 +872,149 @@
         }
       }
     },
+    "coding.submit_ai_generation_failed" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "AI test generation failed: %@"
+          }
+        }
+      }
+    },
+    "coding.submit_ai_tests_failed" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "AI tests failed (%d/%d)."
+          }
+        }
+      }
+    },
+    "coding.submit_failed" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "LeetCode submission failed: %@"
+          }
+        }
+      }
+    },
+    "coding.submit_generating_tests" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Generating AI test cases..."
+          }
+        }
+      }
+    },
+    "coding.submit_missing_ai_provider" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "AI provider not configured. Add an API key in Settings."
+          }
+        }
+      }
+    },
+    "coding.submit_missing_auth" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "LeetCode login required. Open Settings to sign in."
+          }
+        }
+      }
+    },
+    "coding.submit_missing_manifest" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Problem metadata missing. Can't generate AI tests."
+          }
+        }
+      }
+    },
+    "coding.submit_missing_problem" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No problem selected."
+          }
+        }
+      }
+    },
+    "coding.submit_missing_question_id" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Missing LeetCode question id."
+          }
+        }
+      }
+    },
+    "coding.submit_missing_reference_solution" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reference solution unavailable for AI tests."
+          }
+        }
+      }
+    },
+    "coding.submit_result" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "LeetCode: %@"
+          }
+        }
+      }
+    },
+    "coding.submit_result_with_counts" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "LeetCode: %@ (%d/%d)"
+          }
+        }
+      }
+    },
+    "coding.submit_running_ai_tests" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Running AI test cases (%d)..."
+          }
+        }
+      }
+    },
     "coding.tab_debug" : {
       "extractionState" : "stale",
       "localizations" : {
@@ -1112,6 +1267,9 @@
           }
         }
       }
+    },
+    "Compare Steps" : {
+
     },
     "content.app_title" : {
       "extractionState" : "stale",
@@ -1420,6 +1578,9 @@
         }
       }
     },
+    "Flow Overview" : {
+
+    },
     "focus.complete_done" : {
       "extractionState" : "stale",
       "localizations" : {
@@ -1644,6 +1805,12 @@
       }
     },
     "Last %@" : {
+
+    },
+    "max-heap" : {
+
+    },
+    "min-heap" : {
 
     },
     "No logs match your filters" : {
@@ -2116,6 +2283,105 @@
         }
       }
     },
+    "settings.ai_test_cases_empty" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No AI test cases generated yet."
+          }
+        }
+      }
+    },
+    "settings.ai_test_cases_export" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Export JSON"
+          }
+        }
+      }
+    },
+    "settings.ai_test_cases_footer" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Generated test cases are stored locally and used to gate LeetCode submissions."
+          }
+        }
+      }
+    },
+    "settings.ai_test_cases_header" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "AI Test Cases"
+          }
+        }
+      }
+    },
+    "settings.ai_test_cases_path" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Saved at: %@"
+          }
+        }
+      }
+    },
+    "settings.ai_test_cases_summary" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Problems: %d, Tests: %d"
+          }
+        }
+      }
+    },
+    "settings.ai_test_cases_title" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "AI Test Cases JSON"
+          }
+        }
+      }
+    },
+    "settings.ai_test_cases_updated" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Last updated: %@"
+          }
+        }
+      }
+    },
+    "settings.ai_test_cases_view" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "View JSON"
+          }
+        }
+      }
+    },
     "settings.all_habits_done" : {
       "extractionState" : "stale",
       "localizations" : {
@@ -2167,6 +2433,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Celebrations"
+          }
+        }
+      }
+    },
+    "settings.close" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Close"
           }
         }
       }
@@ -2244,6 +2521,94 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "LeetCode"
+          }
+        }
+      }
+    },
+    "settings.leetcode_login_body" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sign in to LeetCode to enable submissions from FocusApp."
+          }
+        }
+      }
+    },
+    "settings.leetcode_login_button" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Log in"
+          }
+        }
+      }
+    },
+    "settings.leetcode_login_sheet_body" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Complete login in the window below. We'll store your session locally."
+          }
+        }
+      }
+    },
+    "settings.leetcode_login_sheet_title" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Log in to LeetCode"
+          }
+        }
+      }
+    },
+    "settings.leetcode_login_status_connected" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Connected"
+          }
+        }
+      }
+    },
+    "settings.leetcode_login_status_disconnected" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Not connected"
+          }
+        }
+      }
+    },
+    "settings.leetcode_login_title" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "LeetCode Login"
+          }
+        }
+      }
+    },
+    "settings.leetcode_logout_button" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Log out"
           }
         }
       }
@@ -2554,6 +2919,9 @@
         }
       }
     },
+    "string" : {
+
+    },
     "Structure" : {
 
     },
@@ -2595,6 +2963,9 @@
           }
         }
       }
+    },
+    "Timeline" : {
+
     },
     "today.cta_button" : {
       "extractionState" : "stale",
@@ -2741,6 +3112,9 @@
       }
     },
     "Toggle Floating Widget" : {
+
+    },
+    "tree view" : {
 
     },
     "Try clearing the filters to view recent entries." : {

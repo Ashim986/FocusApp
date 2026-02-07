@@ -4,29 +4,26 @@ import SwiftUI
 @main
 @MainActor
 struct FocusApp: App {
-    private let container: AppContainer
-    @StateObject private var contentPresenter: ContentPresenter
-
-    init() {
-        let container = AppContainer()
-        self.container = container
-        _contentPresenter = StateObject(wrappedValue: container.contentPresenter)
-    }
+    @StateObject private var coordinator = AppCoordinator()
 
     var body: some Scene {
         WindowGroup {
-            ContentView(presenter: contentPresenter, router: container.contentRouter)
-                .frame(minWidth: 800, minHeight: 600)
-                .task {
-                    _ = await container.notificationManager.requestAuthorization()
-                    await container.leetCodeScheduler.syncNow(trigger: .hourly)
-                }
+            ContentView(
+                presenter: coordinator.container.contentPresenter,
+                coordinator: coordinator.contentCoordinator
+            )
+            .frame(minWidth: 800, minHeight: 600)
+            .task {
+                coordinator.start()
+                _ = await coordinator.container.notificationManager.requestAuthorization()
+                await coordinator.container.leetCodeScheduler.syncNow(trigger: .hourly)
+            }
         }
         .windowStyle(.hiddenTitleBar)
 
         MenuBarExtra("FocusApp", systemImage: "brain.head.profile") {
             Button("Toggle Floating Widget") {
-                FloatingWidgetController.shared.toggle(presenter: container.toolbarWidgetPresenter)
+                coordinator.toggleWidget()
             }
             Divider()
             Button("Quit FocusApp") {
@@ -36,8 +33,8 @@ struct FocusApp: App {
 
         Settings {
             SettingsView(
-                presenter: container.settingsPresenter,
-                debugLogStore: container.debugLogStore
+                presenter: coordinator.container.settingsPresenter,
+                debugLogStore: coordinator.container.debugLogStore
             )
         }
     }

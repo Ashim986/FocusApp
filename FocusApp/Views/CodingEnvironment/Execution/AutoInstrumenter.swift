@@ -55,7 +55,7 @@ enum AutoInstrumenter {
         "curr", "prev", "node", "head", "tail", "root",
         "stack", "queue", "count", "sum", "total",
         "dp", "memo", "visited", "seen",
-        "temp", "val", "key", "num",
+        "temp", "val", "key", "num"
     ]
 
     private static let commonPythonVars = [
@@ -65,7 +65,7 @@ enum AutoInstrumenter {
         "curr", "prev", "node", "head", "tail", "root",
         "stack", "queue", "count", "total",
         "dp", "memo", "visited", "seen",
-        "temp", "val", "key", "num",
+        "temp", "val", "key", "num"
     ]
 
     // MARK: - Swift Instrumentation
@@ -93,7 +93,8 @@ enum AutoInstrumenter {
                 let indent = leadingWhitespace(line) + "    "
                 let captureDict = swiftCaptureExpression(
                     paramNames: paramNames,
-                    lineIndex: lineIndex
+                    lineIndex: lineIndex,
+                    stripped: stripped
                 )
                 result.append("\(indent)Trace.step(\"loop\", \(captureDict))")
             }
@@ -104,7 +105,8 @@ enum AutoInstrumenter {
                 let indent = leadingWhitespace(line) + "    "
                 let captureDict = swiftCaptureExpression(
                     paramNames: paramNames,
-                    lineIndex: lineIndex
+                    lineIndex: lineIndex,
+                    stripped: stripped
                 )
                 result.append("\(indent)Trace.step(\"recurse\", \(captureDict))")
                 didInstrumentRecursion = true
@@ -122,12 +124,10 @@ enum AutoInstrumenter {
         let loopPatterns = [
             "^for\\s+.*\\{\\s*$",
             "^while\\s+.*\\{\\s*$",
-            "^repeat\\s*\\{\\s*$",
+            "^repeat\\s*\\{\\s*$"
         ]
-        for pattern in loopPatterns {
-            if trimmed.range(of: pattern, options: .regularExpression) != nil {
-                return true
-            }
+        for pattern in loopPatterns where trimmed.range(of: pattern, options: .regularExpression) != nil {
+            return true
         }
         return false
     }
@@ -163,9 +163,13 @@ enum AutoInstrumenter {
 
     private static func swiftCaptureExpression(
         paramNames: [String],
-        lineIndex: Int
+        lineIndex: Int,
+        stripped: String
     ) -> String {
-        let allVars = (paramNames + commonSwiftVars).uniqued()
+        let presentCommonVars = commonSwiftVars.filter { name in
+            variableExistsInCode(name: name, stripped: stripped)
+        }
+        let allVars = (paramNames + presentCommonVars).uniqued()
         let pairs = allVars.prefix(12).map { name in
             "\"\(name)\": \(name) as Any"
         }
@@ -196,7 +200,8 @@ enum AutoInstrumenter {
             if isPythonLoopOpening(trimmed: trimmed) {
                 let bodyIndent = leadingWhitespace(line) + "    "
                 let captureDict = pythonCaptureExpression(
-                    paramNames: paramNames
+                    paramNames: paramNames,
+                    stripped: stripped
                 )
                 // Insert a try/except around trace so variable
                 // not-yet-defined errors don't crash the program
@@ -210,7 +215,8 @@ enum AutoInstrumenter {
                 && isPythonDefOpening(trimmed: trimmed) {
                 let bodyIndent = leadingWhitespace(line) + "    "
                 let captureDict = pythonCaptureExpression(
-                    paramNames: paramNames
+                    paramNames: paramNames,
+                    stripped: stripped
                 )
                 let traceCall = "_Trace.step(\"recurse\", \(captureDict))"
                 result.append("\(bodyIndent)try: \(traceCall)")
@@ -225,12 +231,10 @@ enum AutoInstrumenter {
     private static func isPythonLoopOpening(trimmed: String) -> Bool {
         let loopPatterns = [
             "^for\\s+.*:\\s*$",
-            "^while\\s+.*:\\s*$",
+            "^while\\s+.*:\\s*$"
         ]
-        for pattern in loopPatterns {
-            if trimmed.range(of: pattern, options: .regularExpression) != nil {
-                return true
-            }
+        for pattern in loopPatterns where trimmed.range(of: pattern, options: .regularExpression) != nil {
+            return true
         }
         return false
     }
@@ -269,9 +273,13 @@ enum AutoInstrumenter {
     }
 
     private static func pythonCaptureExpression(
-        paramNames: [String]
+        paramNames: [String],
+        stripped: String
     ) -> String {
-        let allVars = (paramNames + commonPythonVars).uniqued()
+        let presentCommonVars = commonPythonVars.filter { name in
+            variableExistsInCode(name: name, stripped: stripped)
+        }
+        let allVars = (paramNames + presentCommonVars).uniqued()
         let pairs = allVars.prefix(12).map { name in
             "\"\(name)\": \(name)"
         }
@@ -279,6 +287,20 @@ enum AutoInstrumenter {
     }
 
     // MARK: - Helpers
+
+    /// Checks whether a variable name appears as an identifier in the stripped
+    /// code (comments and strings already removed). Uses a word-boundary regex
+    /// so that e.g. "i" doesn't match inside "if" or "while".
+    private static func variableExistsInCode(name: String, stripped: String) -> Bool {
+        let pattern = "\\b\(NSRegularExpression.escapedPattern(for: name))\\b"
+        guard let regex = try? NSRegularExpression(pattern: pattern) else {
+            return false
+        }
+        return regex.firstMatch(
+            in: stripped,
+            range: NSRange(stripped.startIndex..., in: stripped)
+        ) != nil
+    }
 
     private static func leadingWhitespace(_ line: String) -> String {
         var spaces = ""
@@ -295,8 +317,8 @@ enum AutoInstrumenter {
 
 // MARK: - Array Uniqued Extension
 
-private extension Array where Element: Hashable {
-    func uniqued() -> [Element] {
+extension Array where Element: Hashable {
+    fileprivate func uniqued() -> [Element] {
         var seen = Set<Element>()
         return filter { seen.insert($0).inserted }
     }

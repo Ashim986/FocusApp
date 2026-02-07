@@ -11,6 +11,7 @@ struct SequenceBubbleRow: View {
     let sequenceLinks: [SequenceLink]
     let gapIndices: Set<Int>
     let highlightedIndices: Set<Int>
+    let changeTypes: [ChangeType]
     let bubbleStyle: TraceBubble.Style
 
     let bubbleSize: CGFloat
@@ -47,6 +48,7 @@ struct SequenceBubbleRow: View {
         sequenceLinks: [SequenceLink] = [],
         gapIndices: Set<Int> = [],
         highlightedIndices: Set<Int> = [],
+        changeTypes: [ChangeType] = [],
         bubbleStyle: TraceBubble.Style = .solid,
         bubbleSize: CGFloat = 30,
         pointerFontSize: CGFloat = 8,
@@ -64,6 +66,7 @@ struct SequenceBubbleRow: View {
         self.sequenceLinks = sequenceLinks
         self.gapIndices = gapIndices
         self.highlightedIndices = highlightedIndices
+        self.changeTypes = changeTypes
         self.bubbleStyle = bubbleStyle
         self.bubbleSize = bubbleSize
         self.pointerFontSize = pointerFontSize
@@ -189,6 +192,9 @@ struct SequenceBubbleRow: View {
                     let model = TraceBubbleModel.from(item.value)
                     let fill = model.fill
                     let isHighlighted = highlightedIndices.contains(index)
+                    let elementChangeType: ChangeType? = index < changeTypes.count
+                        ? changeTypes[index]
+                        : nil
                     ZStack(alignment: .top) {
                         VStack(spacing: showIndices ? labelSpacing : 0) {
                             TraceBubble(
@@ -196,7 +202,8 @@ struct SequenceBubbleRow: View {
                                 fill: fill,
                                 size: bubbleSize,
                                 style: bubbleStyle,
-                                highlighted: isHighlighted
+                                highlighted: isHighlighted,
+                                changeType: elementChangeType
                             )
                             if showIndices {
                                 Text("\(index)")

@@ -20,7 +20,8 @@ final class CodingEnvironmentPresenterTests: XCTestCase {
             sampleTestCase: "",
             difficulty: "Easy",
             codeSnippets: ["swift": snippet, "python3": "def solve():\n    pass"],
-            metaData: nil
+            metaData: nil,
+            questionId: nil
         )
         let executor = FakeCodeExecutor()
         let solutionStore = FakeSolutionStore()
@@ -28,7 +29,8 @@ final class CodingEnvironmentPresenterTests: XCTestCase {
             appStore: store,
             leetCodeClient: client,
             executionService: executor,
-            solutionStore: solutionStore
+            solutionStore: solutionStore,
+            submissionService: LeetCodeSubmissionService(executor: FakeRequestExecutor())
         )
         let presenter = CodingEnvironmentPresenter(interactor: interactor)
 
@@ -57,7 +59,8 @@ final class CodingEnvironmentPresenterTests: XCTestCase {
             sampleTestCase: "",
             difficulty: "Easy",
             codeSnippets: ["swift": "class Solution { }"],
-            metaData: nil
+            metaData: nil,
+            questionId: nil
         )
         let executor = FakeCodeExecutor()
         let solutionStore = FakeSolutionStore()
@@ -65,7 +68,8 @@ final class CodingEnvironmentPresenterTests: XCTestCase {
             appStore: store,
             leetCodeClient: client,
             executionService: executor,
-            solutionStore: solutionStore
+            solutionStore: solutionStore,
+            submissionService: LeetCodeSubmissionService(executor: FakeRequestExecutor())
         )
         let presenter = CodingEnvironmentPresenter(interactor: interactor)
 
@@ -103,7 +107,8 @@ final class CodingEnvironmentExecutionTests: XCTestCase {
             sampleTestCase: "",
             difficulty: "Easy",
             codeSnippets: [:],
-            metaData: meta
+            metaData: meta,
+            questionId: nil
         )
         presenter.setCode("class Solution { func twoSum(_ nums: [Int], _ target: Int) -> [Int] { return [] } }")
         executor.results = [ExecutionResult(output: "OK", error: "", exitCode: 0, timedOut: false, wasCancelled: false)]
@@ -136,7 +141,8 @@ final class CodingEnvironmentExecutionTests: XCTestCase {
             sampleTestCase: "",
             difficulty: "Easy",
             codeSnippets: [:],
-            metaData: meta
+            metaData: meta,
+            questionId: nil
         )
         presenter.setCode("class Solution { func sum(_ value: Int) -> Int { return value } }")
         presenter.testCases = [
@@ -307,7 +313,8 @@ final class CodingEnvironmentProblemLoadingTests: XCTestCase {
                 name: "reverseList",
                 params: [("head", "ListNode")],
                 returnType: "ListNode"
-            )
+            ),
+            questionId: nil
         )
         presenter.problemContentCache["reverse-linked-list"] = CodingEnvironmentPresenter.CachedContent(
             content: cached, timestamp: Date()
@@ -337,7 +344,8 @@ final class CodingEnvironmentProblemLoadingTests: XCTestCase {
             sampleTestCase: "",
             difficulty: "Easy",
             codeSnippets: [:],
-            metaData: nil
+            metaData: nil,
+            questionId: nil
         )
         client.contentBySlug["reverse-linked-list"] = content
 
@@ -411,7 +419,8 @@ final class CodingEnvironmentProblemLoadingTests: XCTestCase {
             sampleTestCase: "",
             difficulty: "Easy",
             codeSnippets: [:],
-            metaData: meta
+            metaData: meta,
+            questionId: nil
         )
 
         presenter.parseTestCases(from: content)
@@ -434,7 +443,8 @@ final class CodingEnvironmentProblemLoadingTests: XCTestCase {
             sampleTestCase: "1\n2\n3",
             difficulty: "Easy",
             codeSnippets: [:],
-            metaData: nil
+            metaData: nil,
+            questionId: nil
         )
 
         presenter.parseTestCases(from: content)
@@ -511,7 +521,8 @@ final class CodingEnvironmentPresenterStateTests: XCTestCase {
                 sampleTestCase: "",
                 difficulty: "Easy",
                 codeSnippets: ["python3": "def solve():\n    pass"],
-                metaData: nil
+                metaData: nil,
+                questionId: nil
             ),
             timestamp: Date()
         )
@@ -538,7 +549,8 @@ final class CodingEnvironmentPresenterStateTests: XCTestCase {
             sampleTestCase: "",
             difficulty: "Easy",
             codeSnippets: [:],
-            metaData: nil
+            metaData: nil,
+            questionId: nil
         )
 
         presenter.backToProblemSelection()
@@ -610,7 +622,8 @@ final class CodingEnvironmentPresenterStateTests: XCTestCase {
             appStore: store,
             leetCodeClient: FakeLeetCodeClient(),
             executionService: QueueCodeExecutor(),
-            solutionStore: FakeSolutionStore()
+            solutionStore: FakeSolutionStore(),
+            submissionService: LeetCodeSubmissionService(executor: FakeRequestExecutor())
         )
         let presenter = CodingEnvironmentPresenter(interactor: interactor)
 
@@ -621,78 +634,4 @@ final class CodingEnvironmentPresenterStateTests: XCTestCase {
         XCTAssertNotNil(dayOne)
         XCTAssertFalse(dayOne?.problems.contains(where: { $0.index == 0 }) ?? true)
     }
-}
-
-// MARK: - Helpers
-
-private struct ExecutionRequest {
-    let code: String
-    let language: ProgrammingLanguage
-    let input: String
-}
-
-private struct CodingHarness {
-    let presenter: CodingEnvironmentPresenter
-    let store: AppStateStore
-    let executor: QueueCodeExecutor
-}
-
-private final class QueueCodeExecutor: CodeExecuting {
-    var requests: [ExecutionRequest] = []
-    var results: [ExecutionResult] = []
-    var cancelCalled = false
-
-    func execute(code: String, language: ProgrammingLanguage, input: String) async -> ExecutionResult {
-        requests.append(ExecutionRequest(code: code, language: language, input: input))
-        if results.isEmpty {
-            return ExecutionResult.failure("Not configured")
-        }
-        return results.removeFirst()
-    }
-
-    func cancelExecution() {
-        cancelCalled = true
-    }
-}
-
-private struct ThrowingLeetCodeClient: LeetCodeClientProtocol {
-    func validateUsername(_ username: String) async throws -> Bool { true }
-
-    func fetchSolvedSlugs(username: String, limit: Int) async throws -> Set<String> { [] }
-
-    func fetchProblemContent(slug: String) async throws -> QuestionContent? {
-        throw TestError()
-    }
-}
-
-@MainActor
-private func makeHarness(
-    executor: QueueCodeExecutor = QueueCodeExecutor(),
-    client: LeetCodeClientProtocol = FakeLeetCodeClient(),
-    logger: DebugLogStore? = nil
-) -> CodingHarness {
-    let start = makeDate(year: 2026, month: 2, day: 3)
-    let store = AppStateStore(
-        storage: InMemoryAppStorage(),
-        calendar: PlanCalendar(startDate: start),
-        dateProvider: FixedDateProvider(date: start)
-    )
-    let interactor = CodingEnvironmentInteractor(
-        appStore: store,
-        leetCodeClient: client,
-        executionService: executor,
-        solutionStore: FakeSolutionStore()
-    )
-    let presenter = CodingEnvironmentPresenter(interactor: interactor, logger: logger)
-    return CodingHarness(presenter: presenter, store: store, executor: executor)
-}
-
-@MainActor
-private func waitFor(_ condition: @escaping () -> Bool, timeout: TimeInterval = 1.0) async -> Bool {
-    let start = Date()
-    while Date().timeIntervalSince(start) < timeout {
-        if condition() { return true }
-        try? await Task.sleep(nanoseconds: 50_000_000)
-    }
-    return condition()
 }

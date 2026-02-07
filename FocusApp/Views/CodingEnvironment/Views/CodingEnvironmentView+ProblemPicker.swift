@@ -3,7 +3,7 @@ import SwiftUI
 extension CodingEnvironmentView {
     var problemSelector: some View {
         Button(action: {
-            showProblemPicker.toggle()
+            codingCoordinator.isProblemPickerShown.toggle()
         }, label: {
             HStack(spacing: 8) {
                 if let problem = presenter.selectedProblem {
@@ -60,7 +60,7 @@ extension CodingEnvironmentView {
             )
         })
         .buttonStyle(.plain)
-        .popover(isPresented: $showProblemPicker, arrowEdge: .bottom) {
+        .popover(isPresented: $codingCoordinator.isProblemPickerShown, arrowEdge: .bottom) {
             problemPickerPopover
         }
     }
@@ -137,7 +137,7 @@ extension CodingEnvironmentView {
 
         return Button(action: {
             presenter.selectProblem(item)
-            showProblemPicker = false
+            codingCoordinator.isProblemPickerShown = false
         }, label: {
             HStack(spacing: 10) {
                 ZStack {

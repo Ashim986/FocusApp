@@ -13,6 +13,8 @@ enum TraceStructure {
     case stack([TraceValue])
     case queue([TraceValue])
     case heap([TraceValue], isMinHeap: Bool)
+    case stringSequence(String, [TraceValue])
+    case trie(TraceTrie)
 }
 
 struct NamedTraceList: Identifiable {
@@ -33,6 +35,7 @@ struct ListArrayStructure {
     let lists: [NamedTraceList]
 }
 
+// swiftlint:disable type_body_length
 struct DataJourneyStructureCanvasView: View {
     let inputEvent: DataJourneyEvent?
     let selectedEvent: DataJourneyEvent?
@@ -259,6 +262,7 @@ struct DataJourneyStructureCanvasView: View {
                     )
                 case .array(let items):
                     let arrayHighlights = structureArrayHighlights(items: items)
+                    let arrayChanges = structureElementChanges(items: items)
                     SequenceBubbleRow(
                         items: items,
                         showIndices: true,
@@ -267,6 +271,7 @@ struct DataJourneyStructureCanvasView: View {
                         isDoubly: false,
                         pointers: pointerMarkers,
                         highlightedIndices: arrayHighlights,
+                        changeTypes: arrayChanges,
                         bubbleStyle: .solid,
                         bubbleSize: structureBubbleSize,
                         pointerFontSize: structurePointerFontSize,
@@ -303,6 +308,7 @@ struct DataJourneyStructureCanvasView: View {
                     )
                 case .set(let items):
                     let gaps = Set(items.indices.dropLast())
+                    let setChanges = structureElementChanges(items: items)
                     SequenceBubbleRow(
                         items: items,
                         showIndices: false,
@@ -311,6 +317,7 @@ struct DataJourneyStructureCanvasView: View {
                         isDoubly: false,
                         pointers: [],
                         gapIndices: gaps,
+                        changeTypes: setChanges,
                         bubbleStyle: .solid,
                         bubbleSize: structureBubbleSize,
                         pointerFontSize: structurePointerFontSize,
@@ -318,6 +325,7 @@ struct DataJourneyStructureCanvasView: View {
                         pointerVerticalPadding: structurePointerVerticalPadding
                     )
                 case .stack(let items):
+                    let stackChanges = structureElementChanges(items: items)
                     SequenceBubbleRow(
                         items: items,
                         showIndices: false,
@@ -325,6 +333,7 @@ struct DataJourneyStructureCanvasView: View {
                         isTruncated: false,
                         isDoubly: false,
                         pointers: pointerMarkers,
+                        changeTypes: stackChanges,
                         bubbleStyle: .solid,
                         bubbleSize: structureBubbleSize,
                         pointerFontSize: structurePointerFontSize,
@@ -332,6 +341,7 @@ struct DataJourneyStructureCanvasView: View {
                         pointerVerticalPadding: structurePointerVerticalPadding
                     )
                 case .queue(let items):
+                    let queueChanges = structureElementChanges(items: items)
                     SequenceBubbleRow(
                         items: items,
                         showIndices: false,
@@ -339,8 +349,42 @@ struct DataJourneyStructureCanvasView: View {
                         isTruncated: false,
                         isDoubly: false,
                         pointers: pointerMarkers,
+                        changeTypes: queueChanges,
                         bubbleStyle: .solid,
                         bubbleSize: structureBubbleSize,
+                        pointerFontSize: structurePointerFontSize,
+                        pointerHorizontalPadding: structurePointerHorizontalPadding,
+                        pointerVerticalPadding: structurePointerVerticalPadding
+                    )
+                case .heap(let items, let isMinHeap):
+                    let heapHighlights = structureArrayHighlights(items: items)
+                    HeapView(
+                        items: items,
+                        isMinHeap: isMinHeap,
+                        pointers: pointerMarkers,
+                        highlightedIndices: heapHighlights,
+                        bubbleSize: structureBubbleSize,
+                        pointerFontSize: structurePointerFontSize,
+                        pointerHorizontalPadding: structurePointerHorizontalPadding,
+                        pointerVerticalPadding: structurePointerVerticalPadding
+                    )
+                case .stringSequence(let fullString, let chars):
+                    let charHighlights = structureArrayHighlights(items: chars)
+                    StringSequenceView(
+                        fullString: fullString,
+                        characters: chars,
+                        pointers: pointerMarkers,
+                        highlightedIndices: charHighlights,
+                        bubbleSize: structureBubbleSize,
+                        pointerFontSize: structurePointerFontSize,
+                        pointerHorizontalPadding: structurePointerHorizontalPadding,
+                        pointerVerticalPadding: structurePointerVerticalPadding
+                    )
+                case .trie(let trieData):
+                    TrieGraphView(
+                        trie: trieData,
+                        pointers: pointerMarkers,
+                        nodeSize: structureBubbleSize,
                         pointerFontSize: structurePointerFontSize,
                         pointerHorizontalPadding: structurePointerHorizontalPadding,
                         pointerVerticalPadding: structurePointerVerticalPadding
@@ -403,6 +447,19 @@ struct DataJourneyStructureCanvasView: View {
         )
     }
 
+    /// Per-element change types from diff between previous and current.
+    private func structureElementChanges(
+        items: [TraceValue]
+    ) -> [ChangeType] {
+        guard previousEvent != nil else { return [] }
+        let prevValue = primaryStructureValue(in: previousEvent)
+        let currValue = primaryStructureValue(in: selectedEvent)
+        return TraceValueDiff.elementChanges(
+            previous: prevValue,
+            current: currValue
+        )
+    }
+
     /// Highlighted matrix cells from diff between previous and current.
     private var structureMatrixHighlights: Set<MatrixCell> {
         guard previousEvent != nil else { return [] }
@@ -414,3 +471,4 @@ struct DataJourneyStructureCanvasView: View {
         )
     }
 }
+// swiftlint:enable type_body_length

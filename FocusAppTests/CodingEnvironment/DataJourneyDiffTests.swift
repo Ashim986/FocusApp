@@ -1,6 +1,7 @@
 @testable import FocusApp
 import XCTest
 
+// swiftlint:disable type_body_length
 final class DataJourneyDiffTests: XCTestCase {
 
     // MARK: - Helpers
@@ -43,12 +44,12 @@ final class DataJourneyDiffTests: XCTestCase {
         let previous = makeEvent(values: [
             "a": .number(1, isInt: true),
             "b": .string("old"),
-            "c": .bool(true),
+            "c": .bool(true)
         ])
         let current = makeEvent(values: [
             "a": .number(1, isInt: true),
             "b": .string("new"),
-            "c": .bool(true),
+            "c": .bool(true)
         ])
         let result = TraceValueDiff.changedKeys(previous: previous, current: current)
         XCTAssertEqual(result, ["b"])
@@ -58,7 +59,7 @@ final class DataJourneyDiffTests: XCTestCase {
         let previous = makeEvent(values: ["a": .number(1, isInt: true)])
         let current = makeEvent(values: [
             "a": .number(1, isInt: true),
-            "b": .string("new"),
+            "b": .string("new")
         ])
         let result = TraceValueDiff.changedKeys(previous: previous, current: current)
         XCTAssertEqual(result, ["b"])
@@ -67,7 +68,7 @@ final class DataJourneyDiffTests: XCTestCase {
     func testChangedKeysKeyRemoved() {
         let previous = makeEvent(values: [
             "a": .number(1, isInt: true),
-            "b": .string("gone"),
+            "b": .string("gone")
         ])
         let current = makeEvent(values: ["a": .number(1, isInt: true)])
         let result = TraceValueDiff.changedKeys(previous: previous, current: current)
@@ -77,11 +78,11 @@ final class DataJourneyDiffTests: XCTestCase {
     func testChangedKeysMultipleChanges() {
         let previous = makeEvent(values: [
             "a": .number(1, isInt: true),
-            "b": .string("old"),
+            "b": .string("old")
         ])
         let current = makeEvent(values: [
             "a": .number(2, isInt: true),
-            "c": .bool(false),
+            "c": .bool(false)
         ])
         let result = TraceValueDiff.changedKeys(previous: previous, current: current)
         XCTAssertEqual(result, ["a", "b", "c"])
@@ -163,7 +164,7 @@ final class DataJourneyDiffTests: XCTestCase {
         let list = TraceValue.list(TraceList(
             nodes: [
                 TraceListNode(id: "n1", value: .number(10, isInt: true)),
-                TraceListNode(id: "n2", value: .number(20, isInt: true)),
+                TraceListNode(id: "n2", value: .number(20, isInt: true))
             ],
             cycleIndex: nil,
             isTruncated: false,
@@ -177,7 +178,7 @@ final class DataJourneyDiffTests: XCTestCase {
         let previous = TraceValue.list(TraceList(
             nodes: [
                 TraceListNode(id: "n1", value: .number(10, isInt: true)),
-                TraceListNode(id: "n2", value: .number(20, isInt: true)),
+                TraceListNode(id: "n2", value: .number(20, isInt: true))
             ],
             cycleIndex: nil,
             isTruncated: false,
@@ -186,7 +187,7 @@ final class DataJourneyDiffTests: XCTestCase {
         let current = TraceValue.list(TraceList(
             nodes: [
                 TraceListNode(id: "n1", value: .number(10, isInt: true)),
-                TraceListNode(id: "n2", value: .number(99, isInt: true)),
+                TraceListNode(id: "n2", value: .number(99, isInt: true))
             ],
             cycleIndex: nil,
             isTruncated: false,
@@ -206,7 +207,7 @@ final class DataJourneyDiffTests: XCTestCase {
         let current = TraceValue.list(TraceList(
             nodes: [
                 TraceListNode(id: "n1", value: .number(10, isInt: true)),
-                TraceListNode(id: "n2", value: .number(20, isInt: true)),
+                TraceListNode(id: "n2", value: .number(20, isInt: true))
             ],
             cycleIndex: nil,
             isTruncated: false,
@@ -220,7 +221,7 @@ final class DataJourneyDiffTests: XCTestCase {
         let previous = TraceValue.list(TraceList(
             nodes: [
                 TraceListNode(id: "n1", value: .number(10, isInt: true)),
-                TraceListNode(id: "n2", value: .number(20, isInt: true)),
+                TraceListNode(id: "n2", value: .number(20, isInt: true))
             ],
             cycleIndex: nil,
             isTruncated: false,
@@ -266,7 +267,7 @@ final class DataJourneyDiffTests: XCTestCase {
         let current = TraceValue.list(TraceList(
             nodes: [
                 TraceListNode(id: "n1", value: .number(10, isInt: true)),
-                TraceListNode(id: "n2", value: .number(20, isInt: true)),
+                TraceListNode(id: "n2", value: .number(20, isInt: true))
             ],
             cycleIndex: nil,
             isTruncated: false,
@@ -288,7 +289,7 @@ final class DataJourneyDiffTests: XCTestCase {
             nodes: [
                 TraceTreeNode(id: "r", value: .number(1, isInt: true), left: "l", right: "rr"),
                 TraceTreeNode(id: "l", value: .number(2, isInt: true), left: nil, right: nil),
-                TraceTreeNode(id: "rr", value: .number(3, isInt: true), left: nil, right: nil),
+                TraceTreeNode(id: "rr", value: .number(3, isInt: true), left: nil, right: nil)
             ],
             rootId: "r",
             isTruncated: false
@@ -300,14 +301,14 @@ final class DataJourneyDiffTests: XCTestCase {
     func testChangedTreeNodeIdsNodeValueChanged() {
         let previous = TraceValue.tree(TraceTree(
             nodes: [
-                TraceTreeNode(id: "r", value: .number(1, isInt: true), left: nil, right: nil),
+                TraceTreeNode(id: "r", value: .number(1, isInt: true), left: nil, right: nil)
             ],
             rootId: "r",
             isTruncated: false
         ))
         let current = TraceValue.tree(TraceTree(
             nodes: [
-                TraceTreeNode(id: "r", value: .number(99, isInt: true), left: nil, right: nil),
+                TraceTreeNode(id: "r", value: .number(99, isInt: true), left: nil, right: nil)
             ],
             rootId: "r",
             isTruncated: false
@@ -319,7 +320,7 @@ final class DataJourneyDiffTests: XCTestCase {
     func testChangedTreeNodeIdsChildrenChanged() {
         let previous = TraceValue.tree(TraceTree(
             nodes: [
-                TraceTreeNode(id: "r", value: .number(1, isInt: true), left: nil, right: nil),
+                TraceTreeNode(id: "r", value: .number(1, isInt: true), left: nil, right: nil)
             ],
             rootId: "r",
             isTruncated: false
@@ -327,7 +328,7 @@ final class DataJourneyDiffTests: XCTestCase {
         let current = TraceValue.tree(TraceTree(
             nodes: [
                 TraceTreeNode(id: "r", value: .number(1, isInt: true), left: "l", right: nil),
-                TraceTreeNode(id: "l", value: .number(2, isInt: true), left: nil, right: nil),
+                TraceTreeNode(id: "l", value: .number(2, isInt: true), left: nil, right: nil)
             ],
             rootId: "r",
             isTruncated: false
@@ -342,14 +343,14 @@ final class DataJourneyDiffTests: XCTestCase {
         let previous = TraceValue.tree(TraceTree(
             nodes: [
                 TraceTreeNode(id: "r", value: .number(1, isInt: true), left: "l", right: nil),
-                TraceTreeNode(id: "l", value: .number(2, isInt: true), left: nil, right: nil),
+                TraceTreeNode(id: "l", value: .number(2, isInt: true), left: nil, right: nil)
             ],
             rootId: "r",
             isTruncated: false
         ))
         let current = TraceValue.tree(TraceTree(
             nodes: [
-                TraceTreeNode(id: "r", value: .number(1, isInt: true), left: nil, right: nil),
+                TraceTreeNode(id: "r", value: .number(1, isInt: true), left: nil, right: nil)
             ],
             rootId: "r",
             isTruncated: false
@@ -362,14 +363,14 @@ final class DataJourneyDiffTests: XCTestCase {
     func testChangedTreeNodeIdsTypedWrapper() {
         let innerPrev = TraceValue.tree(TraceTree(
             nodes: [
-                TraceTreeNode(id: "r", value: .number(1, isInt: true), left: nil, right: nil),
+                TraceTreeNode(id: "r", value: .number(1, isInt: true), left: nil, right: nil)
             ],
             rootId: "r",
             isTruncated: false
         ))
         let innerCurr = TraceValue.tree(TraceTree(
             nodes: [
-                TraceTreeNode(id: "r", value: .number(5, isInt: true), left: nil, right: nil),
+                TraceTreeNode(id: "r", value: .number(5, isInt: true), left: nil, right: nil)
             ],
             rootId: "r",
             isTruncated: false
@@ -391,7 +392,7 @@ final class DataJourneyDiffTests: XCTestCase {
         let current = TraceValue.tree(TraceTree(
             nodes: [
                 TraceTreeNode(id: "r", value: .number(1, isInt: true), left: "l", right: nil),
-                TraceTreeNode(id: "l", value: .number(2, isInt: true), left: nil, right: nil),
+                TraceTreeNode(id: "l", value: .number(2, isInt: true), left: nil, right: nil)
             ],
             rootId: "r",
             isTruncated: false
@@ -410,7 +411,7 @@ final class DataJourneyDiffTests: XCTestCase {
     func testChangedMatrixCellsSameMatrixReturnsEmpty() {
         let matrix = TraceValue.array([
             .array([.number(1, isInt: true), .number(2, isInt: true)]),
-            .array([.number(3, isInt: true), .number(4, isInt: true)]),
+            .array([.number(3, isInt: true), .number(4, isInt: true)])
         ])
         let result = TraceValueDiff.changedMatrixCells(previous: matrix, current: matrix)
         XCTAssertTrue(result.isEmpty)
@@ -419,11 +420,11 @@ final class DataJourneyDiffTests: XCTestCase {
     func testChangedMatrixCellsSingleCellChanged() {
         let previous = TraceValue.array([
             .array([.number(1, isInt: true), .number(2, isInt: true)]),
-            .array([.number(3, isInt: true), .number(4, isInt: true)]),
+            .array([.number(3, isInt: true), .number(4, isInt: true)])
         ])
         let current = TraceValue.array([
             .array([.number(1, isInt: true), .number(2, isInt: true)]),
-            .array([.number(3, isInt: true), .number(99, isInt: true)]),
+            .array([.number(3, isInt: true), .number(99, isInt: true)])
         ])
         let result = TraceValueDiff.changedMatrixCells(previous: previous, current: current)
         XCTAssertEqual(result, [MatrixCell(row: 1, col: 1)])
@@ -431,10 +432,10 @@ final class DataJourneyDiffTests: XCTestCase {
 
     func testChangedMatrixCellsRowLengthsDiffer() {
         let previous = TraceValue.array([
-            .array([.number(1, isInt: true), .number(2, isInt: true)]),
+            .array([.number(1, isInt: true), .number(2, isInt: true)])
         ])
         let current = TraceValue.array([
-            .array([.number(1, isInt: true), .number(2, isInt: true), .number(3, isInt: true)]),
+            .array([.number(1, isInt: true), .number(2, isInt: true), .number(3, isInt: true)])
         ])
         let result = TraceValueDiff.changedMatrixCells(previous: previous, current: current)
         XCTAssertEqual(result, [MatrixCell(row: 0, col: 2)])
@@ -442,11 +443,11 @@ final class DataJourneyDiffTests: XCTestCase {
 
     func testChangedMatrixCellsRowCountDiffers() {
         let previous = TraceValue.array([
-            .array([.number(1, isInt: true)]),
+            .array([.number(1, isInt: true)])
         ])
         let current = TraceValue.array([
             .array([.number(1, isInt: true)]),
-            .array([.number(2, isInt: true)]),
+            .array([.number(2, isInt: true)])
         ])
         let result = TraceValueDiff.changedMatrixCells(previous: previous, current: current)
         XCTAssertEqual(result, [MatrixCell(row: 1, col: 0)])
@@ -454,10 +455,10 @@ final class DataJourneyDiffTests: XCTestCase {
 
     func testChangedMatrixCellsTypedWrapper() {
         let innerPrev = TraceValue.array([
-            .array([.number(1, isInt: true), .number(2, isInt: true)]),
+            .array([.number(1, isInt: true), .number(2, isInt: true)])
         ])
         let innerCurr = TraceValue.array([
-            .array([.number(1, isInt: true), .number(9, isInt: true)]),
+            .array([.number(1, isInt: true), .number(9, isInt: true)])
         ])
         let previous = TraceValue.typed("List[List[int]]", innerPrev)
         let current = TraceValue.typed("List[List[int]]", innerCurr)
@@ -475,11 +476,11 @@ final class DataJourneyDiffTests: XCTestCase {
     func testChangedMatrixCellsMultipleCellsChanged() {
         let previous = TraceValue.array([
             .array([.number(1, isInt: true), .number(2, isInt: true)]),
-            .array([.number(3, isInt: true), .number(4, isInt: true)]),
+            .array([.number(3, isInt: true), .number(4, isInt: true)])
         ])
         let current = TraceValue.array([
             .array([.number(10, isInt: true), .number(2, isInt: true)]),
-            .array([.number(3, isInt: true), .number(40, isInt: true)]),
+            .array([.number(3, isInt: true), .number(40, isInt: true)])
         ])
         let result = TraceValueDiff.changedMatrixCells(previous: previous, current: current)
         XCTAssertEqual(result, [MatrixCell(row: 0, col: 0), MatrixCell(row: 1, col: 1)])
@@ -487,7 +488,7 @@ final class DataJourneyDiffTests: XCTestCase {
 
     func testChangedMatrixCellsNilPreviousReturnsAllCells() {
         let current = TraceValue.array([
-            .array([.number(1, isInt: true), .number(2, isInt: true)]),
+            .array([.number(1, isInt: true), .number(2, isInt: true)])
         ])
         let result = TraceValueDiff.changedMatrixCells(previous: nil, current: current)
         XCTAssertEqual(result, [MatrixCell(row: 0, col: 0), MatrixCell(row: 0, col: 1)])
@@ -503,7 +504,7 @@ final class DataJourneyDiffTests: XCTestCase {
     func testChangedDictKeysSameDictReturnsEmpty() {
         let dict = TraceValue.object([
             "a": .number(1, isInt: true),
-            "b": .string("hello"),
+            "b": .string("hello")
         ])
         let result = TraceValueDiff.changedDictKeys(previous: dict, current: dict)
         XCTAssertTrue(result.isEmpty)
@@ -512,11 +513,11 @@ final class DataJourneyDiffTests: XCTestCase {
     func testChangedDictKeysValueChanged() {
         let previous = TraceValue.object([
             "a": .number(1, isInt: true),
-            "b": .string("old"),
+            "b": .string("old")
         ])
         let current = TraceValue.object([
             "a": .number(1, isInt: true),
-            "b": .string("new"),
+            "b": .string("new")
         ])
         let result = TraceValueDiff.changedDictKeys(previous: previous, current: current)
         XCTAssertEqual(result, ["b"])
@@ -526,7 +527,7 @@ final class DataJourneyDiffTests: XCTestCase {
         let previous = TraceValue.object(["a": .number(1, isInt: true)])
         let current = TraceValue.object([
             "a": .number(1, isInt: true),
-            "b": .number(2, isInt: true),
+            "b": .number(2, isInt: true)
         ])
         let result = TraceValueDiff.changedDictKeys(previous: previous, current: current)
         XCTAssertEqual(result, ["b"])
@@ -535,7 +536,7 @@ final class DataJourneyDiffTests: XCTestCase {
     func testChangedDictKeysKeyRemoved() {
         let previous = TraceValue.object([
             "a": .number(1, isInt: true),
-            "b": .number(2, isInt: true),
+            "b": .number(2, isInt: true)
         ])
         let current = TraceValue.object(["a": .number(1, isInt: true)])
         let result = TraceValueDiff.changedDictKeys(previous: previous, current: current)
@@ -545,11 +546,11 @@ final class DataJourneyDiffTests: XCTestCase {
     func testChangedDictKeysTypedWrapper() {
         let innerPrev = TraceValue.object([
             "x": .number(1, isInt: true),
-            "y": .number(2, isInt: true),
+            "y": .number(2, isInt: true)
         ])
         let innerCurr = TraceValue.object([
             "x": .number(1, isInt: true),
-            "y": .number(99, isInt: true),
+            "y": .number(99, isInt: true)
         ])
         let previous = TraceValue.typed("Dict[str,int]", innerPrev)
         let current = TraceValue.typed("Dict[str,int]", innerCurr)
@@ -567,7 +568,7 @@ final class DataJourneyDiffTests: XCTestCase {
     func testChangedDictKeysNilPreviousReturnsAllCurrentKeys() {
         let current = TraceValue.object([
             "a": .number(1, isInt: true),
-            "b": .number(2, isInt: true),
+            "b": .number(2, isInt: true)
         ])
         let result = TraceValueDiff.changedDictKeys(previous: nil, current: current)
         XCTAssertEqual(result, ["a", "b"])
@@ -577,14 +578,15 @@ final class DataJourneyDiffTests: XCTestCase {
         let previous = TraceValue.object([
             "a": .number(1, isInt: true),
             "b": .string("old"),
-            "c": .bool(true),
+            "c": .bool(true)
         ])
         let current = TraceValue.object([
             "a": .number(2, isInt: true),
             "b": .string("old"),
-            "d": .null,
+            "d": .null
         ])
         let result = TraceValueDiff.changedDictKeys(previous: previous, current: current)
         XCTAssertEqual(result, ["a", "c", "d"])
     }
 }
+// swiftlint:enable type_body_length

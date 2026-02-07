@@ -26,6 +26,41 @@ extension DataJourneyView {
                 stepControls()
             }
 
+            // Variable timeline (collapsible)
+            if playbackEvents.count >= 2 {
+                VariableTimelineView(
+                    events: playbackEvents,
+                    currentIndex: currentPlaybackIndex,
+                    onSelectIndex: { index in
+                        guard playbackEvents.indices.contains(index) else { return }
+                        let event = playbackEvents[index]
+                        selectedEventID = event.id
+                        onSelectEvent(event)
+                    }
+                )
+            }
+
+            // Before/after comparison (collapsible)
+            if previousPlaybackEvent != nil, selectedEvent != nil {
+                DataJourneyComparisonView(
+                    previousEvent: previousPlaybackEvent,
+                    currentEvent: selectedEvent
+                )
+            }
+
+            // Flow overview (collapsible)
+            if playbackEvents.count >= 3 {
+                DataJourneyFlowView(
+                    events: events,
+                    inputEvent: inputEvent,
+                    outputEvent: outputEvent,
+                    onSelectEvent: { event in
+                        selectedEventID = event.id
+                        onSelectEvent(event)
+                    }
+                )
+            }
+
             if let selected = selectedEvent {
                 valuesSection(title: selectedTitle(for: selected), event: selected)
             }

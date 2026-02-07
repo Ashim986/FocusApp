@@ -26,6 +26,12 @@ extension DataJourneyStructureCanvasView {
             return stackPointers(for: items)
         case .queue(let items):
             return queuePointers(for: items)
+        case .heap(let items, _):
+            return arrayPointers(in: selectedEvent, items: items)
+        case .stringSequence(_, let chars):
+            return arrayPointers(in: selectedEvent, items: chars)
+        case .trie:
+            return []
         }
     }
 

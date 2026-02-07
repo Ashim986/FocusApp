@@ -22,41 +22,96 @@ final class AppContainer {
     let toolbarWidgetPresenter: ToolbarWidgetPresenter
     let codingEnvironmentPresenter: CodingEnvironmentPresenter
 
-    lazy var contentRouter: ContentRouter = {
-        let planPresenter = self.planPresenter
-        let todayPresenter = self.todayPresenter
-        let statsPresenter = self.statsPresenter
-        let codingEnvironmentPresenter = self.codingEnvironmentPresenter
+    /// Test-friendly initializer that accepts a pre-configured AppStateStore.
+    /// Skips SwiftData and uses in-memory storage for fast, isolated tests.
+    init(appStore: AppStateStore) {
+        let container: ModelContainer
+        do {
+            container = try ModelContainer(
+                for: AppDataRecord.self,
+                configurations: ModelConfiguration(isStoredInMemoryOnly: true)
+            )
+        } catch {
+            fatalError("Failed to create in-memory SwiftData container: \(error)")
+        }
+        self.modelContainer = container
+        self.appStore = appStore
 
-        return ContentRouter(
-            makePlan: { onSelectProblem in
-                PlanView(
-                    presenter: planPresenter,
-                    onSelectProblem: onSelectProblem
-                )
-            },
-            makeToday: { codeBinding, onSelectProblem in
-                TodayView(
-                    presenter: todayPresenter,
-                    showCodeEnvironment: codeBinding,
-                    onSelectProblem: onSelectProblem
-                )
-            },
-            makeStats: {
-                StatsView(presenter: statsPresenter)
-            },
-            makeCoding: { binding in
-                CodingEnvironmentView(
-                    presenter: codingEnvironmentPresenter,
-                    debugLogStore: self.debugLogStore,
-                    onBack: { binding.wrappedValue = false }
-                )
-            },
-            selectProblem: { problem, day, index in
-                codingEnvironmentPresenter.selectProblem(problem, at: index, day: day)
-            }
+        let notificationManager = NotificationManager(
+            scheduler: SystemNotificationScheduler(),
+            store: UserDefaultsNotificationSettingsStore()
         )
-    }()
+        self.notificationManager = notificationManager
+
+        let debugLogStore = DebugLogStore()
+        self.debugLogStore = debugLogStore
+
+        let client = LeetCodeRestClient(
+            baseURL: LeetCodeConstants.restBaseURL,
+            requestBuilder: DefaultRequestBuilder(),
+            executor: URLSessionRequestExecutor(logger: debugLogStore)
+        )
+        self.leetCodeClient = client
+        let submissionService = LeetCodeSubmissionService(
+            executor: URLSessionRequestExecutor(logger: debugLogStore)
+        )
+
+        let leetCodeSync = LeetCodeSyncInteractor(
+            appStore: appStore,
+            client: client,
+            logger: debugLogStore
+        )
+        self.leetCodeSync = leetCodeSync
+        self.leetCodeScheduler = LeetCodeSyncScheduler(appStore: appStore, syncer: leetCodeSync)
+
+        let codeExecutionService = CodeExecutionService(logger: debugLogStore)
+        self.codeExecutionService = codeExecutionService
+
+        let topicStore = TopicSolutionStore()
+        let solutionStore = OnDemandSolutionProvider(bundledStore: topicStore)
+        self.solutionStore = solutionStore
+
+        self.contentPresenter = ContentPresenter(
+            interactor: ContentInteractor(appStore: appStore)
+        )
+        self.planPresenter = PlanPresenter(
+            interactor: PlanInteractor(
+                appStore: appStore,
+                notificationManager: notificationManager,
+                leetCodeSync: leetCodeSync
+            )
+        )
+        self.todayPresenter = TodayPresenter(
+            interactor: TodayInteractor(
+                appStore: appStore,
+                notificationManager: notificationManager,
+                leetCodeSync: leetCodeSync
+            )
+        )
+        self.statsPresenter = StatsPresenter(
+            interactor: StatsInteractor(appStore: appStore)
+        )
+        self.settingsPresenter = SettingsPresenter(
+            interactor: SettingsInteractor(
+                notificationManager: notificationManager,
+                appStore: appStore,
+                leetCodeSync: leetCodeSync
+            )
+        )
+        self.toolbarWidgetPresenter = ToolbarWidgetPresenter(
+            interactor: ToolbarWidgetInteractor(appStore: appStore, leetCodeSync: leetCodeSync)
+        )
+        self.codingEnvironmentPresenter = CodingEnvironmentPresenter(
+            interactor: CodingEnvironmentInteractor(
+                appStore: appStore,
+                leetCodeClient: client,
+                executionService: codeExecutionService,
+                solutionStore: solutionStore,
+                submissionService: submissionService
+            ),
+            logger: debugLogStore
+        )
+    }
 
     init() {
         let container: ModelContainer
@@ -87,6 +142,7 @@ final class AppContainer {
             executor: executor
         )
         self.leetCodeClient = client
+        let submissionService = LeetCodeSubmissionService(executor: executor)
 
         let leetCodeSync = LeetCodeSyncInteractor(
             appStore: appStore,
@@ -140,7 +196,8 @@ final class AppContainer {
                 appStore: appStore,
                 leetCodeClient: client,
                 executionService: codeExecutionService,
-                solutionStore: solutionStore
+                solutionStore: solutionStore,
+                submissionService: submissionService
             ),
             logger: debugLogStore
         )

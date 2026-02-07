@@ -88,6 +88,20 @@ final class AppStateStore: ObservableObject {
         save()
     }
 
+    func updateLeetCodeAuth(_ auth: LeetCodeAuthSession?) {
+        data.leetCodeAuth = auth
+        save()
+    }
+
+    func leetCodeAuth() -> LeetCodeAuthSession? {
+        data.leetCodeAuth
+    }
+
+    func clearLeetCodeAuth() {
+        data.leetCodeAuth = nil
+        save()
+    }
+
     func solutionCode(for key: String) -> String? {
         data.savedSolutions[key]
     }

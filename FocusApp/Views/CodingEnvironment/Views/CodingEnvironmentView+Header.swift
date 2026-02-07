@@ -16,7 +16,7 @@ extension CodingEnvironmentView {
                 .help(L10n.Coding.exitHelp)
 
                 Button(action: {
-                    showProblemSidebar.toggle()
+                    codingCoordinator.toggleProblemSidebar()
                 }, label: {
                     Image(systemName: "sidebar.leading")
                         .font(.system(size: 12, weight: .medium))
@@ -26,7 +26,7 @@ extension CodingEnvironmentView {
                         .clipShape(RoundedRectangle(cornerRadius: 6))
                 })
                 .buttonStyle(.plain)
-                .help(showProblemSidebar
+                .help(codingCoordinator.isProblemSidebarShown
                       ? L10n.Coding.hideProblems
                       : L10n.Coding.showProblems)
 
@@ -108,7 +108,7 @@ extension CodingEnvironmentView {
                     .opacity(presenter.testCases.isEmpty ? 0.5 : 1)
                     .keyboardShortcut(KeyEquivalent.return, modifiers: [.command, .shift])
 
-                    Button(action: { isShowingDebugLogs = true }, label: {
+                    Button(action: { codingCoordinator.showDebugLogs() }, label: {
                         Image(systemName: "gearshape")
                             .font(.system(size: 11, weight: .semibold))
                             .foregroundColor(Color.appGray300)

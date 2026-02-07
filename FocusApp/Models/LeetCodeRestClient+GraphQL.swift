@@ -45,6 +45,7 @@ extension LeetCodeRestClient {
         let query = """
         query questionData($titleSlug: String!) {
           question(titleSlug: $titleSlug) {
+            questionId
             title
             content
             exampleTestcases
@@ -77,7 +78,8 @@ extension LeetCodeRestClient {
             sampleTestCase: question.sampleTestCase,
             difficulty: question.difficulty.isEmpty ? "Unknown" : question.difficulty,
             codeSnippets: snippets,
-            metaData: question.metaData
+            metaData: question.metaData,
+            questionId: question.questionId
         )
     }
 }

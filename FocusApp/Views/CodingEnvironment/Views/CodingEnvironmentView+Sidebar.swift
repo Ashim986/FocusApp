@@ -130,19 +130,19 @@ extension CodingEnvironmentView {
 
     private func detailTabButton(_ tab: ProblemDetailTab) -> some View {
         Button(action: {
-            detailTab = tab
+            codingCoordinator.detailTab = tab
         }, label: {
             HStack(spacing: 6) {
                 Image(systemName: tab.icon)
                     .font(.system(size: 10, weight: .semibold))
                 Text(tab.title)
-                    .font(.system(size: 11, weight: detailTab == tab ? .semibold : .regular))
+                    .font(.system(size: 11, weight: codingCoordinator.detailTab == tab ? .semibold : .regular))
             }
-            .foregroundColor(detailTab == tab ? .white : Color.appGray500)
+            .foregroundColor(codingCoordinator.detailTab == tab ? .white : Color.appGray500)
             .padding(.vertical, 8)
             .overlay(
                 Rectangle()
-                    .fill(detailTab == tab ? Color.appPurple : Color.clear)
+                    .fill(codingCoordinator.detailTab == tab ? Color.appPurple : Color.clear)
                     .frame(height: 2),
                 alignment: .bottom
             )
@@ -203,7 +203,7 @@ extension CodingEnvironmentView {
 
     @ViewBuilder
     private var detailContent: some View {
-        switch detailTab {
+        switch codingCoordinator.detailTab {
         case .description:
             descriptionContent
         case .editorial:

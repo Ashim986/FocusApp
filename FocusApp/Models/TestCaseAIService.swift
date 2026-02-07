@@ -1,17 +1,26 @@
 import Foundation
 
 protocol TestCaseAIProviding: Sendable {
-    func generateTestInputs(
+    func generateTestCases(
         for problem: ManifestProblem,
         meta: LeetCodeMetaData?,
         sampleInput: String?,
         exampleInputs: [String],
         count: Int
-    ) async throws -> [String]
+    ) async throws -> [SolutionTestCase]
 }
 
 struct GeneratedTestCaseInputs: Codable, Sendable {
     let inputs: [String]
+}
+
+struct GeneratedTestCaseComplete: Codable, Sendable {
+    let testCases: [GeneratedTestCaseItem]
+}
+
+struct GeneratedTestCaseItem: Codable, Sendable {
+    let input: String
+    let expectedOutput: String
 }
 
 enum TestCaseGenerationError: Error, CustomStringConvertible {
@@ -43,16 +52,18 @@ enum TestCasePromptBuilder {
         let sampleBlock = sampleInput?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
 
         return """
-        Generate \(count) diverse test inputs for the LeetCode problem:
+        Generate \(count) diverse test cases (input AND expected output) for the LeetCode problem:
         \(problem.title) (\(problem.slug), \(problem.difficulty))
         Topics: \(problem.topics.joined(separator: ", "))
 
         Input format requirements:
-        - Each test case is a FULL input string for one run.
-        - Use newline-separated parameter values in the EXACT order:
+        - Each test case has an "input" and an "expectedOutput".
+        - "input" uses newline-separated parameter values in the EXACT order:
           \(params)
+        - "expectedOutput" is the correct result as a string (e.g. "[0,1]", "true", "5").
         - Keep values within typical LeetCode constraints.
-        - Do NOT include expected outputs or explanations.
+        - Include edge cases: empty inputs, single elements, duplicates, negatives, etc.
+        - Ensure all expected outputs are CORRECT.
 
         Example input(s) from LeetCode:
         \(exampleBlock.isEmpty ? "(none)" : exampleBlock)
@@ -62,7 +73,10 @@ enum TestCasePromptBuilder {
 
         Return ONLY JSON in this exact schema:
         {
-          "inputs": ["<input-1>", "<input-2>", "..."]
+          "testCases": [
+            {"input": "<input-1>", "expectedOutput": "<output-1>"},
+            {"input": "<input-2>", "expectedOutput": "<output-2>"}
+          ]
         }
         """
     }
@@ -77,13 +91,13 @@ extension SolutionAIServiceFactory {
 }
 
 extension OpenAISolutionProvider: TestCaseAIProviding {
-    func generateTestInputs(
+    func generateTestCases(
         for problem: ManifestProblem,
         meta: LeetCodeMetaData?,
         sampleInput: String?,
         exampleInputs: [String],
         count: Int
-    ) async throws -> [String] {
+    ) async throws -> [SolutionTestCase] {
         let prompt = TestCasePromptBuilder.build(
             for: problem,
             meta: meta,
@@ -129,19 +143,19 @@ extension OpenAISolutionProvider: TestCaseAIProviding {
             throw TestCaseGenerationError.invalidResponse("JSON encoding failed")
         }
 
-        let inputs = try JSONDecoder().decode(GeneratedTestCaseInputs.self, from: jsonData)
-        return sanitizeInputs(inputs.inputs, targetCount: count)
+        let generated = try JSONDecoder().decode(GeneratedTestCaseComplete.self, from: jsonData)
+        return sanitizeTestCases(generated.testCases, targetCount: count)
     }
 }
 
 extension GeminiSolutionProvider: TestCaseAIProviding {
-    func generateTestInputs(
+    func generateTestCases(
         for problem: ManifestProblem,
         meta: LeetCodeMetaData?,
         sampleInput: String?,
         exampleInputs: [String],
         count: Int
-    ) async throws -> [String] {
+    ) async throws -> [SolutionTestCase] {
         let prompt = TestCasePromptBuilder.build(
             for: problem,
             meta: meta,
@@ -166,7 +180,7 @@ extension GeminiSolutionProvider: TestCaseAIProviding {
             ),
             generationConfig: GeminiGenerationConfig(
                 responseMimeType: "application/json",
-                maxOutputTokens: 4096
+                maxOutputTokens: 8192
             )
         )
         let payload = try JSONEncoder().encode(request)
@@ -200,19 +214,26 @@ extension GeminiSolutionProvider: TestCaseAIProviding {
             throw TestCaseGenerationError.invalidResponse("Gemini: JSON encoding failed")
         }
 
-        let inputs = try JSONDecoder().decode(GeneratedTestCaseInputs.self, from: jsonData)
-        return sanitizeInputs(inputs.inputs, targetCount: count)
+        let generated = try JSONDecoder().decode(GeneratedTestCaseComplete.self, from: jsonData)
+        return sanitizeTestCases(generated.testCases, targetCount: count)
     }
 }
 
-private func sanitizeInputs(_ inputs: [String], targetCount: Int) -> [String] {
-    let trimmed = inputs
-        .map { $0.trimmingCharacters(in: .whitespacesAndNewlines) }
-        .filter { !$0.isEmpty }
+private func sanitizeTestCases(
+    _ items: [GeneratedTestCaseItem],
+    targetCount: Int
+) -> [SolutionTestCase] {
+    let valid = items
+        .filter {
+            !$0.input.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+                && !$0.expectedOutput.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+        }
     var seen = Set<String>()
-    let unique = trimmed.filter { seen.insert($0).inserted }
-    if unique.count <= targetCount {
-        return unique
+    let unique = valid.filter { seen.insert($0.input).inserted }
+    return Array(unique.prefix(targetCount)).map {
+        SolutionTestCase(
+            input: $0.input.trimmingCharacters(in: .whitespacesAndNewlines),
+            expectedOutput: $0.expectedOutput.trimmingCharacters(in: .whitespacesAndNewlines)
+        )
     }
-    return Array(unique.prefix(targetCount))
 }

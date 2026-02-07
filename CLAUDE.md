@@ -53,7 +53,9 @@ FocusApp/
 │   │   ├── PythonExecutor.swift     # Python interpreter execution
 │   │   ├── SolutionModels.swift     # Bundled solution data models
 │   │   ├── SolutionStore.swift      # Solution loader (Solutions.json)
-│   │   └── SolutionAIService.swift  # AI solution providers (Groq, Gemini)
+│   │   ├── SolutionAIService.swift  # AI solution providers (Groq, Gemini)
+│   │   ├── LeetCodeSubmissionService.swift  # LeetCode code submission + result polling
+│   │   └── AITestCaseStore.swift            # Hidden test case persistence (JSON)
 │   ├── Views/
 │   │   ├── Content/
 │   │   │   ├── ContentView.swift        # Main tabbed interface
@@ -112,16 +114,23 @@ FocusApp/
 │   │   │   ├── CodingEnvironmentView.swift  # Code editor with problem picker and tests
 │   │   │   ├── CodingEnvironmentPresenter.swift
 │   │   │   ├── CodingEnvironmentInteractor.swift
-│   │   │   ├── CodingEnvironmentPresenter+Execution.swift
 │   │   │   ├── CodingEnvironmentPresenter+ProblemLoading.swift
 │   │   │   ├── CodingEnvironmentPresenter+Persistence.swift
 │   │   │   ├── CodingEnvironmentPresenter+Snippets.swift
 │   │   │   ├── CodingEnvironmentProblemModels.swift
+│   │   │   ├── Execution/                       # Code execution & submission
+│   │   │   │   ├── CodingEnvironmentPresenter+Execution.swift
+│   │   │   │   └── CodingEnvironmentPresenter+LeetCodeSubmit.swift
+│   │   │   ├── Views/                           # View files
+│   │   │   │   ├── CodingEnvironmentView.swift
+│   │   │   │   ├── CodingEnvironmentView+Panels.swift
+│   │   │   │   ├── CodingEnvironmentView+Sidebar.swift
+│   │   │   │   ├── CodingEnvironmentView+DetailContent.swift
+│   │   │   │   ├── ModernOutputView.swift
+│   │   │   │   ├── ModernOutputView+Sections.swift
+│   │   │   │   └── SolutionTabView.swift
 │   │   │   ├── CodingEnvironmentView+Header.swift
-│   │   │   ├── CodingEnvironmentView+Panels.swift
 │   │   │   ├── CodingEnvironmentView+ProblemPicker.swift
-│   │   │   ├── CodingEnvironmentView+Sidebar.swift
-│   │   │   ├── CodingEnvironmentView+DetailContent.swift
 │   │   │   ├── DataJourneyModels.swift
 │   │   │   ├── DataJourneyPointerModels.swift
 │   │   │   ├── DataJourneyTraceBubble.swift
@@ -340,6 +349,8 @@ The app uses a **Clean Architecture / VIPER-inspired** pattern with clear separa
 | `AppStrings` | `Helpers/AppStrings.swift` | Localized string helpers |
 | `CodeEditorLineNumberRulerView` | `Views/CodeEditorLineNumberRulerView.swift` | Line numbers with diagnostic markers |
 | `SolutionAIProviding` | `Models/SolutionAIService.swift` | AI provider protocol + Groq/Gemini implementations |
+| `LeetCodeSubmissionService` | `Models/LeetCodeSubmissionService.swift` | LeetCode code submission + result polling |
+| `AITestCaseStore` | `Models/AITestCaseStore.swift` | Thread-safe hidden test case persistence (JSON) |
 
 ### Presenter/Interactor Pattern
 
@@ -693,6 +704,9 @@ The app includes a built-in coding environment accessible from Focus Mode.
 - **Code Execution**: Run code and see console output
 - **Solution Persistence**: Code is saved per problem+language and restored on revisit
 - **Signature Prefill**: LeetCode code snippets are inserted when available (used for function signatures)
+- **Hidden Tests**: Background AI-generated test cases (up to 50) run before LeetCode submission
+- **LeetCode Submission**: Direct code submission to LeetCode with result polling
+- **Progress Feedback**: Real-time hidden test progress with pass/fail color coding (green/red)
 
 ### Syntax Highlighting
 The code editor highlights:
@@ -704,12 +718,71 @@ The code editor highlights:
 - **Comments** (gray): `//` and `#` comments
 
 ### Code Execution Flow
+
+**Run Flow:**
 1. User writes code in editor
 2. Clicks "Run" button (uses first testcase input if present)
 3. `CodingEnvironmentPresenter` calls `CodeExecutionService.execute()`
 4. Service routes to appropriate executor (Swift or Python)
 5. Executor uses `ProcessRunner` to run the code
 6. Result displayed in output panel with syntax coloring
+
+**Submit Flow:**
+1. User taps "Submit" button
+2. If local test cases exist, they run first
+3. Hidden tests run against user code (progress shown in output panel)
+4. Green text = all passing, Red text = failures detected
+5. If all hidden tests pass, code submits to LeetCode via `LeetCodeSubmissionService`
+6. Failed hidden tests are placed in the test panel for debugging
+
+## Hidden Test Cases & LeetCode Submission
+
+The coding environment includes a background AI-driven hidden test case system that validates user solutions before submitting to LeetCode.
+
+### Hidden Test Case Generation
+
+When a user selects a problem, `startHiddenTestGeneration()` runs in the background:
+1. AI providers (Groq/Gemini) generate up to 50 test cases for the selected problem
+2. A reference solution is executed against each generated test case to produce expected outputs
+3. Generated test cases are cached in `AITestCaseStore` at `~/Library/Application Support/FocusApp/ai-testcases.json`
+4. A badge in the **Submissions tab** shows the generation state:
+   - Amber = generating in progress
+   - Green = test cases ready
+   - Gray = unavailable (generation failed or not applicable)
+
+### Hidden Test Gate on Submit
+
+When the user taps Submit, hidden tests act as a gate before LeetCode submission:
+- If no local test cases exist: all hidden tests run, only failures appear in the test panel
+- If local test cases exist and all pass: hidden tests run before LeetCode submission
+- Progress is shown in the output panel as "Hidden test X/Y" with pass/fail counts
+- Text color updates in real-time: faint green while all tests pass, light red when failures are detected
+- The `hiddenTestsHaveFailures` flag drives the color switch in real-time
+- The bottom panel auto-expands when execution starts (via `.onChange(of: presenter.isRunning)`)
+
+### LeetCode Submission
+
+After all hidden tests pass, `submitToLeetCodeDirect()` submits the user's code to LeetCode:
+- `LeetCodeSubmissionService` handles the REST API submission and polls for results
+- Polling uses the `finished` field (not `state == "SUCCESS"`) for completion detection
+- `submitToLeetCodeDirect()` bypasses the old AI gate and is used by the new hidden test flow
+
+### Key Presenter Properties
+
+| Property | Type | Purpose |
+|----------|------|---------|
+| `hiddenTestCases` | `[SolutionTestCase]` | Cached hidden test cases for current problem |
+| `isGeneratingHiddenTests` | `Bool` | Whether background generation is in progress |
+| `hiddenTestsHaveFailures` | `Bool` | Real-time failure tracking during hidden test execution |
+| `hiddenTestGenerationTask` | `Task<Void, Never>?` | Cancellable background generation task |
+
+### Key Methods
+
+| Method | File | Purpose |
+|--------|------|---------|
+| `startHiddenTestGeneration()` | `CodingEnvironmentPresenter+LeetCodeSubmit.swift` | Kicks off background AI test case generation on problem select |
+| `runHiddenTestGate(executionCode:)` | `CodingEnvironmentPresenter+LeetCodeSubmit.swift` | Runs user code against all hidden tests |
+| `submitToLeetCodeDirect()` | `CodingEnvironmentPresenter+LeetCodeSubmit.swift` | Submits to LeetCode bypassing old AI gate |
 
 ## Localization
 

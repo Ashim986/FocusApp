@@ -5,10 +5,12 @@ struct SolutionTabView: View {
     @State private var selectedApproachIndex: Int = 0
 
     var body: some View {
-        if let solution = solution {
-            solutionContent(solution)
-        } else {
-            emptySolutionView
+        VStack(alignment: .leading, spacing: 16) {
+            if let solution = solution {
+                solutionContent(solution)
+            } else {
+                emptySolutionView
+            }
         }
     }
 

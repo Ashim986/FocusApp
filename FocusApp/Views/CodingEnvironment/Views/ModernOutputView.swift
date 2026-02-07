@@ -6,6 +6,7 @@ struct ModernOutputView: View {
     let testCases: [TestCase]
     let diagnostics: [CodeEditorDiagnostic]
     let isRunning: Bool
+    let hiddenTestsHaveFailures: Bool
     let debugEntries: [DebugLogEntry]
     let logAnchor: Date?
 
@@ -56,9 +57,13 @@ struct ModernOutputView: View {
                         ProgressView()
                             .scaleEffect(0.5)
                             .frame(width: 12, height: 12)
-                        Text(L10n.Coding.Output.running)
+                        Text(output.isEmpty
+                            ? L10n.Coding.Output.running
+                            : output)
                             .font(.system(size: 10))
                             .foregroundColor(Color.appGray500)
+                            .lineLimit(1)
+                            .truncationMode(.tail)
                     }
                     .padding(.trailing, 12)
                 }

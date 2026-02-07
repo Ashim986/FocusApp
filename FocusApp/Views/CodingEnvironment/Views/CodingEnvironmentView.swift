@@ -72,6 +72,13 @@ struct CodingEnvironmentView: View {
         .onReceive(focusTimer) { _ in
             focusPresenter.handleTick()
         }
+        .onChange(of: presenter.isRunning) { _, isRunning in
+            if isRunning, codingCoordinator.isBottomPanelCollapsed {
+                withAnimation(.easeInOut(duration: 0.2)) {
+                    codingCoordinator.isBottomPanelCollapsed = false
+                }
+            }
+        }
     }
 
     private func startFocusIfNeeded(forceRestart: Bool = false) {

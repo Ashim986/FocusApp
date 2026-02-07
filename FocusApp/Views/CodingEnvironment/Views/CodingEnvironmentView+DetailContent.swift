@@ -69,27 +69,78 @@ extension CodingEnvironmentView {
 
     @ViewBuilder
     var pastSubmissionsContent: some View {
-        if let problem = presenter.selectedProblem {
-            let submissions = presenter.submissions(for: problem)
-            if submissions.isEmpty {
-                Text(L10n.Coding.submissionsEmpty)
+        VStack(alignment: .leading, spacing: 12) {
+            hiddenTestsBadge
+
+            if let problem = presenter.selectedProblem {
+                let submissions = presenter.submissions(for: problem)
+                if submissions.isEmpty {
+                    Text(L10n.Coding.submissionsEmpty)
+                        .font(.system(size: 11))
+                        .foregroundColor(Color.appGray500)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                } else {
+                    VStack(alignment: .leading, spacing: 10) {
+                        ForEach(submissions) { submission in
+                            submissionRow(submission, problem: problem)
+                        }
+                    }
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                }
+            } else {
+                Text(L10n.Coding.submissionsSelectPrompt)
                     .font(.system(size: 11))
                     .foregroundColor(Color.appGray500)
-                    .frame(maxWidth: .infinity, alignment: .leading)
-            } else {
-                VStack(alignment: .leading, spacing: 10) {
-                    ForEach(submissions) { submission in
-                        submissionRow(submission, problem: problem)
-                    }
-                }
-                .frame(maxWidth: .infinity, alignment: .leading)
+                    .frame(maxWidth: .infinity, alignment: .center)
             }
-        } else {
-            Text(L10n.Coding.submissionsSelectPrompt)
-                .font(.system(size: 11))
-                .foregroundColor(Color.appGray500)
-                .frame(maxWidth: .infinity, alignment: .center)
         }
+    }
+
+    private var hiddenTestsBadge: some View {
+        HStack(spacing: 8) {
+            Image(systemName: hiddenTestStatusIcon)
+                .font(.system(size: 12, weight: .semibold))
+                .foregroundColor(hiddenTestStatusColor)
+
+            if presenter.isGeneratingHiddenTests {
+                ProgressView()
+                    .controlSize(.small)
+                Text("Generating hidden tests…")
+                    .font(.system(size: 12, weight: .medium))
+                    .foregroundColor(Color.appGray400)
+            } else if !presenter.hiddenTestCases.isEmpty {
+                Text("\(presenter.hiddenTestCases.count) Hidden Tests Ready")
+                    .font(.system(size: 12, weight: .semibold))
+                    .foregroundColor(Color.appGreen)
+            } else {
+                Text("Hidden tests unavailable")
+                    .font(.system(size: 12, weight: .medium))
+                    .foregroundColor(Color.appGray500)
+            }
+
+            Spacer()
+        }
+        .padding(10)
+        .background(
+            RoundedRectangle(cornerRadius: 8)
+                .fill(Color.appGray800.opacity(0.7))
+                .overlay(
+                    RoundedRectangle(cornerRadius: 8)
+                        .stroke(hiddenTestStatusColor.opacity(0.3), lineWidth: 1)
+                )
+        )
+    }
+
+    private var hiddenTestStatusIcon: String {
+        if presenter.isGeneratingHiddenTests { return "arrow.triangle.2.circlepath" }
+        if !presenter.hiddenTestCases.isEmpty { return "checkmark.shield.fill" }
+        return "shield.slash"
+    }
+
+    private var hiddenTestStatusColor: Color {
+        if presenter.isGeneratingHiddenTests { return Color.appAmber }
+        if !presenter.hiddenTestCases.isEmpty { return Color.appGreen }
+        return Color.appGray600
     }
 
     @ViewBuilder

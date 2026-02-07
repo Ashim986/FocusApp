@@ -17,7 +17,24 @@ extension ModernOutputView {
 
     @ViewBuilder
     var resultContent: some View {
-        if !hasTestResults && output.isEmpty && error.isEmpty {
+        if isRunning, !hasTestResults {
+            VStack(spacing: 12) {
+                HStack(spacing: 10) {
+                    if !output.isEmpty {
+                        coloredProgressText(output)
+                    } else {
+                        Text(L10n.Coding.Output.running)
+                            .font(.system(size: 13, weight: .semibold))
+                            .foregroundColor(Color.appGray400)
+                    }
+
+                    ProgressView()
+                        .scaleEffect(0.7)
+                        .frame(width: 14, height: 14)
+                }
+            }
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+        } else if !hasTestResults && output.isEmpty && error.isEmpty {
             VStack(spacing: 8) {
                 Image(systemName: "play.circle")
                     .font(.system(size: 28))
@@ -254,5 +271,35 @@ extension ModernOutputView {
         NSPasteboard.general.clearContents()
         NSPasteboard.general.setString(text, forType: .string)
         #endif
+    }
+
+    // MARK: - Colored Progress Text
+
+    /// Renders hidden test progress with green ✓ and red ✗ symbols.
+    /// Expected format: "Hidden test 3/50  ✓ 2  ✗ 1"
+    private func coloredProgressText(_ text: String) -> Text {
+        let baseColor: Color = hiddenTestsHaveFailures
+            ? Color.appRed.opacity(0.85)
+            : Color.appGreen.opacity(0.85)
+        let font = Font.system(size: 13, weight: .semibold)
+
+        guard let checkIndex = text.firstIndex(of: "✓") else {
+            return Text(text).font(font).foregroundColor(baseColor)
+        }
+
+        let prefix = String(text[text.startIndex..<checkIndex])
+        let remainder = String(text[checkIndex...])
+
+        guard let crossIndex = remainder.firstIndex(of: "✗") else {
+            return Text(prefix).font(font).foregroundColor(baseColor)
+                + Text(remainder).font(font).foregroundColor(Color.appGreen)
+        }
+
+        let passSegment = String(remainder[remainder.startIndex..<crossIndex])
+        let failSegment = String(remainder[crossIndex...])
+
+        return Text(prefix).font(font).foregroundColor(baseColor)
+            + Text(passSegment).font(font).foregroundColor(Color.appGreen)
+            + Text(failSegment).font(font).foregroundColor(Color.appRed)
     }
 }

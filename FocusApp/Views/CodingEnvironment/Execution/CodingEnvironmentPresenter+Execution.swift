@@ -85,7 +85,6 @@ extension CodingEnvironmentPresenter {
         }
     }
 
-    // swiftlint:disable cyclomatic_complexity function_body_length
     private func submitWithoutLocalTests() {
         clearJourney()
         isRunning = true
@@ -105,103 +104,39 @@ extension CodingEnvironmentPresenter {
                 }
             }
 
-            // Step 1: Resolve AI test cases
-            let aiCases = await self.resolveAITestCasesForPanel()
-            guard !aiCases.isEmpty, !Task.isCancelled else {
+            let executionCode = self.wrappedCodeForExecution()
+            let hiddenResult = await self.runHiddenTestGate(executionCode: executionCode)
+            guard !Task.isCancelled else { return }
+
+            var consoleLogs: [String] = []
+            if hiddenResult.totalCount == 0 {
                 await MainActor.run {
+                    self.errorOutput = "No hidden test cases available. Please wait for generation."
                     self.isRunning = false
                 }
                 return
             }
 
-            // Step 2: Populate them into the test case panel
-            let localTestCases = aiCases.map { TestCase(input: $0.input, expectedOutput: $0.expectedOutput) }
-            await MainActor.run {
-                self.testCases = localTestCases
-            }
-
-            // Step 3: Run user's code against each AI test case
-            var updatedTestCases = localTestCases
-            var consoleLogs: [String] = []
-            var errorLogs: [String] = []
-            let executionCode = self.wrappedCodeForExecution()
-            var allPassed = true
-
-            for index in updatedTestCases.indices {
-                if Task.isCancelled { break }
-                await MainActor.run {
-                    self.compilationOutput = "Running AI test \(index + 1) of \(updatedTestCases.count)…"
-                }
-                let result = await interactor.executeCode(
-                    code: executionCode,
-                    language: language,
-                    input: updatedTestCases[index].input
-                )
-
-                if Task.isCancelled { break }
-                let parsed = parseTraceOutput(result.output)
-                await MainActor.run {
-                    if result.wasCancelled {
-                        updatedTestCases[index].actualOutput = "Stopped"
-                        updatedTestCases[index].passed = false
-                    } else if result.timedOut {
-                        updatedTestCases[index].actualOutput = "Timed out"
-                        updatedTestCases[index].passed = false
-                    } else if result.exitCode != 0 {
-                        updatedTestCases[index].actualOutput = "Error: \(result.error)"
-                        updatedTestCases[index].passed = false
-                    } else {
-                        let normalizedExpected = updatedTestCases[index].expectedOutput
-                            .trimmingCharacters(in: .whitespacesAndNewlines)
-                        let normalized = self.normalizeOutputForComparison(
-                            parsed.cleanOutput,
-                            expected: normalizedExpected
-                        )
-                        updatedTestCases[index].actualOutput = normalized.displayValue
-                        if normalizedExpected.isEmpty {
-                            updatedTestCases[index].passed = nil
-                        } else {
-                            updatedTestCases[index].passed = normalized.comparisonValue == normalizedExpected
-                        }
-                    }
-                    if updatedTestCases[index].passed != true {
-                        allPassed = false
-                    }
-                    self.testCases = updatedTestCases
-                    if result.exitCode == 0, !result.timedOut, !result.wasCancelled, !parsed.events.isEmpty {
-                        self.traceEventsByTestCase[index] = (
-                            events: parsed.events, truncated: parsed.isTruncated
-                        )
-                        if index == 0 {
-                            self.updateJourney(parsed.events, truncated: parsed.isTruncated)
-                        }
-                    }
-                }
-
-                if !parsed.cleanOutput.isEmpty {
-                    consoleLogs.append("Test \(index + 1):\n\(parsed.cleanOutput)")
-                }
-                if !result.error.isEmpty {
-                    errorLogs.append("Test \(index + 1):\n\(result.error)")
-                }
-            }
-
-            guard !Task.isCancelled else { return }
-
-            // Step 4: If all passed, submit to LeetCode
-            if allPassed {
+            if hiddenResult.allPassed {
+                consoleLogs.append("All \(hiddenResult.totalCount) hidden tests passed!")
                 let submissionOutcome = await self.submitToLeetCodeDirect()
                 if let console = submissionOutcome.consoleMessage, !console.isEmpty {
                     consoleLogs.append(console)
                 }
                 if let error = submissionOutcome.errorMessage, !error.isEmpty {
-                    errorLogs.append(error)
+                    await MainActor.run { self.errorOutput = error }
                 }
                 if submissionOutcome.didSubmit {
-                    await MainActor.run {
-                        self.recordSubmission()
-                    }
+                    await MainActor.run { self.recordSubmission() }
                 }
+            } else {
+                // Populate ONLY failed cases into the test panel
+                await MainActor.run {
+                    self.testCases = hiddenResult.failedCases
+                }
+                consoleLogs.append(
+                    "\(hiddenResult.failedCases.count) of \(hiddenResult.totalCount) hidden tests failed."
+                )
             }
 
             await MainActor.run {
@@ -210,22 +145,99 @@ extension CodingEnvironmentPresenter {
                         .joined(separator: "\n\n")
                         .trimmingCharacters(in: .whitespacesAndNewlines)
                 }
-                if !errorLogs.isEmpty {
-                    self.errorOutput = errorLogs
-                        .joined(separator: "\n\n")
-                        .trimmingCharacters(in: .whitespacesAndNewlines)
-                }
-                let combinedError = errorLogs.joined(separator: "\n")
-                self.errorDiagnostics = self.extractDiagnostics(
-                    from: combinedError,
-                    language: self.language,
-                    code: self.code
-                )
                 self.isRunning = false
             }
         }
     }
-    // swiftlint:enable cyclomatic_complexity function_body_length
+
+    /// Waits for background hidden test generation to finish, or returns cached tests.
+    private func waitForHiddenTests() async -> [SolutionTestCase] {
+        // If already available, return immediately
+        if !hiddenTestCases.isEmpty { return hiddenTestCases }
+
+        // Wait for background generation task to finish
+        if let task = hiddenTestGenerationTask {
+            await MainActor.run {
+                self.compilationOutput = "Waiting for hidden test generation…"
+            }
+            _ = await task.result
+        }
+
+        return hiddenTestCases
+    }
+
+    struct HiddenTestResult {
+        let allPassed: Bool
+        let failedCases: [TestCase]
+        let totalCount: Int
+    }
+
+    /// Runs user code against all hidden test cases. Returns pass/fail status and failed cases.
+    func runHiddenTestGate(executionCode: String) async -> HiddenTestResult {
+        let aiCases = await waitForHiddenTests()
+        guard !aiCases.isEmpty else {
+            return HiddenTestResult(allPassed: true, failedCases: [], totalCount: 0)
+        }
+
+        await MainActor.run { self.hiddenTestsHaveFailures = false }
+        var failedCases: [TestCase] = []
+
+        for (index, item) in aiCases.enumerated() {
+            if Task.isCancelled { break }
+            let passed = index - failedCases.count
+            let failed = failedCases.count
+            await MainActor.run {
+                self.compilationOutput =
+                    "Hidden test \(index + 1)/\(aiCases.count)  ✓ \(passed)  ✗ \(failed)"
+                self.hiddenTestsHaveFailures = failed > 0
+            }
+            let result = await interactor.executeCode(
+                code: executionCode,
+                language: language,
+                input: item.input
+            )
+            if Task.isCancelled { break }
+
+            let parsed = parseTraceOutput(result.output)
+
+            if result.exitCode != 0 || result.timedOut || result.wasCancelled {
+                var failedCase = TestCase(input: item.input, expectedOutput: item.expectedOutput)
+                if result.timedOut {
+                    failedCase.actualOutput = "Timed out"
+                } else if result.wasCancelled {
+                    failedCase.actualOutput = "Stopped"
+                } else {
+                    failedCase.actualOutput = "Error: \(result.error)"
+                }
+                failedCase.passed = false
+                failedCases.append(failedCase)
+                continue
+            }
+
+            let normalizedExpected = item.expectedOutput
+                .trimmingCharacters(in: .whitespacesAndNewlines)
+            let normalized = await MainActor.run {
+                self.normalizeOutputForComparison(
+                    parsed.cleanOutput,
+                    expected: normalizedExpected
+                )
+            }
+
+            if !normalizedExpected.isEmpty,
+               normalized.comparisonValue != normalizedExpected {
+                var failedCase = TestCase(input: item.input, expectedOutput: item.expectedOutput)
+                failedCase.actualOutput = normalized.displayValue
+                failedCase.passed = false
+                failedCases.append(failedCase)
+            }
+        }
+
+        return HiddenTestResult(
+            allPassed: failedCases.isEmpty,
+            failedCases: failedCases,
+            totalCount: aiCases.count
+        )
+    }
 
     // swiftlint:disable cyclomatic_complexity function_body_length
     private func executeTests(saveSubmission: Bool) {
@@ -312,17 +324,30 @@ extension CodingEnvironmentPresenter {
 
             guard !Task.isCancelled else { return }
             if saveSubmission, allPassed {
-                let submissionOutcome = await self.submitToLeetCodeDirect()
-                if let console = submissionOutcome.consoleMessage, !console.isEmpty {
-                    consoleLogs.append(console)
-                }
-                if let error = submissionOutcome.errorMessage, !error.isEmpty {
-                    errorLogs.append(error)
-                }
-                if submissionOutcome.didSubmit {
-                    await MainActor.run {
-                        self.recordSubmission()
+                // Run hidden tests before submitting to LeetCode
+                let hiddenResult = await self.runHiddenTestGate(executionCode: executionCode)
+                if hiddenResult.allPassed {
+                    consoleLogs.append("All \(hiddenResult.totalCount) hidden tests passed!")
+                    let submissionOutcome = await self.submitToLeetCodeDirect()
+                    if let console = submissionOutcome.consoleMessage, !console.isEmpty {
+                        consoleLogs.append(console)
                     }
+                    if let error = submissionOutcome.errorMessage, !error.isEmpty {
+                        errorLogs.append(error)
+                    }
+                    if submissionOutcome.didSubmit {
+                        await MainActor.run {
+                            self.recordSubmission()
+                        }
+                    }
+                } else {
+                    // Add failed hidden tests to the test panel
+                    await MainActor.run {
+                        self.testCases = updatedTestCases + hiddenResult.failedCases
+                    }
+                    consoleLogs.append(
+                        "\(hiddenResult.failedCases.count) of \(hiddenResult.totalCount) hidden tests failed."
+                    )
                 }
             }
             await MainActor.run {

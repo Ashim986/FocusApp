@@ -36,6 +36,10 @@ final class CodingEnvironmentPresenter: ObservableObject {
     var traceEventsByTestCase: [Int: (events: [DataJourneyEvent], truncated: Bool)] = [:]
     @Published var codeResetNotice: String?
     @Published var executionLogAnchor: Date?
+    @Published var hiddenTestCases: [SolutionTestCase] = []
+    @Published var isGeneratingHiddenTests: Bool = false
+    @Published var hiddenTestsHaveFailures: Bool = false
+    var hiddenTestGenerationTask: Task<Void, Never>?
 
     let interactor: CodingEnvironmentInteractor
     let logger: DebugLogRecording?
@@ -159,6 +163,8 @@ final class CodingEnvironmentPresenter: ObservableObject {
         errorOutput = ""
         problemContent = nil
         currentSolution = nil
+        hiddenTestCases = []
+        hiddenTestGenerationTask?.cancel()
         isLoadingProblem = false
         viewState = .coding
 
@@ -167,6 +173,7 @@ final class CodingEnvironmentPresenter: ObservableObject {
             await loadProblemContent(for: problem, requestID: requestID)
         }
         loadSolution(for: problem)
+        startHiddenTestGeneration()
     }
 
     func loadSolution(for problem: Problem) {

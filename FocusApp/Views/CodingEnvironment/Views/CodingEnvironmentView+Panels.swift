@@ -123,6 +123,7 @@ extension CodingEnvironmentView {
                         testCases: presenter.testCases,
                         diagnostics: presenter.errorDiagnostics,
                         isRunning: presenter.isRunning,
+                        hiddenTestsHaveFailures: presenter.hiddenTestsHaveFailures,
                         debugEntries: debugLogStore.entries,
                         logAnchor: presenter.executionLogAnchor
                     )

@@ -1,7 +1,7 @@
 # FocusApp - Agent Guide
 
 ## Project Overview
-FocusApp is a native macOS study companion for Data Structures & Algorithms preparation. It tracks a 13-day core plan plus a 2-day priority sprint (25 problems), daily habits, and focus tools. Progress syncs from LeetCode. Bundled solution write-ups live in `FocusApp/Resources/Solutions.json` (85 problems).
+FocusApp is a native macOS study companion for Data Structures & Algorithms preparation. It tracks a 13-day core plan plus a 2-day priority sprint (25 problems), daily habits, and focus tools. Progress syncs from LeetCode. Bundled solution write-ups live in `FocusApp/Resources/Solutions.json` (103 problems).
 
 ## Project Structure
 ```
@@ -42,6 +42,9 @@ FocusApp/
 │   │   ├── LeetCodeConstants.swift
 │   │   ├── LeetCodeSyncScheduler.swift
 │   │   ├── LeetCodeSlugExtractor.swift
+│   │   ├── LeetCodeProblemFetcher.swift  # GraphQL fetcher for problem manifest
+│   │   ├── LeetCodeSubmissionService.swift # LeetCode submission + polling
+│   │   ├── ProblemManifestStore.swift    # Manifest-backed topic planning
 │   │   ├── TestCase.swift           # Test case + language enums
 │   │   ├── CodeExecutionService.swift
 │   │   ├── ProcessRunner.swift
@@ -49,7 +52,9 @@ FocusApp/
 │   │   ├── SwiftExecutor.swift
 │   │   ├── PythonExecutor.swift
 │   │   ├── SolutionModels.swift     # Bundled solution data models
-│   │   └── SolutionStore.swift      # Solution loader (Solutions.json)
+│   │   ├── SolutionStore.swift      # Solution loader (Solutions.json)
+│   │   ├── SolutionAIService.swift  # AI solution providers (Groq, Gemini)
+│   │   └── AITestCaseStore.swift    # Hidden test case persistence
 │   ├── Views/
 │   │   ├── Content/
 │   │   │   ├── ContentView.swift        # Main tabbed interface
@@ -108,10 +113,12 @@ FocusApp/
 │   │   │   ├── CodingEnvironmentView.swift
 │   │   │   ├── CodingEnvironmentPresenter.swift
 │   │   │   ├── CodingEnvironmentInteractor.swift
-│   │   │   ├── CodingEnvironmentPresenter+Execution.swift
 │   │   │   ├── CodingEnvironmentPresenter+ProblemLoading.swift
 │   │   │   ├── CodingEnvironmentPresenter+Persistence.swift
 │   │   │   ├── CodingEnvironmentPresenter+Snippets.swift
+│   │   │   ├── Execution/
+│   │   │   │   ├── CodingEnvironmentPresenter+Execution.swift
+│   │   │   │   └── CodingEnvironmentPresenter+LeetCodeSubmit.swift
 │   │   │   ├── CodingEnvironmentProblemModels.swift
 │   │   │   ├── CodingEnvironmentView+Header.swift
 │   │   │   ├── CodingEnvironmentView+Panels.swift
@@ -136,6 +143,8 @@ FocusApp/
 │   │   │   ├── DataJourneyView+Layout.swift
 │   │   │   ├── DataJourneyView+Playback.swift
 │   │   │   ├── DataJourneyView+Selection.swift
+│   │   │   ├── SolutionTabView.swift
+│   │   │   ├── SolutionApproachView.swift
 │   │   │   ├── ModernTestCaseView.swift
 │   │   │   ├── ModernOutputView.swift
 │   │   │   ├── ModernOutputView+Sections.swift
@@ -157,6 +166,7 @@ FocusApp/
 │   │   └── AppStrings.swift         # Localized string helpers
 │   ├── Resources/
 │   │   ├── Localizable.xcstrings    # Localization strings catalog
+│   │   ├── problem-manifest.json    # LeetCode problem manifest
 │   │   └── Solutions.json           # Bundled solutions content
 │   └── Shared/
 │       ├── SharedDataStore.swift    # FileAppStorage, PlanCalendar, AppConstants
@@ -167,7 +177,7 @@ FocusApp/
 ```
 
 ## Architecture (Summary)
-- Clean/VIPER-style separation: View → Presenter → Interactor → AppStateStore → FileAppStorage.
+- Clean/VIPER-style separation: View → Presenter → Interactor → AppStateStore → SwiftData.
 - Views observe Presenters (`@ObservedObject`).
 - Interactors perform business logic and update the store.
 

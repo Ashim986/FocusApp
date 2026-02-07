@@ -209,7 +209,9 @@ extension CodingEnvironmentView {
         case .editorial:
             editorialContent
         case .solution:
-            SolutionTabView(solution: presenter.currentSolution)
+            SolutionTabView(
+                solution: presenter.currentSolution
+            )
         case .submissions:
             pastSubmissionsContent
         case .debug:

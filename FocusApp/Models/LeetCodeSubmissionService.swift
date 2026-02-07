@@ -202,8 +202,10 @@ private struct LeetCodeSubmitResponse: Decodable {
 
 struct LeetCodeSubmissionCheck: Decodable {
     let state: String?
+    let finished: Bool?
     let statusCode: Int?
     let statusMsg: String?
+    let runSuccess: Bool?
     let totalTestcases: Int?
     let totalCorrect: Int?
     let runtimeError: String?
@@ -213,12 +215,18 @@ struct LeetCodeSubmissionCheck: Decodable {
     let codeOutput: String?
     let stdout: String?
     let memory: String?
+    let statusMemory: String?
     let runtime: String?
+    let statusRuntime: String?
+    let runtimePercentile: Double?
+    let memoryPercentile: Double?
 
     enum CodingKeys: String, CodingKey {
         case state
+        case finished
         case statusCode = "status_code"
         case statusMsg = "status_msg"
+        case runSuccess = "run_success"
         case totalTestcases = "total_testcases"
         case totalCorrect = "total_correct"
         case runtimeError = "runtime_error"
@@ -228,11 +236,18 @@ struct LeetCodeSubmissionCheck: Decodable {
         case codeOutput = "code_output"
         case stdout
         case memory
+        case statusMemory = "status_memory"
         case runtime
+        case statusRuntime = "status_runtime"
+        case runtimePercentile = "runtime_percentile"
+        case memoryPercentile = "memory_percentile"
     }
 
     var isComplete: Bool {
-        guard let state else { return false }
-        return state.uppercased() == "SUCCESS"
+        // LeetCode returns "finished": true when judging is done
+        if finished == true { return true }
+        // Fallback: legacy format uses "state": "SUCCESS"
+        if let state, state.uppercased() == "SUCCESS" { return true }
+        return false
     }
 }

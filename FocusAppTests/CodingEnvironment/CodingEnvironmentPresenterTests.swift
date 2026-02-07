@@ -122,47 +122,6 @@ final class CodingEnvironmentExecutionTests: XCTestCase {
     }
 
     @MainActor
-    func testRunTestsAllPassedShowsSubmissionPrompt() async {
-        let harness = makeHarness()
-        let presenter = harness.presenter
-        let executor = harness.executor
-        let problem = problemWithSlug("reverse-linked-list")
-        presenter.selectedProblem = problem
-
-        let meta = functionMetaJSON(
-            name: "sum",
-            params: [("value", "integer")],
-            returnType: "integer"
-        )
-        presenter.problemContent = QuestionContent(
-            title: "Sum",
-            content: "",
-            exampleTestcases: "",
-            sampleTestCase: "",
-            difficulty: "Easy",
-            codeSnippets: [:],
-            metaData: meta,
-            questionId: nil
-        )
-        presenter.setCode("class Solution { func sum(_ value: Int) -> Int { return value } }")
-        presenter.testCases = [
-            TestCase(input: "1", expectedOutput: "1"),
-            TestCase(input: "2", expectedOutput: "2")
-        ]
-        executor.results = [
-            ExecutionResult(output: "1", error: "", exitCode: 0, timedOut: false, wasCancelled: false),
-            ExecutionResult(output: "2", error: "", exitCode: 0, timedOut: false, wasCancelled: false)
-        ]
-
-        presenter.runTests()
-
-        let finished = await waitFor { !presenter.isRunning }
-        XCTAssertTrue(finished)
-        XCTAssertTrue(presenter.showSubmissionTagPrompt)
-        XCTAssertEqual(presenter.testCases.filter { $0.passed == true }.count, 2)
-    }
-
-    @MainActor
     func testConfirmSubmissionTagSavesSubmission() {
         let harness = makeHarness()
         let presenter = harness.presenter

@@ -24,16 +24,16 @@ struct DataJourneyFlowView: View {
 
         return AnyView(
             VStack(alignment: .leading, spacing: 6) {
-                DSButton(
+                Button(
                     action: {
                         withAnimation(.easeInOut(duration: 0.2)) { isExpanded.toggle() }
                     },
                     label: {
                         HStack(spacing: 4) {
-                            DSImage(systemName: isExpanded ? "chevron.down" : "chevron.right")
+                            Image(systemName: isExpanded ? "chevron.down" : "chevron.right")
                                 .font(.system(size: 8, weight: .bold))
                                 .foregroundColor(palette.gray400)
-                            DSText("Flow Overview")
+                            Text("Flow Overview")
                                 .font(.system(size: 9, weight: .semibold))
                                 .foregroundColor(palette.gray400)
                             Spacer()
@@ -125,7 +125,7 @@ struct DataJourneyFlowView: View {
         VStack(alignment: .leading, spacing: 4) {
             HStack(spacing: 4) {
                 cardIcon(for: event)
-                DSText(cardTitle(for: event))
+                Text(cardTitle(for: event))
                     .font(.system(size: 8, weight: .bold))
                     .foregroundColor(cardTitleColor(for: event))
             }
@@ -135,11 +135,11 @@ struct DataJourneyFlowView: View {
             ForEach(displayKeys, id: \.self) { key in
                 if let value = event.values[key] {
                     HStack(spacing: 4) {
-                        DSText(key)
+                        Text(key)
                             .font(.system(size: 7, weight: .medium))
                             .foregroundColor(palette.gray400)
                             .lineLimit(1)
-                        DSText(valueSummary(value))
+                        Text(valueSummary(value))
                             .font(.system(
                                 size: 7,
                                 weight: .semibold,
@@ -151,7 +151,7 @@ struct DataJourneyFlowView: View {
                 }
             }
             if sortedKeys.count > 3 {
-                DSText("+\(sortedKeys.count - 3) more")
+                Text("+\(sortedKeys.count - 3) more")
                     .font(.system(size: 7))
                     .foregroundColor(palette.gray500)
             }
@@ -175,7 +175,7 @@ struct DataJourneyFlowView: View {
             Rectangle()
                 .fill(palette.gray600)
                 .frame(width: 16, height: 1.5)
-            DSImage(systemName: "arrowtriangle.right.fill")
+            Image(systemName: "arrowtriangle.right.fill")
                 .font(.system(size: 6))
                 .foregroundColor(palette.gray600)
         }
@@ -202,15 +202,15 @@ struct DataJourneyFlowView: View {
     private func cardIcon(for event: DataJourneyEvent) -> some View {
         switch event.kind {
         case .input:
-            DSImage(systemName: "arrow.right.circle.fill")
+            Image(systemName: "arrow.right.circle.fill")
                 .font(.system(size: 8))
                 .foregroundColor(palette.green)
         case .output:
-            DSImage(systemName: "arrow.left.circle.fill")
+            Image(systemName: "arrow.left.circle.fill")
                 .font(.system(size: 8))
                 .foregroundColor(palette.cyan)
         case .step:
-            DSImage(systemName: "circle.fill")
+            Image(systemName: "circle.fill")
                 .font(.system(size: 6))
                 .foregroundColor(palette.purple)
         }

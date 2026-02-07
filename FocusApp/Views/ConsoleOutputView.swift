@@ -109,7 +109,7 @@ struct ConsoleLineView: View {
     var body: some View {
         let lineColor = line.type.color(theme: theme)
         HStack(alignment: .top, spacing: 0) {
-            DSText("\(line.number)")
+            Text("\(line.number)")
                 .font(.system(size: 10, design: .monospaced))
                 .foregroundColor(theme.colors.textSecondary)
                 .frame(width: 28, alignment: .trailing)
@@ -121,22 +121,22 @@ struct ConsoleLineView: View {
                 .padding(.trailing, 8)
 
             if let icon = line.type.icon {
-                DSImage(systemName: icon)
+                Image(systemName: icon)
                     .font(.system(size: 9))
                     .foregroundColor(lineColor)
                     .frame(width: 12)
                     .padding(.trailing, 4)
             }
 
-            DSText(line.content.isEmpty ? " " : line.content)
+            Text(line.content.isEmpty ? " " : line.content)
                 .font(.system(size: 12, design: .monospaced))
                 .foregroundColor(lineColor)
                 .textSelection(.enabled)
 
             Spacer(minLength: 0)
 
-            DSButton(action: copyLine) {
-                DSImage(systemName: "doc.on.doc")
+            Button(action: copyLine) {
+                Image(systemName: "doc.on.doc")
                     .font(.system(size: 9))
                     .foregroundColor(theme.colors.textSecondary)
             }

@@ -52,7 +52,7 @@ struct TraceValueView: View {
             ForEach(map.keys.sorted(), id: \.self) { key in
                 if let value = map[key] {
                     HStack(spacing: 6) {
-                        DSText(key)
+                        Text(key)
                             .font(.system(size: 9, weight: .semibold))
                             .foregroundColor(palette.gray400)
                         TraceValueView(value: value)

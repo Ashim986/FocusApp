@@ -20,7 +20,7 @@ extension ToolbarWidgetView {
                     )
                     .rotationEffect(.degrees(-90))
 
-                DSText("\(Int(presenter.progressPercentage))%")
+                Text("\(Int(presenter.progressPercentage))%")
                     .font(.system(size: 12, weight: .bold, design: .rounded))
                     .foregroundColor(theme.colors.textPrimary)
             }
@@ -28,20 +28,20 @@ extension ToolbarWidgetView {
 
             VStack(alignment: .leading, spacing: 2) {
                 HStack(spacing: 4) {
-                    DSText(L10n.Widget.summaryDayFormat( presenter.currentDayNumber))
+                    Text(L10n.Widget.summaryDayFormat( presenter.currentDayNumber))
                         .font(.system(size: 13, weight: .semibold))
                         .foregroundColor(theme.colors.textPrimary)
 
-                    DSText(L10n.Widget.summaryOfTotalFormat( dsaPlan.count))
+                    Text(L10n.Widget.summaryOfTotalFormat( dsaPlan.count))
                         .font(.system(size: 10))
                         .foregroundColor(theme.colors.textSecondary)
                 }
 
-                DSText(L10n.Widget.summaryTopicTitle)
+                Text(L10n.Widget.summaryTopicTitle)
                     .font(.system(size: 9, weight: .medium))
                     .foregroundColor(theme.colors.textSecondary)
 
-                DSText(presenter.todaysTopic)
+                Text(presenter.todaysTopic)
                     .font(.system(size: 11, weight: .medium))
                     .foregroundColor(theme.colors.textPrimary.opacity(0.9))
                     .lineLimit(1)
@@ -50,10 +50,10 @@ extension ToolbarWidgetView {
             Spacer()
 
             VStack(alignment: .trailing, spacing: 2) {
-                DSText(L10n.Widget.summaryHabitsTitle)
+                Text(L10n.Widget.summaryHabitsTitle)
                     .font(.system(size: 9))
                     .foregroundColor(theme.colors.textSecondary)
-                DSText("\(presenter.habitsCompletedToday)/\(AppConstants.totalHabits)")
+                Text("\(presenter.habitsCompletedToday)/\(AppConstants.totalHabits)")
                     .font(.system(size: 12, weight: .semibold))
                     .foregroundColor(
                         presenter.habitsCompletedToday == AppConstants.totalHabits

@@ -53,7 +53,7 @@ struct TrieGraphView: View {
                         // Edge character label
                         let midX = (edge.from.x + edge.to.x) / 2
                         let midY = (edge.from.y + edge.to.y) / 2
-                        let text = DSText(edge.character)
+                        let text = Text(edge.character)
                             .font(.system(size: max(8, nodeSize * 0.28), weight: .bold, design: .monospaced))
                             .foregroundColor(palette.cyan)
                         context.draw(context.resolve(text), at: CGPoint(x: midX - 6, y: midY))

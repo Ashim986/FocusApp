@@ -19,18 +19,18 @@ struct DebugLogRow: View {
 
                 VStack(alignment: .leading, spacing: 4) {
                     HStack(alignment: .center, spacing: 8) {
-                        DSText(entry.title)
+                        Text(entry.title)
                             .font(.system(size: 12, weight: .semibold))
                             .foregroundColor(theme.colors.textPrimary)
                         Spacer()
-                        DSText(Self.timestampFormatter.string(from: entry.timestamp))
+                        Text(Self.timestampFormatter.string(from: entry.timestamp))
                             .font(.system(size: 10))
                             .foregroundColor(theme.colors.textSecondary)
-                        DSImage(systemName: isExpanded ? "chevron.down" : "chevron.right")
+                        Image(systemName: isExpanded ? "chevron.down" : "chevron.right")
                             .font(.system(size: 10, weight: .semibold))
                             .foregroundColor(theme.colors.textSecondary)
-                        DSButton(action: copyEntry) {
-                            DSImage(systemName: "doc.on.doc")
+                        Button(action: copyEntry) {
+                            Image(systemName: "doc.on.doc")
                                 .font(.system(size: 10))
                                 .foregroundColor(theme.colors.textSecondary)
                         }
@@ -38,14 +38,14 @@ struct DebugLogRow: View {
                         .help("Copy log")
                     }
 
-                    DSText(entry.message)
+                    Text(entry.message)
                         .font(.system(size: 11))
                         .foregroundColor(theme.colors.textSecondary)
                         .lineLimit(isExpanded ? nil : 2)
                         .fixedSize(horizontal: false, vertical: true)
 
                     if let detail = primaryDetail {
-                        DSText(detail)
+                        Text(detail)
                             .font(.system(size: 10, design: .monospaced))
                             .foregroundColor(theme.colors.textSecondary)
                             .lineLimit(isExpanded ? nil : 3)
@@ -211,14 +211,14 @@ struct DebugLogRow: View {
     private func detailSection(title: String, value: String) -> some View {
         VStack(alignment: .leading, spacing: 4) {
             HStack {
-                DSText(title)
+                Text(title)
                     .font(.system(size: 10, weight: .semibold))
                     .foregroundColor(theme.colors.textSecondary)
                 Spacer()
-                DSButton(
+                Button(
                     action: { copySection(title: title, value: value) },
                     label: {
-                        DSImage(systemName: "doc.on.doc")
+                        Image(systemName: "doc.on.doc")
                             .font(.system(size: 9))
                             .foregroundColor(theme.colors.textSecondary)
                     }
@@ -226,7 +226,7 @@ struct DebugLogRow: View {
                 .buttonStyle(.plain)
                 .help("Copy \(title.lowercased())")
             }
-            DSText(value)
+            Text(value)
                 .font(.system(size: 10, design: .monospaced))
                 .foregroundColor(theme.colors.textSecondary)
                 .textSelection(.enabled)
@@ -243,17 +243,17 @@ struct DebugLogRow: View {
             ForEach(items, id: \.key) { key, value in
                 if value.contains("\n") {
                     VStack(alignment: .leading, spacing: 2) {
-                        DSText("\(key):")
+                        Text("\(key):")
                             .font(.system(size: 10, weight: .semibold))
                             .foregroundColor(theme.colors.textSecondary)
-                        DSText(value)
+                        Text(value)
                             .font(.system(size: 10, design: .monospaced))
                             .foregroundColor(theme.colors.textSecondary)
                             .textSelection(.enabled)
                             .fixedSize(horizontal: false, vertical: true)
                     }
                 } else {
-                    DSText("\(key): \(value)")
+                    Text("\(key): \(value)")
                         .font(.system(size: 10, design: .monospaced))
                         .foregroundColor(theme.colors.textSecondary)
                         .textSelection(.enabled)

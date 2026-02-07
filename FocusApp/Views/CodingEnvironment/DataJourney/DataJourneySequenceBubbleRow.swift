@@ -212,7 +212,7 @@ struct SequenceBubbleRow: View {
                                 changeType: elementChangeType
                             )
                             if showIndices {
-                                DSText("\(index)")
+                                Text("\(index)")
                                     .font(.system(size: max(8, bubbleSize * 0.28), weight: .semibold))
                                     .foregroundColor(palette.gray500)
                                     .frame(height: labelHeight)

@@ -11,7 +11,7 @@ struct DayCard: View {
     var body: some View {
         DSCard(config: .init(style: .elevated, padding: 0)) {
             VStack(spacing: 0) {
-                DSButton(action: {
+                Button(action: {
                     withAnimation(.spring(response: 0.3, dampingFraction: 0.8)) {
                         isExpanded.toggle()
                     }
@@ -23,22 +23,22 @@ struct DayCard: View {
                                 .frame(width: 40, height: 40)
 
                             if viewModel.isFullyCompleted {
-                                DSImage(systemName: "checkmark")
+                                Image(systemName: "checkmark")
                                     .font(.system(size: 16, weight: .bold))
                                     .foregroundColor(.white)
                             } else {
-                                DSText("\(viewModel.id)")
+                                Text("\(viewModel.id)")
                                     .font(.system(size: 16, weight: .bold))
                                     .foregroundColor(.white)
                             }
                         }
 
                         VStack(alignment: .leading, spacing: 2) {
-                            DSText(viewModel.topic)
+                            Text(viewModel.topic)
                                 .font(.system(size: 15, weight: .semibold))
                                 .foregroundColor(theme.colors.textPrimary)
 
-                            DSText(viewModel.date)
+                            Text(viewModel.date)
                                 .font(.system(size: 13))
                                 .foregroundColor(theme.colors.textSecondary)
                         }
@@ -53,7 +53,7 @@ struct DayCard: View {
                             }
                         }
 
-                        DSImage(systemName: isExpanded ? "chevron.up" : "chevron.down")
+                        Image(systemName: isExpanded ? "chevron.up" : "chevron.down")
                             .font(.system(size: 14, weight: .medium))
                             .foregroundColor(theme.colors.textSecondary)
                     }

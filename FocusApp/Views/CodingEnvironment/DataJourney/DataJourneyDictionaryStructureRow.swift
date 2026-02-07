@@ -61,7 +61,7 @@ struct DictionaryStructureRow: View {
                                     size: bubbleSize,
                                     style: bubbleStyle
                                 )
-                                DSImage(systemName: "arrow.right")
+                                Image(systemName: "arrow.right")
                                     .font(.system(size: arrowSize, weight: .semibold))
                                     .foregroundColor(palette.purple.opacity(0.8))
                                 TraceBubble(

@@ -11,7 +11,7 @@ struct StatsView_Previews: PreviewProvider {
                 StatsView(presenter: presenter)
                     .frame(width: 600, height: 800)
             } else {
-                DSText("Preview unavailable")
+                Text("Preview unavailable")
             }
         }
     }

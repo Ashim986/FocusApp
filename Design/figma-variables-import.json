@@ -1,0 +1,246 @@
+{
+  "collections": [
+    {
+      "name": "FocusApp Colors",
+      "modes": ["Light", "Dark"],
+      "variables": [
+        {
+          "name": "brand/purple",
+          "type": "COLOR",
+          "values": { "Light": "#6366F1FF", "Dark": "#6366F1FF" }
+        },
+        {
+          "name": "brand/indigo",
+          "type": "COLOR",
+          "values": { "Light": "#1E1B4BFF", "Dark": "#1E1B4BFF" }
+        },
+        {
+          "name": "brand/indigo-light",
+          "type": "COLOR",
+          "values": { "Light": "#312E81FF", "Dark": "#312E81FF" }
+        },
+        {
+          "name": "brand/green",
+          "type": "COLOR",
+          "values": { "Light": "#10B981FF", "Dark": "#10B981FF" }
+        },
+        {
+          "name": "brand/green-light",
+          "type": "COLOR",
+          "values": { "Light": "#D1FAE5FF", "Dark": "#D1FAE5FF" }
+        },
+        {
+          "name": "brand/cyan",
+          "type": "COLOR",
+          "values": { "Light": "#22D3EEFF", "Dark": "#22D3EEFF" }
+        },
+        {
+          "name": "brand/amber",
+          "type": "COLOR",
+          "values": { "Light": "#F59E0BFF", "Dark": "#F59E0BFF" }
+        },
+        {
+          "name": "brand/amber-light",
+          "type": "COLOR",
+          "values": { "Light": "#FEF3C7FF", "Dark": "#FEF3C7FF" }
+        },
+        {
+          "name": "brand/red",
+          "type": "COLOR",
+          "values": { "Light": "#EF4444FF", "Dark": "#EF4444FF" }
+        },
+        {
+          "name": "brand/red-light",
+          "type": "COLOR",
+          "values": { "Light": "#FEE2E2FF", "Dark": "#FEE2E2FF" }
+        },
+        {
+          "name": "neutral/gray-50",
+          "type": "COLOR",
+          "values": { "Light": "#F9FAFBFF", "Dark": "#F9FAFBFF" }
+        },
+        {
+          "name": "neutral/gray-100",
+          "type": "COLOR",
+          "values": { "Light": "#F3F4F6FF", "Dark": "#F3F4F6FF" }
+        },
+        {
+          "name": "neutral/gray-200",
+          "type": "COLOR",
+          "values": { "Light": "#E5E7EBFF", "Dark": "#E5E7EBFF" }
+        },
+        {
+          "name": "neutral/gray-300",
+          "type": "COLOR",
+          "values": { "Light": "#D1D5DBFF", "Dark": "#D1D5DBFF" }
+        },
+        {
+          "name": "neutral/gray-400",
+          "type": "COLOR",
+          "values": { "Light": "#9CA3AFFF", "Dark": "#9CA3AFFF" }
+        },
+        {
+          "name": "neutral/gray-500",
+          "type": "COLOR",
+          "values": { "Light": "#6B7280FF", "Dark": "#6B7280FF" }
+        },
+        {
+          "name": "neutral/gray-600",
+          "type": "COLOR",
+          "values": { "Light": "#4B5563FF", "Dark": "#4B5563FF" }
+        },
+        {
+          "name": "neutral/gray-700",
+          "type": "COLOR",
+          "values": { "Light": "#374151FF", "Dark": "#374151FF" }
+        },
+        {
+          "name": "neutral/gray-800",
+          "type": "COLOR",
+          "values": { "Light": "#1F2937FF", "Dark": "#1F2937FF" }
+        },
+        {
+          "name": "neutral/gray-900",
+          "type": "COLOR",
+          "values": { "Light": "#111827FF", "Dark": "#111827FF" }
+        },
+        {
+          "name": "semantic/background",
+          "type": "COLOR",
+          "values": { "Light": "#F9FAFBFF", "Dark": "#111827FF" }
+        },
+        {
+          "name": "semantic/surface",
+          "type": "COLOR",
+          "values": { "Light": "#FFFFFFFF", "Dark": "#1F2937FF" }
+        },
+        {
+          "name": "semantic/surface-elevated",
+          "type": "COLOR",
+          "values": { "Light": "#F3F4F6FF", "Dark": "#374151FF" }
+        },
+        {
+          "name": "semantic/text-primary",
+          "type": "COLOR",
+          "values": { "Light": "#111827FF", "Dark": "#F9FAFBFF" }
+        },
+        {
+          "name": "semantic/text-secondary",
+          "type": "COLOR",
+          "values": { "Light": "#4B5563FF", "Dark": "#D1D5DBFF" }
+        },
+        {
+          "name": "semantic/border",
+          "type": "COLOR",
+          "values": { "Light": "#E5E7EBFF", "Dark": "#374151FF" }
+        },
+        {
+          "name": "semantic/accent",
+          "type": "COLOR",
+          "values": { "Light": "#6366F1FF", "Dark": "#6366F1FF" }
+        },
+        {
+          "name": "semantic/success",
+          "type": "COLOR",
+          "values": { "Light": "#10B981FF", "Dark": "#10B981FF" }
+        },
+        {
+          "name": "semantic/warning",
+          "type": "COLOR",
+          "values": { "Light": "#F59E0BFF", "Dark": "#F59E0BFF" }
+        },
+        {
+          "name": "semantic/danger",
+          "type": "COLOR",
+          "values": { "Light": "#EF4444FF", "Dark": "#EF4444FF" }
+        },
+        {
+          "name": "difficulty/easy-bg",
+          "type": "COLOR",
+          "values": { "Light": "#D1FAE5FF", "Dark": "#D1FAE5FF" }
+        },
+        {
+          "name": "difficulty/easy-text",
+          "type": "COLOR",
+          "values": { "Light": "#059669FF", "Dark": "#059669FF" }
+        },
+        {
+          "name": "difficulty/medium-bg",
+          "type": "COLOR",
+          "values": { "Light": "#FEF3C7FF", "Dark": "#FEF3C7FF" }
+        },
+        {
+          "name": "difficulty/medium-text",
+          "type": "COLOR",
+          "values": { "Light": "#D97706FF", "Dark": "#D97706FF" }
+        },
+        {
+          "name": "difficulty/hard-bg",
+          "type": "COLOR",
+          "values": { "Light": "#FEE2E2FF", "Dark": "#FEE2E2FF" }
+        },
+        {
+          "name": "difficulty/hard-text",
+          "type": "COLOR",
+          "values": { "Light": "#DC2626FF", "Dark": "#DC2626FF" }
+        },
+        {
+          "name": "streak/background",
+          "type": "COLOR",
+          "values": { "Light": "#FFF7EDFF", "Dark": "#FFF7EDFF" }
+        },
+        {
+          "name": "streak/border",
+          "type": "COLOR",
+          "values": { "Light": "#FDBA74FF", "Dark": "#FDBA74FF" }
+        },
+        {
+          "name": "streak/text",
+          "type": "COLOR",
+          "values": { "Light": "#EA580CFF", "Dark": "#EA580CFF" }
+        }
+      ]
+    },
+    {
+      "name": "FocusApp Spacing",
+      "modes": ["Default"],
+      "variables": [
+        { "name": "space/2", "type": "FLOAT", "values": { "Default": 2 } },
+        { "name": "space/4", "type": "FLOAT", "values": { "Default": 4 } },
+        { "name": "space/8", "type": "FLOAT", "values": { "Default": 8 } },
+        { "name": "space/12", "type": "FLOAT", "values": { "Default": 12 } },
+        { "name": "space/16", "type": "FLOAT", "values": { "Default": 16 } },
+        { "name": "space/24", "type": "FLOAT", "values": { "Default": 24 } },
+        { "name": "space/32", "type": "FLOAT", "values": { "Default": 32 } },
+        { "name": "space/48", "type": "FLOAT", "values": { "Default": 48 } },
+        { "name": "space/64", "type": "FLOAT", "values": { "Default": 64 } }
+      ]
+    },
+    {
+      "name": "FocusApp Radii",
+      "modes": ["Default"],
+      "variables": [
+        { "name": "radius/small", "type": "FLOAT", "values": { "Default": 8 } },
+        { "name": "radius/medium", "type": "FLOAT", "values": { "Default": 12 } },
+        { "name": "radius/large", "type": "FLOAT", "values": { "Default": 16 } },
+        { "name": "radius/pill", "type": "FLOAT", "values": { "Default": 9999 } }
+      ]
+    },
+    {
+      "name": "FocusApp Sizing",
+      "modes": ["Default"],
+      "variables": [
+        { "name": "size/tab-bar-height", "type": "FLOAT", "values": { "Default": 83 } },
+        { "name": "size/header-height", "type": "FLOAT", "values": { "Default": 44 } },
+        { "name": "size/sidebar-width", "type": "FLOAT", "values": { "Default": 260 } },
+        { "name": "size/widget-width", "type": "FLOAT", "values": { "Default": 350 } },
+        { "name": "size/widget-height", "type": "FLOAT", "values": { "Default": 560 } },
+        { "name": "size/task-row-height", "type": "FLOAT", "values": { "Default": 56 } },
+        { "name": "size/settings-row-height", "type": "FLOAT", "values": { "Default": 56 } },
+        { "name": "size/timer-ring-iphone", "type": "FLOAT", "values": { "Default": 280 } },
+        { "name": "size/timer-ring-ipad", "type": "FLOAT", "values": { "Default": 400 } },
+        { "name": "size/timer-ring-mac", "type": "FLOAT", "values": { "Default": 360 } }
+      ]
+    }
+  ]
+}

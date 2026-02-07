@@ -7,11 +7,11 @@ extension CodingEnvironmentView {
             VStack(spacing: 0) {
                 HStack(spacing: 12) {
                     VStack(alignment: .leading, spacing: 2) {
-                        DSText(L10n.Coding.codeTitle)
+                        Text(L10n.Coding.codeTitle)
                             .font(theme.typography.subtitle)
                             .foregroundColor(theme.colors.textPrimary)
 
-                        DSText(L10n.Coding.solutionFilename(presenter.language.fileExtension))
+                        Text(L10n.Coding.solutionFilename(presenter.language.fileExtension))
                             .font(theme.typography.mono)
                             .foregroundColor(theme.colors.textSecondary)
                     }
@@ -32,15 +32,15 @@ extension CodingEnvironmentView {
 
                 if let notice = presenter.codeResetNotice {
                     HStack(spacing: 8) {
-                        DSImage(systemName: "exclamationmark.triangle.fill")
+                        Image(systemName: "exclamationmark.triangle.fill")
                             .font(.system(size: 12, weight: .semibold))
                             .foregroundColor(theme.colors.warning)
-                        DSText(notice)
+                        Text(notice)
                             .font(theme.typography.caption)
                             .foregroundColor(theme.colors.textPrimary)
                         Spacer()
-                        DSButton(action: { presenter.codeResetNotice = nil }, label: {
-                            DSImage(systemName: "xmark.circle.fill")
+                        Button(action: { presenter.codeResetNotice = nil }, label: {
+                            Image(systemName: "xmark.circle.fill")
                                 .font(.system(size: 12))
                                 .foregroundColor(theme.colors.textSecondary)
                         })

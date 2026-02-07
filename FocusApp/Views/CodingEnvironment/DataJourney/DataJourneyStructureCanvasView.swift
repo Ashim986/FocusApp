@@ -88,7 +88,7 @@ struct DataJourneyStructureCanvasView: View {
         return AnyView(
             VStack(alignment: .leading, spacing: 6) {
                 HStack(alignment: .center, spacing: 10) {
-                    DSText("Structure")
+                    Text("Structure")
                         .font(.system(size: 10, weight: .semibold))
                         .foregroundColor(palette.gray400)
 

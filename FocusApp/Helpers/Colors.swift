@@ -1,5 +1,4 @@
 import SwiftUI
-import FocusDesignSystem
 
 extension Color {
     // Primary colors
@@ -70,37 +69,4 @@ extension Color {
             opacity: Double(alpha) / 255
         )
     }
-}
-
-typealias DSImage = Image
-
-struct DSText: View {
-    private let text: Text
-
-    init(_ content: String) {
-        self.text = Text(content)
-    }
-
-    init(_ content: AttributedString) {
-        self.text = Text(content)
-    }
-
-    var body: some View {
-        text
-    }
-}
-
-func DSButton<Label: View>(
-    action: @escaping () -> Void,
-    @ViewBuilder label: () -> Label
-) -> some View {
-    Button(action: action, label: label)
-}
-
-func DSButton<Label: View>(
-    config _: DSButtonConfig,
-    action: @escaping () -> Void,
-    @ViewBuilder label: () -> Label
-) -> some View {
-    Button(action: action, label: label)
 }

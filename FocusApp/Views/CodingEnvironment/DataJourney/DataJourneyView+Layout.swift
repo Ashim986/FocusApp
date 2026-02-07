@@ -74,10 +74,10 @@ extension DataJourneyView {
 
     var emptyState: some View {
         VStack(alignment: .leading, spacing: 6) {
-            DSText("Run with input to see the data journey.")
+            Text("Run with input to see the data journey.")
                 .font(.system(size: 11, weight: .medium))
                 .foregroundColor(palette.gray300)
-            DSText("Add `Trace.step(\"label\", [\"key\": value])` inside loops to visualize iterations.")
+            Text("Add `Trace.step(\"label\", [\"key\": value])` inside loops to visualize iterations.")
                 .font(.system(size: 10))
                 .foregroundColor(palette.gray500)
         }
@@ -106,12 +106,12 @@ extension DataJourneyView {
         let keyWidth: CGFloat = isCompact ? 70 : 80
         let infoSize: CGFloat = isCompact ? 9 : 10
         return VStack(alignment: .leading, spacing: 8) {
-            DSText(title)
+            Text(title)
                 .font(.system(size: titleSize, weight: .semibold))
                 .foregroundColor(palette.gray400)
 
             if event.values.isEmpty {
-                DSText("No values captured for this step.")
+                Text("No values captured for this step.")
                     .font(.system(size: infoSize))
                     .foregroundColor(palette.gray500)
             } else {
@@ -120,7 +120,7 @@ extension DataJourneyView {
                         if let value = event.values[key] {
                             let isChanged = changedKeys.contains(key)
                             HStack(alignment: .center, spacing: 10) {
-                                DSText(key)
+                                Text(key)
                                     .font(.system(size: infoSize, weight: .semibold))
                                     .foregroundColor(
                                         isChanged ? palette.cyan : palette.gray300

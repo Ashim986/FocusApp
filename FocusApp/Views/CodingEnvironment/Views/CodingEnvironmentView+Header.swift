@@ -40,7 +40,7 @@ extension CodingEnvironmentView {
                             config: .init(
                                 style: .ghost,
                                 size: .small,
-                                icon: DSImage(systemName: "arrow.up.right"),
+                                icon: Image(systemName: "arrow.up.right"),
                                 iconPosition: .leading
                             ),
                             action: { openURL(url) }
@@ -53,7 +53,7 @@ extension CodingEnvironmentView {
                             config: .init(
                                 style: .destructive,
                                 size: .small,
-                                icon: DSImage(systemName: "stop.fill"),
+                                icon: Image(systemName: "stop.fill"),
                                 iconPosition: .leading
                             ),
                             action: presenter.stopExecution
@@ -65,7 +65,7 @@ extension CodingEnvironmentView {
                             config: .init(
                                 style: .secondary,
                                 size: .small,
-                                icon: DSImage(systemName: "play.fill"),
+                                icon: Image(systemName: "play.fill"),
                                 iconPosition: .leading
                             ),
                             action: presenter.runCode
@@ -77,7 +77,7 @@ extension CodingEnvironmentView {
                             config: .init(
                                 style: .primary,
                                 size: .small,
-                                icon: DSImage(systemName: "checkmark.circle.fill"),
+                                icon: Image(systemName: "checkmark.circle.fill"),
                                 iconPosition: .leading
                             ),
                             action: presenter.runTests
@@ -129,7 +129,7 @@ extension CodingEnvironmentView {
                 state: .init(progress: progress)
             )
 
-            DSText(labelText)
+            Text(labelText)
                 .font(theme.typography.mono)
                 .foregroundColor(focusPresenter.isCompleted ? theme.colors.success : theme.colors.textPrimary)
 
@@ -168,8 +168,8 @@ extension CodingEnvironmentView {
         compact: Bool = false
     ) -> some View {
         let size: CGFloat = compact ? 22 : 28
-        return DSButton(action: action) {
-            DSImage(systemName: systemName)
+        return Button(action: action) {
+            Image(systemName: systemName)
                 .font(.system(size: compact ? 9 : 12, weight: .medium))
                 .foregroundColor(theme.colors.textSecondary)
                 .frame(width: size, height: size)
@@ -191,7 +191,7 @@ extension CodingEnvironmentView {
     ) -> some View {
         DSButton(
             title,
-            config: .init(style: .ghost, size: .small, icon: DSImage(systemName: icon), iconPosition: .leading),
+            config: .init(style: .ghost, size: .small, icon: Image(systemName: icon), iconPosition: .leading),
             action: action
         )
     }

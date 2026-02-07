@@ -16,10 +16,10 @@ struct LeetCodeLoginSheet: View {
     var body: some View {
         VStack(spacing: 16) {
             VStack(spacing: 6) {
-                DSText(L10n.Settings.leetcodeLoginSheetTitle)
+                Text(L10n.Settings.leetcodeLoginSheetTitle)
                     .font(.headline)
                     .foregroundColor(theme.colors.textPrimary)
-                DSText(L10n.Settings.leetcodeLoginSheetBody)
+                Text(L10n.Settings.leetcodeLoginSheetBody)
                     .font(.caption)
                     .foregroundColor(theme.colors.textSecondary)
             }

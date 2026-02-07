@@ -12,13 +12,13 @@ struct HabitToggle: View {
     @Environment(\.dsTheme) var theme
 
     var body: some View {
-        DSButton(action: onToggle) {
+        Button(action: onToggle) {
             HStack(spacing: 4) {
-                DSImage(systemName: done ? "checkmark.circle.fill" : icon)
+                Image(systemName: done ? "checkmark.circle.fill" : icon)
                     .font(.system(size: 11))
                     .foregroundColor(done ? theme.colors.success : theme.colors.textSecondary)
 
-                DSText(label)
+                Text(label)
                     .font(.system(size: 10, weight: .medium))
                     .foregroundColor(done ? theme.colors.success : theme.colors.textSecondary)
             }

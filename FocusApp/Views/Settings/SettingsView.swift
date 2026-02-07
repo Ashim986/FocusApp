@@ -21,9 +21,9 @@ struct SettingsView: View {
             Section {
                 if !presenter.notificationsAuthorized {
                     VStack(alignment: .leading, spacing: 8) {
-                        DSText(L10n.Settings.notificationsDisabledTitle)
+                        Text(L10n.Settings.notificationsDisabledTitle)
                             .font(.headline)
-                        DSText(L10n.Settings.notificationsDisabledBody)
+                        Text(L10n.Settings.notificationsDisabledBody)
                             .font(.caption)
                             .foregroundColor(.secondary)
                         DSButton(L10n.Settings.enableNotifications) {
@@ -35,7 +35,7 @@ struct SettingsView: View {
                     .padding(.vertical, 8)
                 }
             } header: {
-                DSText(L10n.Settings.notificationStatus)
+                Text(L10n.Settings.notificationStatus)
             }
 
             Section {
@@ -51,9 +51,9 @@ struct SettingsView: View {
                     .disabled(!presenter.notificationsAuthorized)
                 }
             } header: {
-                DSText(L10n.Settings.studyRemindersHeader)
+                Text(L10n.Settings.studyRemindersHeader)
             } footer: {
-                DSText(L10n.Settings.studyRemindersFooter)
+                Text(L10n.Settings.studyRemindersFooter)
             }
 
             Section {
@@ -69,9 +69,9 @@ struct SettingsView: View {
                     .disabled(!presenter.notificationsAuthorized)
                 }
             } header: {
-                DSText(L10n.Settings.habitRemindersHeader)
+                Text(L10n.Settings.habitRemindersHeader)
             } footer: {
-                DSText(L10n.Settings.habitRemindersFooter)
+                Text(L10n.Settings.habitRemindersFooter)
             }
 
             Section {
@@ -81,26 +81,26 @@ struct SettingsView: View {
                     displayedComponents: .date
                 )
 
-                DSButton(action: {
+                Button(action: {
                     presenter.resetPlanStartDateToToday()
                 }, label: {
-                    DSText(L10n.Settings.planStartReset)
+                    Text(L10n.Settings.planStartReset)
                 })
                 .buttonStyle(.bordered)
             } header: {
-                DSText(L10n.Settings.planStartHeader)
+                Text(L10n.Settings.planStartHeader)
             } footer: {
-                DSText(L10n.Settings.planStartFooter)
+                Text(L10n.Settings.planStartFooter)
             }
 
             Section {
                 VStack(alignment: .leading, spacing: 8) {
                     HStack(spacing: 6) {
-                        DSImage(systemName: "trophy.fill")
-                        DSText(L10n.Settings.topicCompletion)
+                        Image(systemName: "trophy.fill")
+                        Text(L10n.Settings.topicCompletion)
                     }
                     .foregroundColor(.yellow)
-                    DSText(L10n.Settings.topicCompletionBody)
+                    Text(L10n.Settings.topicCompletionBody)
                         .font(.caption)
                         .foregroundColor(.secondary)
                 }
@@ -108,25 +108,25 @@ struct SettingsView: View {
 
                 VStack(alignment: .leading, spacing: 8) {
                     HStack(spacing: 6) {
-                        DSImage(systemName: "checkmark.circle.fill")
-                        DSText(L10n.Settings.allHabitsDone)
+                        Image(systemName: "checkmark.circle.fill")
+                        Text(L10n.Settings.allHabitsDone)
                     }
                     .foregroundColor(.green)
-                    DSText(L10n.Settings.allHabitsDoneBody)
+                    Text(L10n.Settings.allHabitsDoneBody)
                         .font(.caption)
                         .foregroundColor(.secondary)
                 }
                 .padding(.vertical, 4)
             } header: {
-                DSText(L10n.Settings.celebrationHeader)
+                Text(L10n.Settings.celebrationHeader)
             } footer: {
-                DSText(L10n.Settings.celebrationFooter)
+                Text(L10n.Settings.celebrationFooter)
             }
 
             Section {
                 VStack(alignment: .leading, spacing: 8) {
                     HStack {
-                        DSText(L10n.Settings.leetcodeUsername)
+                        Text(L10n.Settings.leetcodeUsername)
                             .font(.subheadline)
                         Spacer()
                         validationStatusView
@@ -154,14 +154,14 @@ struct SettingsView: View {
                             presenter.resetValidationState()
                         }
 
-                        DSButton(action: {
+                        Button(action: {
                             presenter.validateAndSaveUsername()
                         }, label: {
                             if presenter.isValidatingUsername {
                                 ProgressView()
                                     .progressViewStyle(.circular)
                             } else {
-                                DSText(L10n.Settings.validateSync)
+                                Text(L10n.Settings.validateSync)
                             }
                         })
                         .buttonStyle(.borderedProminent)
@@ -173,13 +173,13 @@ struct SettingsView: View {
 
                 VStack(alignment: .leading, spacing: 10) {
                     HStack {
-                        DSText(L10n.Settings.leetcodeLoginTitle)
+                        Text(L10n.Settings.leetcodeLoginTitle)
                             .font(.subheadline)
                         Spacer()
                         leetCodeLoginStatusView
                     }
 
-                    DSText(L10n.Settings.leetcodeLoginBody)
+                    Text(L10n.Settings.leetcodeLoginBody)
                         .font(.caption)
                         .foregroundColor(.secondary)
 
@@ -198,26 +198,26 @@ struct SettingsView: View {
                     }
                 }
             } header: {
-                DSText(L10n.Settings.leetcodeHeader)
+                Text(L10n.Settings.leetcodeHeader)
             } footer: {
-                DSText(L10n.Settings.leetcodeFooter)
+                Text(L10n.Settings.leetcodeFooter)
             }
 
             Section {
                 VStack(alignment: .leading, spacing: 8) {
-                    DSText(L10n.Settings.aiProviderLabel)
+                    Text(L10n.Settings.aiProviderLabel)
                         .font(.subheadline)
 
                     Picker(L10n.Settings.aiProviderLabel, selection: aiProviderKind) {
                         ForEach(AIProviderKind.allCases, id: \.self) { kind in
-                            DSText(kind.displayName).tag(kind)
+                            Text(kind.displayName).tag(kind)
                         }
                     }
                     .pickerStyle(.segmented)
                 }
 
                 VStack(alignment: .leading, spacing: 8) {
-                    DSText(L10n.Settings.aiApiKeyLabel)
+                    Text(L10n.Settings.aiApiKeyLabel)
                         .font(.subheadline)
 
                     DSTextField(
@@ -232,20 +232,20 @@ struct SettingsView: View {
                 }
 
                 VStack(alignment: .leading, spacing: 8) {
-                    DSText(L10n.Settings.aiModelLabel)
+                    Text(L10n.Settings.aiModelLabel)
                         .font(.subheadline)
 
                     Picker(L10n.Settings.aiModelLabel, selection: aiProviderModel) {
                         ForEach(presenter.aiProviderKind.modelOptions, id: \.self) { model in
-                            DSText(model).tag(model)
+                            Text(model).tag(model)
                         }
                     }
                     .labelsHidden()
                 }
             } header: {
-                DSText(L10n.Settings.aiHeader)
+                Text(L10n.Settings.aiHeader)
             } footer: {
-                DSText(L10n.Settings.aiFooter)
+                Text(L10n.Settings.aiFooter)
             }
 
             AITestCasesSectionView(
@@ -264,23 +264,23 @@ struct SettingsView: View {
 
             Section {
                 VStack(alignment: .leading, spacing: 4) {
-                    DSText(L10n.Settings.appName)
+                    Text(L10n.Settings.appName)
                         .font(.headline)
-                    DSText(L10n.Settings.versionLabel)
+                    Text(L10n.Settings.versionLabel)
                         .font(.caption)
                         .foregroundColor(.secondary)
                 }
                 .padding(.vertical, 4)
             } header: {
-                DSText(L10n.Settings.aboutHeader)
+                Text(L10n.Settings.aboutHeader)
             }
 
             Section {
                 HStack {
                     VStack(alignment: .leading, spacing: 4) {
-                        DSText(L10n.Debug.logsTitle)
+                        Text(L10n.Debug.logsTitle)
                             .font(.subheadline)
-                        DSText(L10n.Debug.logsSubtitle)
+                        Text(L10n.Debug.logsSubtitle)
                             .font(.caption)
                             .foregroundColor(.secondary)
                     }
@@ -292,9 +292,9 @@ struct SettingsView: View {
                 }
                 .padding(.vertical, 4)
             } header: {
-                DSText(L10n.Debug.header)
+                Text(L10n.Debug.header)
             } footer: {
-                DSText(L10n.Debug.footer)
+                Text(L10n.Debug.footer)
             }
         }
         .formStyle(.grouped)
@@ -334,7 +334,7 @@ struct SettingsView: View {
 
     private var leetCodeLoginStatusView: some View {
         let isLoggedIn = presenter.leetCodeAuth != nil
-        return DSText(isLoggedIn ? L10n.Settings.leetcodeLoginStatusConnected
+        return Text(isLoggedIn ? L10n.Settings.leetcodeLoginStatusConnected
                                : L10n.Settings.leetcodeLoginStatusDisconnected)
             .font(.caption)
             .foregroundColor(isLoggedIn ? theme.colors.success : theme.colors.textSecondary)
@@ -374,21 +374,21 @@ private struct AITestCasesSectionView: View {
         Section {
             VStack(alignment: .leading, spacing: 6) {
                 if summary.exists {
-                    DSText(L10n.Settings.aiTestCasesSummary(summary.entryCount, summary.testCaseCount))
+                    Text(L10n.Settings.aiTestCasesSummary(summary.entryCount, summary.testCaseCount))
                         .font(.subheadline)
 
                     if let updatedText {
-                        DSText(L10n.Settings.aiTestCasesUpdated(updatedText))
+                        Text(L10n.Settings.aiTestCasesUpdated(updatedText))
                             .font(.caption)
                             .foregroundColor(.secondary)
                     }
 
-                    DSText(L10n.Settings.aiTestCasesPath(summary.fileURL.path))
+                    Text(L10n.Settings.aiTestCasesPath(summary.fileURL.path))
                         .font(.caption2)
                         .foregroundColor(.secondary)
                         .lineLimit(2)
                 } else {
-                    DSText(L10n.Settings.aiTestCasesEmpty)
+                    Text(L10n.Settings.aiTestCasesEmpty)
                         .font(.caption)
                         .foregroundColor(.secondary)
                 }
@@ -409,9 +409,9 @@ private struct AITestCasesSectionView: View {
                 .disabled(!summary.exists)
             }
         } header: {
-            DSText(L10n.Settings.aiTestCasesHeader)
+            Text(L10n.Settings.aiTestCasesHeader)
         } footer: {
-            DSText(L10n.Settings.aiTestCasesFooter)
+            Text(L10n.Settings.aiTestCasesFooter)
         }
     }
 }
@@ -424,7 +424,7 @@ private struct AITestCaseViewerSheet: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
             HStack {
-                DSText(L10n.Settings.aiTestCasesTitle)
+                Text(L10n.Settings.aiTestCasesTitle)
                     .font(.headline)
                 Spacer()
                 DSButton(L10n.Settings.close) {
@@ -433,7 +433,7 @@ private struct AITestCaseViewerSheet: View {
                 .buttonStyle(.bordered)
             }
 
-            DSText(L10n.Settings.aiTestCasesPath(fileURL.path))
+            Text(L10n.Settings.aiTestCasesPath(fileURL.path))
                 .font(.caption2)
                 .foregroundColor(.secondary)
                 .lineLimit(2)
@@ -441,7 +441,7 @@ private struct AITestCaseViewerSheet: View {
             Divider()
 
             ScrollView {
-                DSText(jsonText.isEmpty ? L10n.Settings.aiTestCasesEmpty : jsonText)
+                Text(jsonText.isEmpty ? L10n.Settings.aiTestCasesEmpty : jsonText)
                     .font(.system(.footnote, design: .monospaced))
                     .textSelection(.enabled)
                     .frame(maxWidth: .infinity, alignment: .leading)

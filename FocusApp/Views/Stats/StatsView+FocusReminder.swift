@@ -6,18 +6,18 @@ extension StatsView {
         DSCard(config: .init(style: .elevated)) {
             VStack(alignment: .leading, spacing: 12) {
                 HStack {
-                    DSImage(systemName: "shield.fill")
+                    Image(systemName: "shield.fill")
                         .font(.system(size: 16))
                         .foregroundColor(theme.colors.danger)
 
-                    DSText(L10n.Stats.focusReminderTitle)
+                    Text(L10n.Stats.focusReminderTitle)
                         .font(.system(size: 16, weight: .semibold))
                         .foregroundColor(theme.colors.textPrimary)
 
                     Spacer()
                 }
 
-                DSText(L10n.Stats.focusReminderBody)
+                Text(L10n.Stats.focusReminderBody)
                     .font(.system(size: 13))
                     .foregroundColor(theme.colors.textSecondary)
 

@@ -46,10 +46,10 @@ extension DataJourneyView {
 
             if isTruncated {
                 HStack(spacing: 6) {
-                    DSImage(systemName: "exclamationmark.triangle.fill")
+                    Image(systemName: "exclamationmark.triangle.fill")
                         .font(.system(size: textSize, weight: .semibold))
                         .foregroundColor(palette.amber)
-                    DSText(truncationMessage)
+                    Text(truncationMessage)
                         .font(.system(size: isEmbedded ? 8 : 9, weight: .medium))
                         .foregroundColor(palette.amber)
                 }
@@ -58,14 +58,14 @@ extension DataJourneyView {
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack(spacing: 6) {
                     ForEach(playbackEvents) { event in
-                        DSButton(action: {
+                        Button(action: {
                             selectEvent(event)
                         }, label: {
                             HStack(spacing: 6) {
                                 Circle()
                                     .fill(event.id == selectedEventID ? palette.purple : palette.gray600)
                                     .frame(width: 6, height: 6)
-                                DSText(stepLabel(for: event))
+                                Text(stepLabel(for: event))
                                     .font(.system(size: chipFontSize, weight: .semibold))
                             }
                             .padding(.horizontal, 8)
@@ -132,10 +132,10 @@ extension DataJourneyView {
 
             if isTruncated {
                 HStack(spacing: 6) {
-                    DSImage(systemName: "exclamationmark.triangle.fill")
+                    Image(systemName: "exclamationmark.triangle.fill")
                         .font(.system(size: textSize, weight: .semibold))
                         .foregroundColor(palette.amber)
-                    DSText(truncationMessage)
+                    Text(truncationMessage)
                         .font(.system(size: isEmbedded ? 8 : 9, weight: .medium))
                         .foregroundColor(palette.amber)
                 }
@@ -144,14 +144,14 @@ extension DataJourneyView {
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack(spacing: 6) {
                     ForEach(playbackEvents) { event in
-                        DSButton(action: {
+                        Button(action: {
                             selectEvent(event)
                         }, label: {
                             HStack(spacing: 6) {
                                 Circle()
                                     .fill(event.id == selectedEventID ? palette.purple : palette.gray600)
                                     .frame(width: 6, height: 6)
-                                DSText(stepLabel(for: event))
+                                Text(stepLabel(for: event))
                                     .font(.system(size: chipFontSize, weight: .semibold))
                             }
                             .padding(.horizontal, 8)
@@ -178,24 +178,24 @@ extension DataJourneyView {
     ) -> some View {
         HStack(alignment: .center, spacing: spacing) {
             HStack(spacing: 12) {
-                DSButton(action: selectPrevious) {
-                    DSImage(systemName: "backward.fill")
+                Button(action: selectPrevious) {
+                    Image(systemName: "backward.fill")
                         .font(.system(size: iconSize, weight: .bold))
                 }
                 .buttonStyle(.plain)
                 .foregroundColor(currentPlaybackIndex == 0 ? palette.gray600 : palette.gray300)
                 .disabled(currentPlaybackIndex == 0)
 
-                DSButton(action: togglePlayback) {
-                    DSImage(systemName: isPlaying ? "pause.fill" : "play.fill")
+                Button(action: togglePlayback) {
+                    Image(systemName: isPlaying ? "pause.fill" : "play.fill")
                         .font(.system(size: iconSize, weight: .bold))
                 }
                 .buttonStyle(.plain)
                 .foregroundColor(playbackEvents.count > 1 ? palette.gray300 : palette.gray600)
                 .disabled(playbackEvents.count <= 1)
 
-                DSButton(action: selectNext) {
-                    DSImage(systemName: "forward.fill")
+                Button(action: selectNext) {
+                    Image(systemName: "forward.fill")
                         .font(.system(size: iconSize, weight: .bold))
                 }
                 .buttonStyle(.plain)
@@ -204,7 +204,7 @@ extension DataJourneyView {
             }
 
             if playbackEvents.indices.contains(currentPlaybackIndex) {
-                DSText(stepLabel(for: playbackEvents[currentPlaybackIndex]))
+                Text(stepLabel(for: playbackEvents[currentPlaybackIndex]))
                     .font(.system(size: textSize, weight: .semibold))
                     .foregroundColor(palette.gray300)
             }
@@ -213,17 +213,17 @@ extension DataJourneyView {
 
             HStack(spacing: 8) {
                 Picker("Speed", selection: $playbackSpeed) {
-                    DSText("0.5x").tag(0.5)
-                    DSText("1x").tag(1.0)
-                    DSText("1.5x").tag(1.5)
-                    DSText("2x").tag(2.0)
+                    Text("0.5x").tag(0.5)
+                    Text("1x").tag(1.0)
+                    Text("1.5x").tag(1.5)
+                    Text("2x").tag(2.0)
                 }
                 .pickerStyle(.segmented)
                 .frame(width: pickerWidth)
 
                 ZStack {
-                    DSButton(action: { selectIndex(0) }, label: {
-                        DSText("Start Over")
+                    Button(action: { selectIndex(0) }, label: {
+                        Text("Start Over")
                             .font(.system(size: textSize, weight: .semibold))
                             .foregroundColor(palette.gray200)
                             .padding(.horizontal, 12)

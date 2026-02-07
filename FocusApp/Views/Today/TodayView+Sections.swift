@@ -6,11 +6,11 @@ extension TodayView {
         DSCard(config: .init(style: .elevated)) {
             HStack(spacing: 16) {
                 VStack(alignment: .leading, spacing: 4) {
-                    DSText(L10n.Today.syncTitle)
+                    Text(L10n.Today.syncTitle)
                         .font(.system(size: 16, weight: .semibold))
                         .foregroundColor(theme.colors.textPrimary)
 
-                    DSText(presenter.lastSyncResult.isEmpty
+                    Text(presenter.lastSyncResult.isEmpty
                          ? L10n.Today.syncDefaultStatus
                          : presenter.lastSyncResult)
                         .font(.system(size: 12))
@@ -26,7 +26,7 @@ extension TodayView {
                 } else {
                     DSButton(
                         L10n.Today.syncNow,
-                        config: .init(style: .primary, size: .small, icon: DSImage(systemName: "arrow.triangle.2.circlepath"))
+                        config: .init(style: .primary, size: .small, icon: Image(systemName: "arrow.triangle.2.circlepath"))
                     ) {
                         presenter.syncNow()
                     }
@@ -39,13 +39,13 @@ extension TodayView {
         DSCard(config: .init(style: .elevated)) {
             VStack(alignment: .leading, spacing: 16) {
                 HStack {
-                    DSText(L10n.Today.habitsTitle)
+                    Text(L10n.Today.habitsTitle)
                         .font(.system(size: 16, weight: .semibold))
                         .foregroundColor(theme.colors.textPrimary)
 
                     Spacer()
 
-                    DSText(
+                    Text(
                         L10n.Today.habitsCompletedFormat(
                             presenter.habitsCompletedCount,
                             presenter.habits.count
@@ -65,7 +65,7 @@ extension TodayView {
     }
 
     func habitRow(_ habit: HabitViewModel) -> some View {
-        DSButton(action: {
+        Button(action: {
             presenter.toggleHabit(habit.id)
         }, label: {
             HStack(spacing: 12) {
@@ -74,12 +74,12 @@ extension TodayView {
                         .fill(habit.isCompleted ? theme.colors.success.opacity(0.12) : theme.colors.surfaceElevated)
                         .frame(width: 36, height: 36)
 
-                    DSImage(systemName: habit.icon)
+                    Image(systemName: habit.icon)
                         .font(.system(size: 14))
                         .foregroundColor(habit.isCompleted ? theme.colors.success : theme.colors.textSecondary)
                 }
 
-                DSText(habit.title)
+                Text(habit.title)
                     .font(.system(size: 14, weight: .medium))
                     .foregroundColor(habit.isCompleted ? theme.colors.textSecondary : theme.colors.textPrimary)
                     .strikethrough(habit.isCompleted, color: theme.colors.textSecondary)
@@ -96,7 +96,7 @@ extension TodayView {
                         )
 
                     if habit.isCompleted {
-                        DSImage(systemName: "checkmark")
+                        Image(systemName: "checkmark")
                             .font(.system(size: 12, weight: .bold))
                             .foregroundColor(.white)
                     }
@@ -121,7 +121,7 @@ extension TodayView {
                                 .fill(theme.colors.primary)
                                 .frame(width: 32, height: 32)
 
-                            DSText("\(day.id)")
+                            Text("\(day.id)")
                                 .font(.system(size: 14, weight: .bold))
                                 .foregroundColor(.white)
                         } else {
@@ -129,20 +129,20 @@ extension TodayView {
                                 .fill(theme.colors.surfaceElevated)
                                 .frame(width: 32, height: 32)
 
-                            DSText(L10n.Today.dayBadge( day.id))
+                            Text(L10n.Today.dayBadge( day.id))
                                 .font(.system(size: 12, weight: .bold))
                                 .foregroundColor(theme.colors.textSecondary)
                         }
                     }
 
                     VStack(alignment: .leading, spacing: 2) {
-                        DSText(day.isToday
+                        Text(day.isToday
                              ? L10n.Today.dayTitleToday( day.topic)
                              : L10n.Today.dayTitleBacklog( day.topic))
                             .font(.system(size: 16, weight: .semibold))
                             .foregroundColor(theme.colors.textPrimary)
 
-                        DSText(L10n.Today.dayCompletedFormat( day.completedCount, day.totalCount))
+                        Text(L10n.Today.dayCompletedFormat( day.completedCount, day.totalCount))
                             .font(.system(size: 13))
                             .foregroundColor(theme.colors.textSecondary)
                     }

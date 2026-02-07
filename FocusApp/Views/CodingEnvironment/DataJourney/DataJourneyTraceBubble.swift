@@ -37,7 +37,7 @@ struct TraceBubble: View {
     var body: some View {
         ZStack {
             bubbleBackground
-            DSText(text)
+            Text(text)
                 .font(.system(size: max(8, size * 0.33), weight: .semibold))
                 .foregroundColor(.white)
                 .lineLimit(1)

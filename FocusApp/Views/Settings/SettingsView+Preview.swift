@@ -29,7 +29,7 @@ struct SettingsView_Previews: PreviewProvider {
                     debugLogStore: debugLogStore
                 )
             } else {
-                DSText("Preview unavailable")
+                Text("Preview unavailable")
             }
         }
     }

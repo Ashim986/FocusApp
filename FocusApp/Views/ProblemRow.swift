@@ -11,7 +11,7 @@ struct ProblemRow: View {
     var body: some View {
         HStack(spacing: 12) {
             // Checkbox
-            DSButton(action: onToggle, label: {
+            Button(action: onToggle, label: {
                 ZStack {
                     RoundedRectangle(cornerRadius: 4)
                         .strokeBorder(isCompleted ? theme.colors.success : theme.colors.border, lineWidth: 2)
@@ -22,7 +22,7 @@ struct ProblemRow: View {
                         )
 
                     if isCompleted {
-                        DSImage(systemName: "checkmark")
+                        Image(systemName: "checkmark")
                             .font(.system(size: 12, weight: .bold))
                             .foregroundColor(.white)
                     }
@@ -31,16 +31,16 @@ struct ProblemRow: View {
             .buttonStyle(.plain)
 
             // Problem name (clickable)
-            DSButton(action: onSelect, label: {
+            Button(action: onSelect, label: {
                 HStack(spacing: 4) {
-                    DSText(problem.displayName)
+                    Text(problem.displayName)
                         .font(.system(size: 14))
                         .foregroundColor(isCompleted ? theme.colors.textSecondary : theme.colors.textPrimary)
                         .lineLimit(1)
                         .truncationMode(.tail)
                         .layoutPriority(1)
 
-                    DSImage(systemName: "chevron.right")
+                    Image(systemName: "chevron.right")
                         .font(.system(size: 9, weight: .semibold))
                         .foregroundColor(theme.colors.textSecondary)
                 }

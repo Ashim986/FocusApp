@@ -42,7 +42,7 @@ struct StringSequenceView: View {
         VStack(alignment: .leading, spacing: 8) {
             // Full string label
             HStack(spacing: 6) {
-                DSText("string")
+                Text("string")
                     .font(.system(size: 9, weight: .medium))
                     .foregroundColor(palette.green)
                     .padding(.horizontal, 6)
@@ -55,7 +55,7 @@ struct StringSequenceView: View {
                 let displayString = fullString.count > 50
                     ? String(fullString.prefix(47)) + "..."
                     : fullString
-                DSText("\"\(displayString)\"")
+                Text("\"\(displayString)\"")
                     .font(.system(size: 11, weight: .medium, design: .monospaced))
                     .foregroundColor(palette.green.opacity(0.85))
                     .lineLimit(1)

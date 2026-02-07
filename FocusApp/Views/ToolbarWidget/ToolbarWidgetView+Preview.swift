@@ -17,7 +17,7 @@ struct ToolbarWidgetView_Previews: PreviewProvider {
                     ToolbarWidgetView(presenter: presenter)
                 }
             } else {
-                DSText("Preview unavailable")
+                Text("Preview unavailable")
             }
         }
     }

@@ -50,7 +50,7 @@ extension StatsView {
                             .fill(color.opacity(0.12))
                             .frame(width: 40, height: 40)
 
-                        DSImage(systemName: icon)
+                        Image(systemName: icon)
                             .font(.system(size: 18))
                             .foregroundColor(color)
                     }
@@ -58,11 +58,11 @@ extension StatsView {
                     Spacer()
                 }
 
-                DSText(value)
+                Text(value)
                     .font(.system(size: 28, weight: .bold))
                     .foregroundColor(theme.colors.textPrimary)
 
-                DSText(title)
+                Text(title)
                     .font(.system(size: 13))
                     .foregroundColor(theme.colors.textSecondary)
 
@@ -88,17 +88,17 @@ extension StatsView {
         DSCard(config: .init(style: .elevated)) {
             VStack(alignment: .leading, spacing: 12) {
                 HStack {
-                    DSImage(systemName: "trophy.fill")
+                    Image(systemName: "trophy.fill")
                         .font(.system(size: 16))
                         .foregroundColor(theme.colors.warning)
 
-                    DSText(L10n.Stats.precompletedTitle)
+                    Text(L10n.Stats.precompletedTitle)
                         .font(.system(size: 16, weight: .semibold))
                         .foregroundColor(theme.colors.textPrimary)
 
                     Spacer()
 
-                    DSText(L10n.Stats.precompletedBonusFormat( preCompletedTopics.count))
+                    Text(L10n.Stats.precompletedBonusFormat( preCompletedTopics.count))
                         .font(.system(size: 13, weight: .medium))
                         .foregroundColor(theme.colors.success)
                 }
@@ -106,10 +106,10 @@ extension StatsView {
                 FlowLayout(spacing: 8) {
                     ForEach(preCompletedTopics, id: \.self) { topic in
                         HStack(spacing: 4) {
-                            DSImage(systemName: "checkmark")
+                            Image(systemName: "checkmark")
                                 .font(.system(size: 10, weight: .bold))
 
-                            DSText(topic)
+                            Text(topic)
                                 .font(.system(size: 12, weight: .medium))
                         }
                         .foregroundColor(theme.colors.success)
@@ -128,7 +128,7 @@ extension StatsView {
     var topicBreakdownSection: some View {
         DSCard(config: .init(style: .elevated)) {
             VStack(alignment: .leading, spacing: 16) {
-                DSText(L10n.Stats.topicBreakdownTitle)
+                Text(L10n.Stats.topicBreakdownTitle)
                     .font(.system(size: 16, weight: .semibold))
                     .foregroundColor(theme.colors.textPrimary)
 
@@ -142,18 +142,18 @@ extension StatsView {
     func topicRow(day: TopicBreakdownViewModel) -> some View {
         VStack(spacing: 8) {
             HStack {
-                DSText(day.topic)
+                Text(day.topic)
                     .font(.system(size: 14, weight: .medium))
                     .foregroundColor(day.isComplete ? theme.colors.success : theme.colors.textPrimary)
 
                 Spacer()
 
-                DSText("\(day.completed)/\(day.total)")
+                Text("\(day.completed)/\(day.total)")
                     .font(.system(size: 13))
                     .foregroundColor(day.isComplete ? theme.colors.success : theme.colors.textSecondary)
 
                 if day.isComplete {
-                    DSImage(systemName: "checkmark.circle.fill")
+                    Image(systemName: "checkmark.circle.fill")
                         .font(.system(size: 14))
                         .foregroundColor(theme.colors.success)
                 }

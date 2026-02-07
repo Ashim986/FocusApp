@@ -10,16 +10,16 @@ struct TomorrowProblemRow: View {
 
     var body: some View {
         HStack(spacing: 8) {
-            DSImage(systemName: "circle.dashed")
+            Image(systemName: "circle.dashed")
                 .font(.system(size: 12))
                 .foregroundColor(theme.colors.textSecondary.opacity(0.4))
 
-            DSButton(action: {
+            Button(action: {
                 if let url = URL(string: problem.url) {
                     NSWorkspace.shared.open(url)
                 }
             }, label: {
-                DSText(problem.displayName)
+                Text(problem.displayName)
                     .font(.system(size: 10))
                     .foregroundColor(theme.colors.textSecondary)
                     .lineLimit(1)
@@ -37,7 +37,7 @@ struct TomorrowProblemRow: View {
 
             Spacer()
 
-            DSText(problem.difficulty.rawValue)
+            Text(problem.difficulty.rawValue)
                 .font(.system(size: 7, weight: .medium))
                 .foregroundColor(difficultyColor.opacity(0.7))
                 .padding(.horizontal, 4)

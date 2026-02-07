@@ -7,21 +7,21 @@ extension DebugLogView {
         return Group {
             if filtered.isEmpty {
                 VStack(spacing: 8) {
-                    DSImage(systemName: "doc.text.magnifyingglass")
+                    Image(systemName: "doc.text.magnifyingglass")
                         .font(.system(size: 32))
                         .foregroundColor(theme.colors.textSecondary)
                     if store.entries.isEmpty {
-                        DSText(L10n.Debug.emptyTitle)
+                        Text(L10n.Debug.emptyTitle)
                             .font(.system(size: 14, weight: .semibold))
                             .foregroundColor(theme.colors.textPrimary)
-                        DSText(L10n.Debug.emptyBody)
+                        Text(L10n.Debug.emptyBody)
                             .font(.system(size: 12))
                             .foregroundColor(theme.colors.textSecondary)
                     } else {
-                        DSText("No logs match your filters")
+                        Text("No logs match your filters")
                             .font(.system(size: 14, weight: .semibold))
                             .foregroundColor(theme.colors.textPrimary)
-                        DSText("Try clearing the filters to view recent entries.")
+                        Text("Try clearing the filters to view recent entries.")
                             .font(.system(size: 12))
                             .foregroundColor(theme.colors.textSecondary)
 

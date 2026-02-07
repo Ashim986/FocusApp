@@ -5,18 +5,18 @@ extension DebugLogView {
     var header: some View {
         HStack {
             VStack(alignment: .leading, spacing: 4) {
-                DSText(L10n.Debug.logsTitle)
+                Text(L10n.Debug.logsTitle)
                     .font(.title3.weight(.semibold))
 
                 HStack(spacing: 8) {
                     statusChip(title: "Live", color: theme.colors.success)
-                    DSText("Last \(lastEntryTimestamp)")
+                    Text("Last \(lastEntryTimestamp)")
                         .font(.system(size: 11))
                         .foregroundColor(theme.colors.textSecondary)
                 }
             }
             Spacer()
-            DSText("\(store.entries.count)")
+            Text("\(store.entries.count)")
                 .font(.system(size: 12, weight: .semibold, design: .monospaced))
                 .foregroundColor(theme.colors.textPrimary)
                 .padding(.horizontal, 10)
@@ -26,8 +26,8 @@ extension DebugLogView {
                         .fill(theme.colors.surfaceElevated.opacity(0.8))
                 )
             if let onClose {
-                DSButton(action: onClose, label: {
-                    DSImage(systemName: "xmark")
+                Button(action: onClose, label: {
+                    Image(systemName: "xmark")
                         .font(.system(size: 11, weight: .semibold))
                         .foregroundColor(theme.colors.textSecondary)
                         .frame(width: 28, height: 28)
@@ -100,14 +100,14 @@ extension DebugLogView {
         isSelected: Bool,
         action: @escaping () -> Void
     ) -> some View {
-        DSButton(action: action, label: {
+        Button(action: action, label: {
             HStack(spacing: 6) {
                 Circle()
                     .fill(color)
                     .frame(width: 8, height: 8)
-                DSText(title)
+                Text(title)
                     .font(.system(size: 11, weight: .semibold))
-                DSText("\(count)")
+                Text("\(count)")
                     .font(.system(size: 11, weight: .semibold, design: .monospaced))
             }
             .padding(.horizontal, 10)
@@ -129,7 +129,7 @@ extension DebugLogView {
             Circle()
                 .fill(color)
                 .frame(width: 6, height: 6)
-            DSText(title)
+            Text(title)
                 .font(.system(size: 10, weight: .semibold))
                 .foregroundColor(.white)
         }

@@ -5,7 +5,7 @@ extension ToolbarWidgetView {
     var todaysProblemsSection: some View {
         VStack(spacing: 0) {
             HStack {
-                DSText(L10n.Widget.problemsTitle)
+                Text(L10n.Widget.problemsTitle)
                     .font(.system(size: 11, weight: .semibold))
                     .foregroundColor(theme.colors.textPrimary.opacity(0.85))
 
@@ -14,7 +14,7 @@ extension ToolbarWidgetView {
                 let solved = presenter.todaysProblems.enumerated().filter { item in
                     presenter.data.isProblemCompleted(day: presenter.currentDayNumber, problemIndex: item.offset)
                 }.count
-                DSText("\(solved)/\(presenter.todaysProblems.count)")
+                Text("\(solved)/\(presenter.todaysProblems.count)")
                     .font(.system(size: 9, weight: .semibold))
                     .foregroundColor(
                         solved == presenter.todaysProblems.count
@@ -59,19 +59,19 @@ extension ToolbarWidgetView {
 
     var nextDaySection: some View {
         HStack {
-            DSImage(systemName: "checkmark.seal.fill")
+            Image(systemName: "checkmark.seal.fill")
                 .foregroundColor(theme.colors.success)
-            DSText(L10n.Widget.problemsAllDone)
+            Text(L10n.Widget.problemsAllDone)
                 .font(.system(size: 11, weight: .medium))
                 .foregroundColor(theme.colors.success)
             Spacer()
-            DSButton(action: {
+            Button(action: {
                 presenter.advanceToNextDay()
             }, label: {
                 HStack(spacing: 4) {
-                    DSText(L10n.Widget.problemsStartDayFormat(presenter.tomorrowDayNumber))
+                    Text(L10n.Widget.problemsStartDayFormat(presenter.tomorrowDayNumber))
                         .font(.system(size: 10, weight: .semibold))
-                    DSImage(systemName: "arrow.right.circle.fill")
+                    Image(systemName: "arrow.right.circle.fill")
                         .font(.system(size: 12))
                 }
                 .foregroundColor(theme.colors.surface)

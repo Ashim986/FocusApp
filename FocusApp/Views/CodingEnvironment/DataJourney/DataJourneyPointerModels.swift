@@ -99,7 +99,7 @@ struct PointerBadge: View {
     }
 
     var body: some View {
-        DSText(text)
+        Text(text)
             .font(.system(size: fontSize, weight: .semibold))
             .foregroundColor(.white)
             .padding(.horizontal, horizontalPadding)

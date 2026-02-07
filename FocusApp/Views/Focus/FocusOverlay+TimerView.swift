@@ -12,11 +12,11 @@ extension FocusOverlay {
                 .animation(.linear(duration: 1), value: presenter.progress)
 
                 VStack(spacing: 8) {
-                    DSText(presenter.timeString)
+                    Text(presenter.timeString)
                         .font(.system(size: 56, weight: .bold, design: .monospaced))
                         .foregroundColor(theme.colors.textPrimary)
 
-                    DSText(presenter.isPaused
+                    Text(presenter.isPaused
                         ? L10n.Focus.timerPaused
                         : L10n.Focus.timerRemaining)
                         .font(.system(size: 14))
@@ -24,7 +24,7 @@ extension FocusOverlay {
                 }
             }
 
-            DSText(L10n.Focus.timerPrompt)
+            Text(L10n.Focus.timerPrompt)
                 .font(.system(size: 18, weight: .medium))
                 .foregroundColor(theme.colors.textSecondary)
 
@@ -34,7 +34,7 @@ extension FocusOverlay {
                     config: .init(
                         style: .secondary,
                         size: .medium,
-                        icon: DSImage(systemName: presenter.isPaused ? "play.fill" : "pause.fill")
+                        icon: Image(systemName: presenter.isPaused ? "play.fill" : "pause.fill")
                     )
                 ) {
                     presenter.togglePause()
@@ -42,7 +42,7 @@ extension FocusOverlay {
 
                 DSButton(
                     L10n.Focus.timerEndSession,
-                    config: .init(style: .destructive, size: .medium, icon: DSImage(systemName: "xmark"))
+                    config: .init(style: .destructive, size: .medium, icon: Image(systemName: "xmark"))
                 ) {
                     closeSession()
                 }

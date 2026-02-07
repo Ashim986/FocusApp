@@ -5,7 +5,7 @@ extension ToolbarWidgetView {
     var settingsSection: some View {
         VStack(spacing: 8) {
             HStack {
-                DSText(L10n.Widget.leetcodeUsername)
+                Text(L10n.Widget.leetcodeUsername)
                     .font(.system(size: 10, weight: .medium))
                     .foregroundColor(theme.colors.textSecondary)
                 Spacer()
@@ -13,17 +13,17 @@ extension ToolbarWidgetView {
                 switch presenter.usernameValidationState {
                 case .valid:
                     HStack(spacing: 2) {
-                        DSImage(systemName: "checkmark.circle.fill")
+                        Image(systemName: "checkmark.circle.fill")
                             .font(.system(size: 10))
-                        DSText(L10n.Widget.validationValid)
+                        Text(L10n.Widget.validationValid)
                             .font(.system(size: 9))
                     }
                     .foregroundColor(theme.colors.success)
                 case .invalid:
                     HStack(spacing: 2) {
-                        DSImage(systemName: "xmark.circle.fill")
+                        Image(systemName: "xmark.circle.fill")
                             .font(.system(size: 10))
-                        DSText(L10n.Widget.validationNotFound)
+                        Text(L10n.Widget.validationNotFound)
                             .font(.system(size: 9))
                     }
                     .foregroundColor(theme.colors.danger)
@@ -57,7 +57,7 @@ extension ToolbarWidgetView {
                     presenter.resetValidationState()
                 }
 
-                DSButton(action: {
+                Button(action: {
                     presenter.validateAndSaveUsername()
                 }, label: {
                     HStack(spacing: 4) {
@@ -66,10 +66,10 @@ extension ToolbarWidgetView {
                                 .scaleEffect(0.6)
                                 .frame(width: 12, height: 12)
                         } else {
-                            DSImage(systemName: "arrow.clockwise")
+                            Image(systemName: "arrow.clockwise")
                                 .font(.system(size: 10))
                         }
-                        DSText(presenter.isValidatingUsername
+                        Text(presenter.isValidatingUsername
                              ? L10n.Widget.checking
                              : L10n.Widget.saveSync)
                             .font(.system(size: 10, weight: .medium))
@@ -91,10 +91,10 @@ extension ToolbarWidgetView {
             }
 
             HStack {
-                DSImage(systemName: "info.circle")
+                Image(systemName: "info.circle")
                     .font(.system(size: 9))
                     .foregroundColor(theme.colors.textSecondary)
-                DSText(L10n.Widget.leetcodePublicNotice)
+                Text(L10n.Widget.leetcodePublicNotice)
                     .font(.system(size: 9))
                     .foregroundColor(theme.colors.textSecondary)
                 Spacer()

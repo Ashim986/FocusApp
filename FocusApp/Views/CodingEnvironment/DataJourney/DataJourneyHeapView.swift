@@ -41,7 +41,7 @@ struct HeapView: View {
         VStack(alignment: .leading, spacing: 10) {
             // Label
             HStack(spacing: 6) {
-                DSText(isMinHeap ? "min-heap" : "max-heap")
+                Text(isMinHeap ? "min-heap" : "max-heap")
                     .font(.system(size: 9, weight: .medium))
                     .foregroundColor(palette.purple)
                     .padding(.horizontal, 6)
@@ -51,7 +51,7 @@ struct HeapView: View {
                             .fill(palette.purple.opacity(0.15))
                     )
 
-                DSText("array")
+                Text("array")
                     .font(.system(size: 9, weight: .medium))
                     .foregroundColor(palette.gray400)
             }
@@ -79,7 +79,7 @@ struct HeapView: View {
                     .frame(height: 1)
                     .frame(maxWidth: 30)
 
-                DSText("tree view")
+                Text("tree view")
                     .font(.system(size: 9, weight: .medium))
                     .foregroundColor(palette.gray400)
 

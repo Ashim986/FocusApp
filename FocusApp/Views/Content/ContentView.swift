@@ -95,11 +95,11 @@ struct ContentView: View {
         VStack(spacing: 16) {
             HStack {
                 VStack(alignment: .leading, spacing: 4) {
-                    DSText(L10n.Content.appTitle)
+                    Text(L10n.Content.appTitle)
                         .font(.system(size: 24, weight: .bold))
                         .foregroundColor(theme.colors.textPrimary)
 
-                    DSText(L10n.Content.subtitle)
+                    Text(L10n.Content.subtitle)
                         .font(.system(size: 13))
                         .foregroundColor(theme.colors.textSecondary)
                 }
@@ -108,11 +108,11 @@ struct ContentView: View {
 
                 HStack(spacing: 12) {
                     VStack(alignment: .trailing, spacing: 2) {
-                        DSText(L10n.Content.progressCount( presenter.solvedProblems, presenter.totalProblems))
+                        Text(L10n.Content.progressCount( presenter.solvedProblems, presenter.totalProblems))
                             .font(.system(size: 14, weight: .semibold))
                             .foregroundColor(theme.colors.textPrimary)
 
-                        DSText(L10n.Content.problemsSolved)
+                        Text(L10n.Content.problemsSolved)
                             .font(.system(size: 11))
                             .foregroundColor(theme.colors.textSecondary)
                     }
@@ -123,7 +123,7 @@ struct ContentView: View {
                             state: .init(progress: presenter.progressPercent)
                         )
 
-                        DSText("\(Int(presenter.progressPercent * 100))%")
+                        Text("\(Int(presenter.progressPercent * 100))%")
                             .font(.system(size: 10, weight: .semibold))
                             .foregroundColor(theme.colors.textPrimary)
                     }
@@ -133,7 +133,7 @@ struct ContentView: View {
                         config: .init(
                             style: .secondary,
                             size: .small,
-                            icon: DSImage(systemName: "slider.horizontal.3"),
+                            icon: Image(systemName: "slider.horizontal.3"),
                             iconPosition: .leading
                         )
                     ) {

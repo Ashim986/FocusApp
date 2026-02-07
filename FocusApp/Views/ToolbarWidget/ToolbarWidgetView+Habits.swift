@@ -4,7 +4,7 @@ import SwiftUI
 extension ToolbarWidgetView {
     var habitsSection: some View {
         VStack(alignment: .leading, spacing: 8) {
-            DSText(L10n.Widget.habitsTitle)
+            Text(L10n.Widget.habitsTitle)
                 .font(.system(size: 11, weight: .semibold))
                 .foregroundColor(theme.colors.textPrimary.opacity(0.85))
 

@@ -21,14 +21,14 @@ struct VariableTimelineView: View {
         }
         return AnyView(
             VStack(alignment: .leading, spacing: 6) {
-                DSButton(
+                Button(
                     action: { withAnimation(.easeInOut(duration: 0.2)) { isExpanded.toggle() } },
                     label: {
                         HStack(spacing: 4) {
-                            DSImage(systemName: isExpanded ? "chevron.down" : "chevron.right")
+                            Image(systemName: isExpanded ? "chevron.down" : "chevron.right")
                                 .font(.system(size: 8, weight: .bold))
                                 .foregroundColor(palette.gray400)
-                            DSText("Timeline")
+                            Text("Timeline")
                                 .font(.system(size: 9, weight: .semibold))
                                 .foregroundColor(palette.gray400)
                             Spacer()
@@ -42,7 +42,7 @@ struct VariableTimelineView: View {
                         ForEach(variableNames, id: \.self) { name in
                             let series = extractSeries(for: name)
                             HStack(alignment: .center, spacing: 8) {
-                                    DSText(name)
+                                    Text(name)
                                         .font(.system(size: 9, weight: .medium))
                                         .foregroundColor(palette.gray300)
                                         .frame(width: 60, alignment: .trailing)

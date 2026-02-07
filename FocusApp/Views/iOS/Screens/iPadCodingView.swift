@@ -2,207 +2,246 @@
 // FocusApp — iPad Coding Environment (three-panel layout)
 // Spec: FIGMA_SETUP_GUIDE.md §5.5
 
-import SwiftUI
 import FocusDesignSystem
+import SwiftUI
 
 struct iPadCodingView: View {
+    @Environment(\.dsTheme) var theme
     @State private var searchText = ""
     @State private var selectedProblem: String?
 
     var body: some View {
         HStack(spacing: 0) {
             // Left panel: Problem list (220px)
-            VStack(alignment: .leading, spacing: 0) {
-                Text("Coding Environment")
-                    .font(DSMobileTypography.bodyStrong)
-                    .foregroundColor(DSMobileColor.textPrimary)
-                    .padding(DSLayout.spacing(.space12))
-
-                DSSearchBar(text: $searchText)
-                    .padding(.horizontal, DSLayout.spacing(.space12))
-                    .padding(.bottom, DSLayout.spacing(.space8))
-
-                ScrollView {
-                    VStack(spacing: DSLayout.spacing(.space8)) {
-                        iPadProblemRow(
-                            title: "Two Sum",
-                            difficulty: "Easy",
-                            isSolved: true,
-                            isSelected: selectedProblem == "Two Sum"
-                        ) { selectedProblem = "Two Sum" }
-
-                        iPadProblemRow(
-                            title: "Add Two Numbers",
-                            difficulty: "Medium",
-                            isSolved: false,
-                            isSelected: selectedProblem == "Add Two Numbers"
-                        ) { selectedProblem = "Add Two Numbers" }
-
-                        iPadProblemRow(
-                            title: "Longest Substring",
-                            difficulty: "Medium",
-                            isSolved: false,
-                            isSelected: selectedProblem == "Longest Substring"
-                        ) { selectedProblem = "Longest Substring" }
-                    }
-                    .padding(.horizontal, DSLayout.spacing(.space12))
-                }
-            }
-            .frame(width: 220)
-            .background(DSMobileColor.surface)
-            .overlay(alignment: .trailing) {
-                Rectangle().fill(DSMobileColor.divider).frame(width: 1)
-            }
+            problemListPanel
 
             // Center panel: Content area
-            VStack(alignment: .leading, spacing: 0) {
-                // Top bar with Run button
-                HStack {
-                    Spacer()
-                    Button {
-                    } label: {
-                        HStack(spacing: DSLayout.spacing(.space4)) {
-                            Image(systemName: "play.fill")
-                                .font(.system(size: 12))
-                            Text("Run")
-                                .font(DSMobileTypography.subbodyStrong)
-                        }
-                        .foregroundColor(.white)
-                        .padding(.horizontal, DSLayout.spacing(.space16))
-                        .frame(height: 36)
-                        .background(DSMobileColor.purple)
-                        .cornerRadius(DSMobileRadius.small)
-                    }
-                    .buttonStyle(.plain)
-                }
-                .padding(DSLayout.spacing(.space12))
-
-                if selectedProblem != nil {
-                    ScrollView {
-                        VStack(alignment: .leading, spacing: DSLayout.spacing(.space12)) {
-                            Text(selectedProblem ?? "")
-                                .font(DSMobileTypography.section)
-                                .foregroundColor(DSMobileColor.textPrimary)
-
-                            Text("Given an array of integers nums and an integer target, return indices of the two numbers such that they add up to target.")
-                                .font(DSMobileTypography.body)
-                                .foregroundColor(DSMobileColor.gray700)
-                        }
-                        .padding(DSLayout.spacing(.space16))
-                    }
-                } else {
-                    Spacer()
-                    Text("Select a problem")
-                        .font(DSMobileTypography.body)
-                        .foregroundColor(DSMobileColor.gray400)
-                        .frame(maxWidth: .infinity)
-                    Spacer()
-                }
-
-                // Bottom description section
-                Divider()
-                VStack(alignment: .leading, spacing: DSLayout.spacing(.space8)) {
-                    Text("DESCRIPTION")
-                        .font(DSMobileTypography.captionStrong)
-                        .foregroundColor(DSMobileColor.gray400)
-                        .textCase(.uppercase)
-
-                    Text(selectedProblem == nil
-                        ? "No problem selected."
-                        : "Problem description shown above.")
-                        .font(DSMobileTypography.body)
-                        .foregroundColor(DSMobileColor.gray400)
-                }
-                .padding(DSLayout.spacing(.space12))
-            }
-            .background(DSMobileColor.background)
+            contentPanel
 
             // Right panel: Output (140px)
-            VStack(alignment: .leading, spacing: DSLayout.spacing(.space8)) {
-                Text("OUTPUT / TEST CASES")
-                    .font(DSMobileTypography.captionStrong)
-                    .foregroundColor(DSMobileColor.gray400)
-                    .textCase(.uppercase)
+            outputPanel
+        }
+    }
 
-                Text("Case 1")
-                    .font(DSMobileTypography.subbodyStrong)
-                    .foregroundColor(DSMobileColor.textPrimary)
+    // MARK: - Problem List Panel
 
-                // Input block
-                VStack(alignment: .leading, spacing: DSLayout.spacing(.space4)) {
-                    Text("Input:")
-                        .font(DSMobileTypography.captionStrong)
-                        .foregroundColor(DSMobileColor.gray500)
-                    Text("nums = [2,7,11,15]\ntarget = 9")
-                        .font(DSMobileTypography.code)
-                        .foregroundColor(DSMobileColor.gray300)
-                        .padding(DSLayout.spacing(.space8))
-                        .background(DSMobileColor.gray800)
-                        .cornerRadius(DSMobileRadius.small)
-                }
+    private var problemListPanel: some View {
+        VStack(alignment: .leading, spacing: 0) {
+            Text("Coding Environment")
+                .font(.system(size: 16, weight: .semibold))
+                .foregroundColor(theme.colors.textPrimary)
+                .padding(theme.spacing.md)
 
-                Text("Output: [0,1]")
-                    .font(DSMobileTypography.code)
-                    .foregroundColor(DSMobileColor.textPrimary)
+            // Search bar
+            HStack(spacing: theme.spacing.sm) {
+                Image(systemName: "magnifyingglass")
+                    .font(.system(size: 16))
+                    .foregroundColor(Color(hex: 0x9CA3AF))
 
-                Divider()
-
-                Text("Console")
-                    .font(DSMobileTypography.captionStrong)
-                    .foregroundColor(DSMobileColor.gray400)
-
-                Text("No output yet...")
-                    .font(DSMobileTypography.code)
-                    .foregroundColor(DSMobileColor.gray400)
-                    .italic()
+                TextField("Search problems...", text: $searchText)
+                    .font(theme.typography.body)
+                    .foregroundColor(theme.colors.textPrimary)
 
                 Spacer()
             }
-            .padding(DSLayout.spacing(.space12))
-            .frame(width: 140)
-            .background(DSMobileColor.surface)
-            .overlay(alignment: .leading) {
-                Rectangle().fill(DSMobileColor.divider).frame(width: 1)
+            .padding(.horizontal, theme.spacing.md)
+            .frame(height: 44)
+            .background(Color(hex: 0xF3F4F6))
+            .cornerRadius(theme.radii.md)
+            .padding(.horizontal, theme.spacing.md)
+            .padding(.bottom, theme.spacing.sm)
+
+            ScrollView {
+                VStack(spacing: theme.spacing.sm) {
+                    iPadCodingProblemRow(
+                        title: "Two Sum",
+                        difficulty: "Easy",
+                        isSolved: true,
+                        isSelected: selectedProblem == "Two Sum",
+                        theme: theme
+                    ) { selectedProblem = "Two Sum" }
+
+                    iPadCodingProblemRow(
+                        title: "Add Two Numbers",
+                        difficulty: "Medium",
+                        isSolved: false,
+                        isSelected: selectedProblem == "Add Two Numbers",
+                        theme: theme
+                    ) { selectedProblem = "Add Two Numbers" }
+
+                    iPadCodingProblemRow(
+                        title: "Longest Substring",
+                        difficulty: "Medium",
+                        isSolved: false,
+                        isSelected: selectedProblem == "Longest Substring",
+                        theme: theme
+                    ) { selectedProblem = "Longest Substring" }
+                }
+                .padding(.horizontal, theme.spacing.md)
             }
+        }
+        .frame(width: 220)
+        .background(theme.colors.surface)
+        .overlay(alignment: .trailing) {
+            Rectangle().fill(theme.colors.border).frame(width: 1)
+        }
+    }
+
+    // MARK: - Content Panel
+
+    private var contentPanel: some View {
+        VStack(alignment: .leading, spacing: 0) {
+            // Top bar with Run button
+            HStack {
+                Spacer()
+                DSButton(
+                    "Run",
+                    config: DSButtonConfig(
+                        style: .primary,
+                        size: .small,
+                        icon: Image(systemName: "play.fill")
+                    )
+                ) { }
+            }
+            .padding(theme.spacing.md)
+
+            if selectedProblem != nil {
+                ScrollView {
+                    VStack(alignment: .leading, spacing: theme.spacing.md) {
+                        Text(selectedProblem ?? "")
+                            .font(.system(size: 20, weight: .semibold))
+                            .foregroundColor(theme.colors.textPrimary)
+
+                        Text("Given an array of integers nums and an integer target, return indices of the two numbers such that they add up to target.")
+                            .font(theme.typography.body)
+                            .foregroundColor(Color(hex: 0x374151))
+                    }
+                    .padding(theme.spacing.lg)
+                }
+            } else {
+                Spacer()
+                Text("Select a problem")
+                    .font(theme.typography.body)
+                    .foregroundColor(Color(hex: 0x9CA3AF))
+                    .frame(maxWidth: .infinity)
+                Spacer()
+            }
+
+            // Bottom description section
+            Divider()
+            VStack(alignment: .leading, spacing: theme.spacing.sm) {
+                Text("DESCRIPTION")
+                    .font(.system(size: 12, weight: .semibold))
+                    .foregroundColor(Color(hex: 0x9CA3AF))
+                    .textCase(.uppercase)
+
+                Text(
+                    selectedProblem == nil
+                        ? "No problem selected."
+                        : "Problem description shown above."
+                )
+                .font(theme.typography.body)
+                .foregroundColor(Color(hex: 0x9CA3AF))
+            }
+            .padding(theme.spacing.md)
+        }
+        .background(theme.colors.background)
+    }
+
+    // MARK: - Output Panel
+
+    private var outputPanel: some View {
+        VStack(alignment: .leading, spacing: theme.spacing.sm) {
+            Text("OUTPUT / TEST CASES")
+                .font(.system(size: 12, weight: .semibold))
+                .foregroundColor(Color(hex: 0x9CA3AF))
+                .textCase(.uppercase)
+
+            Text("Case 1")
+                .font(.system(size: 14, weight: .semibold))
+                .foregroundColor(theme.colors.textPrimary)
+
+            // Input block
+            VStack(alignment: .leading, spacing: theme.spacing.xs) {
+                Text("Input:")
+                    .font(.system(size: 12, weight: .semibold))
+                    .foregroundColor(Color(hex: 0x6B7280))
+                Text("nums = [2,7,11,15]\ntarget = 9")
+                    .font(theme.typography.mono)
+                    .foregroundColor(Color(hex: 0xD1D5DB))
+                    .padding(theme.spacing.sm)
+                    .background(Color(hex: 0x1F2937))
+                    .cornerRadius(theme.radii.sm)
+            }
+
+            Text("Output: [0,1]")
+                .font(theme.typography.mono)
+                .foregroundColor(theme.colors.textPrimary)
+
+            Divider()
+
+            Text("Console")
+                .font(.system(size: 12, weight: .semibold))
+                .foregroundColor(Color(hex: 0x9CA3AF))
+
+            Text("No output yet...")
+                .font(theme.typography.mono)
+                .foregroundColor(Color(hex: 0x9CA3AF))
+                .italic()
+
+            Spacer()
+        }
+        .padding(theme.spacing.md)
+        .frame(width: 140)
+        .background(theme.colors.surface)
+        .overlay(alignment: .leading) {
+            Rectangle().fill(theme.colors.border).frame(width: 1)
         }
     }
 }
 
-struct iPadProblemRow: View {
+// MARK: - Problem Row
+
+private struct iPadCodingProblemRow: View {
     var title: String
     var difficulty: String
     var isSolved: Bool
     var isSelected: Bool = false
+    var theme: DSTheme
     var onTap: () -> Void
 
     var body: some View {
         Button(action: onTap) {
-            HStack(spacing: DSLayout.spacing(.space8)) {
-                VStack(alignment: .leading, spacing: DSLayout.spacing(.space2)) {
+            HStack(spacing: theme.spacing.sm) {
+                VStack(alignment: .leading, spacing: 2) {
                     Text(title)
-                        .font(DSMobileTypography.subbodyStrong)
-                        .foregroundColor(DSMobileColor.gray900)
+                        .font(.system(size: 14, weight: .semibold))
+                        .foregroundColor(theme.colors.textPrimary)
 
                     Text(difficulty)
-                        .font(DSMobileTypography.caption)
-                        .foregroundColor(DSMobileColor.gray500)
+                        .font(theme.typography.caption)
+                        .foregroundColor(Color(hex: 0x6B7280))
                 }
 
                 Spacer()
 
                 if isSolved {
                     Image(systemName: "checkmark.circle.fill")
-                        .foregroundColor(DSMobileColor.green)
+                        .foregroundColor(theme.colors.success)
                         .font(.system(size: 16))
                 } else {
                     Circle()
-                        .stroke(DSMobileColor.gray300, lineWidth: 1)
+                        .stroke(Color(hex: 0xD1D5DB), lineWidth: 1)
                         .frame(width: 16, height: 16)
                 }
             }
-            .padding(DSLayout.spacing(.space8))
-            .background(isSelected ? DSMobileColor.purple.opacity(0.08) : Color.clear)
-            .cornerRadius(DSMobileRadius.small)
+            .padding(theme.spacing.sm)
+            .background(
+                isSelected
+                    ? Color(hex: 0x6366F1).opacity(0.08)
+                    : Color.clear
+            )
+            .cornerRadius(theme.radii.sm)
         }
         .buttonStyle(.plain)
     }

@@ -12,16 +12,16 @@ struct ProblemRowWidget: View {
 
     var body: some View {
         HStack(spacing: 8) {
-            DSImage(systemName: isCompleted ? "checkmark.circle.fill" : "circle")
+            Image(systemName: isCompleted ? "checkmark.circle.fill" : "circle")
                 .font(.system(size: 14))
                 .foregroundColor(isCompleted ? theme.colors.success : theme.colors.textSecondary.opacity(0.5))
 
-            DSButton(action: {
+            Button(action: {
                 if let url = URL(string: problem.url) {
                     NSWorkspace.shared.open(url)
                 }
             }, label: {
-                DSText(problem.displayName)
+                Text(problem.displayName)
                     .font(.system(size: 11))
                     .foregroundColor(
                         isCompleted
@@ -43,7 +43,7 @@ struct ProblemRowWidget: View {
 
             Spacer()
 
-            DSText(problem.difficulty.rawValue)
+            Text(problem.difficulty.rawValue)
                 .font(.system(size: 8, weight: .medium))
                 .foregroundColor(difficultyColor)
                 .padding(.horizontal, 6)
@@ -53,12 +53,12 @@ struct ProblemRowWidget: View {
                         .fill(difficultyColor.opacity(0.2))
                 )
 
-            DSButton(action: {
+            Button(action: {
                 if let url = URL(string: problem.url) {
                     NSWorkspace.shared.open(url)
                 }
             }, label: {
-                DSImage(systemName: "arrow.up.right.square")
+                Image(systemName: "arrow.up.right.square")
                     .font(.system(size: 10))
                     .foregroundColor(theme.colors.primary.opacity(0.7))
             })

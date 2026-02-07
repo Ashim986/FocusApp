@@ -12,7 +12,7 @@ struct OutputPanelView: View {
         VStack(alignment: .leading, spacing: 0) {
             // Header
             HStack {
-                DSText(L10n.Output.title)
+                Text(L10n.Output.title)
                     .font(.system(size: 12, weight: .semibold))
                     .foregroundColor(theme.colors.textPrimary)
 
@@ -23,7 +23,7 @@ struct OutputPanelView: View {
                         ProgressView()
                             .scaleEffect(0.6)
                             .frame(width: 12, height: 12)
-                        DSText(L10n.Output.running)
+                        Text(L10n.Output.running)
                             .font(.system(size: 11))
                             .foregroundColor(theme.colors.textSecondary)
                     }

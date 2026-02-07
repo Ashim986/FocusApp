@@ -6,11 +6,11 @@ extension TodayView {
         VStack(spacing: 16) {
             HStack(spacing: 12) {
                 VStack(alignment: .leading, spacing: 4) {
-                    DSText(L10n.Today.ctaTitle)
+                    Text(L10n.Today.ctaTitle)
                         .font(.system(size: 20, weight: .bold))
                         .foregroundColor(.white)
 
-                    DSText(L10n.Today.ctaSubtitle)
+                    Text(L10n.Today.ctaSubtitle)
                         .font(.system(size: 14))
                         .foregroundColor(.white.opacity(0.8))
                 }
@@ -22,14 +22,14 @@ extension TodayView {
                     config: .init(
                         style: .secondary,
                         size: .small,
-                        icon: DSImage(systemName: "chevron.left.slash.chevron.right")
+                        icon: Image(systemName: "chevron.left.slash.chevron.right")
                     )
                 ) {
                     onOpenCodingEnvironment?()
                 }
             }
 
-            DSText(L10n.Today.ctaFooter)
+            Text(L10n.Today.ctaFooter)
                 .font(.system(size: 12, weight: .medium))
                 .foregroundColor(.white.opacity(0.7))
         }

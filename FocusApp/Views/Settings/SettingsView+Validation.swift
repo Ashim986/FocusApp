@@ -18,15 +18,15 @@ extension SettingsView {
         switch presenter.usernameValidationState {
         case .valid:
             HStack(spacing: 6) {
-                DSImage(systemName: "checkmark.circle.fill")
-                DSText(L10n.Settings.validationValid)
+                Image(systemName: "checkmark.circle.fill")
+                Text(L10n.Settings.validationValid)
             }
             .foregroundColor(.green)
             .font(.caption)
         case .invalid:
             HStack(spacing: 6) {
-                DSImage(systemName: "xmark.circle.fill")
-                DSText(L10n.Settings.validationNotFound)
+                Image(systemName: "xmark.circle.fill")
+                Text(L10n.Settings.validationNotFound)
             }
             .foregroundColor(.red)
             .font(.caption)

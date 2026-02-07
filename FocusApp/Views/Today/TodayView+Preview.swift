@@ -25,7 +25,7 @@ struct TodayView_Previews: PreviewProvider {
                 )
                     .frame(width: 600, height: 800)
             } else {
-                DSText("Preview unavailable")
+                Text("Preview unavailable")
             }
         }
     }

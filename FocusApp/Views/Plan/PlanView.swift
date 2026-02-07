@@ -39,17 +39,17 @@ struct PlanView: View {
         DSCard(config: .init(style: .elevated)) {
             VStack(alignment: .leading, spacing: 12) {
                 HStack {
-                    DSImage(systemName: "checkmark.circle.fill")
+                    Image(systemName: "checkmark.circle.fill")
                         .font(.system(size: 20))
                         .foregroundColor(theme.colors.success)
 
-                    DSText(L10n.Plan.precompletedTitle)
+                    Text(L10n.Plan.precompletedTitle)
                         .font(.system(size: 16, weight: .semibold))
                         .foregroundColor(theme.colors.textPrimary)
 
                     Spacer()
 
-                    DSText(L10n.Plan.precompletedCountFormat( preCompletedTopics.count))
+                    Text(L10n.Plan.precompletedCountFormat( preCompletedTopics.count))
                         .font(.system(size: 13))
                         .foregroundColor(theme.colors.textSecondary)
                 }
@@ -57,10 +57,10 @@ struct PlanView: View {
                 FlowLayout(spacing: 8) {
                     ForEach(preCompletedTopics, id: \.self) { topic in
                         HStack(spacing: 4) {
-                            DSImage(systemName: "checkmark")
+                            Image(systemName: "checkmark")
                                 .font(.system(size: 10, weight: .bold))
 
-                            DSText(topic)
+                            Text(topic)
                                 .font(.system(size: 12, weight: .medium))
                         }
                         .foregroundColor(theme.colors.success)
@@ -84,11 +84,11 @@ struct PlanView: View {
         DSCard(config: .init(style: .elevated)) {
             HStack(spacing: 16) {
                 VStack(alignment: .leading, spacing: 4) {
-                    DSText(L10n.Plan.syncTitle)
+                    Text(L10n.Plan.syncTitle)
                         .font(.system(size: 16, weight: .semibold))
                         .foregroundColor(theme.colors.textPrimary)
 
-                    DSText(presenter.lastSyncResult.isEmpty
+                    Text(presenter.lastSyncResult.isEmpty
                          ? L10n.Plan.syncDefaultStatus
                          : presenter.lastSyncResult)
                         .font(.system(size: 12))
@@ -104,7 +104,7 @@ struct PlanView: View {
                 } else {
                     DSButton(
                         L10n.Plan.syncNow,
-                        config: .init(style: .primary, size: .small, icon: DSImage(systemName: "arrow.triangle.2.circlepath"))
+                        config: .init(style: .primary, size: .small, icon: Image(systemName: "arrow.triangle.2.circlepath"))
                     ) {
                         presenter.syncNow()
                     }
@@ -115,16 +115,16 @@ struct PlanView: View {
 
     private var bufferNote: some View {
         HStack(spacing: 12) {
-            DSImage(systemName: "calendar.badge.clock")
+            Image(systemName: "calendar.badge.clock")
                 .font(.system(size: 20))
                 .foregroundColor(theme.colors.primary)
 
             VStack(alignment: .leading, spacing: 2) {
-                DSText(L10n.Plan.bufferTitle)
+                Text(L10n.Plan.bufferTitle)
                     .font(.system(size: 14, weight: .medium))
                     .foregroundColor(theme.colors.textPrimary)
 
-                DSText(L10n.Plan.bufferBody)
+                Text(L10n.Plan.bufferBody)
                     .font(.system(size: 12))
                     .foregroundColor(theme.colors.textSecondary)
             }
@@ -208,7 +208,7 @@ struct PlanView_Previews: PreviewProvider {
                 )
                     .frame(width: 600, height: 800)
             } else {
-                DSText("Preview unavailable")
+                Text("Preview unavailable")
             }
         }
     }

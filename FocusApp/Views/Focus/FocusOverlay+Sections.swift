@@ -5,15 +5,15 @@ extension FocusOverlay {
     var durationSelector: some View {
         VStack(spacing: 40) {
             VStack(spacing: 8) {
-                DSImage(systemName: "bolt.fill")
+                Image(systemName: "bolt.fill")
                     .font(.system(size: 48))
                     .foregroundColor(theme.colors.primary)
 
-                DSText(L10n.Focus.durationTitle)
+                Text(L10n.Focus.durationTitle)
                     .font(.system(size: 32, weight: .bold))
                     .foregroundColor(theme.colors.textPrimary)
 
-                DSText(L10n.Focus.durationPrompt)
+                Text(L10n.Focus.durationPrompt)
                     .font(.system(size: 16))
                     .foregroundColor(theme.colors.textSecondary)
             }
@@ -33,7 +33,7 @@ extension FocusOverlay {
             }
 
             HStack(spacing: 12) {
-                DSText(L10n.Focus.durationCustomLabel)
+                Text(L10n.Focus.durationCustomLabel)
                     .font(.system(size: 14))
                     .foregroundColor(theme.colors.textSecondary)
 
@@ -53,24 +53,21 @@ extension FocusOverlay {
                 )
                 .frame(width: 80)
 
-                DSText(L10n.Focus.durationMinutesLabel)
+                Text(L10n.Focus.durationMinutesLabel)
                     .font(.system(size: 14))
                     .foregroundColor(theme.colors.textSecondary)
             }
 
-            DSButton(config: .init(style: .primary, size: .large), action: {
-                presenter.startTimer()
-            }, label: {
-                HStack(spacing: 8) {
-                    DSImage(systemName: "play.fill")
-                    DSText(L10n.Focus.durationStartButton)
-                }
-            })
+            DSButton(
+                L10n.Focus.durationStartButton,
+                config: .init(style: .primary, size: .large, icon: Image(systemName: "play.fill")),
+                action: { presenter.startTimer() }
+            )
 
-            DSButton(action: {
+            Button(action: {
                 closeSession()
             }, label: {
-                DSText(L10n.Focus.durationCancel)
+                Text(L10n.Focus.durationCancel)
                     .font(.system(size: 14))
                     .foregroundColor(theme.colors.textSecondary)
             })
@@ -79,10 +76,10 @@ extension FocusOverlay {
     }
 
     func durationButton(minutes: Int) -> some View {
-        DSButton(action: {
+        Button(action: {
             presenter.duration = minutes
         }, label: {
-            DSText(L10n.Focus.durationButtonFormat(minutes))
+            Text(L10n.Focus.durationButtonFormat(minutes))
                 .font(.system(size: 14, weight: presenter.duration == minutes ? .semibold : .regular))
                 .foregroundColor(presenter.duration == minutes ? theme.colors.primary : theme.colors.textPrimary)
                 .padding(.horizontal, 16)

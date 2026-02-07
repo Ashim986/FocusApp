@@ -20,16 +20,16 @@ struct DataJourneyComparisonView: View {
         }
         return AnyView(
             VStack(alignment: .leading, spacing: 6) {
-                DSButton(
+                Button(
                     action: {
                         withAnimation(.easeInOut(duration: 0.2)) { isExpanded.toggle() }
                     },
                     label: {
                         HStack(spacing: 4) {
-                            DSImage(systemName: isExpanded ? "chevron.down" : "chevron.right")
+                            Image(systemName: isExpanded ? "chevron.down" : "chevron.right")
                                 .font(.system(size: 8, weight: .bold))
                                 .foregroundColor(palette.gray400)
-                            DSText("Compare Steps")
+                            Text("Compare Steps")
                                 .font(.system(size: 9, weight: .semibold))
                                 .foregroundColor(palette.gray400)
                             Spacer()
@@ -95,7 +95,7 @@ struct DataJourneyComparisonView: View {
         accent: Color
     ) -> some View {
         VStack(alignment: .leading, spacing: 6) {
-            DSText(title)
+            Text(title)
                 .font(.system(size: 8, weight: .bold))
                 .foregroundColor(accent)
                 .padding(.horizontal, 6)
@@ -109,19 +109,19 @@ struct DataJourneyComparisonView: View {
                 let value = event?.values[key]
                 let isChanged = changedKeys.contains(key)
                 HStack(spacing: 6) {
-                    DSText(key)
+                    Text(key)
                         .font(.system(size: 8, weight: .semibold))
                         .foregroundColor(isChanged ? accent : palette.gray400)
                         .frame(width: 50, alignment: .leading)
                         .lineLimit(1)
 
                     if let value {
-                        DSText(compactSummary(value))
+                        Text(compactSummary(value))
                             .font(.system(size: 8, weight: .medium, design: .monospaced))
                             .foregroundColor(isChanged ? palette.gray100 : palette.gray300)
                             .lineLimit(1)
                     } else {
-                        DSText("—")
+                        Text("—")
                             .font(.system(size: 8))
                             .foregroundColor(palette.gray600)
                     }

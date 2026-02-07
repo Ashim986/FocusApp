@@ -66,7 +66,7 @@ struct MatrixGridView: View {
                 .frame(width: headerSize, height: headerSize)
 
             ForEach(0..<cols, id: \.self) { col in
-                DSText("\(col)")
+                Text("\(col)")
                     .font(.system(size: 9, weight: .medium, design: .monospaced))
                     .foregroundColor(palette.gray400)
                     .frame(width: bubbleSize, height: headerSize)
@@ -75,7 +75,7 @@ struct MatrixGridView: View {
     }
 
     private func rowHeader(_ row: Int) -> some View {
-        DSText("\(row)")
+        Text("\(row)")
             .font(.system(size: 9, weight: .medium, design: .monospaced))
             .foregroundColor(palette.gray400)
             .frame(width: headerSize, height: bubbleSize)
@@ -96,7 +96,7 @@ struct MatrixGridView: View {
                 .fill(cellFill(for: model, highlighted: highlighted))
             RoundedRectangle(cornerRadius: 4)
                 .strokeBorder(borderColor, lineWidth: borderWidth)
-            DSText(model.text)
+            Text(model.text)
                 .font(.system(
                     size: max(8, bubbleSize * 0.3),
                     weight: .semibold,

@@ -52,13 +52,13 @@ extension CodingEnvironmentView {
 
     private var sidebarHeader: some View {
         HStack {
-            DSText(L10n.Coding.sidebarTitle)
+            Text(L10n.Coding.sidebarTitle)
                 .font(theme.typography.subtitle)
                 .foregroundColor(theme.colors.textPrimary)
 
             Spacer()
 
-            DSText(L10n.Coding.sidebarPendingLeft(pendingCount))
+            Text(L10n.Coding.sidebarPendingLeft(pendingCount))
                 .font(theme.typography.caption)
                 .foregroundColor(theme.colors.textSecondary)
         }
@@ -73,12 +73,12 @@ extension CodingEnvironmentView {
             if let problem = presenter.selectedProblem {
                 HStack(alignment: .top, spacing: 12) {
                     VStack(alignment: .leading, spacing: 6) {
-                        DSText(problem.displayName)
+                        Text(problem.displayName)
                             .font(.system(size: 20, weight: .bold))
                             .foregroundColor(theme.colors.textPrimary)
                             .lineLimit(2)
 
-                        DSText(L10n.Coding.sidebarDayTopic(
+                        Text(L10n.Coding.sidebarDayTopic(
                                                selectedDayLabel,
                                                presenter.selectedDayTopic))
                             .font(theme.typography.caption)
@@ -96,7 +96,7 @@ extension CodingEnvironmentView {
                     infoBadge(title: L10n.Coding.sidebarDayBadge(selectedDayLabel), icon: "calendar")
                 }
             } else {
-                DSText(L10n.Coding.sidebarSelectPrompt)
+                Text(L10n.Coding.sidebarSelectPrompt)
                     .font(theme.typography.caption)
                     .foregroundColor(theme.colors.textSecondary)
             }
@@ -131,13 +131,13 @@ extension CodingEnvironmentView {
     }
 
     private func detailTabButton(_ tab: ProblemDetailTab) -> some View {
-        DSButton(action: {
+        Button(action: {
             codingCoordinator.detailTab = tab
         }, label: {
             HStack(spacing: 6) {
-                DSImage(systemName: tab.icon)
+                Image(systemName: tab.icon)
                     .font(.system(size: 10, weight: .semibold))
-                DSText(tab.title)
+                Text(tab.title)
                     .font(.system(size: 11, weight: codingCoordinator.detailTab == tab ? .semibold : .regular))
             }
             .foregroundColor(codingCoordinator.detailTab == tab ? theme.colors.textPrimary : theme.colors.textSecondary)
@@ -165,9 +165,9 @@ extension CodingEnvironmentView {
 
     private func infoBadge(title: String, icon: String) -> some View {
         HStack(spacing: 4) {
-            DSImage(systemName: icon)
+            Image(systemName: icon)
                 .font(.system(size: 9, weight: .semibold))
-            DSText(title)
+            Text(title)
                 .font(theme.typography.caption)
         }
         .foregroundColor(theme.colors.textSecondary)

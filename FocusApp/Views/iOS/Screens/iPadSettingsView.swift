@@ -2,72 +2,149 @@
 // FocusApp — iPad Settings screen
 // Spec: FIGMA_SETUP_GUIDE.md §5.6
 
-import SwiftUI
 import FocusDesignSystem
+import SwiftUI
 
 struct iPadSettingsView: View {
+    @Environment(\.dsTheme) var theme
+
     var body: some View {
         ScrollView {
-            VStack(alignment: .leading, spacing: DSLayout.spacing(.space16)) {
+            VStack(alignment: .leading, spacing: theme.spacing.lg) {
                 // Title
                 Text("Settings")
-                    .font(DSMobileTypography.headline)
-                    .foregroundColor(DSMobileColor.textPrimary)
-                    .padding(.top, DSLayout.spacing(.space24))
+                    .font(.system(size: 24, weight: .bold))
+                    .foregroundColor(theme.colors.textPrimary)
+                    .padding(.top, theme.spacing.xl)
 
                 // ACCOUNT section
                 Text("ACCOUNT")
-                    .font(DSMobileTypography.captionStrong)
-                    .foregroundColor(DSMobileColor.gray500)
+                    .font(.system(size: 12, weight: .semibold))
+                    .foregroundColor(Color(hex: 0x6B7280))
                     .textCase(.uppercase)
 
-                DSSurfaceCard(padding: 0) {
+                DSCard(config: DSCardConfig(style: .outlined, padding: 0)) {
                     VStack(spacing: 0) {
-                        DSSettingsRow(
+                        iPadSettingsRowView(
                             iconName: "person",
                             title: "Profile",
-                            subtitle: "John Doe"
+                            subtitle: "John Doe",
+                            theme: theme
                         )
-                        Divider().padding(.leading, DSLayout.spacing(64))
-                        DSSettingsRow(
+                        Divider().padding(.leading, 64)
+                        iPadSettingsRowView(
                             iconName: "shield",
                             title: "Security",
-                            subtitle: "Password, 2FA"
+                            subtitle: "Password, 2FA",
+                            theme: theme
                         )
                     }
                 }
 
                 // PREFERENCES section
                 Text("PREFERENCES")
-                    .font(DSMobileTypography.captionStrong)
-                    .foregroundColor(DSMobileColor.gray500)
+                    .font(.system(size: 12, weight: .semibold))
+                    .foregroundColor(Color(hex: 0x6B7280))
                     .textCase(.uppercase)
 
-                DSSurfaceCard(padding: 0) {
+                DSCard(config: DSCardConfig(style: .outlined, padding: 0)) {
                     VStack(spacing: 0) {
-                        DSSettingsRow(
+                        iPadSettingsRowView(
                             iconName: "bell",
                             title: "Notifications",
-                            statusText: "On"
+                            statusText: "On",
+                            theme: theme
                         )
-                        Divider().padding(.leading, DSLayout.spacing(64))
-                        DSSettingsRow(
+                        Divider().padding(.leading, 64)
+                        iPadSettingsRowView(
                             iconName: "moon",
                             title: "Appearance",
-                            statusText: "Light"
+                            statusText: "Light",
+                            theme: theme
                         )
                     }
                 }
 
                 // Sign Out
-                DSSignOutButton()
-                    .padding(.top, DSLayout.spacing(.space8))
+                signOutButton
+                    .padding(.top, theme.spacing.sm)
             }
             .frame(maxWidth: 500)
-            .padding(.horizontal, DSLayout.spacing(.space24))
+            .padding(.horizontal, theme.spacing.xl)
             .frame(maxWidth: .infinity)
-            .padding(.bottom, DSLayout.spacing(.space48))
+            .padding(.bottom, 48)
         }
+    }
+
+    // MARK: - Sign Out Button
+
+    private var signOutButton: some View {
+        Button { } label: {
+            HStack(spacing: theme.spacing.sm) {
+                Image(systemName: "rectangle.portrait.and.arrow.right")
+                    .font(.system(size: 16))
+                Text("Sign Out")
+                    .font(.system(size: 16, weight: .semibold))
+            }
+            .foregroundColor(theme.colors.danger)
+            .frame(maxWidth: .infinity)
+            .frame(height: 48)
+            .background(theme.colors.danger.opacity(0.1))
+            .cornerRadius(theme.radii.md)
+        }
+        .buttonStyle(.plain)
+    }
+}
+
+// MARK: - Settings Row
+
+private struct iPadSettingsRowView: View {
+    var iconName: String
+    var title: String
+    var subtitle: String?
+    var statusText: String?
+    var theme: DSTheme
+
+    var body: some View {
+        HStack(spacing: theme.spacing.md) {
+            // Icon in circle
+            ZStack {
+                Circle()
+                    .fill(Color(hex: 0xF3F4F6))
+                    .frame(width: 36, height: 36)
+                Image(systemName: iconName)
+                    .font(.system(size: 16))
+                    .foregroundColor(Color(hex: 0x4B5563))
+            }
+
+            // Content
+            VStack(alignment: .leading, spacing: 2) {
+                Text(title)
+                    .font(.system(size: 16, weight: .semibold))
+                    .foregroundColor(theme.colors.textPrimary)
+
+                if let subtitle {
+                    Text(subtitle)
+                        .font(theme.typography.caption)
+                        .foregroundColor(Color(hex: 0x6B7280))
+                }
+            }
+
+            Spacer()
+
+            if let statusText {
+                Text(statusText)
+                    .font(.system(size: 14, weight: .regular))
+                    .foregroundColor(Color(hex: 0x6B7280))
+            }
+
+            // Chevron
+            Image(systemName: "chevron.right")
+                .font(.system(size: 12))
+                .foregroundColor(Color(hex: 0x9CA3AF))
+        }
+        .padding(.horizontal, theme.spacing.lg)
+        .frame(height: 56)
     }
 }
 

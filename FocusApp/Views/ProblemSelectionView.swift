@@ -30,10 +30,10 @@ struct ProblemSelectionView: View {
     private var header: some View {
         VStack(spacing: 12) {
             HStack {
-                DSButton(action: onBack) {
+                Button(action: onBack) {
                     HStack(spacing: 4) {
-                        DSImage(systemName: "chevron.left")
-                        DSText(L10n.ProblemSelection.backToTimer)
+                        Image(systemName: "chevron.left")
+                        Text(L10n.ProblemSelection.backToTimer)
                     }
                     .font(.system(size: 13))
                     .foregroundColor(theme.colors.textSecondary)
@@ -44,11 +44,11 @@ struct ProblemSelectionView: View {
             }
 
             VStack(spacing: 4) {
-                DSText(L10n.ProblemSelection.title)
+                Text(L10n.ProblemSelection.title)
                     .font(.system(size: 20, weight: .bold))
                     .foregroundColor(theme.colors.textPrimary)
 
-                DSText(L10n.ProblemSelection.subtitle)
+                Text(L10n.ProblemSelection.subtitle)
                     .font(.system(size: 14))
                     .foregroundColor(theme.colors.textSecondary)
             }
@@ -60,7 +60,7 @@ struct ProblemSelectionView: View {
     private func sectionBlock(_ section: CodingProblemSection) -> some View {
         VStack(alignment: .leading, spacing: 10) {
             HStack {
-                DSText(section.isToday
+                Text(section.isToday
                      ? L10n.ProblemSelection.sectionToday( section.dayId)
                      : L10n.ProblemSelection.sectionBacklog( section.dayId))
                     .font(.system(size: 12, weight: .semibold))
@@ -68,7 +68,7 @@ struct ProblemSelectionView: View {
 
                 Spacer()
 
-                DSText("\(section.completedCount)/\(section.totalCount)")
+                Text("\(section.completedCount)/\(section.totalCount)")
                     .font(.system(size: 11))
                     .foregroundColor(theme.colors.textSecondary)
             }
@@ -82,7 +82,7 @@ struct ProblemSelectionView: View {
     }
 
     private func problemCard(_ item: CodingProblemItem) -> some View {
-        DSButton(action: {
+        Button(action: {
             presenter.selectProblem(item)
         }, label: {
             HStack(spacing: 12) {
@@ -93,14 +93,14 @@ struct ProblemSelectionView: View {
                         .frame(width: 24, height: 24)
 
                     if item.isCompleted {
-                        DSImage(systemName: "checkmark")
+                        Image(systemName: "checkmark")
                             .font(.system(size: 12, weight: .bold))
                             .foregroundColor(theme.colors.success)
                     }
                 }
 
                 VStack(alignment: .leading, spacing: 4) {
-                    DSText(item.problem.displayName)
+                    Text(item.problem.displayName)
                         .font(.system(size: 14, weight: .medium))
                         .foregroundColor(theme.colors.textPrimary)
                         .lineLimit(1)
@@ -109,7 +109,7 @@ struct ProblemSelectionView: View {
                         difficultyBadge(item.problem.difficulty)
 
                         if item.isCompleted {
-                            DSText(L10n.ProblemSelection.solved)
+                            Text(L10n.ProblemSelection.solved)
                                 .font(.system(size: 10))
                                 .foregroundColor(theme.colors.success)
                         }
@@ -118,7 +118,7 @@ struct ProblemSelectionView: View {
 
                 Spacer()
 
-                DSImage(systemName: "chevron.right")
+                Image(systemName: "chevron.right")
                     .font(.system(size: 12))
                     .foregroundColor(theme.colors.textSecondary)
             }

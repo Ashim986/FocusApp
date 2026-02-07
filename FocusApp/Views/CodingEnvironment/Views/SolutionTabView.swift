@@ -20,13 +20,13 @@ struct SolutionTabView: View {
 
     private var emptySolutionView: some View {
         VStack(spacing: 12) {
-            DSImage(systemName: "checkmark.seal")
+            Image(systemName: "checkmark.seal")
                 .font(.system(size: 28))
                 .foregroundColor(theme.colors.textSecondary)
-            DSText(L10n.Coding.Solution.empty)
+            Text(L10n.Coding.Solution.empty)
                 .font(.system(size: 15))
                 .foregroundColor(theme.colors.textSecondary)
-            DSText(L10n.Coding.Solution.emptyHint)
+            Text(L10n.Coding.Solution.emptyHint)
                 .font(.system(size: 13))
                 .foregroundColor(theme.colors.textSecondary)
                 .multilineTextAlignment(.center)
@@ -57,15 +57,15 @@ struct SolutionTabView: View {
         DSCard(config: .init(style: .outlined, padding: 12, cornerRadius: 10)) {
             VStack(alignment: .leading, spacing: 8) {
                 HStack {
-                    DSImage(systemName: "lightbulb.fill")
+                    Image(systemName: "lightbulb.fill")
                         .font(.system(size: 14))
                         .foregroundColor(theme.colors.warning)
-                    DSText(L10n.Coding.Solution.summaryTitle)
+                    Text(L10n.Coding.Solution.summaryTitle)
                         .font(.system(size: 14, weight: .semibold))
                         .foregroundColor(theme.colors.textPrimary)
                 }
 
-                DSText(summary)
+                Text(summary)
                     .font(.system(size: 14))
                     .foregroundColor(theme.colors.textSecondary)
                     .lineSpacing(3)
@@ -96,9 +96,9 @@ struct SolutionTabView: View {
         isSelected: Bool,
         action: @escaping () -> Void
     ) -> some View {
-        DSButton(action: action) {
+        Button(action: action) {
             HStack(spacing: 6) {
-                DSText(approach.name)
+                Text(approach.name)
                     .font(.system(size: 13, weight: isSelected ? .semibold : .medium))
 
                 complexityBadge(approach.complexity.time)

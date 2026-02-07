@@ -11,8 +11,8 @@ struct CarryoverProblemRow: View {
 
     var body: some View {
         HStack(spacing: 8) {
-            DSButton(action: onToggle, label: {
-                DSImage(systemName: "circle")
+            Button(action: onToggle, label: {
+                Image(systemName: "circle")
                     .font(.system(size: 12))
                     .foregroundColor(theme.colors.warning.opacity(0.7))
             })
@@ -25,12 +25,12 @@ struct CarryoverProblemRow: View {
                 }
             }
 
-            DSButton(action: {
+            Button(action: {
                 if let url = URL(string: problem.url) {
                     NSWorkspace.shared.open(url)
                 }
             }, label: {
-                DSText(problem.displayName)
+                Text(problem.displayName)
                     .font(.system(size: 10))
                     .foregroundColor(theme.colors.warning.opacity(0.9))
                     .lineLimit(1)
@@ -48,7 +48,7 @@ struct CarryoverProblemRow: View {
 
             Spacer()
 
-            DSText(problem.difficulty.rawValue)
+            Text(problem.difficulty.rawValue)
                 .font(.system(size: 7, weight: .medium))
                 .foregroundColor(difficultyColor)
                 .padding(.horizontal, 4)

@@ -5,7 +5,7 @@
 import SwiftUI
 
 struct iPhoneFocusView: View {
-    @State private var selectedSegment: PomodoroSegment = .focus
+    @State private var selectedSegment: LegacyPomodoroSegment = .focus
     @State private var isRunning = false
     @State private var progress: Double = 0.0
     @State private var sessionCount = 0
@@ -15,57 +15,57 @@ struct iPhoneFocusView: View {
             // Custom header (no standard header bar for Focus)
             HStack {
                 Text("Focus")
-                    .font(DSTypography.section)
-                    .foregroundColor(DSColor.textPrimary)
+                    .font(LegacyDSTypography.section)
+                    .foregroundColor(LegacyDSColor.textPrimary)
 
                 Spacer()
 
                 // Sessions badge
                 Text("Sessions: \(sessionCount)")
-                    .font(DSTypography.subbodyStrong)
-                    .foregroundColor(DSColor.gray600)
-                    .padding(.horizontal, DSSpacing.space12)
-                    .padding(.vertical, DSSpacing.space4)
-                    .background(DSColor.gray100)
+                    .font(LegacyDSTypography.subbodyStrong)
+                    .foregroundColor(LegacyDSColor.gray600)
+                    .padding(.horizontal, DSLayout.spacing(.space12))
+                    .padding(.vertical, DSLayout.spacing(.space4))
+                    .background(LegacyDSColor.gray100)
                     .clipShape(Capsule())
             }
-            .padding(.horizontal, DSSpacing.space16)
-            .padding(.top, DSSpacing.space8)
+            .padding(.horizontal, DSLayout.spacing(.space16))
+            .padding(.top, DSLayout.spacing(.space8))
 
             ScrollView {
-                VStack(spacing: DSSpacing.space24) {
+                VStack(spacing: DSLayout.spacing(.space24)) {
                     // Timer card
-                    VStack(spacing: DSSpacing.space16) {
+                    VStack(spacing: DSLayout.spacing(.space16)) {
                         // Segmented control
-                        DSPomodoroSegmentedControl(selected: $selectedSegment)
-                            .padding(.horizontal, DSSpacing.space16)
+                        LegacyDSPomodoroSegmentedControl(selected: $selectedSegment)
+                            .padding(.horizontal, DSLayout.spacing(.space16))
 
                         // Timer ring
-                        DSTimerRing(
+                        LegacyDSTimerRing(
                             timeText: isRunning ? "24:54" : "25:00",
                             statusText: isRunning ? "RUNNING" : "PAUSED",
                             progress: isRunning ? 0.004 : 0.0,
-                            ringColor: DSColor.red
+                            ringColor: LegacyDSColor.red
                         )
-                        .padding(.vertical, DSSpacing.space16)
+                        .padding(.vertical, DSLayout.spacing(.space16))
 
                         // Buttons
-                        HStack(spacing: DSSpacing.space12) {
+                        HStack(spacing: DSLayout.spacing(.space12)) {
                             // Start/Pause button
                             Button {
                                 isRunning.toggle()
                             } label: {
-                                HStack(spacing: DSSpacing.space8) {
+                                HStack(spacing: DSLayout.spacing(.space8)) {
                                     Image(systemName: isRunning ? "pause.fill" : "play.fill")
                                         .font(.system(size: 16))
                                     Text(isRunning ? "Pause" : "Start")
-                                        .font(DSTypography.bodyStrong)
+                                        .font(LegacyDSTypography.bodyStrong)
                                 }
                                 .foregroundColor(.white)
-                                .padding(.horizontal, DSSpacing.space16)
+                                .padding(.horizontal, DSLayout.spacing(.space16))
                                 .frame(height: 48)
-                                .background(DSColor.red)
-                                .cornerRadius(DSRadius.medium)
+                                .background(LegacyDSColor.red)
+                                .cornerRadius(LegacyDSRadius.medium)
                             }
                             .buttonStyle(.plain)
 
@@ -76,56 +76,56 @@ struct iPhoneFocusView: View {
                             } label: {
                                 Image(systemName: "arrow.counterclockwise")
                                     .font(.system(size: 16))
-                                    .foregroundColor(DSColor.gray500)
+                                    .foregroundColor(LegacyDSColor.gray500)
                                     .frame(width: 48, height: 48)
-                                    .background(DSColor.surface)
-                                    .cornerRadius(DSRadius.medium)
+                                    .background(LegacyDSColor.surface)
+                                    .cornerRadius(LegacyDSRadius.medium)
                                     .overlay(
-                                        RoundedRectangle(cornerRadius: DSRadius.medium)
-                                            .stroke(DSColor.divider, lineWidth: 1)
+                                        RoundedRectangle(cornerRadius: LegacyDSRadius.medium)
+                                            .stroke(LegacyDSColor.divider, lineWidth: 1)
                                     )
                             }
                             .buttonStyle(.plain)
                         }
                     }
-                    .padding(DSSpacing.space16)
-                    .background(DSColor.redLight)
-                    .cornerRadius(DSRadius.large)
-                    .padding(.horizontal, DSSpacing.space16)
+                    .padding(DSLayout.spacing(.space16))
+                    .background(LegacyDSColor.redLight)
+                    .cornerRadius(LegacyDSRadius.large)
+                    .padding(.horizontal, DSLayout.spacing(.space16))
 
                     // Current Focus section
-                    VStack(spacing: DSSpacing.space4) {
+                    VStack(spacing: DSLayout.spacing(.space4)) {
                         Text("CURRENT FOCUS")
-                            .font(DSTypography.captionStrong)
-                            .foregroundColor(DSColor.gray400)
+                            .font(LegacyDSTypography.captionStrong)
+                            .foregroundColor(LegacyDSColor.gray400)
                             .textCase(.uppercase)
 
                         Text("No active tasks")
-                            .font(DSTypography.subbody)
-                            .foregroundColor(DSColor.gray400)
+                            .font(LegacyDSTypography.subbody)
+                            .foregroundColor(LegacyDSColor.gray400)
                             .italic()
                     }
 
                     // Tasks card
-                    DSSurfaceCard {
-                        VStack(alignment: .leading, spacing: DSSpacing.space8) {
+                    LegacyDSSurfaceCard {
+                        VStack(alignment: .leading, spacing: DSLayout.spacing(.space8)) {
                             Text("Tasks 0")
-                                .font(DSTypography.bodyStrong)
-                                .foregroundColor(DSColor.textPrimary)
+                                .font(LegacyDSTypography.bodyStrong)
+                                .foregroundColor(LegacyDSColor.textPrimary)
 
                             Text("No tasks linked to this session")
-                                .font(DSTypography.subbody)
-                                .foregroundColor(DSColor.gray400)
+                                .font(LegacyDSTypography.subbody)
+                                .foregroundColor(LegacyDSColor.gray400)
                         }
                         .frame(maxWidth: .infinity, alignment: .leading)
                     }
-                    .padding(.horizontal, DSSpacing.space16)
+                    .padding(.horizontal, DSLayout.spacing(.space16))
                 }
-                .padding(.top, DSSpacing.space16)
-                .padding(.bottom, DSSpacing.space32)
+                .padding(.top, DSLayout.spacing(.space16))
+                .padding(.bottom, DSLayout.spacing(.space32))
             }
         }
-        .background(DSColor.background)
+        .background(LegacyDSColor.background)
     }
 }
 

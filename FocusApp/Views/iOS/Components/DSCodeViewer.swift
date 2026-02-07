@@ -1,10 +1,10 @@
-// DSCodeViewer.swift
+// LegacyDSCodeViewer.swift
 // FocusApp — Dark code viewer with syntax highlighting
 // Spec: FIGMA_SETUP_GUIDE.md §3.22
 
 import SwiftUI
 
-struct DSCodeViewer: View {
+struct LegacyDSCodeViewer: View {
     var language: String = "TypeScript"
     var code: String = """
     function twoSum(nums: number[], target: number): number[] {
@@ -25,23 +25,23 @@ struct DSCodeViewer: View {
             // Header
             HStack {
                 Text(language)
-                    .font(DSTypography.captionStrong)
-                    .foregroundColor(DSColor.gray400)
+                    .font(LegacyDSTypography.captionStrong)
+                    .foregroundColor(LegacyDSColor.gray400)
 
                 Spacer()
 
-                HStack(spacing: DSSpacing.space4) {
+                HStack(spacing: DSLayout.spacing(.space4)) {
                     Image(systemName: "lock.fill")
                         .font(.system(size: 10))
                     Text("Read-only")
-                        .font(DSTypography.caption)
+                        .font(LegacyDSTypography.caption)
                 }
-                .foregroundColor(DSColor.gray400)
+                .foregroundColor(LegacyDSColor.gray400)
             }
-            .padding(DSSpacing.space12)
+            .padding(DSLayout.spacing(.space12))
 
             Divider()
-                .background(DSColor.gray700)
+                .background(LegacyDSColor.gray700)
 
             // Code area
             ScrollView(.horizontal, showsIndicators: false) {
@@ -51,35 +51,35 @@ struct DSCodeViewer: View {
                         let lines = code.components(separatedBy: "\n")
                         ForEach(0..<lines.count, id: \.self) { i in
                             Text("\(i + 1)")
-                                .font(DSTypography.codeMicro)
-                                .foregroundColor(DSColor.gray500)
+                                .font(LegacyDSTypography.codeMicro)
+                                .foregroundColor(LegacyDSColor.gray500)
                                 .frame(width: 32, alignment: .trailing)
                                 .frame(height: 18)
                         }
                     }
-                    .padding(.leading, DSSpacing.space8)
+                    .padding(.leading, DSLayout.spacing(.space8))
 
                     // Code text
                     VStack(alignment: .leading, spacing: 0) {
                         let lines = code.components(separatedBy: "\n")
                         ForEach(0..<lines.count, id: \.self) { i in
                             Text(lines[i])
-                                .font(DSTypography.code)
-                                .foregroundColor(DSColor.gray300)
+                                .font(LegacyDSTypography.code)
+                                .foregroundColor(LegacyDSColor.gray300)
                                 .frame(height: 18, alignment: .leading)
                         }
                     }
-                    .padding(.leading, DSSpacing.space12)
+                    .padding(.leading, DSLayout.spacing(.space12))
                 }
             }
-            .padding(.vertical, DSSpacing.space12)
+            .padding(.vertical, DSLayout.spacing(.space12))
         }
-        .background(DSColor.gray800)
-        .cornerRadius(DSRadius.medium)
+        .background(LegacyDSColor.gray800)
+        .cornerRadius(LegacyDSRadius.medium)
     }
 }
 
 #Preview {
-    DSCodeViewer()
+    LegacyDSCodeViewer()
         .padding()
 }

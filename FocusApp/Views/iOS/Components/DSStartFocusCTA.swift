@@ -1,42 +1,42 @@
-// DSStartFocusCTA.swift
+// LegacyDSStartFocusCTA.swift
 // FocusApp — Start Focus CTA card (361x88)
 // Spec: FIGMA_SETUP_GUIDE.md §3.7
 
 import SwiftUI
 
-struct DSStartFocusCTA: View {
+struct LegacyDSStartFocusCTA: View {
     var onTap: (() -> Void)?
 
     var body: some View {
         Button {
             onTap?()
         } label: {
-            VStack(spacing: DSSpacing.space8) {
+            VStack(spacing: DSLayout.spacing(.space8)) {
                 ZStack {
                     Circle()
-                        .fill(DSColor.purple.opacity(0.1))
+                        .fill(LegacyDSColor.purple.opacity(0.1))
                         .frame(width: 40, height: 40)
                     Image(systemName: "arrow.right")
                         .font(.system(size: 18, weight: .semibold))
-                        .foregroundColor(DSColor.purple)
+                        .foregroundColor(LegacyDSColor.purple)
                 }
 
                 Text("Start Focus Session")
-                    .font(DSTypography.bodyStrong)
-                    .foregroundColor(DSColor.gray900)
+                    .font(LegacyDSTypography.bodyStrong)
+                    .foregroundColor(LegacyDSColor.gray900)
 
                 Text("Ready to get in the zone?")
-                    .font(DSTypography.caption)
-                    .foregroundColor(DSColor.gray500)
+                    .font(LegacyDSTypography.caption)
+                    .foregroundColor(LegacyDSColor.gray500)
             }
             .frame(maxWidth: .infinity)
             .frame(height: 88)
-            .background(DSColor.surface)
-            .cornerRadius(DSRadius.medium)
+            .background(LegacyDSColor.surface)
+            .cornerRadius(LegacyDSRadius.medium)
             .overlay(
-                RoundedRectangle(cornerRadius: DSRadius.medium)
+                RoundedRectangle(cornerRadius: LegacyDSRadius.medium)
                     .strokeBorder(
-                        DSColor.divider,
+                        LegacyDSColor.divider,
                         style: StrokeStyle(lineWidth: 1, dash: [4])
                     )
             )
@@ -46,6 +46,6 @@ struct DSStartFocusCTA: View {
 }
 
 #Preview {
-    DSStartFocusCTA()
+    LegacyDSStartFocusCTA()
         .padding()
 }

@@ -1,22 +1,22 @@
-// DSLineChart.swift
+// LegacyDSLineChart.swift
 // FocusApp — Line chart (361x240)
 // Spec: FIGMA_SETUP_GUIDE.md §3.19
 
 import SwiftUI
 
-struct DSLineChart: View {
+struct LegacyDSLineChart: View {
     var data: [CGFloat] = [3, 5, 4, 8, 6, 9, 7]
     var labels: [String] = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
     var maxValue: CGFloat = 12
     var title: String = "Problems Solved"
-    var lineColor: Color = DSColor.green
+    var lineColor: Color = LegacyDSColor.green
 
     var body: some View {
-        DSSurfaceCard {
-            VStack(alignment: .leading, spacing: DSSpacing.space12) {
+        LegacyDSSurfaceCard {
+            VStack(alignment: .leading, spacing: DSLayout.spacing(.space12)) {
                 Text(title)
-                    .font(DSTypography.bodyStrong)
-                    .foregroundColor(DSColor.textPrimary)
+                    .font(LegacyDSTypography.bodyStrong)
+                    .foregroundColor(LegacyDSColor.textPrimary)
 
                 GeometryReader { geo in
                     let chartWidth = geo.size.width
@@ -30,7 +30,7 @@ struct DSLineChart: View {
                                 path.move(to: CGPoint(x: 0, y: y))
                                 path.addLine(to: CGPoint(x: chartWidth, y: y))
                             }
-                            .stroke(DSColor.gray200, style: StrokeStyle(lineWidth: 0.5, dash: [4]))
+                            .stroke(LegacyDSColor.gray200, style: StrokeStyle(lineWidth: 0.5, dash: [4]))
                         }
 
                         // Line path
@@ -61,8 +61,8 @@ struct DSLineChart: View {
                         HStack(spacing: 0) {
                             ForEach(0..<labels.count, id: \.self) { i in
                                 Text(labels[i])
-                                    .font(DSTypography.caption)
-                                    .foregroundColor(DSColor.gray400)
+                                    .font(LegacyDSTypography.caption)
+                                    .foregroundColor(LegacyDSColor.gray400)
                                     .frame(maxWidth: .infinity)
                             }
                         }
@@ -76,6 +76,6 @@ struct DSLineChart: View {
 }
 
 #Preview {
-    DSLineChart()
+    LegacyDSLineChart()
         .padding()
 }

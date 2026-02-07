@@ -3,21 +3,22 @@
 // Spec: FIGMA_SETUP_GUIDE.md §5.6
 
 import SwiftUI
+import FocusDesignSystem
 
 struct iPadSettingsView: View {
     var body: some View {
         ScrollView {
-            VStack(alignment: .leading, spacing: DSSpacing.space16) {
+            VStack(alignment: .leading, spacing: DSLayout.spacing(.space16)) {
                 // Title
                 Text("Settings")
-                    .font(DSTypography.headline)
-                    .foregroundColor(DSColor.textPrimary)
-                    .padding(.top, DSSpacing.space24)
+                    .font(DSMobileTypography.headline)
+                    .foregroundColor(DSMobileColor.textPrimary)
+                    .padding(.top, DSLayout.spacing(.space24))
 
                 // ACCOUNT section
                 Text("ACCOUNT")
-                    .font(DSTypography.captionStrong)
-                    .foregroundColor(DSColor.gray500)
+                    .font(DSMobileTypography.captionStrong)
+                    .foregroundColor(DSMobileColor.gray500)
                     .textCase(.uppercase)
 
                 DSSurfaceCard(padding: 0) {
@@ -27,7 +28,7 @@ struct iPadSettingsView: View {
                             title: "Profile",
                             subtitle: "John Doe"
                         )
-                        Divider().padding(.leading, 64)
+                        Divider().padding(.leading, DSLayout.spacing(64))
                         DSSettingsRow(
                             iconName: "shield",
                             title: "Security",
@@ -38,8 +39,8 @@ struct iPadSettingsView: View {
 
                 // PREFERENCES section
                 Text("PREFERENCES")
-                    .font(DSTypography.captionStrong)
-                    .foregroundColor(DSColor.gray500)
+                    .font(DSMobileTypography.captionStrong)
+                    .foregroundColor(DSMobileColor.gray500)
                     .textCase(.uppercase)
 
                 DSSurfaceCard(padding: 0) {
@@ -49,7 +50,7 @@ struct iPadSettingsView: View {
                             title: "Notifications",
                             statusText: "On"
                         )
-                        Divider().padding(.leading, 64)
+                        Divider().padding(.leading, DSLayout.spacing(64))
                         DSSettingsRow(
                             iconName: "moon",
                             title: "Appearance",
@@ -60,12 +61,12 @@ struct iPadSettingsView: View {
 
                 // Sign Out
                 DSSignOutButton()
-                    .padding(.top, DSSpacing.space8)
+                    .padding(.top, DSLayout.spacing(.space8))
             }
             .frame(maxWidth: 500)
-            .padding(.horizontal, DSSpacing.space24)
+            .padding(.horizontal, DSLayout.spacing(.space24))
             .frame(maxWidth: .infinity)
-            .padding(.bottom, DSSpacing.space48)
+            .padding(.bottom, DSLayout.spacing(.space48))
         }
     }
 }

@@ -1,23 +1,23 @@
-// DSProblemCard.swift
+// LegacyDSProblemCard.swift
 // FocusApp — Problem card for coding list (361x72)
 // Spec: FIGMA_SETUP_GUIDE.md §3.20
 
 import SwiftUI
 
-struct DSProblemCard: View {
+struct LegacyDSProblemCard: View {
     var title: String
-    var difficulty: TaskRowDifficulty
+    var difficulty: LegacyTaskRowDifficulty
     var isSolved: Bool = false
 
     var body: some View {
-        DSSurfaceCard(padding: DSSpacing.space16) {
+        LegacyDSSurfaceCard(padding: DSLayout.spacing(.space16)) {
             HStack {
-                VStack(alignment: .leading, spacing: DSSpacing.space4) {
+                VStack(alignment: .leading, spacing: DSLayout.spacing(.space4)) {
                     Text(title)
-                        .font(DSTypography.bodyStrong)
-                        .foregroundColor(DSColor.gray900)
+                        .font(LegacyDSTypography.bodyStrong)
+                        .foregroundColor(LegacyDSColor.gray900)
 
-                    DSDifficultyBadge(difficulty: difficulty)
+                    LegacyDSDifficultyBadge(difficulty: difficulty)
                 }
 
                 Spacer()
@@ -26,7 +26,7 @@ struct DSProblemCard: View {
                 if isSolved {
                     ZStack {
                         Circle()
-                            .fill(DSColor.green)
+                            .fill(LegacyDSColor.green)
                             .frame(width: 24, height: 24)
                         Image(systemName: "checkmark")
                             .font(.system(size: 12, weight: .bold))
@@ -34,7 +34,7 @@ struct DSProblemCard: View {
                     }
                 } else {
                     Circle()
-                        .stroke(DSColor.gray300, lineWidth: 1.5)
+                        .stroke(LegacyDSColor.gray300, lineWidth: 1.5)
                         .frame(width: 24, height: 24)
                 }
             }
@@ -43,10 +43,10 @@ struct DSProblemCard: View {
 }
 
 #Preview {
-    VStack(spacing: DSSpacing.space12) {
-        DSProblemCard(title: "Two Sum", difficulty: .easy, isSolved: true)
-        DSProblemCard(title: "Add Two Numbers", difficulty: .medium)
-        DSProblemCard(title: "Median of Two Sorted Arrays", difficulty: .hard)
+    VStack(spacing: DSLayout.spacing(.space12)) {
+        LegacyDSProblemCard(title: "Two Sum", difficulty: .easy, isSolved: true)
+        LegacyDSProblemCard(title: "Add Two Numbers", difficulty: .medium)
+        LegacyDSProblemCard(title: "Median of Two Sorted Arrays", difficulty: .hard)
     }
     .padding()
 }

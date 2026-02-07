@@ -4,7 +4,7 @@ import SwiftUI
 struct SolutionTabView: View {
     let solution: ProblemSolution?
     @State private var selectedApproachIndex: Int = 0
-    @Environment(\.dsTheme) private var theme
+    @Environment(\.dsTheme) var theme
 
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {

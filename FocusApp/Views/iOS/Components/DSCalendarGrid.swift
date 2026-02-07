@@ -1,10 +1,10 @@
-// DSCalendarGrid.swift
+// LegacyDSCalendarGrid.swift
 // FocusApp — Calendar grid component
 // Spec: FIGMA_SETUP_GUIDE.md §3.16
 
 import SwiftUI
 
-struct DSCalendarGrid: View {
+struct LegacyDSCalendarGrid: View {
     @State private var selectedDate: Int = 7
     var month: String = "February 2026"
 
@@ -14,29 +14,29 @@ struct DSCalendarGrid: View {
     private let startOffset = 0 // Sunday = 0
 
     var body: some View {
-        DSSurfaceCard {
-            VStack(spacing: DSSpacing.space16) {
+        LegacyDSSurfaceCard {
+            VStack(spacing: DSLayout.spacing(.space16)) {
                 // Header: Month + arrows
                 HStack {
                     Button { } label: {
                         Image(systemName: "chevron.left")
                             .font(.system(size: 16))
-                            .foregroundColor(DSColor.gray500)
+                            .foregroundColor(LegacyDSColor.gray500)
                     }
                     .buttonStyle(.plain)
 
                     Spacer()
 
                     Text(month)
-                        .font(DSTypography.section)
-                        .foregroundColor(DSColor.textPrimary)
+                        .font(LegacyDSTypography.section)
+                        .foregroundColor(LegacyDSColor.textPrimary)
 
                     Spacer()
 
                     Button { } label: {
                         Image(systemName: "chevron.right")
                             .font(.system(size: 16))
-                            .foregroundColor(DSColor.gray500)
+                            .foregroundColor(LegacyDSColor.gray500)
                     }
                     .buttonStyle(.plain)
                 }
@@ -45,8 +45,8 @@ struct DSCalendarGrid: View {
                 HStack(spacing: 0) {
                     ForEach(weekdays, id: \.self) { day in
                         Text(day)
-                            .font(DSTypography.captionStrong)
-                            .foregroundColor(DSColor.gray400)
+                            .font(LegacyDSTypography.captionStrong)
+                            .foregroundColor(LegacyDSColor.gray400)
                             .frame(maxWidth: .infinity)
                     }
                 }
@@ -55,7 +55,7 @@ struct DSCalendarGrid: View {
                 let totalCells = startOffset + daysInMonth
                 let rows = (totalCells + 6) / 7
 
-                VStack(spacing: DSSpacing.space4) {
+                VStack(spacing: DSLayout.spacing(.space4)) {
                     ForEach(0..<rows, id: \.self) { row in
                         HStack(spacing: 0) {
                             ForEach(0..<7, id: \.self) { col in
@@ -69,16 +69,16 @@ struct DSCalendarGrid: View {
                                         ZStack {
                                             if day == selectedDate {
                                                 Circle()
-                                                    .fill(DSColor.purple)
+                                                    .fill(LegacyDSColor.purple)
                                                     .frame(width: 36, height: 36)
                                             }
 
                                             Text("\(day)")
-                                                .font(DSTypography.body)
+                                                .font(LegacyDSTypography.body)
                                                 .foregroundColor(
                                                     day == selectedDate
                                                         ? .white
-                                                        : DSColor.gray900
+                                                        : LegacyDSColor.gray900
                                                 )
                                         }
                                         .frame(maxWidth: .infinity)
@@ -97,14 +97,14 @@ struct DSCalendarGrid: View {
 
                 // Selected date label
                 Text("You selected Feb \(selectedDate), 2026.")
-                    .font(DSTypography.subbody)
-                    .foregroundColor(DSColor.gray500)
+                    .font(LegacyDSTypography.subbody)
+                    .foregroundColor(LegacyDSColor.gray500)
             }
         }
     }
 }
 
 #Preview {
-    DSCalendarGrid()
+    LegacyDSCalendarGrid()
         .padding()
 }

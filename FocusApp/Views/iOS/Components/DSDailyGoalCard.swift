@@ -1,15 +1,15 @@
-// DSDailyGoalCard.swift
+// LegacyDSDailyGoalCard.swift
 // FocusApp — Purple gradient daily goal card (361x140)
 // Spec: FIGMA_SETUP_GUIDE.md §3.5
 
 import SwiftUI
 
-struct DSDailyGoalCard: View {
+struct LegacyDSDailyGoalCard: View {
     var completed: Int = 1
     var total: Int = 4
 
     var body: some View {
-        VStack(alignment: .leading, spacing: DSSpacing.space12) {
+        VStack(alignment: .leading, spacing: DSLayout.spacing(.space12)) {
             // Row 1: Icon + Label
             HStack {
                 // Target icon in circle
@@ -23,20 +23,20 @@ struct DSDailyGoalCard: View {
                 }
 
                 Text("Daily Goal")
-                    .font(DSTypography.subbodyStrong)
+                    .font(LegacyDSTypography.subbodyStrong)
                     .foregroundColor(.white)
 
                 Spacer()
             }
 
             // Row 2: Progress count
-            VStack(alignment: .leading, spacing: DSSpacing.space2) {
+            VStack(alignment: .leading, spacing: DSLayout.spacing(.space2)) {
                 Text("\(completed)/\(total)")
-                    .font(DSTypography.title)
+                    .font(LegacyDSTypography.title)
                     .foregroundColor(.white)
 
                 Text("Tasks completed")
-                    .font(DSTypography.subbody)
+                    .font(LegacyDSTypography.subbody)
                     .foregroundColor(.white.opacity(0.8))
             }
 
@@ -61,14 +61,14 @@ struct DSDailyGoalCard: View {
             }
             .frame(height: 6)
         }
-        .padding(20)
+        .padding(DSLayout.spacing(20))
         .frame(height: 140)
-        .background(DSColor.purpleGradient)
-        .cornerRadius(DSRadius.large)
+        .background(LegacyDSColor.purpleGradient)
+        .cornerRadius(LegacyDSRadius.large)
     }
 }
 
 #Preview {
-    DSDailyGoalCard()
+    LegacyDSDailyGoalCard()
         .padding()
 }

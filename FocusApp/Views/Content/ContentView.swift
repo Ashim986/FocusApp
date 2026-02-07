@@ -37,7 +37,7 @@ enum Tab: CaseIterable {
 struct ContentView: View {
     @ObservedObject var presenter: ContentPresenter
     @ObservedObject var coordinator: ContentCoordinator
-    @Environment(\.dsTheme) private var theme
+    @Environment(\.dsTheme) var theme
 
     var body: some View {
         NavigationStack {

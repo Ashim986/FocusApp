@@ -3,6 +3,7 @@
 // Spec: Design-Spec.md Navigation Patterns § iPhone
 
 import SwiftUI
+import FocusDesignSystem
 
 struct iPhoneMainView: View {
     @State private var selectedTab: AppTab = .today

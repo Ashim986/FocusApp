@@ -5,7 +5,7 @@ struct TodayView: View {
     @ObservedObject var presenter: TodayPresenter
     var onOpenCodingEnvironment: (() -> Void)?
     let onSelectProblem: (_ problem: Problem, _ day: Int, _ index: Int) -> Void
-    @Environment(\.dsTheme) private var theme
+    @Environment(\.dsTheme) var theme
 
     var body: some View {
         ScrollView {

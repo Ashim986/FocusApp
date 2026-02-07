@@ -8,7 +8,7 @@ struct ProblemRowWidget: View {
     let onRefresh: () -> Void
 
     @State private var isHovering = false
-    @Environment(\.dsTheme) private var theme
+    @Environment(\.dsTheme) var theme
 
     var body: some View {
         HStack(spacing: 8) {

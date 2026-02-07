@@ -1,45 +1,45 @@
-// DSTaskRow.swift
+// LegacyDSTaskRow.swift
 // FocusApp — Task row (361x56)
 // Spec: FIGMA_SETUP_GUIDE.md §3.8
 
 import SwiftUI
 
-enum TaskRowDifficulty: String {
+enum LegacyTaskRowDifficulty: String {
     case easy = "Easy"
     case medium = "Medium"
     case hard = "Hard"
 
     var bgColor: Color {
         switch self {
-        case .easy: return DSColor.easyBg
-        case .medium: return DSColor.mediumBg
-        case .hard: return DSColor.hardBg
+        case .easy: return LegacyDSColor.easyBg
+        case .medium: return LegacyDSColor.mediumBg
+        case .hard: return LegacyDSColor.hardBg
         }
     }
 
     var textColor: Color {
         switch self {
-        case .easy: return DSColor.easyText
-        case .medium: return DSColor.mediumText
-        case .hard: return DSColor.hardText
+        case .easy: return LegacyDSColor.easyText
+        case .medium: return LegacyDSColor.mediumText
+        case .hard: return LegacyDSColor.hardText
         }
     }
 }
 
-struct DSTaskRow: View {
+struct LegacyDSTaskRow: View {
     var title: String
     var subtitle: String?
     var isCompleted: Bool = false
-    var difficulty: TaskRowDifficulty?
+    var difficulty: LegacyTaskRowDifficulty?
     var progressText: String? // e.g. "1/4" for habit rows
 
     var body: some View {
-        HStack(spacing: DSSpacing.space12) {
+        HStack(spacing: DSLayout.spacing(.space12)) {
             // Check icon
             if isCompleted {
                 ZStack {
                     Circle()
-                        .fill(DSColor.purple)
+                        .fill(LegacyDSColor.purple)
                         .frame(width: 24, height: 24)
                     Image(systemName: "checkmark")
                         .font(.system(size: 12, weight: .bold))
@@ -47,21 +47,21 @@ struct DSTaskRow: View {
                 }
             } else {
                 Circle()
-                    .strokeBorder(DSColor.gray300, style: StrokeStyle(lineWidth: 1.5, dash: [3]))
+                    .strokeBorder(LegacyDSColor.gray300, style: StrokeStyle(lineWidth: 1.5, dash: [3]))
                     .frame(width: 24, height: 24)
             }
 
             // Title + Subtitle
-            VStack(alignment: .leading, spacing: DSSpacing.space2) {
+            VStack(alignment: .leading, spacing: DSLayout.spacing(.space2)) {
                 Text(title)
-                    .font(DSTypography.bodyStrong)
-                    .foregroundColor(isCompleted ? DSColor.gray400 : DSColor.gray900)
+                    .font(LegacyDSTypography.bodyStrong)
+                    .foregroundColor(isCompleted ? LegacyDSColor.gray400 : LegacyDSColor.gray900)
                     .strikethrough(isCompleted)
 
                 if let subtitle {
                     Text(subtitle)
-                        .font(DSTypography.caption)
-                        .foregroundColor(DSColor.gray500)
+                        .font(LegacyDSTypography.caption)
+                        .foregroundColor(LegacyDSColor.gray500)
                 }
             }
 
@@ -70,54 +70,54 @@ struct DSTaskRow: View {
             // Progress text or difficulty badge
             if let progressText {
                 Text(progressText)
-                    .font(DSTypography.subbodyStrong)
-                    .foregroundColor(DSColor.gray500)
+                    .font(LegacyDSTypography.subbodyStrong)
+                    .foregroundColor(LegacyDSColor.gray500)
             }
 
             if let difficulty {
-                DSDifficultyBadge(difficulty: difficulty)
+                LegacyDSDifficultyBadge(difficulty: difficulty)
             }
 
             // Chevron
             Image(systemName: "chevron.right")
                 .font(.system(size: 12))
-                .foregroundColor(DSColor.gray400)
+                .foregroundColor(LegacyDSColor.gray400)
         }
-        .padding(.horizontal, DSSpacing.space16)
+        .padding(.horizontal, DSLayout.spacing(.space16))
         .frame(height: 56)
     }
 }
 
-struct DSDifficultyBadge: View {
-    var difficulty: TaskRowDifficulty
+struct LegacyDSDifficultyBadge: View {
+    var difficulty: LegacyTaskRowDifficulty
 
     var body: some View {
         Text(difficulty.rawValue)
-            .font(DSTypography.captionStrong)
+            .font(LegacyDSTypography.captionStrong)
             .foregroundColor(difficulty.textColor)
-            .padding(.horizontal, DSSpacing.space8)
-            .padding(.vertical, DSSpacing.space4)
+            .padding(.horizontal, DSLayout.spacing(.space8))
+            .padding(.vertical, DSLayout.spacing(.space4))
             .background(difficulty.bgColor)
-            .cornerRadius(DSRadius.small)
+            .cornerRadius(LegacyDSRadius.small)
     }
 }
 
 #Preview {
     VStack(spacing: 0) {
-        DSTaskRow(
+        LegacyDSTaskRow(
             title: "Complete Two Sum",
             subtitle: "Arrays & Hashing - LeetCode 75",
             isCompleted: true,
             difficulty: .easy
         )
         Divider()
-        DSTaskRow(
+        LegacyDSTaskRow(
             title: "Read System Design Chapter 5",
             subtitle: "System Design",
             isCompleted: false
         )
         Divider()
-        DSTaskRow(
+        LegacyDSTaskRow(
             title: "Exercise",
             isCompleted: true,
             progressText: "1/4"

@@ -20,7 +20,7 @@ struct SequenceBubbleRow: View {
     let pointerHorizontalPadding: CGFloat
     let pointerVerticalPadding: CGFloat
     let pointerSpacing: CGFloat
-    @Environment(\.dsTheme) private var theme
+    @Environment(\.dsTheme) var theme
 
     private var palette: DataJourneyPalette {
         DataJourneyPalette(theme: theme)

@@ -6,7 +6,7 @@ import AppKit
 
 struct ConsoleOutputView: View {
     let output: String
-    @Environment(\.dsTheme) private var theme
+    @Environment(\.dsTheme) var theme
 
     private var lines: [ConsoleLine] {
         output.components(separatedBy: "\n").enumerated().map { index, content in
@@ -104,7 +104,7 @@ enum ConsoleLineType {
 
 struct ConsoleLineView: View {
     let line: ConsoleLine
-    @Environment(\.dsTheme) private var theme
+    @Environment(\.dsTheme) var theme
 
     var body: some View {
         let lineColor = line.type.color(theme: theme)

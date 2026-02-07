@@ -7,55 +7,55 @@ import SwiftUI
 struct iPhonePlanView: View {
     var body: some View {
         VStack(spacing: 0) {
-            DSHeaderBar()
+            LegacyDSHeaderBar()
 
             ScrollView {
-                VStack(alignment: .leading, spacing: DSSpacing.space16) {
+                VStack(alignment: .leading, spacing: DSLayout.spacing(.space16)) {
                     // Title
                     Text("Study Plan")
-                        .font(DSTypography.headline)
-                        .foregroundColor(DSColor.textPrimary)
-                        .padding(.horizontal, DSSpacing.space16)
+                        .font(LegacyDSTypography.headline)
+                        .foregroundColor(LegacyDSColor.textPrimary)
+                        .padding(.horizontal, DSLayout.spacing(.space16))
 
                     // Calendar
-                    DSCalendarGrid()
-                        .padding(.horizontal, DSSpacing.space16)
+                    LegacyDSCalendarGrid()
+                        .padding(.horizontal, DSLayout.spacing(.space16))
 
                     // Schedule section
                     Text("Schedule for February 7th")
-                        .font(DSTypography.section)
-                        .foregroundColor(DSColor.textPrimary)
-                        .padding(.horizontal, DSSpacing.space16)
+                        .font(LegacyDSTypography.section)
+                        .foregroundColor(LegacyDSColor.textPrimary)
+                        .padding(.horizontal, DSLayout.spacing(.space16))
 
-                    VStack(spacing: DSSpacing.space8) {
-                        DSScheduleRow(
+                    VStack(spacing: DSLayout.spacing(.space8)) {
+                        LegacyDSScheduleRow(
                             time: "09:00 AM",
                             title: "Morning Review",
                             subtitle: "Review yesterday's problems",
                             state: .active
                         )
 
-                        DSScheduleRow(
+                        LegacyDSScheduleRow(
                             time: "10:30 AM",
                             title: "Graph Theory",
                             subtitle: "BFS and DFS practice",
                             state: .normal
                         )
 
-                        DSScheduleRow(
+                        LegacyDSScheduleRow(
                             time: "02:00 PM",
                             title: "Mock Interview",
                             subtitle: "System Design with Peer",
                             state: .faded
                         )
                     }
-                    .padding(.horizontal, DSSpacing.space16)
+                    .padding(.horizontal, DSLayout.spacing(.space16))
                 }
-                .padding(.top, DSSpacing.space8)
-                .padding(.bottom, DSSpacing.space32)
+                .padding(.top, DSLayout.spacing(.space8))
+                .padding(.bottom, DSLayout.spacing(.space32))
             }
         }
-        .background(DSColor.background)
+        .background(LegacyDSColor.background)
     }
 }
 

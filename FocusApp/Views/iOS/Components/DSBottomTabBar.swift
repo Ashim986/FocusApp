@@ -1,10 +1,10 @@
-// DSBottomTabBar.swift
+// LegacyDSBottomTabBar.swift
 // FocusApp — iPhone bottom tab bar (393x83)
 // Spec: FIGMA_SETUP_GUIDE.md §3.1
 
 import SwiftUI
 
-enum AppTab: String, CaseIterable {
+enum LegacyAppTab: String, CaseIterable {
     case today = "Today"
     case plan = "Plan"
     case stats = "Stats"
@@ -32,42 +32,42 @@ enum AppTab: String, CaseIterable {
     }
 }
 
-struct DSBottomTabBar: View {
-    @Binding var selectedTab: AppTab
+struct LegacyDSBottomTabBar: View {
+    @Binding var selectedTab: LegacyAppTab
 
     var body: some View {
         VStack(spacing: 0) {
             // Top border
             Rectangle()
-                .fill(DSColor.divider)
+                .fill(LegacyDSColor.divider)
                 .frame(height: 0.5)
 
             HStack(spacing: 0) {
-                ForEach(AppTab.allCases, id: \.self) { tab in
+                ForEach(LegacyAppTab.allCases, id: \.self) { tab in
                     Button {
                         selectedTab = tab
                     } label: {
-                        VStack(spacing: DSSpacing.space4) {
+                        VStack(spacing: DSLayout.spacing(.space4)) {
                             Image(systemName: selectedTab == tab ? tab.activeIconName : tab.iconName)
                                 .font(.system(size: 24))
                                 .frame(width: 24, height: 24)
 
                             Text(tab.rawValue)
-                                .font(DSTypography.micro)
+                                .font(LegacyDSTypography.micro)
                         }
-                        .foregroundColor(selectedTab == tab ? DSColor.purple : DSColor.gray400)
+                        .foregroundColor(selectedTab == tab ? LegacyDSColor.purple : LegacyDSColor.gray400)
                         .frame(maxWidth: .infinity)
                     }
                     .buttonStyle(.plain)
                 }
             }
-            .padding(.top, DSSpacing.space8)
-            .padding(.bottom, 34) // Safe area
+            .padding(.top, DSLayout.spacing(.space8))
+            .padding(.bottom, DSLayout.spacing(34)) // Safe area
         }
-        .background(DSColor.surface)
+        .background(LegacyDSColor.surface)
     }
 }
 
 #Preview {
-    DSBottomTabBar(selectedTab: .constant(.today))
+    LegacyDSBottomTabBar(selectedTab: .constant(.today))
 }

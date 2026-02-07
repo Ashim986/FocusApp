@@ -5,7 +5,7 @@ import SwiftUI
 struct PlanView: View {
     @ObservedObject var presenter: PlanPresenter
     let onSelectProblem: (_ problem: Problem, _ day: Int, _ index: Int) -> Void
-    @Environment(\.dsTheme) private var theme
+    @Environment(\.dsTheme) var theme
 
     var body: some View {
         ScrollView {

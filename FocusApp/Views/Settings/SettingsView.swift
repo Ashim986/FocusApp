@@ -8,7 +8,7 @@ import AppKit
 struct SettingsView: View {
     @ObservedObject var presenter: SettingsPresenter
     @ObservedObject var debugLogStore: DebugLogStore
-    @Environment(\.dsTheme) private var theme
+    @Environment(\.dsTheme) var theme
     @State private var isShowingLogs = false
     @State private var isShowingLeetCodeLogin = false
     @State private var isShowingAITestCases = false

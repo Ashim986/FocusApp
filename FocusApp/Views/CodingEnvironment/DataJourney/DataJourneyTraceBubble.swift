@@ -12,7 +12,7 @@ struct TraceBubble: View {
     let style: Style
     let highlighted: Bool
     let changeType: ChangeType?
-    @Environment(\.dsTheme) private var theme
+    @Environment(\.dsTheme) var theme
 
     private var palette: DataJourneyPalette {
         DataJourneyPalette(theme: theme)

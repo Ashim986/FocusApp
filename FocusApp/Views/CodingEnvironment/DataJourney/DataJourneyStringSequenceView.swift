@@ -12,7 +12,7 @@ struct StringSequenceView: View {
     let pointerFontSize: CGFloat
     let pointerHorizontalPadding: CGFloat
     let pointerVerticalPadding: CGFloat
-    @Environment(\.dsTheme) private var theme
+    @Environment(\.dsTheme) var theme
 
     private var palette: DataJourneyPalette {
         DataJourneyPalette(theme: theme)

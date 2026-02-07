@@ -11,98 +11,98 @@ struct iPhoneTodayView: View {
     var body: some View {
         VStack(spacing: 0) {
             // Header
-            DSHeaderBar(onSettingsTap: onSettingsTap)
+            LegacyDSHeaderBar(onSettingsTap: onSettingsTap)
 
             // Scrollable content
             ScrollView {
-                VStack(alignment: .leading, spacing: DSSpacing.space12) {
+                VStack(alignment: .leading, spacing: DSLayout.spacing(.space12)) {
                     // Date label
                     Text("FRIDAY, FEBRUARY 6")
-                        .font(DSTypography.captionStrong)
-                        .foregroundColor(DSColor.gray500)
+                        .font(LegacyDSTypography.captionStrong)
+                        .foregroundColor(LegacyDSColor.gray500)
                         .textCase(.uppercase)
-                        .padding(.horizontal, DSSpacing.space16)
+                        .padding(.horizontal, DSLayout.spacing(.space16))
 
                     // Greeting
                     Text("Good Morning, John")
-                        .font(DSTypography.title)
-                        .foregroundColor(DSColor.textPrimary)
-                        .padding(.horizontal, DSSpacing.space16)
+                        .font(LegacyDSTypography.title)
+                        .foregroundColor(LegacyDSColor.textPrimary)
+                        .padding(.horizontal, DSLayout.spacing(.space16))
 
                     // Streak badge
-                    DSStreakBadge(streakDays: 12)
-                        .padding(.horizontal, DSSpacing.space16)
+                    LegacyDSStreakBadge(streakDays: 12)
+                        .padding(.horizontal, DSLayout.spacing(.space16))
 
                     // Daily Goal Card
-                    DSDailyGoalCard(completed: 1, total: 4)
-                        .padding(.horizontal, DSSpacing.space16)
+                    LegacyDSDailyGoalCard(completed: 1, total: 4)
+                        .padding(.horizontal, DSLayout.spacing(.space16))
 
                     // Focus Time Card
-                    DSFocusTimeCard()
-                        .padding(.horizontal, DSSpacing.space16)
+                    LegacyDSFocusTimeCard()
+                        .padding(.horizontal, DSLayout.spacing(.space16))
 
                     // Start Focus CTA
-                    DSStartFocusCTA(onTap: onStartFocus)
-                        .padding(.horizontal, DSSpacing.space16)
+                    LegacyDSStartFocusCTA(onTap: onStartFocus)
+                        .padding(.horizontal, DSLayout.spacing(.space16))
 
                     // Today's Plan section
                     HStack {
                         Text("Today's Plan")
-                            .font(DSTypography.section)
-                            .foregroundColor(DSColor.textPrimary)
+                            .font(LegacyDSTypography.section)
+                            .foregroundColor(LegacyDSColor.textPrimary)
 
                         Spacer()
 
                         Button("View Full Plan") { }
-                            .font(DSTypography.subbody)
-                            .foregroundColor(DSColor.purple)
+                            .font(LegacyDSTypography.subbody)
+                            .foregroundColor(LegacyDSColor.purple)
                     }
-                    .padding(.horizontal, DSSpacing.space16)
-                    .padding(.top, DSSpacing.space8)
+                    .padding(.horizontal, DSLayout.spacing(.space16))
+                    .padding(.top, DSLayout.spacing(.space8))
 
                     // Task rows
                     VStack(spacing: 0) {
-                        DSTaskRow(
+                        LegacyDSTaskRow(
                             title: "Complete Two Sum",
                             subtitle: "Arrays & Hashing - LeetCode 75",
                             isCompleted: true,
                             difficulty: .easy
                         )
-                        Divider().padding(.leading, 52)
+                        Divider().padding(.leading, DSLayout.spacing(52))
 
-                        DSTaskRow(
+                        LegacyDSTaskRow(
                             title: "Read System Design Chapter 5",
                             subtitle: "System Design",
                             isCompleted: true
                         )
-                        Divider().padding(.leading, 52)
+                        Divider().padding(.leading, DSLayout.spacing(52))
 
-                        DSTaskRow(
+                        LegacyDSTaskRow(
                             title: "Review Pull Requests",
                             subtitle: "Code Review",
                             isCompleted: false
                         )
-                        Divider().padding(.leading, 52)
+                        Divider().padding(.leading, DSLayout.spacing(52))
 
-                        DSTaskRow(
+                        LegacyDSTaskRow(
                             title: "Exercise",
                             isCompleted: true,
                             progressText: "1/4"
                         )
                     }
-                    .background(DSColor.surface)
-                    .cornerRadius(DSRadius.medium)
+                    .background(LegacyDSColor.surface)
+                    .cornerRadius(LegacyDSRadius.medium)
                     .overlay(
-                        RoundedRectangle(cornerRadius: DSRadius.medium)
-                            .stroke(DSColor.divider, lineWidth: 1)
+                        RoundedRectangle(cornerRadius: LegacyDSRadius.medium)
+                            .stroke(LegacyDSColor.divider, lineWidth: 1)
                     )
-                    .padding(.horizontal, DSSpacing.space16)
+                    .padding(.horizontal, DSLayout.spacing(.space16))
                 }
-                .padding(.top, DSSpacing.space16)
-                .padding(.bottom, DSSpacing.space32)
+                .padding(.top, DSLayout.spacing(.space16))
+                .padding(.bottom, DSLayout.spacing(.space32))
             }
         }
-        .background(DSColor.background)
+        .background(LegacyDSColor.background)
     }
 }
 

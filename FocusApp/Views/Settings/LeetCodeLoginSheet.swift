@@ -11,7 +11,7 @@ typealias PlatformWebViewRepresentable = UIViewRepresentable
 struct LeetCodeLoginSheet: View {
     let onAuthCaptured: (LeetCodeAuthSession) -> Void
     let onClose: () -> Void
-    @Environment(\.dsTheme) private var theme
+    @Environment(\.dsTheme) var theme
 
     var body: some View {
         VStack(spacing: 16) {

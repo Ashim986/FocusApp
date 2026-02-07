@@ -6,7 +6,7 @@ struct OutputPanelView: View {
     let error: String
     let testCases: [TestCase]
     let isRunning: Bool
-    @Environment(\.dsTheme) private var theme
+    @Environment(\.dsTheme) var theme
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {

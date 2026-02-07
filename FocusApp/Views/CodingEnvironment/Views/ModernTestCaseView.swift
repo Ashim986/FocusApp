@@ -5,7 +5,7 @@ struct ModernTestCaseView: View {
     @ObservedObject var presenter: CodingEnvironmentPresenter
     @Binding var isCollapsed: Bool
     @State private var selectedTestIndex: Int = 0
-    @Environment(\.dsTheme) private var theme
+    @Environment(\.dsTheme) var theme
 
     var body: some View {
         VStack(spacing: 0) {

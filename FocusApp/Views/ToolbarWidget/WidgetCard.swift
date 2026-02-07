@@ -4,7 +4,7 @@ import SwiftUI
 struct WidgetCard<Content: View>: View {
     let fill: Color?
     let content: Content
-    @Environment(\.dsTheme) private var theme
+    @Environment(\.dsTheme) var theme
 
     init(fill: Color? = nil, @ViewBuilder content: () -> Content) {
         self.fill = fill

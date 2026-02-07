@@ -8,7 +8,7 @@ struct DataJourneyComparisonView: View {
     let currentEvent: DataJourneyEvent?
 
     @State private var isExpanded = false
-    @Environment(\.dsTheme) private var theme
+    @Environment(\.dsTheme) var theme
 
     private var palette: DataJourneyPalette {
         DataJourneyPalette(theme: theme)

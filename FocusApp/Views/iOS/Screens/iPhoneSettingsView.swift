@@ -3,6 +3,7 @@
 // Spec: FIGMA_SETUP_GUIDE.md §4.12
 
 import SwiftUI
+import FocusDesignSystem
 
 struct iPhoneSettingsView: View {
     var body: some View {
@@ -10,19 +11,19 @@ struct iPhoneSettingsView: View {
             DSHeaderBar()
 
             ScrollView {
-                VStack(alignment: .leading, spacing: DSSpacing.space16) {
+                VStack(alignment: .leading, spacing: DSLayout.spacing(.space16)) {
                     // Title
                     Text("Settings")
-                        .font(DSTypography.headline)
-                        .foregroundColor(DSColor.textPrimary)
-                        .padding(.horizontal, DSSpacing.space16)
+                        .font(DSMobileTypography.headline)
+                        .foregroundColor(DSMobileColor.textPrimary)
+                        .padding(.horizontal, DSLayout.spacing(.space16))
 
                     // ACCOUNT section
                     Text("ACCOUNT")
-                        .font(DSTypography.captionStrong)
-                        .foregroundColor(DSColor.gray500)
+                        .font(DSMobileTypography.captionStrong)
+                        .foregroundColor(DSMobileColor.gray500)
                         .textCase(.uppercase)
-                        .padding(.horizontal, DSSpacing.space16)
+                        .padding(.horizontal, DSLayout.spacing(.space16))
 
                     DSSurfaceCard(padding: 0) {
                         VStack(spacing: 0) {
@@ -33,7 +34,7 @@ struct iPhoneSettingsView: View {
                             )
 
                             Divider()
-                                .padding(.leading, 64)
+                                .padding(.leading, DSLayout.spacing(64))
 
                             DSSettingsRow(
                                 iconName: "shield",
@@ -42,14 +43,14 @@ struct iPhoneSettingsView: View {
                             )
                         }
                     }
-                    .padding(.horizontal, DSSpacing.space16)
+                    .padding(.horizontal, DSLayout.spacing(.space16))
 
                     // PREFERENCES section
                     Text("PREFERENCES")
-                        .font(DSTypography.captionStrong)
-                        .foregroundColor(DSColor.gray500)
+                        .font(DSMobileTypography.captionStrong)
+                        .foregroundColor(DSMobileColor.gray500)
                         .textCase(.uppercase)
-                        .padding(.horizontal, DSSpacing.space16)
+                        .padding(.horizontal, DSLayout.spacing(.space16))
 
                     DSSurfaceCard(padding: 0) {
                         VStack(spacing: 0) {
@@ -60,7 +61,7 @@ struct iPhoneSettingsView: View {
                             )
 
                             Divider()
-                                .padding(.leading, 64)
+                                .padding(.leading, DSLayout.spacing(64))
 
                             DSSettingsRow(
                                 iconName: "moon",
@@ -69,18 +70,18 @@ struct iPhoneSettingsView: View {
                             )
                         }
                     }
-                    .padding(.horizontal, DSSpacing.space16)
+                    .padding(.horizontal, DSLayout.spacing(.space16))
 
                     // Sign Out
                     DSSignOutButton()
-                        .padding(.horizontal, DSSpacing.space16)
-                        .padding(.top, DSSpacing.space8)
+                        .padding(.horizontal, DSLayout.spacing(.space16))
+                        .padding(.top, DSLayout.spacing(.space8))
                 }
-                .padding(.top, DSSpacing.space8)
-                .padding(.bottom, DSSpacing.space32)
+                .padding(.top, DSLayout.spacing(.space8))
+                .padding(.bottom, DSLayout.spacing(.space32))
             }
         }
-        .background(DSColor.background)
+        .background(DSMobileColor.background)
     }
 }
 

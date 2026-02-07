@@ -17,7 +17,7 @@ struct DictionaryStructureRow: View {
     let pointerHorizontalPadding: CGFloat
     let pointerVerticalPadding: CGFloat
     private let pointerSpacing: CGFloat = 2
-    @Environment(\.dsTheme) private var theme
+    @Environment(\.dsTheme) var theme
 
     private var palette: DataJourneyPalette {
         DataJourneyPalette(theme: theme)

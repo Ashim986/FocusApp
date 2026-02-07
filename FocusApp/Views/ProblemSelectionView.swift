@@ -4,7 +4,7 @@ import SwiftUI
 struct ProblemSelectionView: View {
     @ObservedObject var presenter: CodingEnvironmentPresenter
     let onBack: () -> Void
-    @Environment(\.dsTheme) private var theme
+    @Environment(\.dsTheme) var theme
 
     var body: some View {
         VStack(spacing: 0) {

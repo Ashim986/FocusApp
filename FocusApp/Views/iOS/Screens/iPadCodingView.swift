@@ -3,6 +3,7 @@
 // Spec: FIGMA_SETUP_GUIDE.md §5.5
 
 import SwiftUI
+import FocusDesignSystem
 
 struct iPadCodingView: View {
     @State private var searchText = ""
@@ -13,16 +14,16 @@ struct iPadCodingView: View {
             // Left panel: Problem list (220px)
             VStack(alignment: .leading, spacing: 0) {
                 Text("Coding Environment")
-                    .font(DSTypography.bodyStrong)
-                    .foregroundColor(DSColor.textPrimary)
-                    .padding(DSSpacing.space12)
+                    .font(DSMobileTypography.bodyStrong)
+                    .foregroundColor(DSMobileColor.textPrimary)
+                    .padding(DSLayout.spacing(.space12))
 
                 DSSearchBar(text: $searchText)
-                    .padding(.horizontal, DSSpacing.space12)
-                    .padding(.bottom, DSSpacing.space8)
+                    .padding(.horizontal, DSLayout.spacing(.space12))
+                    .padding(.bottom, DSLayout.spacing(.space8))
 
                 ScrollView {
-                    VStack(spacing: DSSpacing.space8) {
+                    VStack(spacing: DSLayout.spacing(.space8)) {
                         iPadProblemRow(
                             title: "Two Sum",
                             difficulty: "Easy",
@@ -44,13 +45,13 @@ struct iPadCodingView: View {
                             isSelected: selectedProblem == "Longest Substring"
                         ) { selectedProblem = "Longest Substring" }
                     }
-                    .padding(.horizontal, DSSpacing.space12)
+                    .padding(.horizontal, DSLayout.spacing(.space12))
                 }
             }
             .frame(width: 220)
-            .background(DSColor.surface)
+            .background(DSMobileColor.surface)
             .overlay(alignment: .trailing) {
-                Rectangle().fill(DSColor.divider).frame(width: 1)
+                Rectangle().fill(DSMobileColor.divider).frame(width: 1)
             }
 
             // Center panel: Content area
@@ -60,108 +61,108 @@ struct iPadCodingView: View {
                     Spacer()
                     Button {
                     } label: {
-                        HStack(spacing: DSSpacing.space4) {
+                        HStack(spacing: DSLayout.spacing(.space4)) {
                             Image(systemName: "play.fill")
                                 .font(.system(size: 12))
                             Text("Run")
-                                .font(DSTypography.subbodyStrong)
+                                .font(DSMobileTypography.subbodyStrong)
                         }
                         .foregroundColor(.white)
-                        .padding(.horizontal, DSSpacing.space16)
+                        .padding(.horizontal, DSLayout.spacing(.space16))
                         .frame(height: 36)
-                        .background(DSColor.purple)
-                        .cornerRadius(DSRadius.small)
+                        .background(DSMobileColor.purple)
+                        .cornerRadius(DSMobileRadius.small)
                     }
                     .buttonStyle(.plain)
                 }
-                .padding(DSSpacing.space12)
+                .padding(DSLayout.spacing(.space12))
 
                 if selectedProblem != nil {
                     ScrollView {
-                        VStack(alignment: .leading, spacing: DSSpacing.space12) {
+                        VStack(alignment: .leading, spacing: DSLayout.spacing(.space12)) {
                             Text(selectedProblem ?? "")
-                                .font(DSTypography.section)
-                                .foregroundColor(DSColor.textPrimary)
+                                .font(DSMobileTypography.section)
+                                .foregroundColor(DSMobileColor.textPrimary)
 
                             Text("Given an array of integers nums and an integer target, return indices of the two numbers such that they add up to target.")
-                                .font(DSTypography.body)
-                                .foregroundColor(DSColor.gray700)
+                                .font(DSMobileTypography.body)
+                                .foregroundColor(DSMobileColor.gray700)
                         }
-                        .padding(DSSpacing.space16)
+                        .padding(DSLayout.spacing(.space16))
                     }
                 } else {
                     Spacer()
                     Text("Select a problem")
-                        .font(DSTypography.body)
-                        .foregroundColor(DSColor.gray400)
+                        .font(DSMobileTypography.body)
+                        .foregroundColor(DSMobileColor.gray400)
                         .frame(maxWidth: .infinity)
                     Spacer()
                 }
 
                 // Bottom description section
                 Divider()
-                VStack(alignment: .leading, spacing: DSSpacing.space8) {
+                VStack(alignment: .leading, spacing: DSLayout.spacing(.space8)) {
                     Text("DESCRIPTION")
-                        .font(DSTypography.captionStrong)
-                        .foregroundColor(DSColor.gray400)
+                        .font(DSMobileTypography.captionStrong)
+                        .foregroundColor(DSMobileColor.gray400)
                         .textCase(.uppercase)
 
                     Text(selectedProblem == nil
                         ? "No problem selected."
                         : "Problem description shown above.")
-                        .font(DSTypography.body)
-                        .foregroundColor(DSColor.gray400)
+                        .font(DSMobileTypography.body)
+                        .foregroundColor(DSMobileColor.gray400)
                 }
-                .padding(DSSpacing.space12)
+                .padding(DSLayout.spacing(.space12))
             }
-            .background(DSColor.background)
+            .background(DSMobileColor.background)
 
             // Right panel: Output (140px)
-            VStack(alignment: .leading, spacing: DSSpacing.space8) {
+            VStack(alignment: .leading, spacing: DSLayout.spacing(.space8)) {
                 Text("OUTPUT / TEST CASES")
-                    .font(DSTypography.captionStrong)
-                    .foregroundColor(DSColor.gray400)
+                    .font(DSMobileTypography.captionStrong)
+                    .foregroundColor(DSMobileColor.gray400)
                     .textCase(.uppercase)
 
                 Text("Case 1")
-                    .font(DSTypography.subbodyStrong)
-                    .foregroundColor(DSColor.textPrimary)
+                    .font(DSMobileTypography.subbodyStrong)
+                    .foregroundColor(DSMobileColor.textPrimary)
 
                 // Input block
-                VStack(alignment: .leading, spacing: DSSpacing.space4) {
+                VStack(alignment: .leading, spacing: DSLayout.spacing(.space4)) {
                     Text("Input:")
-                        .font(DSTypography.captionStrong)
-                        .foregroundColor(DSColor.gray500)
+                        .font(DSMobileTypography.captionStrong)
+                        .foregroundColor(DSMobileColor.gray500)
                     Text("nums = [2,7,11,15]\ntarget = 9")
-                        .font(DSTypography.code)
-                        .foregroundColor(DSColor.gray300)
-                        .padding(DSSpacing.space8)
-                        .background(DSColor.gray800)
-                        .cornerRadius(DSRadius.small)
+                        .font(DSMobileTypography.code)
+                        .foregroundColor(DSMobileColor.gray300)
+                        .padding(DSLayout.spacing(.space8))
+                        .background(DSMobileColor.gray800)
+                        .cornerRadius(DSMobileRadius.small)
                 }
 
                 Text("Output: [0,1]")
-                    .font(DSTypography.code)
-                    .foregroundColor(DSColor.textPrimary)
+                    .font(DSMobileTypography.code)
+                    .foregroundColor(DSMobileColor.textPrimary)
 
                 Divider()
 
                 Text("Console")
-                    .font(DSTypography.captionStrong)
-                    .foregroundColor(DSColor.gray400)
+                    .font(DSMobileTypography.captionStrong)
+                    .foregroundColor(DSMobileColor.gray400)
 
                 Text("No output yet...")
-                    .font(DSTypography.code)
-                    .foregroundColor(DSColor.gray400)
+                    .font(DSMobileTypography.code)
+                    .foregroundColor(DSMobileColor.gray400)
                     .italic()
 
                 Spacer()
             }
-            .padding(DSSpacing.space12)
+            .padding(DSLayout.spacing(.space12))
             .frame(width: 140)
-            .background(DSColor.surface)
+            .background(DSMobileColor.surface)
             .overlay(alignment: .leading) {
-                Rectangle().fill(DSColor.divider).frame(width: 1)
+                Rectangle().fill(DSMobileColor.divider).frame(width: 1)
             }
         }
     }
@@ -176,32 +177,32 @@ struct iPadProblemRow: View {
 
     var body: some View {
         Button(action: onTap) {
-            HStack(spacing: DSSpacing.space8) {
-                VStack(alignment: .leading, spacing: DSSpacing.space2) {
+            HStack(spacing: DSLayout.spacing(.space8)) {
+                VStack(alignment: .leading, spacing: DSLayout.spacing(.space2)) {
                     Text(title)
-                        .font(DSTypography.subbodyStrong)
-                        .foregroundColor(DSColor.gray900)
+                        .font(DSMobileTypography.subbodyStrong)
+                        .foregroundColor(DSMobileColor.gray900)
 
                     Text(difficulty)
-                        .font(DSTypography.caption)
-                        .foregroundColor(DSColor.gray500)
+                        .font(DSMobileTypography.caption)
+                        .foregroundColor(DSMobileColor.gray500)
                 }
 
                 Spacer()
 
                 if isSolved {
                     Image(systemName: "checkmark.circle.fill")
-                        .foregroundColor(DSColor.green)
+                        .foregroundColor(DSMobileColor.green)
                         .font(.system(size: 16))
                 } else {
                     Circle()
-                        .stroke(DSColor.gray300, lineWidth: 1)
+                        .stroke(DSMobileColor.gray300, lineWidth: 1)
                         .frame(width: 16, height: 16)
                 }
             }
-            .padding(DSSpacing.space8)
-            .background(isSelected ? DSColor.purple.opacity(0.08) : Color.clear)
-            .cornerRadius(DSRadius.small)
+            .padding(DSLayout.spacing(.space8))
+            .background(isSelected ? DSMobileColor.purple.opacity(0.08) : Color.clear)
+            .cornerRadius(DSMobileRadius.small)
         }
         .buttonStyle(.plain)
     }

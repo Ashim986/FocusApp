@@ -6,7 +6,7 @@ struct ProblemRow: View {
     let isCompleted: Bool
     let onToggle: () -> Void
     let onSelect: () -> Void
-    @Environment(\.dsTheme) private var theme
+    @Environment(\.dsTheme) var theme
 
     var body: some View {
         HStack(spacing: 12) {

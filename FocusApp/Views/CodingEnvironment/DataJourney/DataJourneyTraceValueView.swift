@@ -3,7 +3,7 @@ import SwiftUI
 
 struct TraceValueView: View {
     let value: TraceValue
-    @Environment(\.dsTheme) private var theme
+    @Environment(\.dsTheme) var theme
 
     private var palette: DataJourneyPalette {
         DataJourneyPalette(theme: theme)

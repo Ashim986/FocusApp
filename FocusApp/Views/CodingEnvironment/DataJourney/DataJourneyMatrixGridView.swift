@@ -11,7 +11,7 @@ struct MatrixGridView: View {
     let pointers: MatrixPointerCell?
     let highlightedCells: Set<MatrixCell>
     let bubbleSize: CGFloat
-    @Environment(\.dsTheme) private var theme
+    @Environment(\.dsTheme) var theme
 
     private var palette: DataJourneyPalette {
         DataJourneyPalette(theme: theme)

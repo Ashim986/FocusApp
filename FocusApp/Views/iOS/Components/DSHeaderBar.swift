@@ -1,10 +1,10 @@
-// DSHeaderBar.swift
+// LegacyDSHeaderBar.swift
 // FocusApp — iPhone header bar (393x44)
 // Spec: FIGMA_SETUP_GUIDE.md §3.3
 
 import SwiftUI
 
-struct DSHeaderBar: View {
+struct LegacyDSHeaderBar: View {
     var title: String = "FocusApp"
     var showSettings: Bool = true
     var onSettingsTap: (() -> Void)?
@@ -14,8 +14,8 @@ struct DSHeaderBar: View {
             Spacer()
 
             Text(title)
-                .font(DSTypography.bodyStrong)
-                .foregroundColor(DSColor.textPrimary)
+                .font(LegacyDSTypography.bodyStrong)
+                .foregroundColor(LegacyDSColor.textPrimary)
 
             Spacer()
         }
@@ -26,19 +26,19 @@ struct DSHeaderBar: View {
                 } label: {
                     Image(systemName: "gearshape")
                         .font(.system(size: 20))
-                        .foregroundColor(DSColor.gray600)
+                        .foregroundColor(LegacyDSColor.gray600)
                         .frame(width: 24, height: 24)
                 }
                 .buttonStyle(.plain)
-                .padding(.trailing, DSSpacing.space16)
+                .padding(.trailing, DSLayout.spacing(.space16))
             }
         }
         .frame(height: 44)
-        .padding(.horizontal, DSSpacing.space16)
-        .background(DSColor.background)
+        .padding(.horizontal, DSLayout.spacing(.space16))
+        .background(LegacyDSColor.background)
     }
 }
 
 #Preview {
-    DSHeaderBar()
+    LegacyDSHeaderBar()
 }

@@ -1,21 +1,21 @@
-// DSTimerRing.swift
+// LegacyDSTimerRing.swift
 // FocusApp — Timer ring (280x280 iPhone, 400x400 iPad)
 // Spec: FIGMA_SETUP_GUIDE.md §3.13
 
 import SwiftUI
 
-struct DSTimerRing: View {
+struct LegacyDSTimerRing: View {
     var timeText: String = "25:00"
     var statusText: String = "PAUSED"
     var progress: Double = 0.0 // 0.0 to 1.0
-    var ringColor: Color = DSColor.red
+    var ringColor: Color = LegacyDSColor.red
     var size: CGFloat = 280
 
     var body: some View {
         ZStack {
             // Track circle
             Circle()
-                .stroke(DSColor.gray200, lineWidth: 8)
+                .stroke(LegacyDSColor.gray200, lineWidth: 8)
                 .frame(width: size, height: size)
 
             // Progress arc
@@ -35,14 +35,14 @@ struct DSTimerRing: View {
             }
 
             // Center text
-            VStack(spacing: DSSpacing.space4) {
+            VStack(spacing: DSLayout.spacing(.space4)) {
                 Text(timeText)
-                    .font(DSTypography.timerLarge)
-                    .foregroundColor(DSColor.gray900)
+                    .font(LegacyDSTypography.timerLarge)
+                    .foregroundColor(LegacyDSColor.gray900)
 
                 Text(statusText)
-                    .font(DSTypography.captionStrong)
-                    .foregroundColor(DSColor.gray400)
+                    .font(LegacyDSTypography.captionStrong)
+                    .foregroundColor(LegacyDSColor.gray400)
                     .kerning(2)
             }
         }
@@ -51,13 +51,13 @@ struct DSTimerRing: View {
 }
 
 #Preview {
-    VStack(spacing: 40) {
-        DSTimerRing(progress: 0.0)
-        DSTimerRing(
+    VStack(spacing: DSLayout.spacing(40)) {
+        LegacyDSTimerRing(progress: 0.0)
+        LegacyDSTimerRing(
             timeText: "24:54",
             statusText: "RUNNING",
             progress: 0.004,
-            ringColor: DSColor.red
+            ringColor: LegacyDSColor.red
         )
     }
 }

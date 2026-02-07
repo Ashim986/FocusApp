@@ -1,37 +1,37 @@
-// DSSettingsRow.swift
+// LegacyDSSettingsRow.swift
 // FocusApp — Settings row (56px height)
 // Spec: FIGMA_SETUP_GUIDE.md §3.23
 
 import SwiftUI
 
-struct DSSettingsRow: View {
+struct LegacyDSSettingsRow: View {
     var iconName: String
     var title: String
     var subtitle: String?
     var statusText: String?
 
     var body: some View {
-        HStack(spacing: DSSpacing.space12) {
+        HStack(spacing: DSLayout.spacing(.space12)) {
             // Icon in circle
             ZStack {
                 Circle()
-                    .fill(DSColor.gray100)
+                    .fill(LegacyDSColor.gray100)
                     .frame(width: 36, height: 36)
                 Image(systemName: iconName)
                     .font(.system(size: 16))
-                    .foregroundColor(DSColor.gray600)
+                    .foregroundColor(LegacyDSColor.gray600)
             }
 
             // Content
-            VStack(alignment: .leading, spacing: DSSpacing.space2) {
+            VStack(alignment: .leading, spacing: DSLayout.spacing(.space2)) {
                 Text(title)
-                    .font(DSTypography.bodyStrong)
-                    .foregroundColor(DSColor.gray900)
+                    .font(LegacyDSTypography.bodyStrong)
+                    .foregroundColor(LegacyDSColor.gray900)
 
                 if let subtitle {
                     Text(subtitle)
-                        .font(DSTypography.caption)
-                        .foregroundColor(DSColor.gray500)
+                        .font(LegacyDSTypography.caption)
+                        .foregroundColor(LegacyDSColor.gray500)
                 }
             }
 
@@ -39,24 +39,24 @@ struct DSSettingsRow: View {
 
             if let statusText {
                 Text(statusText)
-                    .font(DSTypography.subbody)
-                    .foregroundColor(DSColor.gray500)
+                    .font(LegacyDSTypography.subbody)
+                    .foregroundColor(LegacyDSColor.gray500)
             }
 
             // Chevron
             Image(systemName: "chevron.right")
                 .font(.system(size: 12))
-                .foregroundColor(DSColor.gray400)
+                .foregroundColor(LegacyDSColor.gray400)
         }
-        .padding(.horizontal, DSSpacing.space16)
+        .padding(.horizontal, DSLayout.spacing(.space16))
         .frame(height: 56)
     }
 }
 
 #Preview {
     VStack(spacing: 0) {
-        DSSettingsRow(iconName: "person", title: "Profile", subtitle: "John Doe")
-        Divider().padding(.leading, 64)
-        DSSettingsRow(iconName: "shield", title: "Security", subtitle: "Password, 2FA")
+        LegacyDSSettingsRow(iconName: "person", title: "Profile", subtitle: "John Doe")
+        Divider().padding(.leading, DSLayout.spacing(64))
+        LegacyDSSettingsRow(iconName: "shield", title: "Security", subtitle: "Password, 2FA")
     }
 }

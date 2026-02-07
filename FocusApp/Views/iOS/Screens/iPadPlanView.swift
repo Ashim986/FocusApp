@@ -6,39 +6,39 @@ import SwiftUI
 
 struct iPadPlanView: View {
     var body: some View {
-        VStack(alignment: .leading, spacing: DSSpacing.space16) {
+        VStack(alignment: .leading, spacing: DSLayout.spacing(.space16)) {
             Text("Study Plan")
-                .font(DSTypography.headline)
-                .foregroundColor(DSColor.textPrimary)
-                .padding(.horizontal, DSSpacing.space24)
-                .padding(.top, DSSpacing.space24)
+                .font(LegacyDSTypography.headline)
+                .foregroundColor(LegacyDSColor.textPrimary)
+                .padding(.horizontal, DSLayout.spacing(.space24))
+                .padding(.top, DSLayout.spacing(.space24))
 
             // Two-column layout
-            HStack(alignment: .top, spacing: DSSpacing.space12) {
+            HStack(alignment: .top, spacing: DSLayout.spacing(.space12)) {
                 // Left column: Calendar
-                DSCalendarGrid()
+                LegacyDSCalendarGrid()
 
                 // Right column: Schedule
-                VStack(alignment: .leading, spacing: DSSpacing.space12) {
+                VStack(alignment: .leading, spacing: DSLayout.spacing(.space12)) {
                     Text("Schedule for February 7th")
-                        .font(DSTypography.section)
-                        .foregroundColor(DSColor.textPrimary)
+                        .font(LegacyDSTypography.section)
+                        .foregroundColor(LegacyDSColor.textPrimary)
 
-                    DSScheduleRow(
+                    LegacyDSScheduleRow(
                         time: "09:00 AM",
                         title: "Morning Review",
                         subtitle: "Review yesterday's problems",
                         state: .active
                     )
 
-                    DSScheduleRow(
+                    LegacyDSScheduleRow(
                         time: "10:30 AM",
                         title: "Graph Theory",
                         subtitle: "BFS and DFS practice",
                         state: .normal
                     )
 
-                    DSScheduleRow(
+                    LegacyDSScheduleRow(
                         time: "02:00 PM",
                         title: "Mock Interview",
                         subtitle: "System Design with Peer",
@@ -48,7 +48,7 @@ struct iPadPlanView: View {
                     Spacer()
                 }
             }
-            .padding(.horizontal, DSSpacing.space24)
+            .padding(.horizontal, DSLayout.spacing(.space24))
 
             Spacer()
         }

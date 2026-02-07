@@ -3,6 +3,7 @@
 // Spec: Design-Spec.md Navigation Patterns § iPad
 
 import SwiftUI
+import FocusDesignSystem
 
 struct iPadMainView: View {
     @State private var selectedItem: SidebarItem = .today
@@ -35,17 +36,17 @@ struct iPadMainView: View {
             // Floating help button
             Button { } label: {
                 Text("?")
-                    .font(DSTypography.bodyStrong)
+                    .font(DSMobileTypography.bodyStrong)
                     .foregroundColor(.white)
                     .frame(width: 48, height: 48)
-                    .background(DSColor.gray800)
+                    .background(DSMobileColor.gray800)
                     .clipShape(Circle())
                     .shadow(color: .black.opacity(0.1), radius: 12, x: 0, y: 4)
             }
             .buttonStyle(.plain)
-            .padding(DSSpacing.space24)
+            .padding(DSLayout.spacing(.space24))
         }
-        .background(DSColor.background)
+        .background(DSMobileColor.background)
     }
 }
 

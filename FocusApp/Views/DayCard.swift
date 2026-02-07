@@ -6,7 +6,7 @@ struct DayCard: View {
     let onToggleProblem: (Int) -> Void
     let onSelectProblem: (Int) -> Void
     @State private var isExpanded = false
-    @Environment(\.dsTheme) private var theme
+    @Environment(\.dsTheme) var theme
 
     var body: some View {
         DSCard(config: .init(style: .elevated, padding: 0)) {

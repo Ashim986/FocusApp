@@ -91,7 +91,7 @@ struct CodeEditorView: NSViewRepresentable {
     let isEditable: Bool
     let showsLineNumbers: Bool
     let onRun: (() -> Void)?
-    @Environment(\.dsTheme) private var theme
+    @Environment(\.dsTheme) var theme
 
     init(
         code: Binding<String>,

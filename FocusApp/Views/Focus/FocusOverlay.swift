@@ -4,7 +4,7 @@ import SwiftUI
 struct FocusOverlay: View {
     @ObservedObject var presenter: FocusPresenter
     @Binding var isPresented: Bool
-    @Environment(\.dsTheme) private var theme
+    @Environment(\.dsTheme) var theme
 
     private let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
 

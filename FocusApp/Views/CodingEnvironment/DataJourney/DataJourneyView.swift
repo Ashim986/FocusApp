@@ -9,7 +9,7 @@ struct DataJourneyView: View {
     @State var isPlaying = false
     @State var playbackSpeed = 1.0
     @State var playbackTask: Task<Void, Never>?
-    @Environment(\.dsTheme) private var theme
+    @Environment(\.dsTheme) var theme
 
     var palette: DataJourneyPalette {
         DataJourneyPalette(theme: theme)

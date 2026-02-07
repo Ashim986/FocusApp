@@ -1,0 +1,581 @@
+{
+  "global": {
+    "colors": {
+      "brand": {
+        "purple": {
+          "value": "#6366F1",
+          "type": "color",
+          "description": "Primary accent, active tabs, buttons"
+        },
+        "indigo": {
+          "value": "#1E1B4B",
+          "type": "color",
+          "description": "Dark accents"
+        },
+        "indigoLight": {
+          "value": "#312E81",
+          "type": "color",
+          "description": "Dark accent variant"
+        },
+        "green": {
+          "value": "#10B981",
+          "type": "color",
+          "description": "Success, Easy badge, completion"
+        },
+        "greenLight": {
+          "value": "#D1FAE5",
+          "type": "color",
+          "description": "Easy badge background"
+        },
+        "cyan": {
+          "value": "#22D3EE",
+          "type": "color",
+          "description": "Secondary accent"
+        },
+        "amber": {
+          "value": "#F59E0B",
+          "type": "color",
+          "description": "Warning, Medium badge text"
+        },
+        "amberLight": {
+          "value": "#FEF3C7",
+          "type": "color",
+          "description": "Medium badge background"
+        },
+        "red": {
+          "value": "#EF4444",
+          "type": "color",
+          "description": "Error, Hard badge, Sign Out"
+        },
+        "redLight": {
+          "value": "#FEE2E2",
+          "type": "color",
+          "description": "Hard badge bg, Pomodoro timer bg"
+        }
+      },
+      "neutral": {
+        "gray50": {
+          "value": "#F9FAFB",
+          "type": "color",
+          "description": "Background (light)"
+        },
+        "gray100": {
+          "value": "#F3F4F6",
+          "type": "color",
+          "description": "Surface elevated"
+        },
+        "gray200": {
+          "value": "#E5E7EB",
+          "type": "color",
+          "description": "Dividers, borders"
+        },
+        "gray300": {
+          "value": "#D1D5DB",
+          "type": "color",
+          "description": "Disabled states"
+        },
+        "gray400": {
+          "value": "#9CA3AF",
+          "type": "color",
+          "description": "Inactive tab icons"
+        },
+        "gray500": {
+          "value": "#6B7280",
+          "type": "color",
+          "description": "Secondary text (light)"
+        },
+        "gray600": {
+          "value": "#4B5563",
+          "type": "color",
+          "description": "Body text secondary"
+        },
+        "gray700": {
+          "value": "#374151",
+          "type": "color",
+          "description": "Dark surface elevated"
+        },
+        "gray800": {
+          "value": "#1F2937",
+          "type": "color",
+          "description": "Dark surface, code editor bg"
+        },
+        "gray900": {
+          "value": "#111827",
+          "type": "color",
+          "description": "Dark background, primary text"
+        }
+      },
+      "semantic": {
+        "background": {
+          "value": "{colors.neutral.gray50}",
+          "type": "color",
+          "description": "Main background"
+        },
+        "surface": {
+          "value": "#FFFFFF",
+          "type": "color",
+          "description": "Card/surface background"
+        },
+        "surfaceElevated": {
+          "value": "{colors.neutral.gray100}",
+          "type": "color",
+          "description": "Elevated surfaces"
+        },
+        "textPrimary": {
+          "value": "{colors.neutral.gray900}",
+          "type": "color",
+          "description": "Primary text"
+        },
+        "textSecondary": {
+          "value": "{colors.neutral.gray600}",
+          "type": "color",
+          "description": "Secondary text"
+        },
+        "divider": {
+          "value": "{colors.neutral.gray200}",
+          "type": "color",
+          "description": "Dividers and borders"
+        },
+        "accent": {
+          "value": "{colors.brand.purple}",
+          "type": "color",
+          "description": "Primary accent"
+        },
+        "success": {
+          "value": "{colors.brand.green}",
+          "type": "color",
+          "description": "Success states"
+        },
+        "warning": {
+          "value": "{colors.brand.amber}",
+          "type": "color",
+          "description": "Warning states"
+        },
+        "error": {
+          "value": "{colors.brand.red}",
+          "type": "color",
+          "description": "Error states"
+        }
+      },
+      "difficulty": {
+        "easyBg": {
+          "value": "{colors.brand.greenLight}",
+          "type": "color",
+          "description": "Easy badge background"
+        },
+        "easyText": {
+          "value": "#059669",
+          "type": "color",
+          "description": "Easy badge text"
+        },
+        "mediumBg": {
+          "value": "{colors.brand.amberLight}",
+          "type": "color",
+          "description": "Medium badge background"
+        },
+        "mediumText": {
+          "value": "#D97706",
+          "type": "color",
+          "description": "Medium badge text"
+        },
+        "hardBg": {
+          "value": "{colors.brand.redLight}",
+          "type": "color",
+          "description": "Hard badge background"
+        },
+        "hardText": {
+          "value": "#DC2626",
+          "type": "color",
+          "description": "Hard badge text"
+        }
+      },
+      "streak": {
+        "bg": {
+          "value": "#FFF7ED",
+          "type": "color",
+          "description": "Streak badge background"
+        },
+        "border": {
+          "value": "#FDBA74",
+          "type": "color",
+          "description": "Streak badge border"
+        },
+        "text": {
+          "value": "#EA580C",
+          "type": "color",
+          "description": "Streak badge text"
+        }
+      }
+    },
+    "typography": {
+      "title": {
+        "value": {
+          "fontFamily": "SF Pro",
+          "fontWeight": "Bold",
+          "fontSize": "32",
+          "lineHeight": "auto"
+        },
+        "type": "typography",
+        "description": "Page titles, large headers"
+      },
+      "headline": {
+        "value": {
+          "fontFamily": "SF Pro",
+          "fontWeight": "Bold",
+          "fontSize": "24",
+          "lineHeight": "auto"
+        },
+        "type": "typography",
+        "description": "Section headlines"
+      },
+      "section": {
+        "value": {
+          "fontFamily": "SF Pro",
+          "fontWeight": "Semibold",
+          "fontSize": "20",
+          "lineHeight": "auto"
+        },
+        "type": "typography",
+        "description": "Section headers"
+      },
+      "body": {
+        "value": {
+          "fontFamily": "SF Pro",
+          "fontWeight": "Regular",
+          "fontSize": "16",
+          "lineHeight": "auto"
+        },
+        "type": "typography",
+        "description": "Body text"
+      },
+      "bodyStrong": {
+        "value": {
+          "fontFamily": "SF Pro",
+          "fontWeight": "Semibold",
+          "fontSize": "16",
+          "lineHeight": "auto"
+        },
+        "type": "typography",
+        "description": "Bold body text"
+      },
+      "subbody": {
+        "value": {
+          "fontFamily": "SF Pro",
+          "fontWeight": "Regular",
+          "fontSize": "14",
+          "lineHeight": "auto"
+        },
+        "type": "typography",
+        "description": "Smaller body text"
+      },
+      "subbodyStrong": {
+        "value": {
+          "fontFamily": "SF Pro",
+          "fontWeight": "Semibold",
+          "fontSize": "14",
+          "lineHeight": "auto"
+        },
+        "type": "typography",
+        "description": "Bold smaller body"
+      },
+      "caption": {
+        "value": {
+          "fontFamily": "SF Pro",
+          "fontWeight": "Regular",
+          "fontSize": "12",
+          "lineHeight": "auto"
+        },
+        "type": "typography",
+        "description": "Captions, labels"
+      },
+      "captionStrong": {
+        "value": {
+          "fontFamily": "SF Pro",
+          "fontWeight": "Semibold",
+          "fontSize": "12",
+          "lineHeight": "auto"
+        },
+        "type": "typography",
+        "description": "Bold captions"
+      },
+      "micro": {
+        "value": {
+          "fontFamily": "SF Pro",
+          "fontWeight": "Regular",
+          "fontSize": "11",
+          "lineHeight": "auto"
+        },
+        "type": "typography",
+        "description": "Micro text, tab labels"
+      },
+      "microStrong": {
+        "value": {
+          "fontFamily": "SF Pro",
+          "fontWeight": "Semibold",
+          "fontSize": "11",
+          "lineHeight": "auto"
+        },
+        "type": "typography",
+        "description": "Bold micro text"
+      },
+      "code": {
+        "value": {
+          "fontFamily": "SF Mono",
+          "fontWeight": "Regular",
+          "fontSize": "12",
+          "lineHeight": "auto"
+        },
+        "type": "typography",
+        "description": "Code display"
+      },
+      "codeMicro": {
+        "value": {
+          "fontFamily": "SF Mono",
+          "fontWeight": "Regular",
+          "fontSize": "11",
+          "lineHeight": "auto"
+        },
+        "type": "typography",
+        "description": "Small code text"
+      },
+      "timerLarge": {
+        "value": {
+          "fontFamily": "SF Pro",
+          "fontWeight": "Bold",
+          "fontSize": "64",
+          "lineHeight": "auto"
+        },
+        "type": "typography",
+        "description": "Focus timer display"
+      }
+    },
+    "spacing": {
+      "space2": {
+        "value": "2",
+        "type": "spacing",
+        "description": "Micro spacing"
+      },
+      "space4": {
+        "value": "4",
+        "type": "spacing",
+        "description": "Tight spacing"
+      },
+      "space8": {
+        "value": "8",
+        "type": "spacing",
+        "description": "Small spacing"
+      },
+      "space12": {
+        "value": "12",
+        "type": "spacing",
+        "description": "Standard gap"
+      },
+      "space16": {
+        "value": "16",
+        "type": "spacing",
+        "description": "Content padding"
+      },
+      "space24": {
+        "value": "24",
+        "type": "spacing",
+        "description": "Section spacing"
+      },
+      "space32": {
+        "value": "32",
+        "type": "spacing",
+        "description": "Large section gap"
+      },
+      "space48": {
+        "value": "48",
+        "type": "spacing",
+        "description": "Extra large gap"
+      },
+      "space64": {
+        "value": "64",
+        "type": "spacing",
+        "description": "Maximum spacing"
+      }
+    },
+    "borderRadius": {
+      "small": {
+        "value": "8",
+        "type": "borderRadius",
+        "description": "Subtle rounding, badges"
+      },
+      "medium": {
+        "value": "12",
+        "type": "borderRadius",
+        "description": "Cards, inputs"
+      },
+      "large": {
+        "value": "16",
+        "type": "borderRadius",
+        "description": "Large cards, modals"
+      },
+      "full": {
+        "value": "9999",
+        "type": "borderRadius",
+        "description": "Fully rounded, pills"
+      }
+    },
+    "boxShadow": {
+      "card": {
+        "value": {
+          "x": "0",
+          "y": "1",
+          "blur": "3",
+          "spread": "0",
+          "color": "rgba(0, 0, 0, 0.08)",
+          "type": "dropShadow"
+        },
+        "type": "boxShadow",
+        "description": "Default card shadow"
+      },
+      "cardHover": {
+        "value": {
+          "x": "0",
+          "y": "4",
+          "blur": "12",
+          "spread": "0",
+          "color": "rgba(0, 0, 0, 0.12)",
+          "type": "dropShadow"
+        },
+        "type": "boxShadow",
+        "description": "Elevated card shadow"
+      }
+    },
+    "sizing": {
+      "tabBarHeight": {
+        "value": "83",
+        "type": "sizing",
+        "description": "iPhone tab bar height (includes safe area)"
+      },
+      "headerHeight": {
+        "value": "44",
+        "type": "sizing",
+        "description": "iPhone header bar height"
+      },
+      "sidebarWidth": {
+        "value": "260",
+        "type": "sizing",
+        "description": "iPad sidebar width"
+      },
+      "widgetWidth": {
+        "value": "350",
+        "type": "sizing",
+        "description": "Mac floating widget width"
+      },
+      "widgetHeight": {
+        "value": "560",
+        "type": "sizing",
+        "description": "Mac floating widget height"
+      },
+      "taskRowHeight": {
+        "value": "56",
+        "type": "sizing",
+        "description": "Task row height"
+      },
+      "settingsRowHeight": {
+        "value": "56",
+        "type": "sizing",
+        "description": "Settings row height"
+      },
+      "scheduleRowHeight": {
+        "value": "72",
+        "type": "sizing",
+        "description": "Schedule row height"
+      },
+      "timerRingIphone": {
+        "value": "280",
+        "type": "sizing",
+        "description": "iPhone timer ring diameter"
+      },
+      "timerRingIpad": {
+        "value": "400",
+        "type": "sizing",
+        "description": "iPad timer ring diameter"
+      },
+      "timerRingMac": {
+        "value": "360",
+        "type": "sizing",
+        "description": "Mac timer ring diameter"
+      }
+    }
+  },
+  "dark": {
+    "colors": {
+      "semantic": {
+        "background": {
+          "value": "{colors.neutral.gray900}",
+          "type": "color",
+          "description": "Dark mode background"
+        },
+        "surface": {
+          "value": "{colors.neutral.gray800}",
+          "type": "color",
+          "description": "Dark mode surface"
+        },
+        "surfaceElevated": {
+          "value": "{colors.neutral.gray700}",
+          "type": "color",
+          "description": "Dark mode elevated surface"
+        },
+        "textPrimary": {
+          "value": "{colors.neutral.gray50}",
+          "type": "color",
+          "description": "Dark mode primary text"
+        },
+        "textSecondary": {
+          "value": "{colors.neutral.gray300}",
+          "type": "color",
+          "description": "Dark mode secondary text"
+        },
+        "divider": {
+          "value": "{colors.neutral.gray700}",
+          "type": "color",
+          "description": "Dark mode divider"
+        },
+        "accent": {
+          "value": "{colors.brand.purple}",
+          "type": "color",
+          "description": "Accent (same in dark)"
+        },
+        "success": {
+          "value": "{colors.brand.green}",
+          "type": "color",
+          "description": "Success (same in dark)"
+        },
+        "warning": {
+          "value": "{colors.brand.amber}",
+          "type": "color",
+          "description": "Warning (same in dark)"
+        },
+        "error": {
+          "value": "{colors.brand.red}",
+          "type": "color",
+          "description": "Error (same in dark)"
+        }
+      }
+    }
+  },
+  "$themes": [
+    {
+      "id": "light",
+      "name": "Light",
+      "selectedTokenSets": {
+        "global": "enabled"
+      }
+    },
+    {
+      "id": "dark",
+      "name": "Dark",
+      "selectedTokenSets": {
+        "global": "enabled",
+        "dark": "enabled"
+      }
+    }
+  ],
+  "$metadata": {
+    "tokenSetOrder": ["global", "dark"]
+  }
+}

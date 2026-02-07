@@ -8,7 +8,7 @@ struct VariableTimelineView: View {
     let onSelectIndex: (Int) -> Void
 
     @State private var isExpanded = false
-    @Environment(\.dsTheme) private var theme
+    @Environment(\.dsTheme) var theme
 
     private var palette: DataJourneyPalette {
         DataJourneyPalette(theme: theme)

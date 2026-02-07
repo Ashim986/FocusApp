@@ -7,7 +7,7 @@ struct ToolbarWidgetView: View {
     @State var showTomorrow: Bool = false
     @State var showSettings: Bool = false
     private let panelWidth: CGFloat = 350
-    @Environment(\.dsTheme) private var theme
+    @Environment(\.dsTheme) var theme
 
     private var backgroundGradient: LinearGradient {
         LinearGradient(

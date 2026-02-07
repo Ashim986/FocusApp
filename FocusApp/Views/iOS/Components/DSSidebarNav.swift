@@ -1,10 +1,10 @@
-// DSSidebarNav.swift
+// LegacyDSSidebarNav.swift
 // FocusApp — iPad sidebar navigation (260 x full height)
 // Spec: FIGMA_SETUP_GUIDE.md §3.2
 
 import SwiftUI
 
-enum SidebarItem: String, CaseIterable {
+enum LegacySidebarItem: String, CaseIterable {
     case today = "Today"
     case plan = "Plan"
     case stats = "Stats"
@@ -24,86 +24,86 @@ enum SidebarItem: String, CaseIterable {
     }
 }
 
-struct DSSidebarNav: View {
-    @Binding var selectedItem: SidebarItem
+struct LegacyDSSidebarNav: View {
+    @Binding var selectedItem: LegacySidebarItem
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
             // Title
             Text("FocusApp")
-                .font(DSTypography.section)
-                .foregroundColor(DSColor.textPrimary)
-                .padding(.horizontal, DSSpacing.space24)
-                .padding(.top, DSSpacing.space24)
+                .font(LegacyDSTypography.section)
+                .foregroundColor(LegacyDSColor.textPrimary)
+                .padding(.horizontal, DSLayout.spacing(.space24))
+                .padding(.top, DSLayout.spacing(.space24))
 
-            Spacer().frame(height: DSSpacing.space24)
+            Spacer().frame(height: DSLayout.spacing(.space24))
 
             // Nav items
-            VStack(spacing: DSSpacing.space4) {
-                ForEach(SidebarItem.allCases, id: \.self) { item in
+            VStack(spacing: DSLayout.spacing(.space4)) {
+                ForEach(LegacySidebarItem.allCases, id: \.self) { item in
                     Button {
                         selectedItem = item
                     } label: {
-                        HStack(spacing: DSSpacing.space12) {
+                        HStack(spacing: DSLayout.spacing(.space12)) {
                             Image(systemName: item.iconName)
                                 .font(.system(size: 18))
                                 .frame(width: 20, height: 20)
                             Text(item.rawValue)
-                                .font(DSTypography.body)
+                                .font(LegacyDSTypography.body)
                         }
                         .foregroundColor(
-                            selectedItem == item ? DSColor.purple : DSColor.gray500
+                            selectedItem == item ? LegacyDSColor.purple : LegacyDSColor.gray500
                         )
                         .frame(maxWidth: .infinity, alignment: .leading)
-                        .padding(.horizontal, DSSpacing.space12)
+                        .padding(.horizontal, DSLayout.spacing(.space12))
                         .frame(height: 44)
                         .background(
                             selectedItem == item
-                                ? DSColor.purple.opacity(0.1)
+                                ? LegacyDSColor.purple.opacity(0.1)
                                 : Color.clear
                         )
-                        .cornerRadius(DSRadius.small)
+                        .cornerRadius(LegacyDSRadius.small)
                     }
                     .buttonStyle(.plain)
                 }
             }
-            .padding(.horizontal, DSSpacing.space12)
+            .padding(.horizontal, DSLayout.spacing(.space12))
 
             Spacer()
 
             // User profile
-            HStack(spacing: DSSpacing.space12) {
+            HStack(spacing: DSLayout.spacing(.space12)) {
                 ZStack {
                     Circle()
-                        .fill(DSColor.purple)
+                        .fill(LegacyDSColor.purple)
                         .frame(width: 36, height: 36)
                     Text("JD")
-                        .font(DSTypography.subbodyStrong)
+                        .font(LegacyDSTypography.subbodyStrong)
                         .foregroundColor(.white)
                 }
 
-                VStack(alignment: .leading, spacing: DSSpacing.space2) {
+                VStack(alignment: .leading, spacing: DSLayout.spacing(.space2)) {
                     Text("John Doe")
-                        .font(DSTypography.subbodyStrong)
-                        .foregroundColor(DSColor.gray900)
+                        .font(LegacyDSTypography.subbodyStrong)
+                        .foregroundColor(LegacyDSColor.gray900)
                     Text("Pro Plan")
-                        .font(DSTypography.caption)
-                        .foregroundColor(DSColor.gray500)
+                        .font(LegacyDSTypography.caption)
+                        .foregroundColor(LegacyDSColor.gray500)
                 }
             }
-            .padding(DSSpacing.space16)
+            .padding(DSLayout.spacing(.space16))
         }
         .frame(width: 260)
-        .background(DSColor.surface)
+        .background(LegacyDSColor.surface)
         .overlay(alignment: .trailing) {
             Rectangle()
-                .fill(DSColor.divider)
+                .fill(LegacyDSColor.divider)
                 .frame(width: 1)
         }
     }
 }
 
 #Preview {
-    DSSidebarNav(selectedItem: .constant(.today))
+    LegacyDSSidebarNav(selectedItem: .constant(.today))
         .frame(height: 800)
 }

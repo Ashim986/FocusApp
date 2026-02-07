@@ -3,7 +3,7 @@ import SwiftUI
 
 struct TestCaseEditorView: View {
     @ObservedObject var presenter: CodingEnvironmentPresenter
-    @Environment(\.dsTheme) private var theme
+    @Environment(\.dsTheme) var theme
 
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {

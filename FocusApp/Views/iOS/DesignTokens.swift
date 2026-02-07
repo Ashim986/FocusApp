@@ -6,7 +6,7 @@ import SwiftUI
 
 // MARK: - Color Tokens
 
-enum DSColor {
+enum LegacyDSColor {
     // Brand
     static let purple = Color(hex: 0x6366F1)
     static let indigo = Color(hex: 0x1E1B4B)
@@ -66,7 +66,7 @@ enum DSColor {
 
 // MARK: - Typography
 
-enum DSTypography {
+enum LegacyDSTypography {
     static let title = Font.system(size: 32, weight: .bold)          // Title
     static let headline = Font.system(size: 24, weight: .bold)       // Headline
     static let section = Font.system(size: 20, weight: .semibold)    // Section
@@ -85,7 +85,7 @@ enum DSTypography {
 
 // MARK: - Spacing
 
-enum DSSpacing {
+enum LegacyDSSpacing {
     static let space2: CGFloat = 2
     static let space4: CGFloat = 4
     static let space8: CGFloat = 8
@@ -99,7 +99,7 @@ enum DSSpacing {
 
 // MARK: - Corner Radius
 
-enum DSRadius {
+enum LegacyDSRadius {
     static let small: CGFloat = 8
     static let medium: CGFloat = 12
     static let large: CGFloat = 16

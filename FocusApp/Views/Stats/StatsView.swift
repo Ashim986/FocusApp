@@ -3,7 +3,7 @@ import SwiftUI
 
 struct StatsView: View {
     @ObservedObject var presenter: StatsPresenter
-    @Environment(\.dsTheme) private var theme
+    @Environment(\.dsTheme) var theme
 
     let blockedSites = [
         "YouTube", "Twitter/X", "Reddit", "Instagram",

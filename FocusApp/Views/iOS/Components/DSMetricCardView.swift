@@ -1,23 +1,23 @@
-// DSMetricCardView.swift
+// LegacyDSMetricCardView.swift
 // FocusApp — Metric card (label + large value)
 // Spec: FIGMA_SETUP_GUIDE.md §3.11
 
 import SwiftUI
 
-struct DSMetricCardView: View {
+struct LegacyDSMetricCardView: View {
     var label: String
     var value: String
 
     var body: some View {
-        DSSurfaceCard {
-            VStack(spacing: DSSpacing.space4) {
+        LegacyDSSurfaceCard {
+            VStack(spacing: DSLayout.spacing(.space4)) {
                 Text(label)
-                    .font(DSTypography.caption)
-                    .foregroundColor(DSColor.gray500)
+                    .font(LegacyDSTypography.caption)
+                    .foregroundColor(LegacyDSColor.gray500)
 
                 Text(value)
-                    .font(DSTypography.headline)
-                    .foregroundColor(DSColor.gray900)
+                    .font(LegacyDSTypography.headline)
+                    .foregroundColor(LegacyDSColor.gray900)
             }
             .frame(maxWidth: .infinity)
         }
@@ -25,9 +25,9 @@ struct DSMetricCardView: View {
 }
 
 #Preview {
-    HStack(spacing: DSSpacing.space8) {
-        DSMetricCardView(label: "Total Focus", value: "34h 12m")
-        DSMetricCardView(label: "Current Streak", value: "12 Days")
+    HStack(spacing: DSLayout.spacing(.space8)) {
+        LegacyDSMetricCardView(label: "Total Focus", value: "34h 12m")
+        LegacyDSMetricCardView(label: "Current Streak", value: "12 Days")
     }
     .padding()
 }

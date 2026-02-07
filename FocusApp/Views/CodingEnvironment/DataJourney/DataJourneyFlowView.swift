@@ -10,7 +10,7 @@ struct DataJourneyFlowView: View {
     let onSelectEvent: (DataJourneyEvent) -> Void
 
     @State private var isExpanded = false
-    @Environment(\.dsTheme) private var theme
+    @Environment(\.dsTheme) var theme
 
     private var palette: DataJourneyPalette {
         DataJourneyPalette(theme: theme)

@@ -13,7 +13,7 @@ struct TreeGraphView: View {
     let bubbleStyle: TraceBubble.Style
     private let levelSpacing: CGFloat = 50
     private let pointerSpacing: CGFloat = 2
-    @Environment(\.dsTheme) private var theme
+    @Environment(\.dsTheme) var theme
 
     private var palette: DataJourneyPalette {
         DataJourneyPalette(theme: theme)
@@ -186,7 +186,7 @@ struct TraceValueNode: View {
     let size: CGFloat
     let style: TraceBubble.Style
     let highlighted: Bool
-    @Environment(\.dsTheme) private var theme
+    @Environment(\.dsTheme) var theme
 
     private var palette: DataJourneyPalette {
         DataJourneyPalette(theme: theme)

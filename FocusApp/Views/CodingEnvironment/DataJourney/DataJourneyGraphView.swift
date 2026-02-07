@@ -10,7 +10,7 @@ struct GraphView: View {
     let pointerVerticalPadding: CGFloat
     let pointerSpacing: CGFloat
     let bubbleStyle: TraceBubble.Style
-    @Environment(\.dsTheme) private var theme
+    @Environment(\.dsTheme) var theme
 
     private var palette: DataJourneyPalette {
         DataJourneyPalette(theme: theme)

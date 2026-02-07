@@ -53,7 +53,7 @@ struct DataJourneyStructureCanvasView: View {
     let structurePointerHorizontalPadding: CGFloat = 9
     let structurePointerVerticalPadding: CGFloat = 3
     let combinedMaxItems = 40
-    @Environment(\.dsTheme) private var theme
+    @Environment(\.dsTheme) var theme
 
     var palette: DataJourneyPalette {
         DataJourneyPalette(theme: theme)

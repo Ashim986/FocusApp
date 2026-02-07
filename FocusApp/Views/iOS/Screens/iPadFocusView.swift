@@ -8,31 +8,31 @@ struct iPadFocusView: View {
     @State private var isRunning = false
 
     var body: some View {
-        VStack(spacing: DSSpacing.space32) {
+        VStack(spacing: DSLayout.spacing(.space32)) {
             Spacer()
 
             // Title
-            VStack(spacing: DSSpacing.space8) {
+            VStack(spacing: DSLayout.spacing(.space8)) {
                 Text("Deep Work Session")
-                    .font(DSTypography.headline)
-                    .foregroundColor(DSColor.textPrimary)
+                    .font(LegacyDSTypography.headline)
+                    .foregroundColor(LegacyDSColor.textPrimary)
 
                 Text("Stay focused and track your progress.")
-                    .font(DSTypography.subbody)
-                    .foregroundColor(DSColor.gray500)
+                    .font(LegacyDSTypography.subbody)
+                    .foregroundColor(LegacyDSColor.gray500)
             }
 
             // Timer ring (larger on iPad)
-            DSTimerRing(
+            LegacyDSTimerRing(
                 timeText: "25:00",
                 statusText: isRunning ? "RUNNING" : "PAUSED",
                 progress: 0.0,
-                ringColor: DSColor.purple,
+                ringColor: LegacyDSColor.purple,
                 size: 400
             )
 
             // Controls
-            HStack(spacing: DSSpacing.space12) {
+            HStack(spacing: DSLayout.spacing(.space12)) {
                 // Play button (circle)
                 Button {
                     isRunning.toggle()
@@ -41,7 +41,7 @@ struct iPadFocusView: View {
                         .font(.system(size: 24))
                         .foregroundColor(.white)
                         .frame(width: 56, height: 56)
-                        .background(DSColor.purple)
+                        .background(LegacyDSColor.purple)
                         .clipShape(Circle())
                 }
                 .buttonStyle(.plain)
@@ -52,37 +52,37 @@ struct iPadFocusView: View {
                 } label: {
                     Image(systemName: "arrow.counterclockwise")
                         .font(.system(size: 16))
-                        .foregroundColor(DSColor.gray500)
+                        .foregroundColor(LegacyDSColor.gray500)
                         .frame(width: 48, height: 48)
-                        .background(DSColor.surface)
-                        .cornerRadius(DSRadius.medium)
+                        .background(LegacyDSColor.surface)
+                        .cornerRadius(LegacyDSRadius.medium)
                         .overlay(
-                            RoundedRectangle(cornerRadius: DSRadius.medium)
-                                .stroke(DSColor.divider, lineWidth: 1)
+                            RoundedRectangle(cornerRadius: LegacyDSRadius.medium)
+                                .stroke(LegacyDSColor.divider, lineWidth: 1)
                         )
                 }
                 .buttonStyle(.plain)
             }
 
             // Stats row
-            HStack(spacing: DSSpacing.space48) {
-                VStack(spacing: DSSpacing.space4) {
+            HStack(spacing: DSLayout.spacing(.space48)) {
+                VStack(spacing: DSLayout.spacing(.space4)) {
                     Text("3")
-                        .font(DSTypography.headline)
-                        .foregroundColor(DSColor.textPrimary)
+                        .font(LegacyDSTypography.headline)
+                        .foregroundColor(LegacyDSColor.textPrimary)
                     Text("SESSIONS")
-                        .font(DSTypography.captionStrong)
-                        .foregroundColor(DSColor.gray400)
+                        .font(LegacyDSTypography.captionStrong)
+                        .foregroundColor(LegacyDSColor.gray400)
                         .kerning(1)
                 }
 
-                VStack(spacing: DSSpacing.space4) {
+                VStack(spacing: DSLayout.spacing(.space4)) {
                     Text("75m")
-                        .font(DSTypography.headline)
-                        .foregroundColor(DSColor.textPrimary)
+                        .font(LegacyDSTypography.headline)
+                        .foregroundColor(LegacyDSColor.textPrimary)
                     Text("TOTAL FOCUS")
-                        .font(DSTypography.captionStrong)
-                        .foregroundColor(DSColor.gray400)
+                        .font(LegacyDSTypography.captionStrong)
+                        .foregroundColor(LegacyDSColor.gray400)
                         .kerning(1)
                 }
             }

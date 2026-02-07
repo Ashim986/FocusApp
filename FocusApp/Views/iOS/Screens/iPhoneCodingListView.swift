@@ -9,48 +9,48 @@ struct iPhoneCodingListView: View {
 
     var body: some View {
         VStack(spacing: 0) {
-            DSHeaderBar()
+            LegacyDSHeaderBar()
 
             ScrollView {
-                VStack(spacing: DSSpacing.space12) {
+                VStack(spacing: DSLayout.spacing(.space12)) {
                     // Search bar
-                    DSSearchBar(text: $searchText)
-                        .padding(.horizontal, DSSpacing.space16)
+                    LegacyDSSearchBar(text: $searchText)
+                        .padding(.horizontal, DSLayout.spacing(.space16))
 
                     // Problem cards
-                    DSProblemCard(
+                    LegacyDSProblemCard(
                         title: "Two Sum",
                         difficulty: .easy,
                         isSolved: true
                     )
-                    .padding(.horizontal, DSSpacing.space16)
+                    .padding(.horizontal, DSLayout.spacing(.space16))
 
-                    DSProblemCard(
+                    LegacyDSProblemCard(
                         title: "Add Two Numbers",
                         difficulty: .medium,
                         isSolved: false
                     )
-                    .padding(.horizontal, DSSpacing.space16)
+                    .padding(.horizontal, DSLayout.spacing(.space16))
 
-                    DSProblemCard(
+                    LegacyDSProblemCard(
                         title: "Longest Substring Without Repeating Characters",
                         difficulty: .medium,
                         isSolved: false
                     )
-                    .padding(.horizontal, DSSpacing.space16)
+                    .padding(.horizontal, DSLayout.spacing(.space16))
 
-                    DSProblemCard(
+                    LegacyDSProblemCard(
                         title: "Median of Two Sorted Arrays",
                         difficulty: .hard,
                         isSolved: false
                     )
-                    .padding(.horizontal, DSSpacing.space16)
+                    .padding(.horizontal, DSLayout.spacing(.space16))
                 }
-                .padding(.top, DSSpacing.space8)
-                .padding(.bottom, DSSpacing.space32)
+                .padding(.top, DSLayout.spacing(.space8))
+                .padding(.bottom, DSLayout.spacing(.space32))
             }
         }
-        .background(DSColor.background)
+        .background(LegacyDSColor.background)
     }
 }
 

@@ -1,32 +1,32 @@
-// DSStreakBadge.swift
+// LegacyDSStreakBadge.swift
 // FocusApp — Streak badge (orange pill)
 // Spec: FIGMA_SETUP_GUIDE.md §3.10
 
 import SwiftUI
 
-struct DSStreakBadge: View {
+struct LegacyDSStreakBadge: View {
     var streakDays: Int = 12
 
     var body: some View {
-        HStack(spacing: DSSpacing.space4) {
+        HStack(spacing: DSLayout.spacing(.space4)) {
             Text("🔥")
                 .font(.system(size: 14))
 
             Text("\(streakDays) Day Streak")
-                .font(DSTypography.subbodyStrong)
-                .foregroundColor(DSColor.streakText)
+                .font(LegacyDSTypography.subbodyStrong)
+                .foregroundColor(LegacyDSColor.streakText)
         }
-        .padding(.horizontal, DSSpacing.space12)
-        .padding(.vertical, DSSpacing.space8)
-        .background(DSColor.streakBg)
-        .cornerRadius(DSRadius.full)
+        .padding(.horizontal, DSLayout.spacing(.space12))
+        .padding(.vertical, DSLayout.spacing(.space8))
+        .background(LegacyDSColor.streakBg)
+        .cornerRadius(LegacyDSRadius.full)
         .overlay(
             Capsule()
-                .stroke(DSColor.streakBorder, lineWidth: 1)
+                .stroke(LegacyDSColor.streakBorder, lineWidth: 1)
         )
     }
 }
 
 #Preview {
-    DSStreakBadge()
+    LegacyDSStreakBadge()
 }

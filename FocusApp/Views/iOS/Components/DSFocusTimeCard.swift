@@ -1,38 +1,38 @@
-// DSFocusTimeCard.swift
+// LegacyDSFocusTimeCard.swift
 // FocusApp — Focus time display card (361x100)
 // Spec: FIGMA_SETUP_GUIDE.md §3.6
 
 import SwiftUI
 
-struct DSFocusTimeCard: View {
+struct LegacyDSFocusTimeCard: View {
     var focusTime: String = "2h 15m"
     var remainingText: String = "35m remaining today"
 
     var body: some View {
-        DSSurfaceCard {
-            HStack(spacing: DSSpacing.space12) {
+        LegacyDSSurfaceCard {
+            HStack(spacing: DSLayout.spacing(.space12)) {
                 // Pulse icon in circle
                 ZStack {
                     Circle()
-                        .fill(DSColor.greenLight)
+                        .fill(LegacyDSColor.greenLight)
                         .frame(width: 40, height: 40)
                     Image(systemName: "waveform.path.ecg")
                         .font(.system(size: 18))
-                        .foregroundColor(DSColor.green)
+                        .foregroundColor(LegacyDSColor.green)
                 }
 
-                VStack(alignment: .leading, spacing: DSSpacing.space4) {
+                VStack(alignment: .leading, spacing: DSLayout.spacing(.space4)) {
                     Text("Focus Time")
-                        .font(DSTypography.subbodyStrong)
-                        .foregroundColor(DSColor.gray500)
+                        .font(LegacyDSTypography.subbodyStrong)
+                        .foregroundColor(LegacyDSColor.gray500)
 
                     Text(focusTime)
-                        .font(DSTypography.headline)
-                        .foregroundColor(DSColor.gray900)
+                        .font(LegacyDSTypography.headline)
+                        .foregroundColor(LegacyDSColor.gray900)
 
                     Text(remainingText)
-                        .font(DSTypography.caption)
-                        .foregroundColor(DSColor.gray500)
+                        .font(LegacyDSTypography.caption)
+                        .foregroundColor(LegacyDSColor.gray500)
                 }
 
                 Spacer()
@@ -42,6 +42,6 @@ struct DSFocusTimeCard: View {
 }
 
 #Preview {
-    DSFocusTimeCard()
+    LegacyDSFocusTimeCard()
         .padding()
 }

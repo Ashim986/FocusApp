@@ -9,7 +9,7 @@ struct HabitToggle: View {
     let onToggle: () -> Void
 
     @State private var isHovering = false
-    @Environment(\.dsTheme) private var theme
+    @Environment(\.dsTheme) var theme
 
     var body: some View {
         DSButton(action: onToggle) {

@@ -261,7 +261,8 @@ extension LeetCodeExecutionWrapper {
                 var values: [String: Any?] = [:]
                 for (index, name) in paramNames.enumerated() {
                     let value = index < args.count ? args[index] : NSNull()
-                    values[name] = traceValue(value, structured: true)
+                    // Pass raw values into emit; emit() applies traceValue() once.
+                    values[name] = value
                 }
                 values["__trace_truncated"] = didTruncate
                 emit(kind: "input", values: values, structured: true)
@@ -271,7 +272,8 @@ extension LeetCodeExecutionWrapper {
                 emit(
                     kind: "output",
                     values: [
-                        "result": traceValue(value, structured: true),
+                        // Pass raw values into emit; emit() applies traceValue() once.
+                        "result": value,
                         "__trace_truncated": didTruncate
                     ],
                     structured: true
@@ -328,7 +330,8 @@ extension LeetCodeExecutionWrapper {
             }
 
             private static func doublyListIdentifier(_ object: AnyObject) -> String {
-                String(ObjectIdentifier(object).hashValue)
+                let ptr = Unmanaged.passUnretained(object).toOpaque()
+                return String(UInt(bitPattern: ptr))
             }
 
             private static func traceDoublyListStructure(_ value: Any, maxNodes: Int = 40) -> (

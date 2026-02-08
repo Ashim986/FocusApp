@@ -85,6 +85,7 @@ struct DataJourneyStructureCanvasView: View {
         guard let structure else {
             return AnyView(EmptyView())
         }
+        let offGraphPointers = offGraphPointerBadges(for: structure)
         return AnyView(
             VStack(alignment: .leading, spacing: DSLayout.spacing(6)) {
                 HStack(alignment: .center, spacing: DSLayout.spacing(10)) {
@@ -98,7 +99,25 @@ struct DataJourneyStructureCanvasView: View {
 
                     Spacer()
                 }
-                .padding(.top, DSLayout.spacing(-16))
+                .zIndex(1)
+
+                if !offGraphPointers.isEmpty {
+                    HStack(alignment: .center, spacing: DSLayout.spacing(6)) {
+                        Text("Off-graph")
+                            .font(.system(size: 9, weight: .semibold))
+                            .foregroundColor(palette.gray500)
+                        ForEach(offGraphPointers) { pointer in
+                            PointerBadge(
+                                text: pointer.name,
+                                color: pointer.color,
+                                fontSize: 8,
+                                horizontalPadding: 6,
+                                verticalPadding: 2
+                            )
+                        }
+                    }
+                    .padding(.bottom, DSLayout.spacing(2))
+                }
 
                 switch structure {
                 case .list(let list):

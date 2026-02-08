@@ -29,6 +29,9 @@ final class DomainModelTests: XCTestCase {
     }
 
     func testStudyPlanCodableRoundTrip() throws {
+        let problemID = try XCTUnwrap(
+            UUID(uuidString: "11111111-1111-1111-1111-111111111111")
+        )
         let plan = StudyPlan(
             preCompletedTopics: ["Arrays & Hashing"],
             days: [
@@ -38,7 +41,7 @@ final class DomainModelTests: XCTestCase {
                     topic: "Priority Sprint I",
                     problems: [
                         Problem(
-                            id: UUID(uuidString: "11111111-1111-1111-1111-111111111111")!,
+                            id: problemID,
                             name: "Two Sum",
                             difficulty: .easy,
                             url: "https://leetcode.com/problems/two-sum/",

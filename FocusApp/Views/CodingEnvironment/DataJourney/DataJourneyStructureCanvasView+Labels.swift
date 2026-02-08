@@ -1,3 +1,4 @@
+import FocusDesignSystem
 import SwiftUI
 
 extension DataJourneyStructureCanvasView {

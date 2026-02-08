@@ -10,8 +10,37 @@
     "\"%@\"" : {
 
     },
+    "(%@ carryover)" : {
+
+    },
     "(unavailable)" : {
 
+    },
+    "%@" : {
+
+    },
+    "%@ - %@/%@ completed" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@ - %2$@/%3$@ completed"
+          }
+        }
+      }
+    },
+    "%@ Hidden Tests Ready" : {
+
+    },
+    "%@ of %@ problems" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@ of %2$@ problems"
+          }
+        }
+      }
     },
     "%@:" : {
 
@@ -25,6 +54,35 @@
           }
         }
       }
+    },
+    "%@/%@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@/%2$@"
+          }
+        }
+      }
+    },
+    "%@/%@ problems" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@/%2$@ problems"
+          }
+        }
+      }
+    },
+    "%@/3 Habits Today" : {
+
+    },
+    "%@%%" : {
+
+    },
+    "%@m" : {
+
     },
     "%lld" : {
 
@@ -45,6 +103,9 @@
     "%lld%%" : {
 
     },
+    "+%@ more" : {
+
+    },
     "+%lld more" : {
 
     },
@@ -63,7 +124,19 @@
     "Add `Trace.step(\"label\", [\"key\": value])` inside loops to visualize iterations." : {
 
     },
+    "AI Provider" : {
+
+    },
+    "API Key" : {
+
+    },
     "array" : {
+
+    },
+    "Case %@" : {
+
+    },
+    "Clear" : {
 
     },
     "Close" : {
@@ -1274,6 +1347,12 @@
     "Compare Steps" : {
 
     },
+    "Completed today" : {
+
+    },
+    "Console" : {
+
+    },
     "content.app_title" : {
       "extractionState" : "stale",
       "localizations" : {
@@ -1334,6 +1413,35 @@
     },
     "Copy log" : {
 
+    },
+    "CURRENT FOCUS" : {
+
+    },
+    "Daily Goal" : {
+
+    },
+    "Day %@" : {
+
+    },
+    "Day %@ - %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Day %1$@ - %2$@"
+          }
+        }
+      }
+    },
+    "Day %@: %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Day %1$@: %2$@"
+          }
+        }
+      }
     },
     "debug.category_all" : {
       "extractionState" : "stale",
@@ -1511,10 +1619,19 @@
         }
       }
     },
+    "Deep Work Session" : {
+
+    },
     "Delete" : {
 
     },
     "Diagnostics" : {
+
+    },
+    "Done" : {
+
+    },
+    "End" : {
 
     },
     "Enter expected output..." : {
@@ -1589,7 +1706,16 @@
         }
       }
     },
+    "Expected:" : {
+
+    },
+    "Fetch progress" : {
+
+    },
     "Flow Overview" : {
+
+    },
+    "Focus" : {
 
     },
     "focus.complete_done" : {
@@ -1818,10 +1944,28 @@
         }
       }
     },
+    "Habits" : {
+
+    },
     "Hidden tests unavailable" : {
 
     },
+    "Input:" : {
+
+    },
     "Last %@" : {
+
+    },
+    "LeetCode #%@" : {
+
+    },
+    "LeetCode Session" : {
+
+    },
+    "LeetCode Username" : {
+
+    },
+    "Loading problem..." : {
 
     },
     "max-heap" : {
@@ -1830,7 +1974,19 @@
     "min-heap" : {
 
     },
+    "Model" : {
+
+    },
+    "No active session" : {
+
+    },
     "No logs match your filters" : {
+
+    },
+    "No plan data available" : {
+
+    },
+    "No session" : {
 
     },
     "No values captured for this step." : {
@@ -1923,6 +2079,18 @@
           }
         }
       }
+    },
+    "Notifications" : {
+
+    },
+    "Off-graph" : {
+
+    },
+    "Open on LeetCode" : {
+
+    },
+    "Output" : {
+
     },
     "output.actual" : {
       "extractionState" : "stale",
@@ -2066,6 +2234,12 @@
           }
         }
       }
+    },
+    "Overall Progress" : {
+
+    },
+    "Plan Start Date" : {
+
     },
     "plan.buffer_body" : {
       "extractionState" : "stale",
@@ -2211,13 +2385,58 @@
         }
       }
     },
+    "Problems" : {
+
+    },
+    "Problems completed" : {
+
+    },
+    "Progress by Day" : {
+
+    },
+    "Progress by Topic" : {
+
+    },
+    "Provider" : {
+
+    },
     "Quit FocusApp" : {
+
+    },
+    "Ready to get in the zone?" : {
+
+    },
+    "REMAINING" : {
+
+    },
+    "Request Permission" : {
 
     },
     "Reset filters" : {
 
     },
+    "Reset to Today" : {
+
+    },
     "Run with input to see the data journey." : {
+
+    },
+    "Select a problem to start coding" : {
+
+    },
+    "Select a problem to view its description." : {
+
+    },
+    "SESSION" : {
+
+    },
+    "Session active" : {
+
+    },
+    "Session complete!" : {
+
+    },
+    "Settings" : {
 
     },
     "settings.about_header" : {
@@ -2828,6 +3047,12 @@
     "Speed" : {
 
     },
+    "Start" : {
+
+    },
+    "Start Focus Session" : {
+
+    },
     "Start Over" : {
 
     },
@@ -2936,7 +3161,19 @@
     "Structure" : {
 
     },
+    "Study Plan" : {
+
+    },
+    "Submit" : {
+
+    },
     "Swift" : {
+
+    },
+    "Sync LeetCode" : {
+
+    },
+    "Syncing..." : {
 
     },
     "tab.plan" : {
@@ -2975,7 +3212,13 @@
         }
       }
     },
+    "Tasks done" : {
+
+    },
     "Timeline" : {
+
+    },
+    "Today" : {
 
     },
     "today.cta_button" : {
@@ -3122,13 +3365,22 @@
         }
       }
     },
+    "Today's Plan" : {
+
+    },
     "Toggle Floating Widget" : {
+
+    },
+    "Topic Breakdown" : {
 
     },
     "tree view" : {
 
     },
     "Try clearing the filters to view recent entries." : {
+
+    },
+    "Used to sync your solved problems" : {
 
     },
     "widget.checking" : {
@@ -3394,6 +3646,9 @@
           }
         }
       }
+    },
+    "Your Statistics" : {
+
     }
   },
   "version" : "1.0"

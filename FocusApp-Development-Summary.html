@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>FocusApp-Development-Summary</title>
+  <style>
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
+    html {
+      color: #1a1a1a;
+      background-color: #fdfdfd;
+    }
+    body {
+      margin: 0 auto;
+      max-width: 36em;
+      padding-left: 50px;
+      padding-right: 50px;
+      padding-top: 50px;
+      padding-bottom: 50px;
+      hyphens: auto;
+      overflow-wrap: break-word;
+      text-rendering: optimizeLegibility;
+      font-kerning: normal;
+    }
+    @media (max-width: 600px) {
+      body {
+        font-size: 0.9em;
+        padding: 12px;
+      }
+      h1 {
+        font-size: 1.8em;
+      }
+    }
+    @media print {
+      html {
+        background-color: white;
+      }
+      body {
+        background-color: transparent;
+        color: black;
+        font-size: 12pt;
+      }
+      p, h2, h3 {
+        orphans: 3;
+        widows: 3;
+      }
+      h2, h3, h4 {
+        page-break-after: avoid;
+      }
+    }
+    p {
+      margin: 1em 0;
+    }
+    a {
+      color: #1a1a1a;
+    }
+    a:visited {
+      color: #1a1a1a;
+    }
+    img {
+      max-width: 100%;
+    }
+    svg {
+      height: auto;
+      max-width: 100%;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      margin-top: 1.4em;
+    }
+    h5, h6 {
+      font-size: 1em;
+      font-style: italic;
+    }
+    h6 {
+      font-weight: normal;
+    }
+    ol, ul {
+      padding-left: 1.7em;
+      margin-top: 1em;
+    }
+    li > ol, li > ul {
+      margin-top: 0;
+    }
+    blockquote {
+      margin: 1em 0 1em 1.7em;
+      padding-left: 1em;
+      border-left: 2px solid #e6e6e6;
+      color: #606060;
+    }
+    code {
+      font-family: Menlo, Monaco, Consolas, 'Lucida Console', monospace;
+      font-size: 85%;
+      margin: 0;
+      hyphens: manual;
+    }
+    pre {
+      margin: 1em 0;
+      overflow: auto;
+    }
+    pre code {
+      padding: 0;
+      overflow: visible;
+      overflow-wrap: normal;
+    }
+    .sourceCode {
+     background-color: transparent;
+     overflow: visible;
+    }
+    hr {
+      border: none;
+      border-top: 1px solid #1a1a1a;
+      height: 1px;
+      margin: 1em 0;
+    }
+    table {
+      margin: 1em 0;
+      border-collapse: collapse;
+      width: 100%;
+      overflow-x: auto;
+      display: block;
+      font-variant-numeric: lining-nums tabular-nums;
+    }
+    table caption {
+      margin-bottom: 0.75em;
+    }
+    tbody {
+      margin-top: 0.5em;
+      border-top: 1px solid #1a1a1a;
+      border-bottom: 1px solid #1a1a1a;
+    }
+    th {
+      border-top: 1px solid #1a1a1a;
+      padding: 0.25em 0.5em 0.25em 0.5em;
+    }
+    td {
+      padding: 0.125em 0.5em 0.25em 0.5em;
+    }
+    header {
+      margin-bottom: 4em;
+      text-align: center;
+    }
+    #TOC li {
+      list-style: none;
+    }
+    #TOC ul {
+      padding-left: 1.3em;
+    }
+    #TOC > ul {
+      padding-left: 0;
+    }
+    #TOC a:not(:hover) {
+      text-decoration: none;
+    }
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+    .display.math{display: block; text-align: center; margin: 0.5rem auto;}
+  </style>
+</head>
+<body>
+<h1 id="focusapp-critical-issues-solutions">FocusApp — Critical Issues
+&amp; Solutions</h1>
+<h2 id="development-summary-for-interview-preparation">Development
+Summary for Interview Preparation</h2>
+<hr />
+<h2 id="app-building-process">1. App Building Process</h2>
+<h3 id="codemirror-editor-on-ios-wkwebview-integration">CodeMirror
+Editor on iOS — WKWebView Integration</h3>
+<p><strong>Issue</strong>: iOS can’t use <code>NSTextView</code>
+(macOS-only). We needed a full-featured code editor with syntax
+highlighting, line numbers, and error diagnostics on iOS.</p>
+<p><strong>Solution</strong>: Built a custom
+<code>CodeMirrorEditorView</code> using <code>WKWebView</code> that
+loads a bundled HTML/JS/CSS CodeMirror editor. Communication between
+Swift and JavaScript uses <code>evaluateJavaScript()</code> for
+Swift-to-JS (updating code, setting language, pushing diagnostics) and
+<code>WKScriptMessageHandler</code> for JS-to-Swift (capturing user
+edits). Error diagnostics are serialized to JSON and pushed to the JS
+layer which renders red gutter markers and background highlights.</p>
+<h3 id="data-journey-visualization-scope-aware-instrumentation">Data
+Journey Visualization — Scope-Aware Instrumentation</h3>
+<p><strong>Issue</strong>: The <code>AutoInstrumenter</code> injects
+<code>Trace.step()</code> calls into user code for step-by-step
+visualization. Early versions captured all variables at every step,
+causing “use of local variable before its declaration” compiler
+errors.</p>
+<p><strong>Solution</strong>: Implemented scope-aware variable capture —
+<code>extractFunctionLevelDecls()</code> tracks which variables are
+declared at each line, and only captures variables declared
+<em>before</em> each insertion point. Loop binding variables (e.g.,
+<code>count</code> from <code>for (num, count) in ...</code>) are scoped
+to their containing loop only, preventing cross-scope leaking.</p>
+<h3 id="solution-editorial-system-lazy-loading-for-performance">Solution
+Editorial System — Lazy Loading for Performance</h3>
+<p><strong>Issue</strong>: Loading all 200+ solutions from a single
+<code>Solutions.json</code> on startup caused lag.</p>
+<p><strong>Solution</strong>: Implemented
+<code>TopicSolutionStore</code> with 17 topic-partitioned JSON files
+plus an <code>index.json</code> manifest. Solutions load lazily
+per-topic on first access, with thread-safe <code>NSLock</code>
+protection. The store conforms to <code>SolutionProviding</code>
+protocol, making it a drop-in replacement.</p>
+<h3 id="widgetkit-extension-missing-nsextension-dictionary">WidgetKit
+Extension — Missing NSExtension Dictionary</h3>
+<p><strong>Issue</strong>: Widget extension built fine but crashed on
+simulator installation with “extensionDictionary must be set in
+placeholder attributes.” The auto-generated Info.plist was missing the
+<code>NSExtension</code> dictionary.</p>
+<p><strong>Solution</strong>: Created a manual
+<code>FocusWidget/Info.plist</code> with
+<code>NSExtensionPointIdentifier = "com.apple.widgetkit-extension"</code>
+and set <code>INFOPLIST_FILE</code> in the widget target’s build
+settings. Xcode merges this manual plist with auto-generated
+<code>INFOPLIST_KEY_*</code> settings.</p>
+<hr />
+<h2 id="data-verification-synchronization-data-system">2. Data
+Verification, Synchronization &amp; Data System</h2>
+<h3 id="leetcode-sync-slug-matching-across-plans">LeetCode Sync — Slug
+Matching Across Plans</h3>
+<p><strong>Issue</strong>: The app’s study plan uses problem URLs, but
+LeetCode’s API returns problem slugs (e.g., “reverse-linked-list”).
+Matching these reliably was tricky since URLs and slugs have different
+formats.</p>
+<p><strong>Solution</strong>: Built <code>LeetCodeSlugExtractor</code>
+that normalizes both URL paths and API slugs to a common format, then
+<code>applySolvedSlugs()</code> does set intersection to find matches.
+The sync reports both <code>syncedCount</code> (newly found) and
+<code>totalMatched</code> (all matches).</p>
+<h3 id="hidden-test-case-validation-ordermatters-flag">Hidden Test Case
+Validation — orderMatters Flag</h3>
+<p><strong>Issue</strong>: Some LeetCode problems say “return in any
+order”, but our test comparison was doing exact string matching, causing
+false failures.</p>
+<p><strong>Solution</strong>: Added an <code>orderMatters: Bool</code>
+flag to <code>SolutionTestCase</code>. The AI prompt explicitly asks
+providers to set <code>orderMatters: false</code> for “return in any
+order” problems. <code>outputMatches()</code> tries exact match first,
+then falls back to sorted JSON array comparison when
+<code>orderMatters: false</code>. Uses <code>sortedJSONArray()</code>
+helper that only sorts flat arrays (no nested objects).</p>
+<h3 id="swiftdata-persistence-date-format-pitfalls">SwiftData
+Persistence — Date Format Pitfalls</h3>
+<p><strong>Issue</strong>: Swift’s <code>.iso8601</code> date decoding
+strategy doesn’t handle microsecond precision (6 fractional digits),
+causing JSON decode failures.</p>
+<p><strong>Solution</strong>: Standardized all dates in JSON to use
+simple ISO 8601 format: <code>2026-02-06T08:40:26Z</code> or with
+milliseconds <code>2026-02-06T08:40:26.092Z</code>. Never use
+microsecond precision with Swift’s built-in decoder.</p>
+<h3 id="widget-data-sharing-app-group-container">Widget Data Sharing —
+App Group Container</h3>
+<p><strong>Issue</strong>: The WidgetKit extension runs in a separate
+process and can’t access the main app’s SwiftData store directly.</p>
+<p><strong>Solution</strong>: Used an App Group
+(<code>group.com.dsafocus.focusapp</code>) with a shared JSON file.
+<code>WidgetDataWriter</code> computes a simplified
+<code>WidgetData</code> model from <code>AppData</code> and writes
+<code>widget-data.json</code> to the shared container on every
+<code>save()</code>. The widget reads via
+<code>WidgetDataReader.load()</code> and
+<code>WidgetCenter.shared.reloadAllTimelines()</code> triggers
+refresh.</p>
+<hr />
+<h2 id="network-issues-robustness">3. Network Issues &amp;
+Robustness</h2>
+<h3 id="ios-code-execution-leetcode-api-with-retry-logic">iOS Code
+Execution — LeetCode API with Retry Logic</h3>
+<p><strong>Issue</strong>: iOS can’t use <code>Process()</code> for
+local code execution. We needed a reliable remote execution path, but
+LeetCode’s API can be flaky (rate limits, timeouts, transient
+failures).</p>
+<p><strong>Solution</strong>: Built
+<code>LeetCodeExecutionService</code> conforming to the shared
+<code>CodeExecuting</code> protocol. It uses 3 retries with exponential
+backoff (1s, 2s, 4s delays) and a 20-second timeout per request. The
+two-phase flow: POST to
+<code>/problems/{slug}/interpret_solution/</code> then poll
+<code>/submissions/detail/{id}/check/</code> with <code>finished</code>
+field detection.</p>
+<h3 id="leetcode-submission-polling-completion-detection">LeetCode
+Submission Polling — Completion Detection</h3>
+<p><strong>Issue</strong>: The <code>LeetCodeSubmissionService</code>
+initially checked <code>state == "SUCCESS"</code> for completion, but
+LeetCode sometimes returns other state strings for completed
+submissions.</p>
+<p><strong>Solution</strong>: Changed to check the <code>finished</code>
+field first (<code>finished == true</code>), with fallback to
+<code>state.uppercased() == "SUCCESS"</code>. The
+<code>isComplete</code> property now uses a two-tier check for
+robustness.</p>
+<h3 id="username-validation-network-first-verification">Username
+Validation — Network-First Verification</h3>
+<p><strong>Issue</strong>: Users could enter invalid LeetCode usernames,
+causing all subsequent syncs to fail silently.</p>
+<p><strong>Solution</strong>: Before saving a username,
+<code>validateUsername()</code> makes a real API call to LeetCode to
+verify the profile exists. Visual feedback: green border + “Valid” on
+success, red border + “User not found” on failure. Validation resets
+when the user starts typing again.</p>
+<hr />
+<h2 id="application-design">4. Application Design</h2>
+<h3 id="clean-architecture-viper-pattern">Clean Architecture / VIPER
+Pattern</h3>
+<p><strong>Issue</strong>: Early code had business logic mixed into
+views, making testing difficult and creating tight coupling.</p>
+<p><strong>Solution</strong>: Adopted a Clean Architecture pattern: View
+-&gt; Presenter (observable state, <code>@MainActor</code>) -&gt;
+Interactor (business logic) -&gt; AppStateStore (centralized data). Each
+feature has its own Presenter and Interactor. <code>AppContainer</code>
+handles dependency injection. This makes every layer independently
+testable (600+ tests).</p>
+<h3
+id="cross-platform-code-sharing-feature-folder-structure">Cross-Platform
+Code Sharing — Feature-Folder Structure</h3>
+<p><strong>Issue</strong>: macOS and iOS have different UI frameworks
+(<code>NSTextView</code> vs <code>WKWebView</code>, <code>NSPanel</code>
+vs <code>WidgetKit</code>), but share 80% of business logic. Initially,
+iOS views were in a flat folder, disconnected from their macOS
+counterparts.</p>
+<p><strong>Solution</strong>: Feature-folder structure where each
+feature (Today, Plan, Stats, CodingEnvironment, etc.) has shared
+Presenter/Interactor at the root, with <code>macOS/</code> and
+<code>iOS/</code> subfolders for platform-specific views. All files are
+in both targets with <code>#if os()</code> guards. iOS types follow
+<code>ViewNameiOS</code> naming convention.</p>
+<h3 id="dependency-injection-platform-specific-services">Dependency
+Injection — Platform-Specific Services</h3>
+<p><strong>Issue</strong>: The same <code>CodeExecuting</code> protocol
+needed completely different implementations on each platform (local
+<code>Process</code> on macOS, LeetCode API on iOS).</p>
+<p><strong>Solution</strong>: <code>AppContainer.swift</code> uses
+<code>#if os(iOS)</code> guards to wire
+<code>LeetCodeExecutionService</code> on iOS and
+<code>CodeExecutionService</code> on macOS. Both conform to the same
+<code>CodeExecuting</code> protocol, so presenters and interactors are
+platform-agnostic.</p>
+<hr />
+<h2 id="optimization">5. Optimization</h2>
+<h3 id="code-wrapping-bypass-on-ios">Code Wrapping Bypass on iOS</h3>
+<p><strong>Issue</strong>: <code>wrappedCodeForExecution()</code> adds a
+local execution harness (imports, <code>Trace</code> struct, runner
+function) that’s necessary for macOS local execution but breaks
+LeetCode’s API since it has its own harness.</p>
+<p><strong>Solution</strong>: Added
+<code>#if os(iOS) return source #else ... #endif</code> in
+<code>wrappedCodeForExecution()</code> — iOS returns raw source code,
+macOS adds the full wrapper. Clean and zero-cost.</p>
+<h3 id="lazy-solution-loading-topic-partitioning">Lazy Solution Loading
+— Topic Partitioning</h3>
+<p><strong>Issue</strong>: Loading 200+ solutions from a single JSON
+file was slow and used unnecessary memory.</p>
+<p><strong>Solution</strong>: <code>partition_solutions.swift</code>
+script splits <code>Solutions.json</code> into 17 topic files.
+<code>TopicSolutionStore</code> loads only the topic file needed, using
+<code>NSLock</code> for thread safety. Solutions are cached after first
+load.</p>
+<h3 id="hidden-test-gate-relaxed-success-criteria">Hidden Test Gate —
+Relaxed Success Criteria</h3>
+<p><strong>Issue</strong>: <code>ExecutionResult.isSuccess</code>
+requires <code>error.isEmpty</code>, which catches harmless stderr
+warnings (Swift deprecation notices, Python warnings) as failures.</p>
+<p><strong>Solution</strong>: For hidden test execution, use the relaxed
+check
+<code>exitCode == 0 &amp;&amp; !timedOut &amp;&amp; !wasCancelled</code>
+instead of <code>isSuccess</code>. This prevents false failures from
+stderr warnings while still catching real errors.</p>
+<hr />
+<h2 id="miscellaneous-but-critical">6. Miscellaneous but Critical</h2>
+<h3 id="macos-entitlements-vs-ios-entitlements">macOS Entitlements vs
+iOS Entitlements</h3>
+<p><strong>Issue</strong>: Adding App Group entitlement to
+<code>FocusApp.entitlements</code> broke the macOS build because App
+Groups require a provisioning profile on macOS, but the app uses no code
+signing for personal use.</p>
+<p><strong>Solution</strong>: Created separate entitlements files —
+<code>FocusApp.entitlements</code> (macOS, network client only) and
+<code>FocusAppiOS.entitlements</code> (iOS, network client + App Group).
+Updated the iOS target’s build settings to reference the iOS-specific
+file.</p>
+<h3 id="xcode-bundle-resources-flattened-paths">Xcode Bundle Resources —
+Flattened Paths</h3>
+<p><strong>Issue</strong>: Using
+<code>Bundle.url(forResource:withExtension:subdirectory:)</code> with a
+subdirectory parameter failed because Xcode’s “Copy Bundle Resources”
+flattens files into <code>Contents/Resources/</code> root.</p>
+<p><strong>Solution</strong>: Never use <code>subdirectory:</code>
+parameter for resources added via “Copy Bundle Resources”. Use
+<code>subdirectory: nil</code> (default) unless using blue folder
+references.</p>
+<h3 id="nsregularexpression-escaping-in-swift">NSRegularExpression
+Escaping in Swift</h3>
+<p><strong>Issue</strong>: Regex patterns for signature parsing had
+double-escaping bugs — <code>"func\\\\s+"</code> in Swift compiles to
+literal <code>func\\s+</code> instead of the intended
+<code>func\s+</code>.</p>
+<p><strong>Solution</strong>: Use single backslash escaping in
+NSRegularExpression patterns: <code>"func\\s+"</code> becomes the regex
+<code>func\s+</code>. Also added <code>NSNotFound</code> guards for
+optional capture groups.</p>
+<h3 id="swiftlint-type-body-length-extension-splitting">SwiftLint Type
+Body Length — Extension Splitting</h3>
+<p><strong>Issue</strong>: Large types (presenters, views) hit the
+500-line SwiftLint error threshold.</p>
+<p><strong>Solution</strong>: Split logic into extensions in separate
+files (e.g., <code>CodingEnvironmentPresenter+Execution.swift</code>).
+Each extension file stays under limits. Important:
+<code>@Environment</code> properties must be <code>internal</code> (not
+<code>private</code>) when accessed from extensions in separate
+files.</p>
+<hr />
+<h2 id="guardrails-for-scalability-verification-validation">7.
+Guardrails for Scalability, Verification &amp; Validation</h2>
+<h3
+id="protocol-driven-architecture-swap-without-breaking">Protocol-Driven
+Architecture — Swap Without Breaking</h3>
+<p><strong>Approach</strong>: Every major service conforms to a protocol
+(<code>CodeExecuting</code>, <code>SolutionProviding</code>,
+<code>TestCaseAIProviding</code>, <code>RequestExecuting</code>). This
+means we can swap implementations without touching consumers. For
+example, <code>CodeExecuting</code> has three implementations:
+<code>CodeExecutionService</code> (macOS local),
+<code>LeetCodeExecutionService</code> (iOS API), and
+<code>NoOpCodeExecutionService</code> (fallback/testing). Adding a
+fourth would just mean writing a new conformance.</p>
+<p><strong>Why it matters</strong>: When LeetCode’s API changes or we
+want to add a new language executor, we change one file, not twenty. The
+protocol boundary acts as a contract that prevents silent breakage.</p>
+<h3 id="unit-tests-across-every-layer">600+ Unit Tests Across Every
+Layer</h3>
+<p><strong>Approach</strong>: Tests are organized by feature folder
+mirroring the source structure. Every Presenter, Interactor, and
+business logic module has dedicated tests. We use
+<code>InMemoryAppStorage</code> (a test-only
+<code>AppStorageProtocol</code> conformance) so tests never touch disk
+or network.</p>
+<p><strong>Guardrail</strong>: After every workstream or bug fix, we run
+the full test suite. The rule is: “if tests pass, ship it.” Pre-existing
+expected failures are marked so they don’t block real regressions.</p>
+<h3 id="multi-target-build-verification">Multi-Target Build
+Verification</h3>
+<p><strong>Approach</strong>: Every change is verified against three
+targets: macOS, iOS, and the WidgetKit extension. A change that builds
+on macOS but breaks iOS gets caught immediately.</p>
+<p><strong>Example</strong>: This caught the entitlements conflict (App
+Group breaking macOS) and the code wrapping issue (local harness
+breaking LeetCode API).</p>
+<h3 id="swiftlint-as-automated-code-quality-gate">SwiftLint as Automated
+Code Quality Gate</h3>
+<p><strong>Approach</strong>: <code>.swiftlint.yml</code> enforces hard
+limits — 200 chars line length, 100 lines function body, 500 lines type
+body, cyclomatic complexity of 25. Custom rules block
+<code>print()</code> statements, hardcoded colors, and missing
+<code>@MainActor</code> on Presenters.</p>
+<p><strong>Why it scales</strong>: When a Presenter grows past 500
+lines, SwiftLint forces you to split into extensions before the code
+becomes unmanageable. It’s architectural enforcement, not just
+style.</p>
+<h3 id="hidden-test-gate-pre-submission-validation">Hidden Test Gate —
+Pre-Submission Validation</h3>
+<p><strong>Approach</strong>: Before any code hits LeetCode’s official
+submit endpoint, it must pass up to 50 AI-generated hidden test cases
+locally. This catches edge cases (empty arrays, single elements, maximum
+constraints) that the user’s manual test cases might miss.</p>
+<p><strong>Multi-layer defense</strong>: User-visible tests -&gt; Hidden
+AI tests -&gt; LeetCode official submission. Code never reaches LeetCode
+unless it passes everything locally first.</p>
+<h3 id="type-safe-data-contracts-between-processes">Type-Safe Data
+Contracts Between Processes</h3>
+<p><strong>Approach</strong>: The widget extension and main app share
+data via <code>WidgetData</code> — a <code>Codable</code> struct with
+explicit fields and default values. The writer and reader use the same
+model, so schema mismatches cause compile-time errors, not runtime
+crashes.</p>
+<p><strong>Defensive coding</strong>:
+<code>WidgetDataReader.load()</code> returns sensible defaults if the
+JSON file is missing, corrupt, or from an older schema version. The
+widget never crashes.</p>
+<h3 id="retry-timeout-boundaries-on-all-network-calls">Retry + Timeout
+Boundaries on All Network Calls</h3>
+<p><strong>Approach</strong>: Every network call has explicit timeout
+(20s) and retry logic (3 retries with exponential backoff). Network
+errors are surfaced with user-friendly messages, not raw HTTP
+errors.</p>
+<p><strong>Why this matters</strong>: If LeetCode adds rate limiting or
+changes response times, our retry logic absorbs it gracefully.</p>
+<hr />
+<h2 id="where-ai-assistance-hit-its-limits">8. Where AI Assistance Hit
+Its Limits</h2>
+<h3 id="ai-could-not-always-get-project.pbxproj-right">AI Could Not
+Always Get project.pbxproj Right</h3>
+<p><strong>Reality</strong>: Xcode’s project file is a deeply nested,
+ID-referenced format where one wrong character breaks the entire
+project. AI-generated pbxproj edits frequently had incorrect UUIDs,
+missing section references, or build phase entries pointing to
+non-existent files.</p>
+<p><strong>What we did</strong>: Carefully hand-verified every pbxproj
+edit. When the widget target was first created, it compiled fine but
+failed at install time because the NSExtension plist entry was missing —
+something the AI didn’t catch because the build succeeded.</p>
+<p><strong>Lesson</strong>: For pbxproj changes, always verify by
+building AND installing/running. A successful build doesn’t mean the
+binary is correctly configured.</p>
+<h3 id="ai-generated-code-that-compiled-but-had-subtle-runtime-bugs">AI
+Generated Code That Compiled But Had Subtle Runtime Bugs</h3>
+<p><strong>Reality</strong>: The AI would sometimes generate code that
+compiled perfectly but had logic issues. For example, the initial
+<code>wrappedCodeForExecution()</code> applied the macOS local harness
+on iOS too — it compiled because the harness code was valid Swift, but
+at runtime, LeetCode’s API rejected it.</p>
+<p><strong>What we did</strong>: Added platform-specific
+<code>#if os()</code> guards and tested the actual execution flow
+end-to-end, not just compilation.</p>
+<p><strong>Lesson</strong>: AI is great at generating syntactically
+correct code, but you need to understand the runtime context. Always
+ask: “What will the other side (API, OS, framework) actually do with
+this?”</p>
+<h3 id="ai-struggled-with-cross-cutting-concerns-across-many-files">AI
+Struggled with Cross-Cutting Concerns Across Many Files</h3>
+<p><strong>Reality</strong>: When restructuring 78+ files into feature
+folders, the AI sometimes moved files but forgot to update all the
+corresponding pbxproj paths, or moved a file into <code>iOS/</code> but
+didn’t add the <code>#if os(iOS)</code> guard.</p>
+<p><strong>What we did</strong>: Adopted a systematic approach — do all
+renames in one pass, build immediately after each batch of changes, fix
+all errors before proceeding.</p>
+<p><strong>Lesson</strong>: For large refactors, break the work into
+small, verifiable chunks. Don’t try to do 78 file moves in one shot.
+Move 10, build, fix, repeat.</p>
+<h3 id="ai-couldnt-predict-platform-specific-xcode-behaviors">AI
+Couldn’t Predict Platform-Specific Xcode Behaviors</h3>
+<p><strong>Reality</strong>: Several issues were specific to how Xcode
+handles things behind the scenes: - App Group entitlement requiring
+provisioning profiles on macOS but not on iOS -
+<code>GENERATE_INFOPLIST_FILE</code> not generating the NSExtension
+dictionary without an explicit <code>INFOPLIST_FILE</code> pointer -
+Bundle resources being flattened (no subdirectories) in “Copy Bundle
+Resources” - <code>@Environment</code> properties needing
+<code>internal</code> access when extensions are in separate files</p>
+<p><strong>What we did</strong>: Each of these was discovered through
+build/run failures, then we researched the specific Xcode behavior,
+documented it in <code>MEMORY.md</code> for future reference.</p>
+<p><strong>Lesson</strong>: AI works from training data, but Xcode’s
+build system has undocumented behaviors and version-specific quirks.
+When you hit a wall, read Apple’s actual build logs and inspect the
+generated artifacts. Document every gotcha.</p>
+<h3 id="ai-test-generation-had-quality-variance">AI Test Generation Had
+Quality Variance</h3>
+<p><strong>Reality</strong>: The AI providers generating hidden test
+cases sometimes produced incorrect expected outputs, especially for
+complex graph/tree problems.</p>
+<p><strong>What we did</strong>: Added the <code>orderMatters</code>
+flag to handle ambiguous output ordering. Failed hidden tests go to the
+test panel for inspection, so users can see what failed and judge if
+it’s a real bug or a bad test.</p>
+<p><strong>Lesson</strong>: Never blindly trust AI-generated test data.
+Always give users visibility into what’s being tested. The hidden test
+gate is a helper, not a gatekeeper.</p>
+<h3 id="ai-sometimes-over-engineered-or-under-engineered-solutions">AI
+Sometimes Over-Engineered or Under-Engineered Solutions</h3>
+<p><strong>Reality</strong>: Sometimes the AI would propose adding
+entire new frameworks for problems that had simple solutions. Other
+times, it would under-engineer — like using simple string comparison
+when order-insensitive comparison was needed.</p>
+<p><strong>What we did</strong>: Applied the “minimum viable approach”
+principle — always start with the simplest solution that works, then add
+complexity only when a specific test case or real-world scenario demands
+it.</p>
+<p><strong>Lesson</strong>: AI suggestions are starting points, not
+finished designs. Review every proposal against the actual requirements.
+Ask: “Is there a simpler way?” and “What’s the minimal change that fixes
+this specific problem?”</p>
+</body>
+</html>

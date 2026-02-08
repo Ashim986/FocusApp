@@ -114,11 +114,12 @@ extension SequenceBubbleRow {
         let end = CGPoint(x: xPosition(for: toIndex), y: baseY)
         let span = abs(end.x - start.x)
         let lift = min(28, max(12, span * 0.25))
-        let control = CGPoint(x: (start.x + end.x) / 2, y: baseY - lift)
+        let control = CGPoint(x: (start.x + end.x) / 2, y: max(6, baseY - lift))
         var path = Path()
         path.move(to: start)
         path.addQuadCurve(to: end, control: control)
-        context.stroke(path, with: .color(motion.color.opacity(0.8)), lineWidth: arrowLineWidth)
+        let motionLineWidth = max(1.2, arrowLineWidth - 1.4)
+        context.stroke(path, with: .color(motion.color.opacity(0.75)), lineWidth: motionLineWidth)
         drawArrowHead(context: &context, from: control, to: end, color: motion.color.opacity(0.9))
     }
 

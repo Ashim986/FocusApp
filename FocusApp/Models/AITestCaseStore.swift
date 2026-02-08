@@ -139,7 +139,7 @@ final class AITestCaseStore {
         let base = FileManager.default.urls(
             for: .applicationSupportDirectory,
             in: .userDomainMask
-        ).first ?? FileManager.default.homeDirectoryForCurrentUser
+        ).first ?? FileManager.default.temporaryDirectory
         let dir = base.appendingPathComponent("FocusApp", isDirectory: true)
         return dir.appendingPathComponent("ai-testcases.json")
     }

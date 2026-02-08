@@ -150,8 +150,15 @@ extension DataJourneyView {
     }
 
     private var resolvedStructure: TraceStructure? {
-        if let fromInput = DataJourneyStructureCanvasView.structure(in: inputEvent) { return fromInput }
-        return DataJourneyStructureCanvasView.structure(in: selectedEvent)
+        DataJourneyStructureCanvasView(
+            inputEvent: inputEvent,
+            selectedEvent: selectedEvent,
+            previousEvent: previousPlaybackEvent,
+            outputEvent: outputEvent,
+            playbackIndex: currentPlaybackIndex,
+            beginsAtZero: playbackEvents.first?.label?.lowercased().contains("begin") == true
+                || playbackEvents.first?.label?.lowercased().contains("start") == true
+        ).structure
     }
 
     @ViewBuilder
@@ -173,8 +180,9 @@ extension DataJourneyView {
     }
 
     private func resolvedListContexts() -> [TraceList] {
-        if let lists = listStructures(in: inputEvent), !lists.isEmpty { return lists }
         if let lists = listStructures(in: selectedEvent), !lists.isEmpty { return lists }
+        if let lists = listStructures(in: outputEvent), !lists.isEmpty { return lists }
+        if let lists = listStructures(in: inputEvent), !lists.isEmpty { return lists }
         return []
     }
 

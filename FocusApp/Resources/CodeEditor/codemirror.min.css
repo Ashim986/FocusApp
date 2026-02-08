@@ -419,7 +419,44 @@
 }
 
 /* --------------------------------------------------------------------------
-   14. Animations & Transitions
+   14. Diagnostics / Error Highlighting
+   -------------------------------------------------------------------------- */
+
+.cm-line-number.cm-error-line {
+    color: #f38ba8;
+    font-weight: 600;
+    position: relative;
+}
+
+.cm-line-number.cm-error-line::before {
+    content: "";
+    position: absolute;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    width: 3px;
+    background: #f38ba8;
+    border-radius: 1px;
+}
+
+.cm-error-line-bg {
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: calc(var(--editor-font-size) * var(--editor-line-height));
+    background: rgba(243, 139, 168, 0.08);
+    pointer-events: none;
+    z-index: 0;
+}
+
+.cm-error-underline {
+    text-decoration: wavy underline;
+    text-decoration-color: #f38ba8;
+    text-underline-offset: 2px;
+}
+
+/* --------------------------------------------------------------------------
+   15. Animations & Transitions
    -------------------------------------------------------------------------- */
 
 @keyframes cm-cursor-blink {
@@ -437,7 +474,7 @@
 }
 
 /* --------------------------------------------------------------------------
-   15. High Contrast / Accessibility
+   16. High Contrast / Accessibility
    -------------------------------------------------------------------------- */
 
 @media (prefers-contrast: high) {

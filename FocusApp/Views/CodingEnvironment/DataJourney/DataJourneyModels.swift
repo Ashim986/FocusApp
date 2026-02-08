@@ -1,5 +1,5 @@
-import Foundation
 import FocusDesignSystem
+import Foundation
 import SwiftUI
 
 enum DataJourneyEventKind: String {

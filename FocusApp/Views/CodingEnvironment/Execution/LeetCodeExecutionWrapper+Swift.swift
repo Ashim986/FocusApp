@@ -66,7 +66,8 @@ extension LeetCodeExecutionWrapper {
         let instrumentedCode = AutoInstrumenter.instrument(
             code: code,
             language: .swift,
-            paramNames: params.compactMap { $0.name }
+            paramNames: params.compactMap { $0.name },
+            entryPointName: methodName
         )
 
         return """
@@ -193,7 +194,8 @@ extension LeetCodeExecutionWrapper {
         }
 
         func listNodeIdentifier(_ node: ListNode) -> String {
-            String(ObjectIdentifier(node).hashValue)
+            let ptr = Unmanaged.passUnretained(node).toOpaque()
+            return String(UInt(bitPattern: ptr))
         }
 
         func traceListNodeStructure(_ node: ListNode?, maxNodes: Int = 40) -> (
@@ -290,7 +292,8 @@ extension LeetCodeExecutionWrapper {
         }
 
         func treeNodeIdentifier(_ node: TreeNode) -> String {
-            String(ObjectIdentifier(node).hashValue)
+            let ptr = Unmanaged.passUnretained(node).toOpaque()
+            return String(UInt(bitPattern: ptr))
         }
 
         func traceTreeStructure(_ root: TreeNode?, maxNodes: Int = 40) -> (

@@ -3,22 +3,6 @@ import Foundation
 import UserNotifications
 import XCTest
 
-final class InMemoryAppStorage: AppStorage {
-    private var stored: AppData
-
-    init(initial: AppData = AppData()) {
-        self.stored = initial
-    }
-
-    func load() -> AppData {
-        stored
-    }
-
-    func save(_ data: AppData) {
-        stored = data
-    }
-}
-
 struct FixedDateProvider: DateProviding {
     let date: Date
 

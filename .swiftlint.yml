@@ -5,9 +5,12 @@ excluded:
   - Carthage
   - Pods
   - .build
+  - "**/.build"
+  - "Packages/**/.build"
   - DerivedData
   - .xcode_derived_data
   - fastlane
+  - build
   - Generated
   - "**/*.generated.swift"
   - FocusApp/Helpers/L10n.swift

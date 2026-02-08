@@ -291,6 +291,274 @@
 		D7A10006FFFF111122223333 /* WidgetCoordinatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7A10005EEEE111122223333 /* WidgetCoordinatorTests.swift */; };
 		D7A10008BBBB222233334444 /* FocusCoordinatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7A10007AAAA222233334444 /* FocusCoordinatorTests.swift */; };
 		E1A10002 /* LeetCodeLoginSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1A10001 /* LeetCodeLoginSheet.swift */; };
+		59515A647E52F85CF9292B0A /* FocusAppiOS.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9343EAB45E0677E3AA5026AF /* FocusAppiOS.swift */; };
+		17FD3B50F8DA917A42388AE5 /* DesignSystemRoot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99B2F740E7B95B61E0D1C971 /* DesignSystemRoot.swift */; };
+		23C755946BB6EFE395172F36 /* NoOpCodeExecutionService.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAF5CD6045CBA02891C8FBD1 /* NoOpCodeExecutionService.swift */; };
+		LCE5A1B2C3D4E5F6A7B8C9D1 /* LeetCodeExecutionService.swift in Sources */ = {isa = PBXBuildFile; fileRef = LCE5A1B2C3D4E5F6A7B8C9D0 /* LeetCodeExecutionService.swift */; };
+		BA8CF965A349932CE6CD1280 /* RootViewiOS.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9537B14D6D3C85BFFF0D5670 /* RootViewiOS.swift */; };
+		F2E1D0C9B8A7F6E5D4C3B2A1 /* TodayViewiOS.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D4E5F6A7B8C9D0E1F2 /* TodayViewiOS.swift */; };
+		B2A1F2E1D0C9B8A7F6E5D4C3 /* TodayViewiOS.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D4E5F6A7B8C9D0E1F2 /* TodayViewiOS.swift */; };
+		D0C9B8A7F6E5D4C3B2A1F2E1 /* PlanViewiOS.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3D4E5F6A7B8C9D0E1F2A3B4 /* PlanViewiOS.swift */; };
+		A7F6E5D4C3B2A1F2E1D0C9B8 /* PlanViewiOS.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3D4E5F6A7B8C9D0E1F2A3B4 /* PlanViewiOS.swift */; };
+		B8A7F6E5D4C3B2A1F2E1D0C9 /* StatsViewiOS.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5F6A7B8C9D0E1F2A3B4C5D6 /* StatsViewiOS.swift */; };
+		F6E5D4C3B2A1F2E1D0C9B8A7 /* StatsViewiOS.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5F6A7B8C9D0E1F2A3B4C5D6 /* StatsViewiOS.swift */; };
+		A7F6E5D4C3B2A100F2E1D0C9 /* FocusViewiOS.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7B8C9D0E1F2A3B4C5D6E7F8 /* FocusViewiOS.swift */; };
+		E5D4C3B2A1F2E100D0C9B8A7 /* FocusViewiOS.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7B8C9D0E1F2A3B4C5D6E7F8 /* FocusViewiOS.swift */; };
+		F6E5D4C3B200A1F2E1D0C9B8 /* CodingViewiOS.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9D0E1F2A3B4C5D6E7F8A9B0 /* CodingViewiOS.swift */; };
+		D4C3B2A1F200E1D0C9B8A7F6 /* CodingViewiOS.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9D0E1F2A3B4C5D6E7F8A9B0 /* CodingViewiOS.swift */; };
+		A1B2C3D4E5F60003 /* OutputViewiOS.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D4E5F60001 /* OutputViewiOS.swift */; };
+		A1B2C3D4E5F60004 /* SolutionViewiOS.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D4E5F60002 /* SolutionViewiOS.swift */; };
+		A1B2C3D4E5F60005 /* OutputViewiOS.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D4E5F60001 /* OutputViewiOS.swift */; };
+		A1B2C3D4E5F60006 /* SolutionViewiOS.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D4E5F60002 /* SolutionViewiOS.swift */; };
+		E5D4C300B2A1F2E1D0C9B8A7 /* SettingsViewiOS.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1F2A3B4C5D6E7F8A9B0C1D2 /* SettingsViewiOS.swift */; };
+		C3B2A100F2E1D0C9B8A7F6E5 /* SettingsViewiOS.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1F2A3B4C5D6E7F8A9B0C1D2 /* SettingsViewiOS.swift */; };
+		D4C3B201A1F2E1D0C9B8A7F6 /* DifficultyBadgeHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3A4B5C6D7E8F9A0B1C2D3E4 /* DifficultyBadgeHelper.swift */; };
+		B2A1F201E1D0C9B8A7F6E5D4 /* DifficultyBadgeHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3A4B5C6D7E8F9A0B1C2D3E4 /* DifficultyBadgeHelper.swift */; };
+		2CE3D924FEBA6D63B4D2FE52 /* CodeMirrorEditorViewiOS.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2060897631C72165C5A42CE7 /* CodeMirrorEditorViewiOS.swift */; };
+		5170B83DD343C1A9E0EBC2C4 /* FloatingMiniTimeriOS.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88075C068D6A0E6924A12E72 /* FloatingMiniTimeriOS.swift */; };
+		814FF2076CD9D65EF45CAD9D /* index.html in Resources */ = {isa = PBXBuildFile; fileRef = E1C4908B4C47C1BE06866D26 /* index.html */; };
+		8738A2844755073534CEB9EF /* codemirror.min.css in Resources */ = {isa = PBXBuildFile; fileRef = 638D364D8A2320809DE2CE53 /* codemirror.min.css */; };
+		1FD1F7D5020A67651E7B9BC0 /* codemirror-bundle.min.js in Resources */ = {isa = PBXBuildFile; fileRef = 93594CA5C56AD3E6C879BDE5 /* codemirror-bundle.min.js */; };
+		33B8F4219A64850042D6965A /* FocusDesignSystem in Frameworks */ = {isa = PBXBuildFile; productRef = 9174995E3BC942CD61C27DBB /* FocusDesignSystem */; };
+		ADC602A2EDBDB944A3265967 /* FocusDomain in Frameworks */ = {isa = PBXBuildFile; productRef = 17951A092A38CB919666F880 /* FocusDomain */; };
+		1F0528E665CCAFB26B2907FD /* FocusData in Frameworks */ = {isa = PBXBuildFile; productRef = 2278A4170A0D7BE61E107EBF /* FocusData */; };
+		0B9A78FE6FCD2F5E6AC33F6F /* FocusApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002001 /* FocusApp.swift */; };
+		7BBAC3E4C8BC176111E0DB87 /* AppContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002015 /* AppContainer.swift */; };
+		1D8E2FA28420A2FE5D8A545C /* DSAPlan.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002002 /* DSAPlan.swift */; };
+		104CB1FC80902C2F53EE19B2 /* AppData.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002003 /* AppData.swift */; };
+		95D1D21382F8C1BAB8BAF1EF /* DataStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002004 /* DataStore.swift */; };
+		0C5A0A680ECFDA1F4C0BDB52 /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002005 /* Colors.swift */; };
+		6C3883249C6F4579174358A5 /* AppStrings.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002092 /* AppStrings.swift */; };
+		42EAEEAD25F8140C918C0B5A /* L10n.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002095 /* L10n.swift */; };
+		AC7A627B636D0C8349A05EDD /* L10n+Plural.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002097 /* L10n+Plural.swift */; };
+		CB6A2B1F8C9AAD8D689CADE3 /* AppMessages.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002098 /* AppMessages.swift */; };
+		4A26D67E2AA0AD298BC44DC2 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002006 /* ContentView.swift */; };
+		CFB127CDC5ED1A87851F3FB9 /* PlanView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002007 /* PlanView.swift */; };
+		C6BEEE8F92A619BE4E6C2D10 /* TodayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002008 /* TodayView.swift */; };
+		54B0D01AC8682071FD9FE32F /* StatsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002009 /* StatsView.swift */; };
+		928D2064EC8EEA4A2BD96604 /* FocusOverlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000200A /* FocusOverlay.swift */; };
+		E21926107CADAD1ABA150636 /* DayCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000200B /* DayCard.swift */; };
+		0E836D525B4DA40CA369DD4A /* ProblemRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000200C /* ProblemRow.swift */; };
+		14F83D874B8028671DB59E13 /* NotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000200F /* NotificationManager.swift */; };
+		5D4C323DE828F4A2FC43E7BD /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002010 /* SettingsView.swift */; };
+		EE19E33BE457D4F01F82F81D /* DebugLogView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 442A3E5BF10148F0B6B191C1 /* DebugLogView.swift */; };
+		ECD87343F0E9505DBFC59D4F /* DebugLogView+Header.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1636D7B6A764DFE88778306 /* DebugLogView+Header.swift */; };
+		CBAA2A2AFACDB149665BB6A6 /* DebugLogView+Filters.swift in Sources */ = {isa = PBXBuildFile; fileRef = 779FDA23FDEA4F84865F4D50 /* DebugLogView+Filters.swift */; };
+		B9609FF8FDE0EA5149E6C7A9 /* DebugLogView+Content.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE7369E0350240A3AEA56363 /* DebugLogView+Content.swift */; };
+		C1B06D5B11A45CB9CC96D4A7 /* DebugLogView+Metrics.swift in Sources */ = {isa = PBXBuildFile; fileRef = C132E5EEF912453BBDC5AF07 /* DebugLogView+Metrics.swift */; };
+		59F7955E0179426F6ABDC2BD /* DebugLogView+Styles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E30623F430E4A7F84DE5C39 /* DebugLogView+Styles.swift */; };
+		9B68D22EF39D8A2DF5132782 /* DebugLogRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = A070BC5C8E654C24B432BBEF /* DebugLogRow.swift */; };
+		926C207B40057DD774B299F9 /* DebugLogFilters.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8464C02CEE2D484AB8DADC22 /* DebugLogFilters.swift */; };
+		DE493CE4F8260D8C7B5FE71F /* SharedDataStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002011 /* SharedDataStore.swift */; };
+		6664945EC3F39C24DF82D998 /* SwiftDataStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002090 /* SwiftDataStorage.swift */; };
+		E2AB8A1424549744B6A2FE0D /* LeetCodeService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002014 /* LeetCodeService.swift */; };
+		B9520A41D4F19279626AC67F /* LeetCodeRestClient+Requests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2D70A846ECA406EAD5C00EA /* LeetCodeRestClient+Requests.swift */; };
+		7387AD4C07D1A9B0FCD4B948 /* LeetCodeRestClient+Validation.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED0D7E4D8DD24373B162DB1A /* LeetCodeRestClient+Validation.swift */; };
+		2B7F73D4C65AD61EFF8B9701 /* LeetCodeRestClient+SolvedSlugs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87848ED42D674540A01E5EDE /* LeetCodeRestClient+SolvedSlugs.swift */; };
+		358D1ED5D6C898DFA39E82A3 /* LeetCodeRestClient+GraphQL.swift in Sources */ = {isa = PBXBuildFile; fileRef = D994FDB1D9524F1E880ED0BF /* LeetCodeRestClient+GraphQL.swift */; };
+		ABF246DF9A568F60D8F9C11A /* LeetCodeRestClient+ProblemContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAB330A1AD40462BBD64A817 /* LeetCodeRestClient+ProblemContent.swift */; };
+		7CD542C51659C75578189F55 /* AITestCaseStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CB007B91B0B4FF7AA0B0907 /* AITestCaseStore.swift */; };
+		8F84BF45F26775729CBBE806 /* LeetCodeSubmissionService.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF2E7F77CE194F7AB1E598D5 /* LeetCodeSubmissionService.swift */; };
+		C55EC48E9473A91D4C247C7E /* LeetCodeValueType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77109ADB4E7D49D79A7EAE35 /* LeetCodeValueType.swift */; };
+		9BC7AE9E9D72C325175DED82 /* TestCaseAIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3917106B68C94E3BBBFF47D5 /* TestCaseAIService.swift */; };
+		9AB90DB039E2DC5545FECD86 /* LeetCodeSyncInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46393003B20C411B876AB671 /* LeetCodeSyncInteractor.swift */; };
+		C7BB7F99005A2B945C0018B0 /* ToolbarWidgetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002016 /* ToolbarWidgetView.swift */; };
+		377C22E831D0B22BDC0C8B9F /* TestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002017 /* TestCase.swift */; };
+		B1039890A8F525ECB50B6A74 /* CodeExecutionService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002018 /* CodeExecutionService.swift */; };
+		576B544D4AB1B0060EE8CA8A /* CodingEnvironmentPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002019 /* CodingEnvironmentPresenter.swift */; };
+		00E2E1D6FDEE2975CAE72569 /* CodingEnvironmentPresenter+LeetCodeSubmit.swift in Sources */ = {isa = PBXBuildFile; fileRef = B78FD43A2E7A4F1C9C2B56E4 /* CodingEnvironmentPresenter+LeetCodeSubmit.swift */; };
+		BE50DECB1D9B3BB7C160EC85 /* CodeEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000201A /* CodeEditorView.swift */; };
+		CD086DE81B49216F7A5224C6 /* CodeEditorLineNumberRulerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002091 /* CodeEditorLineNumberRulerView.swift */; };
+		ACBE244ABA0FF292D03749E1 /* OutputPanelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000201B /* OutputPanelView.swift */; };
+		29EEA4B1E61A8212E1E0943E /* ProblemSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000201C /* ProblemSelectionView.swift */; };
+		826624D791FC604E6B74B811 /* CodingEnvironmentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000201D /* CodingEnvironmentView.swift */; };
+		31861700D0C923E35C5D2938 /* ProcessRunner.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000201E /* ProcessRunner.swift */; };
+		B800F0A8A9ABA27B4971D2C3 /* ProcessRunState.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2C628C5EB52415F9AB50D7E /* ProcessRunState.swift */; };
+		E649CB6AB914087DB9717D49 /* ProcessOutputCollector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C27ED53D78F405EA1AFB969 /* ProcessOutputCollector.swift */; };
+		E59CB66C0D05C9B6BF6DBA51 /* LanguageExecutor.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000201F /* LanguageExecutor.swift */; };
+		4E6678EAF45EF07F4CC53605 /* SwiftExecutor.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002020 /* SwiftExecutor.swift */; };
+		D8060DDA9ABC3C0D5EDF97CE /* SwiftExecutor+Logging.swift in Sources */ = {isa = PBXBuildFile; fileRef = C47F33827B1A4CAAAF7ACC2C /* SwiftExecutor+Logging.swift */; };
+		D1E72BD94B91FD1861A73D13 /* PythonExecutor.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002021 /* PythonExecutor.swift */; };
+		F7EFA15412E3E9CC1287DDEA /* ContentInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002022 /* ContentInteractor.swift */; };
+		269056FA2884342D96325E84 /* ContentPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002023 /* ContentPresenter.swift */; };
+		FC4048FD15781E87EE2C410B /* PlanInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002024 /* PlanInteractor.swift */; };
+		E30F7BFEAF4D47CE076FAD82 /* PlanPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002025 /* PlanPresenter.swift */; };
+		5C08ABA74F23CC598581F2BB /* TodayInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002026 /* TodayInteractor.swift */; };
+		CD410C1DBD0090CC84B7216E /* TodayPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002027 /* TodayPresenter.swift */; };
+		62404B57D231BC667A12CDF1 /* StatsInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002028 /* StatsInteractor.swift */; };
+		B376754021F8EAB10A4DF1C8 /* StatsPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002029 /* StatsPresenter.swift */; };
+		597DC0740F5C677990CAE162 /* SettingsInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002030 /* SettingsInteractor.swift */; };
+		E9589DE986BF6086E0781B1C /* SettingsPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002031 /* SettingsPresenter.swift */; };
+		36FE6975409D1758B5F57C43 /* ToolbarWidgetInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002032 /* ToolbarWidgetInteractor.swift */; };
+		B5126158BF33196181E7014B /* ToolbarWidgetPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002033 /* ToolbarWidgetPresenter.swift */; };
+		EFED1D4729938E55149C248A /* FocusInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002034 /* FocusInteractor.swift */; };
+		88EA796DBBCA4FE7F0E82018 /* FocusPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002035 /* FocusPresenter.swift */; };
+		440962417FBFA6925E30921E /* CodingEnvironmentInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002036 /* CodingEnvironmentInteractor.swift */; };
+		63B03F6CB3E11C3C49759D59 /* OutputPanelView+Sections.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002012 /* OutputPanelView+Sections.swift */; };
+		3F086941C3FC3F2FBC8B6EE4 /* ConsoleOutputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002013 /* ConsoleOutputView.swift */; };
+		C988B95C204A45DBA52C2EFF /* CodeEditorView+Coordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002037 /* CodeEditorView+Coordinator.swift */; };
+		46D1CC63845D31F846F9728C /* CodeEditorView+CoordinatorInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002038 /* CodeEditorView+CoordinatorInput.swift */; };
+		1BC2382B0F9A015641484DC3 /* CodeEditorView+CoordinatorHighlighting.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002039 /* CodeEditorView+CoordinatorHighlighting.swift */; };
+		0585BA8EE337A3CBAEE630AE /* CodeEditorView+CoordinatorHighlightingCommon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A9C160FDBA2426DBDFD6986 /* CodeEditorView+CoordinatorHighlightingCommon.swift */; };
+		9B95A0AFF0B2C30469F142F1 /* CodeEditorView+CoordinatorHighlightingSwift.swift in Sources */ = {isa = PBXBuildFile; fileRef = C970BACB7D254352948CFF1A /* CodeEditorView+CoordinatorHighlightingSwift.swift */; };
+		BFA24A86BFB80DF72C4C42C2 /* CodeEditorView+CoordinatorHighlightingPython.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21780F4451B945FAB9CEFE94 /* CodeEditorView+CoordinatorHighlightingPython.swift */; };
+		DBC4E9395CB8F18A30867437 /* SettingsView+Bindings.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002040 /* SettingsView+Bindings.swift */; };
+		B82681A4B6A09F3F7A9EFA99 /* SettingsView+Validation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002041 /* SettingsView+Validation.swift */; };
+		1135FD267FF2124F52E40ABC /* SettingsView+Preview.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002042 /* SettingsView+Preview.swift */; };
+		6343A5CB5E8174D2B504200B /* TodayView+Sections.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002043 /* TodayView+Sections.swift */; };
+		C9083065BA030FB0ADCB92B4 /* TodayView+Preview.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002044 /* TodayView+Preview.swift */; };
+		7EA8748F6F009ABE44CF83C7 /* StatsView+Sections.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002045 /* StatsView+Sections.swift */; };
+		70FAA89EB5F57A600401C7BA /* StatsView+Preview.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002046 /* StatsView+Preview.swift */; };
+		430D45502BEF169676BCF601 /* FocusOverlay+Sections.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002047 /* FocusOverlay+Sections.swift */; };
+		56793A03DD5531B43FF25329 /* ToolbarWidgetView+Header.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002048 /* ToolbarWidgetView+Header.swift */; };
+		547B470DBB38965335C50DDB /* ToolbarWidgetView+Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002049 /* ToolbarWidgetView+Settings.swift */; };
+		268FD9A7212473006EEB07DA /* ToolbarWidgetView+Summary.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002050 /* ToolbarWidgetView+Summary.swift */; };
+		B7771BA799F97F70D409D590 /* ToolbarWidgetView+Problems.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002051 /* ToolbarWidgetView+Problems.swift */; };
+		4DF6770BF5F8936C25964959 /* ToolbarWidgetView+Habits.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002052 /* ToolbarWidgetView+Habits.swift */; };
+		FC7A02FCAEFC90E8A75EEE79 /* ToolbarWidgetView+Tomorrow.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002053 /* ToolbarWidgetView+Tomorrow.swift */; };
+		69258A094C1C7F54F6C8D2FC /* ToolbarWidgetView+Preview.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002054 /* ToolbarWidgetView+Preview.swift */; };
+		089AF5912D2CFA06AA5996F6 /* WidgetCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002055 /* WidgetCard.swift */; };
+		6CB314C3AD361A5B1A00D732 /* ProblemRowWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002056 /* ProblemRowWidget.swift */; };
+		49CE0C02EC13E0983EE93604 /* HabitToggle.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002057 /* HabitToggle.swift */; };
+		351A079AF26C7F2836A3081A /* CarryoverProblemRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002058 /* CarryoverProblemRow.swift */; };
+		BAFC319A44730B5A1B759B37 /* TomorrowProblemRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002059 /* TomorrowProblemRow.swift */; };
+		6989A4DEE9EF9159F557FED5 /* CodingEnvironmentPresenter+Execution.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002060 /* CodingEnvironmentPresenter+Execution.swift */; };
+		BAAF15492D6AF87A9C26F180 /* CodingEnvironmentPresenter+ProblemLoading.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002061 /* CodingEnvironmentPresenter+ProblemLoading.swift */; };
+		3A9F9BF80FB4BE89F9614EAE /* CodingEnvironmentPresenter+Persistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002062 /* CodingEnvironmentPresenter+Persistence.swift */; };
+		A229CF8BCE679B2EFF73A773 /* CodingEnvironmentView+Header.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002064 /* CodingEnvironmentView+Header.swift */; };
+		2F5CA94BEDE538A8E6FB163F /* CodingEnvironmentView+Panels.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002065 /* CodingEnvironmentView+Panels.swift */; };
+		E07D36AFC2339BEF7D824514 /* ModernTestCaseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002066 /* ModernTestCaseView.swift */; };
+		B564E47228E3A3ABB0C6E987 /* ModernOutputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002067 /* ModernOutputView.swift */; };
+		A102FCF04B1A7D25438EB032 /* ModernOutputView+Sections.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002068 /* ModernOutputView+Sections.swift */; };
+		0AFB0774B0A0618B047A2EAD /* TestCaseEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002069 /* TestCaseEditorView.swift */; };
+		6B3279B1F29974747F3E07EB /* SolutionTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D4E5F6A7B8C9D0E3A1 /* SolutionTabView.swift */; };
+		0255721438428D5275DA93E0 /* SolutionApproachView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D4E5F6A7B8C9D0E3B2 /* SolutionApproachView.swift */; };
+		65A80DC62A523A43E43EB0D0 /* NotificationSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002070 /* NotificationSettings.swift */; };
+		4636C8BAFB5A1064143FAB78 /* NotificationSettingsStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002071 /* NotificationSettingsStore.swift */; };
+		A49D571946811E6369831625 /* NotificationScheduler.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002072 /* NotificationScheduler.swift */; };
+		06602190E17F09DD729F0451 /* LeetCodeNetworking.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002073 /* LeetCodeNetworking.swift */; };
+		6FD4C833572141ED6A4EC584 /* LeetCodeErrors.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002075 /* LeetCodeErrors.swift */; };
+		B1DD613A6561A3FEB95C3E4D /* LeetCodeModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002076 /* LeetCodeModels.swift */; };
+		8E61829895F136D81D75A2DD /* SolutionModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D4E5F6A7B8C9D0E2A1 /* SolutionModels.swift */; };
+		EB485B7E137A9714534070C8 /* SolutionStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D4E5F6A7B8C9D0E2A2 /* SolutionStore.swift */; };
+		58E987A9FDDF7B98E22B4AB9 /* LeetCodeSyncScheduler.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2C3D4E5F6A7B8C9D0E1F4F5 /* LeetCodeSyncScheduler.swift */; };
+		C88243AE1FCA3FB43A5C5202 /* LeetCodeConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002078 /* LeetCodeConstants.swift */; };
+		2DD88A236B83FD5F687DD1EB /* LeetCodeSlugExtractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002079 /* LeetCodeSlugExtractor.swift */; };
+		B4807255E916A850AE3CBEFB /* CodeEditorView+CoordinatorIndentation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000207A /* CodeEditorView+CoordinatorIndentation.swift */; };
+		7AD072EA652D03FEC833B730 /* CodeEditorView+CoordinatorBrackets.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000207B /* CodeEditorView+CoordinatorBrackets.swift */; };
+		6F928F475AC70771A1761392 /* CodingEnvironmentView+ProblemPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000207C /* CodingEnvironmentView+ProblemPicker.swift */; };
+		571C2CFDE47F98ECE9458D83 /* CodingEnvironmentProblemModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6EA4BEC926540C884CA828B /* CodingEnvironmentProblemModels.swift */; };
+		B9CD315257871BB73C91A38E /* DataJourneyModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1D2C3D4E5F6A7B8C9D0E1F9 /* DataJourneyModels.swift */; };
+		17BEA7E707896C8B5135517F /* DataJourneyDiff.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1D4F82A3B7C59014F2E8D5A /* DataJourneyDiff.swift */; };
+		C736A8EE486B17DC027D3915 /* DataJourneyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1D2C3D4E5F6A7B8C9D0E1FA /* DataJourneyView.swift */; };
+		5E956DC2EE1393D4FCBAE21E /* DataJourneyPointerModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6C8B7E1F0A44B2F9C11A1D1 /* DataJourneyPointerModels.swift */; };
+		A343591E2AB23A42B6E3750C /* DataJourneyStructureCanvasView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6C8B7E1F0A44B2F9C11A1D3 /* DataJourneyStructureCanvasView.swift */; };
+		9C62EBDD5ED268EA8308A9C7 /* DataJourneyStructureCanvasView+Structure.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3EC2C34544F48628DBADAC2 /* DataJourneyStructureCanvasView+Structure.swift */; };
+		8B932BC1B1E7CE00C84D7740 /* DataJourneyStructureCanvasView+Pointers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EA3FC6CB81A4E3AA66A5308 /* DataJourneyStructureCanvasView+Pointers.swift */; };
+		C5E26CB10F3E8530307A8DF0 /* DataJourneyStructureCanvasView+CombinedList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7268D1DCFE4143A88A1746F9 /* DataJourneyStructureCanvasView+CombinedList.swift */; };
+		129CD384EE68A14C9F9E936C /* DataJourneyStructureCanvasView+Labels.swift in Sources */ = {isa = PBXBuildFile; fileRef = FEB3C86A7CC34CB9B7365800 /* DataJourneyStructureCanvasView+Labels.swift */; };
+		84489F30CB545848FBD6E6CA /* DataJourneyDictionaryStructureRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC770C1132534029922B331B /* DataJourneyDictionaryStructureRow.swift */; };
+		14A6B775F6E6E3ECCAA84F77 /* CodingEnvironmentView+Sidebar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A4E0753FE4C4032A9C53AAA /* CodingEnvironmentView+Sidebar.swift */; };
+		72DBCBB2CB5E7F256001EA14 /* CodingEnvironmentView+DetailContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1D2C3D4E5F6A7B8C9D0E1F2 /* CodingEnvironmentView+DetailContent.swift */; };
+		68152D3B8148A46078932FC3 /* FocusOverlay+TimerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000207D /* FocusOverlay+TimerView.swift */; };
+		3B826D8C62D0930313600E09 /* FocusOverlay+CompletionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000207E /* FocusOverlay+CompletionView.swift */; };
+		E9226FD9F95164FA7935A44E /* StatsView+FocusReminder.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000207F /* StatsView+FocusReminder.swift */; };
+		3F34D9FBAFE2AC4BD0BF171D /* TodayView+FocusCTA.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002080 /* TodayView+FocusCTA.swift */; };
+		1D3425D83BEC5F0F33C43C02 /* ContentView+Preview.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10002081 /* ContentView+Preview.swift */; };
+		6E7804C6A8322747EB778E2B /* CodingEnvironmentPresenter+ExecutionDiagnostics.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB829ACA59D542A1BAFB7E98 /* CodingEnvironmentPresenter+ExecutionDiagnostics.swift */; };
+		C4D5F7367E3722B72999493D /* CodingEnvironmentPresenter+ExecutionOutput.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9046CC2CE464F6CAA10E00D /* CodingEnvironmentPresenter+ExecutionOutput.swift */; };
+		4AA720E1BA4D4EC35BCB9CD9 /* CodingEnvironmentPresenter+ExecutionTrace.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8668759D89D46E6AFEFDB91 /* CodingEnvironmentPresenter+ExecutionTrace.swift */; };
+		D9596C0CE642B9AC898C06F9 /* CodingEnvironmentPresenter+SnippetSelection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7693146EF45044699B367836 /* CodingEnvironmentPresenter+SnippetSelection.swift */; };
+		63B51F4773599B8BE8C43D2A /* LeetCodeTemplateBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29631B7C8972461E8CFE5A4C /* LeetCodeTemplateBuilder.swift */; };
+		9EBEC58CD16DE88E0C9E1A72 /* LeetCodeTemplateBuilder+Swift.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C16AAEDECD6437486584DA0 /* LeetCodeTemplateBuilder+Swift.swift */; };
+		7A3B6610B523511823C473D3 /* LeetCodeTemplateBuilder+Python.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AB00E6A026C4053B5CE8E45 /* LeetCodeTemplateBuilder+Python.swift */; };
+		6D7E97F051263F8CF23288FD /* LeetCodeTemplateBuilder+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F0B79BF20F546EA9997FAB1 /* LeetCodeTemplateBuilder+Helpers.swift */; };
+		E7750C8B100E862D6A5428E8 /* LeetCodeExecutionWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85429B444E874474A60434FC /* LeetCodeExecutionWrapper.swift */; };
+		F585A5EE9168D4CB74FD49E8 /* LeetCodeExecutionWrapper+Swift.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40DF70BDE518480BA3A08BE4 /* LeetCodeExecutionWrapper+Swift.swift */; };
+		EA4919458AA424D08B79F7BA /* LeetCodeExecutionWrapper+SwiftRunner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4792F237BA3A45A8940718F1 /* LeetCodeExecutionWrapper+SwiftRunner.swift */; };
+		8A96CD378C34909302219F7C /* LeetCodeExecutionWrapper+SwiftTrace.swift in Sources */ = {isa = PBXBuildFile; fileRef = B41BDEB1E3F242098830391D /* LeetCodeExecutionWrapper+SwiftTrace.swift */; };
+		19A163CC21E133D10AE2C2C8 /* LeetCodeExecutionWrapper+SignatureParsing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11B1220325C143EAA1510779 /* LeetCodeExecutionWrapper+SignatureParsing.swift */; };
+		1D5CE38B00AEB1EDF901D168 /* LeetCodeExecutionWrapper+Python.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6BCD363384E4C13B37495DE /* LeetCodeExecutionWrapper+Python.swift */; };
+		D6BBAF5EE6D7B3EB6CE3374A /* AutoInstrumenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3E5D72B4C8A61023F4E7A9C /* AutoInstrumenter.swift */; };
+		7C866D9FD7AC359FCCBFB181 /* LeetCodeExecutionWrapper+PythonRunner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39FCBCC646DF4102AFB6EB95 /* LeetCodeExecutionWrapper+PythonRunner.swift */; };
+		1825C846AE77EAD9B19F3377 /* LeetCodeExecutionWrapper+PythonTrace.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61EBAF88E89C2265C6E96CBA /* LeetCodeExecutionWrapper+PythonTrace.swift */; };
+		9F154156C23A7D873C92096C /* LeetCodeExecutionWrapper+TypeParsing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91545BFE73ED44268B3DC9E8 /* LeetCodeExecutionWrapper+TypeParsing.swift */; };
+		599CFBD9DDF5F06B803D46A2 /* DataJourneyGraphView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC393A6615DF41B0AA863A6E /* DataJourneyGraphView.swift */; };
+		C7D04783D038D3BA27C08C1C /* DataJourneySequenceBubbleRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F87412C2357454BB94E8138 /* DataJourneySequenceBubbleRow.swift */; };
+		77E34B8026D0B1627F40CA3D /* DataJourneySequenceBubbleRow+Layout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C57D54B89C74BEAB7CF8701 /* DataJourneySequenceBubbleRow+Layout.swift */; };
+		80C8BBAE8DD90F42FFD1E4AB /* DataJourneyTraceBubble.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8963F787148943C99BBFB5D8 /* DataJourneyTraceBubble.swift */; };
+		37758AE10014A6667601CA3E /* DataJourneyTraceValueView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F16BF57E1EEC4D76BA0E66B2 /* DataJourneyTraceValueView.swift */; };
+		0B2AD50AD49AD0501B2C1E21 /* DataJourneyTreeGraphView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0587D0FFC3444B3BAF623ED6 /* DataJourneyTreeGraphView.swift */; };
+		A27700A1B762EE7A4BA28E36 /* DataJourneyView+Layout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C63CCD5E6354405894DF177 /* DataJourneyView+Layout.swift */; };
+		4286FE6772D07798E34F5D3E /* DataJourneyView+Playback.swift in Sources */ = {isa = PBXBuildFile; fileRef = 577B7342AFEB4588BF7030CB /* DataJourneyView+Playback.swift */; };
+		0B3B8DE7D49C90827230FE44 /* DataJourneyView+Selection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4209C8FF6FF7461BBDC6412C /* DataJourneyView+Selection.swift */; };
+		300B4E59510564A9E1BAEE69 /* DataJourneyMatrixGridView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 053517450BF8C23F9B24B4F2 /* DataJourneyMatrixGridView.swift */; };
+		67A67A2C784F4117D755BDC0 /* DataJourneyHeapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8D3E71A4F5B92047H7ID5F3 /* DataJourneyHeapView.swift */; };
+		6AB816FA9439BAFAC9D0866D /* DataJourneyStringSequenceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9F4E82B5G6C04159I9KF7H5 /* DataJourneyStringSequenceView.swift */; };
+		AED2C701EDBEA49E759CB165 /* DataJourneyTrieGraphView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0G6F93C8I7D15360K1MH9J7 /* DataJourneyTrieGraphView.swift */; };
+		6E1BE8275B235CC142222D58 /* DataJourneyVariableTimeline.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1H7G15I9J8E37582M3OJ1L9 /* DataJourneyVariableTimeline.swift */; };
+		6DD1D753790A3A84AC0DA47E /* DataJourneyFlowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = H3J9I27K1L0G59704O5QL3N1 /* DataJourneyFlowView.swift */; };
+		D231D2AEBACD10465BEA85C4 /* DataJourneyComparisonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = J5L1K49M3N2I71926Q7SN5P3 /* DataJourneyComparisonView.swift */; };
+		7918DB89AD61D4EDFB8AA1BC /* CodingEnvironmentView+SidebarRows.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09ABF9970ACB4A2F8011CC20 /* CodingEnvironmentView+SidebarRows.swift */; };
+		2607F8D9A19E6BCCCB7EF677 /* ProblemDetailTab.swift in Sources */ = {isa = PBXBuildFile; fileRef = 048A8082F2A440128C75C769 /* ProblemDetailTab.swift */; };
+		07EB4FB6DD57E12E460098D3 /* SolutionApproachView+TestCases.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3990D61D6ADE47A184465754 /* SolutionApproachView+TestCases.swift */; };
+		1F25967BF2D0864799DE35D8 /* ProblemManifestStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F9FB7FF7D18DD14E20106F2 /* ProblemManifestStore.swift */; };
+		E5A1C64B4F04D38E00FB56A6 /* TopicSolutionModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = B28A8462CA30A176A921BB7B /* TopicSolutionModels.swift */; };
+		082D0F4466DADDF4E729B5DE /* TopicSolutionStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAB28E8181C60EBCBD3A980F /* TopicSolutionStore.swift */; };
+		B787343B778671A04FBBB081 /* SolutionAIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7F3B2C1D8E9F0A1B2C3D4E6 /* SolutionAIService.swift */; };
+		D57EB3E79BF4095B2C81EC48 /* Coordinating.swift in Sources */ = {isa = PBXBuildFile; fileRef = 560D1116B41DB726D1AB7CEA /* Coordinating.swift */; };
+		CA0F762C9E9AF113131F4A9D /* NavigationState.swift in Sources */ = {isa = PBXBuildFile; fileRef = A080BC3482F4FBA659C40FE8 /* NavigationState.swift */; };
+		FD2E0A891DB52E74537563A2 /* AppCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F06613745415F0D4F143DF9E /* AppCoordinator.swift */; };
+		61DF620941C627BBAF72FC12 /* ContentCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E18E9251143613E3B2A1B71 /* ContentCoordinator.swift */; };
+		F261F3A2B5B2DA6E8CA69CBD /* CodingCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 684D37749FDE863A438A0FAC /* CodingCoordinator.swift */; };
+		2B6E8A70F3BD089DC8033416 /* WidgetCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82DD31BA66FA7335916CA15A /* WidgetCoordinator.swift */; };
+		F7C5C07E8F80F8838310BFF1 /* FocusCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2ED2E0B36206968E8B3A57CE /* FocusCoordinator.swift */; };
+		9463AD2E08738963A0A33702 /* LeetCodeLoginSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1A10001 /* LeetCodeLoginSheet.swift */; };
+		518288C92D9EDFD8C9F078EC /* FocusAppiOS.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9343EAB45E0677E3AA5026AF /* FocusAppiOS.swift */; };
+		FD5C0EDA9813492C1B30AB10 /* DesignSystemRoot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99B2F740E7B95B61E0D1C971 /* DesignSystemRoot.swift */; };
+		1C2E23C23FF018E3C3704AD2 /* NoOpCodeExecutionService.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAF5CD6045CBA02891C8FBD1 /* NoOpCodeExecutionService.swift */; };
+		LCE5A1B2C3D4E5F6A7B8C9D2 /* LeetCodeExecutionService.swift in Sources */ = {isa = PBXBuildFile; fileRef = LCE5A1B2C3D4E5F6A7B8C9D0 /* LeetCodeExecutionService.swift */; };
+		32A3360547F2306D8249C3B2 /* RootViewiOS.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9537B14D6D3C85BFFF0D5670 /* RootViewiOS.swift */; };
+		3909F99EBE1AAEFEA2626C23 /* CodeMirrorEditorViewiOS.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2060897631C72165C5A42CE7 /* CodeMirrorEditorViewiOS.swift */; };
+		8B03E0F884E9AB1AC93021C2 /* FloatingMiniTimeriOS.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88075C068D6A0E6924A12E72 /* FloatingMiniTimeriOS.swift */; };
+		350178FE403AFC0A5798AD65 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A1000200D /* Assets.xcassets */; };
+		EBF13093CDE1285387C105C0 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = A10002093 /* Localizable.xcstrings */; };
+		20505B2A0D39FCAE31D4141D /* Plan.json in Resources */ = {isa = PBXBuildFile; fileRef = A10002094 /* Plan.json */; };
+		099DF6216F60D06B9857D427 /* Solutions.json in Resources */ = {isa = PBXBuildFile; fileRef = A10002099 /* Solutions.json */; };
+		2808F2D6A416FB36867127A3 /* problem-manifest.json in Resources */ = {isa = PBXBuildFile; fileRef = A10002100 /* problem-manifest.json */; };
+		C40826259A78E9359A7DE1F6 /* Plurals.stringsdict in Resources */ = {isa = PBXBuildFile; fileRef = A10002096 /* Plurals.stringsdict */; };
+		A567B5730FFD941CEE538D34 /* index.json in Resources */ = {isa = PBXBuildFile; fileRef = C707308BDCC0CA175F9CA73E /* index.json */; };
+		746FE53493D75121B856863D /* arrays-hashing.json in Resources */ = {isa = PBXBuildFile; fileRef = 2A6D6D5B7FB656D067770817 /* arrays-hashing.json */; };
+		2794364AC9A1DF5D2F8E9A1C /* two-pointers.json in Resources */ = {isa = PBXBuildFile; fileRef = C47F4F9B2A62B792A9E9012D /* two-pointers.json */; };
+		05FFF4E55F43D2D0BA24E767 /* sliding-window.json in Resources */ = {isa = PBXBuildFile; fileRef = D42B9DB70746A8F45FF44908 /* sliding-window.json */; };
+		C76C36FBB7AFB57A194FD0A7 /* stack.json in Resources */ = {isa = PBXBuildFile; fileRef = D9EA14A74BB7B5170E76C909 /* stack.json */; };
+		1D37BE0403F9CB1C151C02F5 /* binary-search.json in Resources */ = {isa = PBXBuildFile; fileRef = CF5CD45901BBDDE4447370F9 /* binary-search.json */; };
+		C67B150632756E5C8C145732 /* linked-list.json in Resources */ = {isa = PBXBuildFile; fileRef = 2E8737B49473DD67005DAD55 /* linked-list.json */; };
+		D2A34273A6496EB025E5E4AD /* trees.json in Resources */ = {isa = PBXBuildFile; fileRef = DAA205B39791172D9A37DCC4 /* trees.json */; };
+		E3C181B25F96C103E47C9CCE /* tries.json in Resources */ = {isa = PBXBuildFile; fileRef = 8BB48FA0F6350B64D30E1A87 /* tries.json */; };
+		2F85144924E67D9EE8E3A19C /* heap-priority-queue.json in Resources */ = {isa = PBXBuildFile; fileRef = 2849B4B1C166E5F1500A8148 /* heap-priority-queue.json */; };
+		EE905505E12B29B3CF53F26E /* backtracking.json in Resources */ = {isa = PBXBuildFile; fileRef = DE7B0E3FCE96090627B5951B /* backtracking.json */; };
+		78C21BE56F24F11BFF979A53 /* graphs.json in Resources */ = {isa = PBXBuildFile; fileRef = FE447CCE48C5EE33A0B17755 /* graphs.json */; };
+		1F0A9C0FF61727475AB2F2C3 /* dynamic-programming.json in Resources */ = {isa = PBXBuildFile; fileRef = 929AADACAB6D707E83CFF6A8 /* dynamic-programming.json */; };
+		AD0ED00FAEEF27AF75D729B6 /* greedy.json in Resources */ = {isa = PBXBuildFile; fileRef = F7EEEEA00AF4A750861C0A1A /* greedy.json */; };
+		44563D1B0CFC64C8FE692E59 /* intervals.json in Resources */ = {isa = PBXBuildFile; fileRef = 0AF0A291F14C0BAB8F319AB5 /* intervals.json */; };
+		A539563B7F88DBA24D50C550 /* math-geometry.json in Resources */ = {isa = PBXBuildFile; fileRef = 9AE152CBFCD19688753A9A19 /* math-geometry.json */; };
+		59E09FD36ADA0C313FC43FB3 /* bit-manipulation.json in Resources */ = {isa = PBXBuildFile; fileRef = 918B09B9D8F04D713131E487 /* bit-manipulation.json */; };
+		F63AB5A346B54CD66099F9F0 /* misc.json in Resources */ = {isa = PBXBuildFile; fileRef = FD6F41F4A8BE91CA32C32400 /* misc.json */; };
+		07A4B6FE7A37D29F5615A733 /* index.html in Resources */ = {isa = PBXBuildFile; fileRef = E1C4908B4C47C1BE06866D26 /* index.html */; };
+		E6E31A238F8CAA35ED71CC3B /* codemirror.min.css in Resources */ = {isa = PBXBuildFile; fileRef = 638D364D8A2320809DE2CE53 /* codemirror.min.css */; };
+		3F210FD4F16C20C5011773AE /* codemirror-bundle.min.js in Resources */ = {isa = PBXBuildFile; fileRef = 93594CA5C56AD3E6C879BDE5 /* codemirror-bundle.min.js */; };
+		1ACCD3AF9D384008A656BDB0 /* Tab.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85A1F7532B8D497885C24785 /* Tab.swift */; };
+		E4B180CD115A4E818A289071 /* CodeEditorDiagnostic.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF3462590F5C49E597E237F8 /* CodeEditorDiagnostic.swift */; };
+		90DD454BE54C43568F5CA15F /* Tab.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85A1F7532B8D497885C24785 /* Tab.swift */; };
+		B5324E7A75FF4C8991DA1916 /* CodeEditorDiagnostic.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF3462590F5C49E597E237F8 /* CodeEditorDiagnostic.swift */; };
+		W1A2B3C4D5E6F7081234ABCD /* FocusWidgetBundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = W2A3B4C5D6E7F8192345BCDE /* FocusWidgetBundle.swift */; };
+		W1A2B3C4D5E6F7082345BCDE /* ProgressWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = W2A3B4C5D6E7F8193456CDEF /* ProgressWidget.swift */; };
+		W1A2B3C4D5E6F7083456CDEF /* TodayWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = W2A3B4C5D6E7F8194567DEF0 /* TodayWidget.swift */; };
+		W1A2B3C4D5E6F7084567DEF0 /* WidgetData.swift in Sources */ = {isa = PBXBuildFile; fileRef = W2A3B4C5D6E7F8195678EF01 /* WidgetData.swift */; };
+		W1A2B3C4D5E6F7085678EF01 /* WidgetData.swift in Sources */ = {isa = PBXBuildFile; fileRef = W2A3B4C5D6E7F8195678EF01 /* WidgetData.swift */; };
+		W1A2B3C4D5E6F7086789F012 /* WidgetDataWriter.swift in Sources */ = {isa = PBXBuildFile; fileRef = W2A3B4C5D6E7F8196789F012 /* WidgetDataWriter.swift */; };
+		W1A2B3C4D5E6F708789A0123 /* FocusWidgetExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = W2A3B4C5D6E7F819789A0123 /* FocusWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -301,7 +569,28 @@
 			remoteGlobalIDString = A10006001;
 			remoteInfo = FocusApp;
 		};
+		W3B4C5D6E7F8A9190123ABCD /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A10007001 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = W4C5D6E7F8A9B0201234BCDE;
+			remoteInfo = FocusWidgetExtension;
+		};
 /* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		W7F8A9B0C1D2E3504567EF01 /* Embed App Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				W1A2B3C4D5E6F708789A0123 /* FocusWidgetExtension.appex in Embed App Extensions */,
+			);
+			name = "Embed App Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		B3E5D72B4C8A61023F4E7A9C /* AutoInstrumenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutoInstrumenter.swift; sourceTree = "<group>"; };
@@ -589,6 +878,36 @@
 		D7A10005EEEE111122223333 /* WidgetCoordinatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetCoordinatorTests.swift; sourceTree = "<group>"; };
 		D7A10007AAAA222233334444 /* FocusCoordinatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FocusCoordinatorTests.swift; sourceTree = "<group>"; };
 		E1A10001 /* LeetCodeLoginSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeetCodeLoginSheet.swift; sourceTree = "<group>"; };
+		9343EAB45E0677E3AA5026AF /* FocusAppiOS.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FocusAppiOS.swift; sourceTree = "<group>"; };
+		99B2F740E7B95B61E0D1C971 /* DesignSystemRoot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DesignSystemRoot.swift; sourceTree = "<group>"; };
+		BAF5CD6045CBA02891C8FBD1 /* NoOpCodeExecutionService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoOpCodeExecutionService.swift; sourceTree = "<group>"; };
+		LCE5A1B2C3D4E5F6A7B8C9D0 /* LeetCodeExecutionService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeetCodeExecutionService.swift; sourceTree = "<group>"; };
+		9537B14D6D3C85BFFF0D5670 /* RootViewiOS.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootViewiOS.swift; sourceTree = "<group>"; };
+		A1B2C3D4E5F6A7B8C9D0E1F2 /* TodayViewiOS.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayViewiOS.swift; sourceTree = "<group>"; };
+		C3D4E5F6A7B8C9D0E1F2A3B4 /* PlanViewiOS.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlanViewiOS.swift; sourceTree = "<group>"; };
+		E5F6A7B8C9D0E1F2A3B4C5D6 /* StatsViewiOS.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsViewiOS.swift; sourceTree = "<group>"; };
+		A7B8C9D0E1F2A3B4C5D6E7F8 /* FocusViewiOS.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FocusViewiOS.swift; sourceTree = "<group>"; };
+		C9D0E1F2A3B4C5D6E7F8A9B0 /* CodingViewiOS.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodingViewiOS.swift; sourceTree = "<group>"; };
+		A1B2C3D4E5F60001 /* OutputViewiOS.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OutputViewiOS.swift; sourceTree = "<group>"; };
+		A1B2C3D4E5F60002 /* SolutionViewiOS.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SolutionViewiOS.swift; sourceTree = "<group>"; };
+		E1F2A3B4C5D6E7F8A9B0C1D2 /* SettingsViewiOS.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewiOS.swift; sourceTree = "<group>"; };
+		F3A4B5C6D7E8F9A0B1C2D3E4 /* DifficultyBadgeHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DifficultyBadgeHelper.swift; sourceTree = "<group>"; };
+		2060897631C72165C5A42CE7 /* CodeMirrorEditorViewiOS.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodeMirrorEditorViewiOS.swift; sourceTree = "<group>"; };
+		88075C068D6A0E6924A12E72 /* FloatingMiniTimeriOS.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FloatingMiniTimeriOS.swift; sourceTree = "<group>"; };
+		E1C4908B4C47C1BE06866D26 /* index.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; path = index.html; sourceTree = "<group>"; };
+		638D364D8A2320809DE2CE53 /* codemirror.min.css */ = {isa = PBXFileReference; lastKnownFileType = text.css; path = codemirror.min.css; sourceTree = "<group>"; };
+		93594CA5C56AD3E6C879BDE5 /* codemirror-bundle.min.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = codemirror-bundle.min.js; sourceTree = "<group>"; };
+		65123277994A5533D1FE36BB /* FocusApp-iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "FocusApp-iOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		85A1F7532B8D497885C24785 /* Tab.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tab.swift; sourceTree = "<group>"; };
+		AF3462590F5C49E597E237F8 /* CodeEditorDiagnostic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodeEditorDiagnostic.swift; sourceTree = "<group>"; };
+		W2A3B4C5D6E7F8192345BCDE /* FocusWidgetBundle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FocusWidgetBundle.swift; sourceTree = "<group>"; };
+		W2A3B4C5D6E7F8193456CDEF /* ProgressWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressWidget.swift; sourceTree = "<group>"; };
+		W2A3B4C5D6E7F8194567DEF0 /* TodayWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayWidget.swift; sourceTree = "<group>"; };
+		W2A3B4C5D6E7F8195678EF01 /* WidgetData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetData.swift; sourceTree = "<group>"; };
+		W2A3B4C5D6E7F819AABB1234 /* FocusWidget.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = FocusWidget.entitlements; sourceTree = "<group>"; };
+		W2A3B4C5D6E7F819AABB5678 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		W2A3B4C5D6E7F8196789F012 /* WidgetDataWriter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetDataWriter.swift; sourceTree = "<group>"; };
+		W2A3B4C5D6E7F819789A0123 /* FocusWidgetExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = FocusWidgetExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -610,6 +929,23 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		138EC7B62C204ED5A881E698 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C7F8721BAB5356500578B5C6 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				33B8F4219A64850042D6965A /* FocusDesignSystem in Frameworks */,
+				ADC602A2EDBDB944A3265967 /* FocusDomain in Frameworks */,
+				1F0528E665CCAFB26B2907FD /* FocusData in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		W5D6E7F8A9B0C1302345CDEF /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -688,7 +1024,7 @@
 			path = ToolbarWidget;
 			sourceTree = "<group>";
 		};
-		3F8D3EEAB6E34F2F8DC05850 /* Views */ = {
+		100DF8943A0640F6A957C71A /* macOS */ = {
 			isa = PBXGroup;
 			children = (
 				A1000201D /* CodingEnvironmentView.swift */,
@@ -707,7 +1043,18 @@
 				A1B2C3D4E5F6A7B8C9D0E3A1 /* SolutionTabView.swift */,
 				048A8082F2A440128C75C769 /* ProblemDetailTab.swift */,
 			);
-			path = Views;
+			path = macOS;
+			sourceTree = "<group>";
+		};
+		9249063212784D2C9AFC1077 /* iOS */ = {
+			isa = PBXGroup;
+			children = (
+				C9D0E1F2A3B4C5D6E7F8A9B0 /* CodingViewiOS.swift */,
+				A1B2C3D4E5F60001 /* OutputViewiOS.swift */,
+				A1B2C3D4E5F60002 /* SolutionViewiOS.swift */,
+				2060897631C72165C5A42CE7 /* CodeMirrorEditorViewiOS.swift */,
+			);
+			path = iOS;
 			sourceTree = "<group>";
 		};
 		4EACC8122DCD4FE493BACD8E /* Stats */ = {
@@ -830,6 +1177,7 @@
 			isa = PBXGroup;
 			children = (
 				A10005002 /* FocusApp */,
+				W6E7F8A9B0C1D2403456DEF0 /* FocusWidget */,
 				E3BDFC6AC2C94292AEFE137B /* FocusAppTests */,
 				63AF4C14DAD349D8921DAFF1 /* FocusAppIntegrationTests */,
 				A10005003 /* Products */,
@@ -841,6 +1189,7 @@
 			children = (
 				A10002001 /* FocusApp.swift */,
 				A10002015 /* AppContainer.swift */,
+				9343EAB45E0677E3AA5026AF /* FocusAppiOS.swift */,
 				A1000200E /* FocusApp.entitlements */,
 				A1000200D /* Assets.xcassets */,
 				A10005010 /* Resources */,
@@ -859,6 +1208,8 @@
 				A10003001 /* FocusApp.app */,
 				58471227E33B481BB4F4357B /* FocusAppTests.xctest */,
 				FDEE8AFA09E34A0296EA58FC /* FocusAppIntegrationTests.xctest */,
+				65123277994A5533D1FE36BB /* FocusApp-iOS.app */,
+				W2A3B4C5D6E7F819789A0123 /* FocusWidgetExtension.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -905,6 +1256,9 @@
 				EAB28E8181C60EBCBD3A980F /* TopicSolutionStore.swift */,
 				A7F3B2C1D8E9F0A1B2C3D4E6 /* SolutionAIService.swift */,
 				3917106B68C94E3BBBFF47D5 /* TestCaseAIService.swift */,
+				BAF5CD6045CBA02891C8FBD1 /* NoOpCodeExecutionService.swift */,
+				LCE5A1B2C3D4E5F6A7B8C9D0 /* LeetCodeExecutionService.swift */,
+				W2A3B4C5D6E7F8196789F012 /* WidgetDataWriter.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -920,8 +1274,25 @@
 				A1000500D /* Settings */,
 				A1000500E /* ToolbarWidget */,
 				A1000500F /* CodingEnvironment */,
-				A1000200B /* DayCard.swift */,
-				A1000200C /* ProblemRow.swift */,
+				7472040255B244C398F4287E /* CodeEditor */,
+				71A38BA30E5A4CCC9F9F5697 /* Output */,
+				779F94743DC64B9FA7EF063C /* Components */,
+				605E0AB296D10B504DAB1E77 /* Shared */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		7472040255B244C398F4287E /* CodeEditor */ = {
+			isa = PBXGroup;
+			children = (
+				BCC25F863E2741C891C90001 /* macOS */,
+			);
+			path = CodeEditor;
+			sourceTree = "<group>";
+		};
+		BCC25F863E2741C891C90001 /* macOS */ = {
+			isa = PBXGroup;
+			children = (
 				A1000201A /* CodeEditorView.swift */,
 				A10002037 /* CodeEditorView+Coordinator.swift */,
 				A10002038 /* CodeEditorView+CoordinatorInput.swift */,
@@ -932,12 +1303,44 @@
 				A1000207A /* CodeEditorView+CoordinatorIndentation.swift */,
 				A1000207B /* CodeEditorView+CoordinatorBrackets.swift */,
 				A10002091 /* CodeEditorLineNumberRulerView.swift */,
+			);
+			path = macOS;
+			sourceTree = "<group>";
+		};
+		71A38BA30E5A4CCC9F9F5697 /* Output */ = {
+			isa = PBXGroup;
+			children = (
+				92E97A22E63A424DA5FB69C7 /* macOS */,
+			);
+			path = Output;
+			sourceTree = "<group>";
+		};
+		92E97A22E63A424DA5FB69C7 /* macOS */ = {
+			isa = PBXGroup;
+			children = (
 				A1000201B /* OutputPanelView.swift */,
 				A10002012 /* OutputPanelView+Sections.swift */,
 				A10002013 /* ConsoleOutputView.swift */,
+			);
+			path = macOS;
+			sourceTree = "<group>";
+		};
+		779F94743DC64B9FA7EF063C /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				25D1E0DCA9564F2B9EB8536A /* macOS */,
+			);
+			path = Components;
+			sourceTree = "<group>";
+		};
+		25D1E0DCA9564F2B9EB8536A /* macOS */ = {
+			isa = PBXGroup;
+			children = (
+				A1000200B /* DayCard.swift */,
+				A1000200C /* ProblemRow.swift */,
 				A1000201C /* ProblemSelectionView.swift */,
 			);
-			path = Views;
+			path = macOS;
 			sourceTree = "<group>";
 		};
 		A10005006 /* Helpers */ = {
@@ -964,67 +1367,167 @@
 		A10005008 /* Content */ = {
 			isa = PBXGroup;
 			children = (
-				A10002006 /* ContentView.swift */,
 				A10002022 /* ContentInteractor.swift */,
 				A10002023 /* ContentPresenter.swift */,
-				A10002081 /* ContentView+Preview.swift */,
+				4B1FBCFB9DA940EB97A6D408 /* macOS */,
+				438201972E31489AB5F6EE84 /* iOS */,
 			);
 			path = Content;
+			sourceTree = "<group>";
+		};
+		4B1FBCFB9DA940EB97A6D408 /* macOS */ = {
+			isa = PBXGroup;
+			children = (
+				A10002006 /* ContentView.swift */,
+				A10002081 /* ContentView+Preview.swift */,
+			);
+			path = macOS;
+			sourceTree = "<group>";
+		};
+		438201972E31489AB5F6EE84 /* iOS */ = {
+			isa = PBXGroup;
+			children = (
+				9537B14D6D3C85BFFF0D5670 /* RootViewiOS.swift */,
+			);
+			path = iOS;
 			sourceTree = "<group>";
 		};
 		A10005009 /* Plan */ = {
 			isa = PBXGroup;
 			children = (
-				A10002007 /* PlanView.swift */,
 				A10002024 /* PlanInteractor.swift */,
 				A10002025 /* PlanPresenter.swift */,
+				4CD8C48A24E74975A10F27CD /* macOS */,
+				43928714671F49D1A24EA5EE /* iOS */,
 			);
 			path = Plan;
+			sourceTree = "<group>";
+		};
+		4CD8C48A24E74975A10F27CD /* macOS */ = {
+			isa = PBXGroup;
+			children = (
+				A10002007 /* PlanView.swift */,
+			);
+			path = macOS;
+			sourceTree = "<group>";
+		};
+		43928714671F49D1A24EA5EE /* iOS */ = {
+			isa = PBXGroup;
+			children = (
+				C3D4E5F6A7B8C9D0E1F2A3B4 /* PlanViewiOS.swift */,
+			);
+			path = iOS;
 			sourceTree = "<group>";
 		};
 		A1000500A /* Today */ = {
 			isa = PBXGroup;
 			children = (
-				A10002008 /* TodayView.swift */,
 				A10002026 /* TodayInteractor.swift */,
 				A10002027 /* TodayPresenter.swift */,
-				A10002043 /* TodayView+Sections.swift */,
-				A10002044 /* TodayView+Preview.swift */,
-				A10002080 /* TodayView+FocusCTA.swift */,
+				F1A98D21C4714B7EB555038B /* macOS */,
+				7DEB5A999A3748AAB158F309 /* iOS */,
 			);
 			path = Today;
+			sourceTree = "<group>";
+		};
+		F1A98D21C4714B7EB555038B /* macOS */ = {
+			isa = PBXGroup;
+			children = (
+				A10002008 /* TodayView.swift */,
+				A10002043 /* TodayView+Sections.swift */,
+				A10002080 /* TodayView+FocusCTA.swift */,
+				A10002044 /* TodayView+Preview.swift */,
+			);
+			path = macOS;
+			sourceTree = "<group>";
+		};
+		7DEB5A999A3748AAB158F309 /* iOS */ = {
+			isa = PBXGroup;
+			children = (
+				A1B2C3D4E5F6A7B8C9D0E1F2 /* TodayViewiOS.swift */,
+			);
+			path = iOS;
 			sourceTree = "<group>";
 		};
 		A1000500B /* Stats */ = {
 			isa = PBXGroup;
 			children = (
-				A10002009 /* StatsView.swift */,
 				A10002028 /* StatsInteractor.swift */,
 				A10002029 /* StatsPresenter.swift */,
-				A10002045 /* StatsView+Sections.swift */,
-				A10002046 /* StatsView+Preview.swift */,
-				A1000207F /* StatsView+FocusReminder.swift */,
+				FE939C8901BD47DC8637EB5C /* macOS */,
+				B1FEF45E586A44D5B31B8879 /* iOS */,
 			);
 			path = Stats;
+			sourceTree = "<group>";
+		};
+		FE939C8901BD47DC8637EB5C /* macOS */ = {
+			isa = PBXGroup;
+			children = (
+				A10002009 /* StatsView.swift */,
+				A10002045 /* StatsView+Sections.swift */,
+				A1000207F /* StatsView+FocusReminder.swift */,
+				A10002046 /* StatsView+Preview.swift */,
+			);
+			path = macOS;
+			sourceTree = "<group>";
+		};
+		B1FEF45E586A44D5B31B8879 /* iOS */ = {
+			isa = PBXGroup;
+			children = (
+				E5F6A7B8C9D0E1F2A3B4C5D6 /* StatsViewiOS.swift */,
+			);
+			path = iOS;
 			sourceTree = "<group>";
 		};
 		A1000500C /* Focus */ = {
 			isa = PBXGroup;
 			children = (
-				A1000200A /* FocusOverlay.swift */,
 				A10002034 /* FocusInteractor.swift */,
 				A10002035 /* FocusPresenter.swift */,
+				BF29CB41751C42BF93191EC1 /* macOS */,
+				C097F49F3745405EA21C1022 /* iOS */,
+			);
+			path = Focus;
+			sourceTree = "<group>";
+		};
+		BF29CB41751C42BF93191EC1 /* macOS */ = {
+			isa = PBXGroup;
+			children = (
+				A1000200A /* FocusOverlay.swift */,
 				A10002047 /* FocusOverlay+Sections.swift */,
 				A1000207D /* FocusOverlay+TimerView.swift */,
 				A1000207E /* FocusOverlay+CompletionView.swift */,
 			);
-			path = Focus;
+			path = macOS;
+			sourceTree = "<group>";
+		};
+		C097F49F3745405EA21C1022 /* iOS */ = {
+			isa = PBXGroup;
+			children = (
+				A7B8C9D0E1F2A3B4C5D6E7F8 /* FocusViewiOS.swift */,
+				88075C068D6A0E6924A12E72 /* FloatingMiniTimeriOS.swift */,
+			);
+			path = iOS;
 			sourceTree = "<group>";
 		};
 		A1000500D /* Settings */ = {
 			isa = PBXGroup;
 			children = (
+				A10002030 /* SettingsInteractor.swift */,
+				A10002031 /* SettingsPresenter.swift */,
+				F5DA4C4A240C4DAB8764988A /* macOS */,
+				122A2BA45E0C40A9BA08E125 /* iOS */,
+			);
+			path = Settings;
+			sourceTree = "<group>";
+		};
+		F5DA4C4A240C4DAB8764988A /* macOS */ = {
+			isa = PBXGroup;
+			children = (
 				A10002010 /* SettingsView.swift */,
+				A10002040 /* SettingsView+Bindings.swift */,
+				A10002041 /* SettingsView+Validation.swift */,
+				A10002042 /* SettingsView+Preview.swift */,
 				442A3E5BF10148F0B6B191C1 /* DebugLogView.swift */,
 				F1636D7B6A764DFE88778306 /* DebugLogView+Header.swift */,
 				779FDA23FDEA4F84865F4D50 /* DebugLogView+Filters.swift */,
@@ -1033,22 +1536,33 @@
 				6E30623F430E4A7F84DE5C39 /* DebugLogView+Styles.swift */,
 				A070BC5C8E654C24B432BBEF /* DebugLogRow.swift */,
 				8464C02CEE2D484AB8DADC22 /* DebugLogFilters.swift */,
-				A10002030 /* SettingsInteractor.swift */,
-				A10002031 /* SettingsPresenter.swift */,
-				A10002040 /* SettingsView+Bindings.swift */,
-				A10002041 /* SettingsView+Validation.swift */,
-				A10002042 /* SettingsView+Preview.swift */,
 				E1A10001 /* LeetCodeLoginSheet.swift */,
 			);
-			path = Settings;
+			path = macOS;
+			sourceTree = "<group>";
+		};
+		122A2BA45E0C40A9BA08E125 /* iOS */ = {
+			isa = PBXGroup;
+			children = (
+				E1F2A3B4C5D6E7F8A9B0C1D2 /* SettingsViewiOS.swift */,
+			);
+			path = iOS;
 			sourceTree = "<group>";
 		};
 		A1000500E /* ToolbarWidget */ = {
 			isa = PBXGroup;
 			children = (
-				A10002016 /* ToolbarWidgetView.swift */,
 				A10002032 /* ToolbarWidgetInteractor.swift */,
 				A10002033 /* ToolbarWidgetPresenter.swift */,
+				4A7020A82F2B48F18BC6E586 /* macOS */,
+			);
+			path = ToolbarWidget;
+			sourceTree = "<group>";
+		};
+		4A7020A82F2B48F18BC6E586 /* macOS */ = {
+			isa = PBXGroup;
+			children = (
+				A10002016 /* ToolbarWidgetView.swift */,
 				A10002048 /* ToolbarWidgetView+Header.swift */,
 				A10002049 /* ToolbarWidgetView+Settings.swift */,
 				A10002050 /* ToolbarWidgetView+Summary.swift */,
@@ -1062,7 +1576,7 @@
 				A10002058 /* CarryoverProblemRow.swift */,
 				A10002059 /* TomorrowProblemRow.swift */,
 			);
-			path = ToolbarWidget;
+			path = macOS;
 			sourceTree = "<group>";
 		};
 		A1000500F /* CodingEnvironment */ = {
@@ -1076,7 +1590,8 @@
 				8D8F9626ABE84F95AED666A6 /* Execution */,
 				84AAED7F2BC2426CA0AD470D /* Snippets */,
 				0BD4266DF2864218BDBED907 /* DataJourney */,
-				3F8D3EEAB6E34F2F8DC05850 /* Views */,
+				100DF8943A0640F6A957C71A /* macOS */,
+				9249063212784D2C9AFC1077 /* iOS */,
 			);
 			path = CodingEnvironment;
 			sourceTree = "<group>";
@@ -1090,6 +1605,7 @@
 				A10002100 /* problem-manifest.json */,
 				A10002096 /* Plurals.stringsdict */,
 				61C6ACE8B3D7E4B88158183B /* Solutions */,
+				FF263D44F61F5311FF9FC0A1 /* CodeEditor */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -1230,6 +1746,41 @@
 			path = Coordination;
 			sourceTree = "<group>";
 		};
+		605E0AB296D10B504DAB1E77 /* Shared */ = {
+			isa = PBXGroup;
+			children = (
+				99B2F740E7B95B61E0D1C971 /* DesignSystemRoot.swift */,
+				85A1F7532B8D497885C24785 /* Tab.swift */,
+				AF3462590F5C49E597E237F8 /* CodeEditorDiagnostic.swift */,
+				F3A4B5C6D7E8F9A0B1C2D3E4 /* DifficultyBadgeHelper.swift */,
+			);
+			path = Shared;
+			sourceTree = "<group>";
+		};
+
+		FF263D44F61F5311FF9FC0A1 /* CodeEditor */ = {
+			isa = PBXGroup;
+			children = (
+				E1C4908B4C47C1BE06866D26 /* index.html */,
+				638D364D8A2320809DE2CE53 /* codemirror.min.css */,
+				93594CA5C56AD3E6C879BDE5 /* codemirror-bundle.min.js */,
+			);
+			path = CodeEditor;
+			sourceTree = "<group>";
+		};
+		W6E7F8A9B0C1D2403456DEF0 /* FocusWidget */ = {
+			isa = PBXGroup;
+			children = (
+				W2A3B4C5D6E7F819AABB1234 /* FocusWidget.entitlements */,
+				W2A3B4C5D6E7F819AABB5678 /* Info.plist */,
+				W2A3B4C5D6E7F8192345BCDE /* FocusWidgetBundle.swift */,
+				W2A3B4C5D6E7F8193456CDEF /* ProgressWidget.swift */,
+				W2A3B4C5D6E7F8194567DEF0 /* TodayWidget.swift */,
+				W2A3B4C5D6E7F8195678EF01 /* WidgetData.swift */,
+			);
+			path = FocusWidget;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -1292,6 +1843,47 @@
 			productReference = A10003001 /* FocusApp.app */;
 			productType = "com.apple.product-type.application";
 		};
+		9D1DF6DB453ACFF5104BD32F /* FocusApp-iOS */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 22DCBB6A2AA5FC7E7A74C371 /* Build configuration list for PBXNativeTarget "FocusApp-iOS" */;
+			buildPhases = (
+				97F7496205A8DEADB0901735 /* Sources */,
+				C7F8721BAB5356500578B5C6 /* Frameworks */,
+				626E2D3E07033C2F0BD9008E /* Resources */,
+				W7F8A9B0C1D2E3504567EF01 /* Embed App Extensions */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				WAB1C2D3E4F5A6807890B123 /* PBXTargetDependency */,
+			);
+			name = "FocusApp-iOS";
+			packageProductDependencies = (
+				9174995E3BC942CD61C27DBB /* FocusDesignSystem */,
+				17951A092A38CB919666F880 /* FocusDomain */,
+				2278A4170A0D7BE61E107EBF /* FocusData */,
+			);
+			productName = "FocusApp-iOS";
+			productReference = 65123277994A5533D1FE36BB /* FocusApp-iOS.app */;
+			productType = "com.apple.product-type.application";
+		};
+		W4C5D6E7F8A9B0201234BCDE /* FocusWidgetExtension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = WBC2D3E4F5A6B7908901C234 /* Build configuration list for PBXNativeTarget "FocusWidgetExtension" */;
+			buildPhases = (
+				W9B0C1D2E3F4A5706789A012 /* Sources */,
+				W5D6E7F8A9B0C1302345CDEF /* Frameworks */,
+				W8A9B0C1D2E3F4605678F012 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = FocusWidgetExtension;
+			productName = FocusWidgetExtension;
+			productReference = W2A3B4C5D6E7F819789A0123 /* FocusWidgetExtension.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -1309,6 +1901,12 @@
 					CreatedOnToolsVersion = 15.0;
 				};
 				A10006001 = {
+					CreatedOnToolsVersion = 15.0;
+				};
+				9D1DF6DB453ACFF5104BD32F = {
+					CreatedOnToolsVersion = 15.0;
+				};
+				W4C5D6E7F8A9B0201234BCDE = {
 					CreatedOnToolsVersion = 15.0;
 				};
 			};
@@ -1333,6 +1931,8 @@
 				A10006001 /* FocusApp */,
 				4C67B5983E414605B8C2BADA /* FocusAppTests */,
 				D5F35DF5251D430A850B74B6 /* FocusAppIntegrationTests */,
+				9D1DF6DB453ACFF5104BD32F /* FocusApp-iOS */,
+				W4C5D6E7F8A9B0201234BCDE /* FocusWidgetExtension */,
 			);
 		};
 /* End PBXProject section */
@@ -1380,6 +1980,50 @@
 				F4F72663669F72AAC84CEFD4 /* math-geometry.json in Resources */,
 				054408BF3C0C3912E96F5519 /* bit-manipulation.json in Resources */,
 				4EF267D64DE9F29FCC1674C0 /* misc.json in Resources */,
+				814FF2076CD9D65EF45CAD9D /* index.html in Resources */,
+				8738A2844755073534CEB9EF /* codemirror.min.css in Resources */,
+				1FD1F7D5020A67651E7B9BC0 /* codemirror-bundle.min.js in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		626E2D3E07033C2F0BD9008E /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				350178FE403AFC0A5798AD65 /* Assets.xcassets in Resources */,
+				EBF13093CDE1285387C105C0 /* Localizable.xcstrings in Resources */,
+				20505B2A0D39FCAE31D4141D /* Plan.json in Resources */,
+				099DF6216F60D06B9857D427 /* Solutions.json in Resources */,
+				2808F2D6A416FB36867127A3 /* problem-manifest.json in Resources */,
+				C40826259A78E9359A7DE1F6 /* Plurals.stringsdict in Resources */,
+				A567B5730FFD941CEE538D34 /* index.json in Resources */,
+				746FE53493D75121B856863D /* arrays-hashing.json in Resources */,
+				2794364AC9A1DF5D2F8E9A1C /* two-pointers.json in Resources */,
+				05FFF4E55F43D2D0BA24E767 /* sliding-window.json in Resources */,
+				C76C36FBB7AFB57A194FD0A7 /* stack.json in Resources */,
+				1D37BE0403F9CB1C151C02F5 /* binary-search.json in Resources */,
+				C67B150632756E5C8C145732 /* linked-list.json in Resources */,
+				D2A34273A6496EB025E5E4AD /* trees.json in Resources */,
+				E3C181B25F96C103E47C9CCE /* tries.json in Resources */,
+				2F85144924E67D9EE8E3A19C /* heap-priority-queue.json in Resources */,
+				EE905505E12B29B3CF53F26E /* backtracking.json in Resources */,
+				78C21BE56F24F11BFF979A53 /* graphs.json in Resources */,
+				1F0A9C0FF61727475AB2F2C3 /* dynamic-programming.json in Resources */,
+				AD0ED00FAEEF27AF75D729B6 /* greedy.json in Resources */,
+				44563D1B0CFC64C8FE692E59 /* intervals.json in Resources */,
+				A539563B7F88DBA24D50C550 /* math-geometry.json in Resources */,
+				59E09FD36ADA0C313FC43FB3 /* bit-manipulation.json in Resources */,
+				F63AB5A346B54CD66099F9F0 /* misc.json in Resources */,
+				07A4B6FE7A37D29F5615A733 /* index.html in Resources */,
+				E6E31A238F8CAA35ED71CC3B /* codemirror.min.css in Resources */,
+				3F210FD4F16C20C5011773AE /* codemirror-bundle.min.js in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		W8A9B0C1D2E3F4605678F012 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1413,6 +2057,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1ACCD3AF9D384008A656BDB0 /* Tab.swift in Sources */,
+				E4B180CD115A4E818A289071 /* CodeEditorDiagnostic.swift in Sources */,
 				A10001001 /* FocusApp.swift in Sources */,
 				A10001014 /* AppContainer.swift in Sources */,
 				A10001002 /* DSAPlan.swift in Sources */,
@@ -1605,6 +2251,22 @@
 				73E23C00B4586707FE3F4CB6 /* WidgetCoordinator.swift in Sources */,
 				906597E1525E4525DB48C9D3 /* FocusCoordinator.swift in Sources */,
 				E1A10002 /* LeetCodeLoginSheet.swift in Sources */,
+				59515A647E52F85CF9292B0A /* FocusAppiOS.swift in Sources */,
+				17FD3B50F8DA917A42388AE5 /* DesignSystemRoot.swift in Sources */,
+				23C755946BB6EFE395172F36 /* NoOpCodeExecutionService.swift in Sources */,
+				LCE5A1B2C3D4E5F6A7B8C9D1 /* LeetCodeExecutionService.swift in Sources */,
+				BA8CF965A349932CE6CD1280 /* RootViewiOS.swift in Sources */,
+				F2E1D0C9B8A7F6E5D4C3B2A1 /* TodayViewiOS.swift in Sources */,
+				D0C9B8A7F6E5D4C3B2A1F2E1 /* PlanViewiOS.swift in Sources */,
+				B8A7F6E5D4C3B2A1F2E1D0C9 /* StatsViewiOS.swift in Sources */,
+				A7F6E5D4C3B2A100F2E1D0C9 /* FocusViewiOS.swift in Sources */,
+				F6E5D4C3B200A1F2E1D0C9B8 /* CodingViewiOS.swift in Sources */,
+				A1B2C3D4E5F60003 /* OutputViewiOS.swift in Sources */,
+				A1B2C3D4E5F60004 /* SolutionViewiOS.swift in Sources */,
+				E5D4C300B2A1F2E1D0C9B8A7 /* SettingsViewiOS.swift in Sources */,
+				D4C3B201A1F2E1D0C9B8A7F6 /* DifficultyBadgeHelper.swift in Sources */,
+				2CE3D924FEBA6D63B4D2FE52 /* CodeMirrorEditorViewiOS.swift in Sources */,
+				5170B83DD343C1A9E0EBC2C4 /* FloatingMiniTimeriOS.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1687,6 +2349,236 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		97F7496205A8DEADB0901735 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				90DD454BE54C43568F5CA15F /* Tab.swift in Sources */,
+				B5324E7A75FF4C8991DA1916 /* CodeEditorDiagnostic.swift in Sources */,
+				0B9A78FE6FCD2F5E6AC33F6F /* FocusApp.swift in Sources */,
+				7BBAC3E4C8BC176111E0DB87 /* AppContainer.swift in Sources */,
+				1D8E2FA28420A2FE5D8A545C /* DSAPlan.swift in Sources */,
+				104CB1FC80902C2F53EE19B2 /* AppData.swift in Sources */,
+				95D1D21382F8C1BAB8BAF1EF /* DataStore.swift in Sources */,
+				0C5A0A680ECFDA1F4C0BDB52 /* Colors.swift in Sources */,
+				6C3883249C6F4579174358A5 /* AppStrings.swift in Sources */,
+				42EAEEAD25F8140C918C0B5A /* L10n.swift in Sources */,
+				AC7A627B636D0C8349A05EDD /* L10n+Plural.swift in Sources */,
+				CB6A2B1F8C9AAD8D689CADE3 /* AppMessages.swift in Sources */,
+				4A26D67E2AA0AD298BC44DC2 /* ContentView.swift in Sources */,
+				CFB127CDC5ED1A87851F3FB9 /* PlanView.swift in Sources */,
+				C6BEEE8F92A619BE4E6C2D10 /* TodayView.swift in Sources */,
+				54B0D01AC8682071FD9FE32F /* StatsView.swift in Sources */,
+				928D2064EC8EEA4A2BD96604 /* FocusOverlay.swift in Sources */,
+				E21926107CADAD1ABA150636 /* DayCard.swift in Sources */,
+				0E836D525B4DA40CA369DD4A /* ProblemRow.swift in Sources */,
+				14F83D874B8028671DB59E13 /* NotificationManager.swift in Sources */,
+				5D4C323DE828F4A2FC43E7BD /* SettingsView.swift in Sources */,
+				EE19E33BE457D4F01F82F81D /* DebugLogView.swift in Sources */,
+				ECD87343F0E9505DBFC59D4F /* DebugLogView+Header.swift in Sources */,
+				CBAA2A2AFACDB149665BB6A6 /* DebugLogView+Filters.swift in Sources */,
+				B9609FF8FDE0EA5149E6C7A9 /* DebugLogView+Content.swift in Sources */,
+				C1B06D5B11A45CB9CC96D4A7 /* DebugLogView+Metrics.swift in Sources */,
+				59F7955E0179426F6ABDC2BD /* DebugLogView+Styles.swift in Sources */,
+				9B68D22EF39D8A2DF5132782 /* DebugLogRow.swift in Sources */,
+				926C207B40057DD774B299F9 /* DebugLogFilters.swift in Sources */,
+				DE493CE4F8260D8C7B5FE71F /* SharedDataStore.swift in Sources */,
+				6664945EC3F39C24DF82D998 /* SwiftDataStorage.swift in Sources */,
+				E2AB8A1424549744B6A2FE0D /* LeetCodeService.swift in Sources */,
+				B9520A41D4F19279626AC67F /* LeetCodeRestClient+Requests.swift in Sources */,
+				7387AD4C07D1A9B0FCD4B948 /* LeetCodeRestClient+Validation.swift in Sources */,
+				2B7F73D4C65AD61EFF8B9701 /* LeetCodeRestClient+SolvedSlugs.swift in Sources */,
+				358D1ED5D6C898DFA39E82A3 /* LeetCodeRestClient+GraphQL.swift in Sources */,
+				ABF246DF9A568F60D8F9C11A /* LeetCodeRestClient+ProblemContent.swift in Sources */,
+				7CD542C51659C75578189F55 /* AITestCaseStore.swift in Sources */,
+				8F84BF45F26775729CBBE806 /* LeetCodeSubmissionService.swift in Sources */,
+				C55EC48E9473A91D4C247C7E /* LeetCodeValueType.swift in Sources */,
+				9BC7AE9E9D72C325175DED82 /* TestCaseAIService.swift in Sources */,
+				9AB90DB039E2DC5545FECD86 /* LeetCodeSyncInteractor.swift in Sources */,
+				C7BB7F99005A2B945C0018B0 /* ToolbarWidgetView.swift in Sources */,
+				377C22E831D0B22BDC0C8B9F /* TestCase.swift in Sources */,
+				B1039890A8F525ECB50B6A74 /* CodeExecutionService.swift in Sources */,
+				576B544D4AB1B0060EE8CA8A /* CodingEnvironmentPresenter.swift in Sources */,
+				00E2E1D6FDEE2975CAE72569 /* CodingEnvironmentPresenter+LeetCodeSubmit.swift in Sources */,
+				BE50DECB1D9B3BB7C160EC85 /* CodeEditorView.swift in Sources */,
+				CD086DE81B49216F7A5224C6 /* CodeEditorLineNumberRulerView.swift in Sources */,
+				ACBE244ABA0FF292D03749E1 /* OutputPanelView.swift in Sources */,
+				29EEA4B1E61A8212E1E0943E /* ProblemSelectionView.swift in Sources */,
+				826624D791FC604E6B74B811 /* CodingEnvironmentView.swift in Sources */,
+				31861700D0C923E35C5D2938 /* ProcessRunner.swift in Sources */,
+				B800F0A8A9ABA27B4971D2C3 /* ProcessRunState.swift in Sources */,
+				E649CB6AB914087DB9717D49 /* ProcessOutputCollector.swift in Sources */,
+				E59CB66C0D05C9B6BF6DBA51 /* LanguageExecutor.swift in Sources */,
+				4E6678EAF45EF07F4CC53605 /* SwiftExecutor.swift in Sources */,
+				D8060DDA9ABC3C0D5EDF97CE /* SwiftExecutor+Logging.swift in Sources */,
+				D1E72BD94B91FD1861A73D13 /* PythonExecutor.swift in Sources */,
+				F7EFA15412E3E9CC1287DDEA /* ContentInteractor.swift in Sources */,
+				269056FA2884342D96325E84 /* ContentPresenter.swift in Sources */,
+				FC4048FD15781E87EE2C410B /* PlanInteractor.swift in Sources */,
+				E30F7BFEAF4D47CE076FAD82 /* PlanPresenter.swift in Sources */,
+				5C08ABA74F23CC598581F2BB /* TodayInteractor.swift in Sources */,
+				CD410C1DBD0090CC84B7216E /* TodayPresenter.swift in Sources */,
+				62404B57D231BC667A12CDF1 /* StatsInteractor.swift in Sources */,
+				B376754021F8EAB10A4DF1C8 /* StatsPresenter.swift in Sources */,
+				597DC0740F5C677990CAE162 /* SettingsInteractor.swift in Sources */,
+				E9589DE986BF6086E0781B1C /* SettingsPresenter.swift in Sources */,
+				36FE6975409D1758B5F57C43 /* ToolbarWidgetInteractor.swift in Sources */,
+				B5126158BF33196181E7014B /* ToolbarWidgetPresenter.swift in Sources */,
+				EFED1D4729938E55149C248A /* FocusInteractor.swift in Sources */,
+				88EA796DBBCA4FE7F0E82018 /* FocusPresenter.swift in Sources */,
+				440962417FBFA6925E30921E /* CodingEnvironmentInteractor.swift in Sources */,
+				63B03F6CB3E11C3C49759D59 /* OutputPanelView+Sections.swift in Sources */,
+				3F086941C3FC3F2FBC8B6EE4 /* ConsoleOutputView.swift in Sources */,
+				C988B95C204A45DBA52C2EFF /* CodeEditorView+Coordinator.swift in Sources */,
+				46D1CC63845D31F846F9728C /* CodeEditorView+CoordinatorInput.swift in Sources */,
+				1BC2382B0F9A015641484DC3 /* CodeEditorView+CoordinatorHighlighting.swift in Sources */,
+				0585BA8EE337A3CBAEE630AE /* CodeEditorView+CoordinatorHighlightingCommon.swift in Sources */,
+				9B95A0AFF0B2C30469F142F1 /* CodeEditorView+CoordinatorHighlightingSwift.swift in Sources */,
+				BFA24A86BFB80DF72C4C42C2 /* CodeEditorView+CoordinatorHighlightingPython.swift in Sources */,
+				DBC4E9395CB8F18A30867437 /* SettingsView+Bindings.swift in Sources */,
+				B82681A4B6A09F3F7A9EFA99 /* SettingsView+Validation.swift in Sources */,
+				1135FD267FF2124F52E40ABC /* SettingsView+Preview.swift in Sources */,
+				6343A5CB5E8174D2B504200B /* TodayView+Sections.swift in Sources */,
+				C9083065BA030FB0ADCB92B4 /* TodayView+Preview.swift in Sources */,
+				7EA8748F6F009ABE44CF83C7 /* StatsView+Sections.swift in Sources */,
+				70FAA89EB5F57A600401C7BA /* StatsView+Preview.swift in Sources */,
+				430D45502BEF169676BCF601 /* FocusOverlay+Sections.swift in Sources */,
+				56793A03DD5531B43FF25329 /* ToolbarWidgetView+Header.swift in Sources */,
+				547B470DBB38965335C50DDB /* ToolbarWidgetView+Settings.swift in Sources */,
+				268FD9A7212473006EEB07DA /* ToolbarWidgetView+Summary.swift in Sources */,
+				B7771BA799F97F70D409D590 /* ToolbarWidgetView+Problems.swift in Sources */,
+				4DF6770BF5F8936C25964959 /* ToolbarWidgetView+Habits.swift in Sources */,
+				FC7A02FCAEFC90E8A75EEE79 /* ToolbarWidgetView+Tomorrow.swift in Sources */,
+				69258A094C1C7F54F6C8D2FC /* ToolbarWidgetView+Preview.swift in Sources */,
+				089AF5912D2CFA06AA5996F6 /* WidgetCard.swift in Sources */,
+				6CB314C3AD361A5B1A00D732 /* ProblemRowWidget.swift in Sources */,
+				49CE0C02EC13E0983EE93604 /* HabitToggle.swift in Sources */,
+				351A079AF26C7F2836A3081A /* CarryoverProblemRow.swift in Sources */,
+				BAFC319A44730B5A1B759B37 /* TomorrowProblemRow.swift in Sources */,
+				6989A4DEE9EF9159F557FED5 /* CodingEnvironmentPresenter+Execution.swift in Sources */,
+				BAAF15492D6AF87A9C26F180 /* CodingEnvironmentPresenter+ProblemLoading.swift in Sources */,
+				3A9F9BF80FB4BE89F9614EAE /* CodingEnvironmentPresenter+Persistence.swift in Sources */,
+				A229CF8BCE679B2EFF73A773 /* CodingEnvironmentView+Header.swift in Sources */,
+				2F5CA94BEDE538A8E6FB163F /* CodingEnvironmentView+Panels.swift in Sources */,
+				E07D36AFC2339BEF7D824514 /* ModernTestCaseView.swift in Sources */,
+				B564E47228E3A3ABB0C6E987 /* ModernOutputView.swift in Sources */,
+				A102FCF04B1A7D25438EB032 /* ModernOutputView+Sections.swift in Sources */,
+				0AFB0774B0A0618B047A2EAD /* TestCaseEditorView.swift in Sources */,
+				6B3279B1F29974747F3E07EB /* SolutionTabView.swift in Sources */,
+				0255721438428D5275DA93E0 /* SolutionApproachView.swift in Sources */,
+				65A80DC62A523A43E43EB0D0 /* NotificationSettings.swift in Sources */,
+				4636C8BAFB5A1064143FAB78 /* NotificationSettingsStore.swift in Sources */,
+				A49D571946811E6369831625 /* NotificationScheduler.swift in Sources */,
+				06602190E17F09DD729F0451 /* LeetCodeNetworking.swift in Sources */,
+				6FD4C833572141ED6A4EC584 /* LeetCodeErrors.swift in Sources */,
+				B1DD613A6561A3FEB95C3E4D /* LeetCodeModels.swift in Sources */,
+				8E61829895F136D81D75A2DD /* SolutionModels.swift in Sources */,
+				EB485B7E137A9714534070C8 /* SolutionStore.swift in Sources */,
+				58E987A9FDDF7B98E22B4AB9 /* LeetCodeSyncScheduler.swift in Sources */,
+				C88243AE1FCA3FB43A5C5202 /* LeetCodeConstants.swift in Sources */,
+				2DD88A236B83FD5F687DD1EB /* LeetCodeSlugExtractor.swift in Sources */,
+				B4807255E916A850AE3CBEFB /* CodeEditorView+CoordinatorIndentation.swift in Sources */,
+				7AD072EA652D03FEC833B730 /* CodeEditorView+CoordinatorBrackets.swift in Sources */,
+				6F928F475AC70771A1761392 /* CodingEnvironmentView+ProblemPicker.swift in Sources */,
+				571C2CFDE47F98ECE9458D83 /* CodingEnvironmentProblemModels.swift in Sources */,
+				B9CD315257871BB73C91A38E /* DataJourneyModels.swift in Sources */,
+				17BEA7E707896C8B5135517F /* DataJourneyDiff.swift in Sources */,
+				C736A8EE486B17DC027D3915 /* DataJourneyView.swift in Sources */,
+				5E956DC2EE1393D4FCBAE21E /* DataJourneyPointerModels.swift in Sources */,
+				A343591E2AB23A42B6E3750C /* DataJourneyStructureCanvasView.swift in Sources */,
+				9C62EBDD5ED268EA8308A9C7 /* DataJourneyStructureCanvasView+Structure.swift in Sources */,
+				8B932BC1B1E7CE00C84D7740 /* DataJourneyStructureCanvasView+Pointers.swift in Sources */,
+				C5E26CB10F3E8530307A8DF0 /* DataJourneyStructureCanvasView+CombinedList.swift in Sources */,
+				129CD384EE68A14C9F9E936C /* DataJourneyStructureCanvasView+Labels.swift in Sources */,
+				84489F30CB545848FBD6E6CA /* DataJourneyDictionaryStructureRow.swift in Sources */,
+				14A6B775F6E6E3ECCAA84F77 /* CodingEnvironmentView+Sidebar.swift in Sources */,
+				72DBCBB2CB5E7F256001EA14 /* CodingEnvironmentView+DetailContent.swift in Sources */,
+				68152D3B8148A46078932FC3 /* FocusOverlay+TimerView.swift in Sources */,
+				3B826D8C62D0930313600E09 /* FocusOverlay+CompletionView.swift in Sources */,
+				E9226FD9F95164FA7935A44E /* StatsView+FocusReminder.swift in Sources */,
+				3F34D9FBAFE2AC4BD0BF171D /* TodayView+FocusCTA.swift in Sources */,
+				1D3425D83BEC5F0F33C43C02 /* ContentView+Preview.swift in Sources */,
+				6E7804C6A8322747EB778E2B /* CodingEnvironmentPresenter+ExecutionDiagnostics.swift in Sources */,
+				C4D5F7367E3722B72999493D /* CodingEnvironmentPresenter+ExecutionOutput.swift in Sources */,
+				4AA720E1BA4D4EC35BCB9CD9 /* CodingEnvironmentPresenter+ExecutionTrace.swift in Sources */,
+				D9596C0CE642B9AC898C06F9 /* CodingEnvironmentPresenter+SnippetSelection.swift in Sources */,
+				63B51F4773599B8BE8C43D2A /* LeetCodeTemplateBuilder.swift in Sources */,
+				9EBEC58CD16DE88E0C9E1A72 /* LeetCodeTemplateBuilder+Swift.swift in Sources */,
+				7A3B6610B523511823C473D3 /* LeetCodeTemplateBuilder+Python.swift in Sources */,
+				6D7E97F051263F8CF23288FD /* LeetCodeTemplateBuilder+Helpers.swift in Sources */,
+				E7750C8B100E862D6A5428E8 /* LeetCodeExecutionWrapper.swift in Sources */,
+				F585A5EE9168D4CB74FD49E8 /* LeetCodeExecutionWrapper+Swift.swift in Sources */,
+				EA4919458AA424D08B79F7BA /* LeetCodeExecutionWrapper+SwiftRunner.swift in Sources */,
+				8A96CD378C34909302219F7C /* LeetCodeExecutionWrapper+SwiftTrace.swift in Sources */,
+				19A163CC21E133D10AE2C2C8 /* LeetCodeExecutionWrapper+SignatureParsing.swift in Sources */,
+				1D5CE38B00AEB1EDF901D168 /* LeetCodeExecutionWrapper+Python.swift in Sources */,
+				D6BBAF5EE6D7B3EB6CE3374A /* AutoInstrumenter.swift in Sources */,
+				7C866D9FD7AC359FCCBFB181 /* LeetCodeExecutionWrapper+PythonRunner.swift in Sources */,
+				1825C846AE77EAD9B19F3377 /* LeetCodeExecutionWrapper+PythonTrace.swift in Sources */,
+				9F154156C23A7D873C92096C /* LeetCodeExecutionWrapper+TypeParsing.swift in Sources */,
+				599CFBD9DDF5F06B803D46A2 /* DataJourneyGraphView.swift in Sources */,
+				C7D04783D038D3BA27C08C1C /* DataJourneySequenceBubbleRow.swift in Sources */,
+				77E34B8026D0B1627F40CA3D /* DataJourneySequenceBubbleRow+Layout.swift in Sources */,
+				80C8BBAE8DD90F42FFD1E4AB /* DataJourneyTraceBubble.swift in Sources */,
+				37758AE10014A6667601CA3E /* DataJourneyTraceValueView.swift in Sources */,
+				0B2AD50AD49AD0501B2C1E21 /* DataJourneyTreeGraphView.swift in Sources */,
+				A27700A1B762EE7A4BA28E36 /* DataJourneyView+Layout.swift in Sources */,
+				4286FE6772D07798E34F5D3E /* DataJourneyView+Playback.swift in Sources */,
+				0B3B8DE7D49C90827230FE44 /* DataJourneyView+Selection.swift in Sources */,
+				300B4E59510564A9E1BAEE69 /* DataJourneyMatrixGridView.swift in Sources */,
+				67A67A2C784F4117D755BDC0 /* DataJourneyHeapView.swift in Sources */,
+				6AB816FA9439BAFAC9D0866D /* DataJourneyStringSequenceView.swift in Sources */,
+				AED2C701EDBEA49E759CB165 /* DataJourneyTrieGraphView.swift in Sources */,
+				6E1BE8275B235CC142222D58 /* DataJourneyVariableTimeline.swift in Sources */,
+				6DD1D753790A3A84AC0DA47E /* DataJourneyFlowView.swift in Sources */,
+				D231D2AEBACD10465BEA85C4 /* DataJourneyComparisonView.swift in Sources */,
+				7918DB89AD61D4EDFB8AA1BC /* CodingEnvironmentView+SidebarRows.swift in Sources */,
+				2607F8D9A19E6BCCCB7EF677 /* ProblemDetailTab.swift in Sources */,
+				07EB4FB6DD57E12E460098D3 /* SolutionApproachView+TestCases.swift in Sources */,
+				1F25967BF2D0864799DE35D8 /* ProblemManifestStore.swift in Sources */,
+				E5A1C64B4F04D38E00FB56A6 /* TopicSolutionModels.swift in Sources */,
+				082D0F4466DADDF4E729B5DE /* TopicSolutionStore.swift in Sources */,
+				B787343B778671A04FBBB081 /* SolutionAIService.swift in Sources */,
+				D57EB3E79BF4095B2C81EC48 /* Coordinating.swift in Sources */,
+				CA0F762C9E9AF113131F4A9D /* NavigationState.swift in Sources */,
+				FD2E0A891DB52E74537563A2 /* AppCoordinator.swift in Sources */,
+				61DF620941C627BBAF72FC12 /* ContentCoordinator.swift in Sources */,
+				F261F3A2B5B2DA6E8CA69CBD /* CodingCoordinator.swift in Sources */,
+				2B6E8A70F3BD089DC8033416 /* WidgetCoordinator.swift in Sources */,
+				F7C5C07E8F80F8838310BFF1 /* FocusCoordinator.swift in Sources */,
+				9463AD2E08738963A0A33702 /* LeetCodeLoginSheet.swift in Sources */,
+				518288C92D9EDFD8C9F078EC /* FocusAppiOS.swift in Sources */,
+				FD5C0EDA9813492C1B30AB10 /* DesignSystemRoot.swift in Sources */,
+				1C2E23C23FF018E3C3704AD2 /* NoOpCodeExecutionService.swift in Sources */,
+				LCE5A1B2C3D4E5F6A7B8C9D2 /* LeetCodeExecutionService.swift in Sources */,
+				32A3360547F2306D8249C3B2 /* RootViewiOS.swift in Sources */,
+				B2A1F2E1D0C9B8A7F6E5D4C3 /* TodayViewiOS.swift in Sources */,
+				A7F6E5D4C3B2A1F2E1D0C9B8 /* PlanViewiOS.swift in Sources */,
+				F6E5D4C3B2A1F2E1D0C9B8A7 /* StatsViewiOS.swift in Sources */,
+				E5D4C3B2A1F2E100D0C9B8A7 /* FocusViewiOS.swift in Sources */,
+				D4C3B2A1F200E1D0C9B8A7F6 /* CodingViewiOS.swift in Sources */,
+				A1B2C3D4E5F60005 /* OutputViewiOS.swift in Sources */,
+				A1B2C3D4E5F60006 /* SolutionViewiOS.swift in Sources */,
+				C3B2A100F2E1D0C9B8A7F6E5 /* SettingsViewiOS.swift in Sources */,
+				B2A1F201E1D0C9B8A7F6E5D4 /* DifficultyBadgeHelper.swift in Sources */,
+				3909F99EBE1AAEFEA2626C23 /* CodeMirrorEditorViewiOS.swift in Sources */,
+				8B03E0F884E9AB1AC93021C2 /* FloatingMiniTimeriOS.swift in Sources */,
+				W1A2B3C4D5E6F7085678EF01 /* WidgetData.swift in Sources */,
+				W1A2B3C4D5E6F7086789F012 /* WidgetDataWriter.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		W9B0C1D2E3F4A5706789A012 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				W1A2B3C4D5E6F7081234ABCD /* FocusWidgetBundle.swift in Sources */,
+				W1A2B3C4D5E6F7082345BCDE /* ProgressWidget.swift in Sources */,
+				W1A2B3C4D5E6F7083456CDEF /* TodayWidget.swift in Sources */,
+				W1A2B3C4D5E6F7084567DEF0 /* WidgetData.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -1699,6 +2591,11 @@
 			isa = PBXTargetDependency;
 			target = A10006001 /* FocusApp */;
 			targetProxy = BC76266BB8004E60817433C2 /* PBXContainerItemProxy */;
+		};
+		WAB1C2D3E4F5A6807890B123 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = W4C5D6E7F8A9B0201234BCDE /* FocusWidgetExtension */;
+			targetProxy = W3B4C5D6E7F8A9190123ABCD /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -1996,6 +2893,134 @@
 			};
 			name = Release;
 		};
+		4E1D0B4BC055852559EEB4A9 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = FocusApp/FocusAppiOS.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = V29G6KEVJT;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.dsafocus.FocusApp.iOS;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		1505EB113044724F8885D169 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = FocusApp/FocusAppiOS.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = V29G6KEVJT;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.dsafocus.FocusApp.iOS;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		WCD3E4F5A6B7C8901234D345 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_ENTITLEMENTS = FocusWidget/FocusWidget.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = V29G6KEVJT;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = FocusWidget/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = FocusWidget;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.dsafocus.FocusApp.iOS.FocusWidget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		WDE4F5A6B7C8D9012345E456 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_ENTITLEMENTS = FocusWidget/FocusWidget.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = V29G6KEVJT;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = FocusWidget/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = FocusWidget;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.dsafocus.FocusApp.iOS.FocusWidget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCLocalSwiftPackageReference section */
@@ -2028,6 +3053,21 @@
 			productName = FocusDomain;
 		};
 		E1F2031425364758697A8B9C /* FocusData */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C1D2E3F405162738495A6B7C /* XCLocalSwiftPackageReference "Packages/FocusShared" */;
+			productName = FocusData;
+		};
+		9174995E3BC942CD61C27DBB /* FocusDesignSystem */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = B2C3D4E5F60789ABCDEF1234 /* XCRemoteSwiftPackageReference "DSFocusFlow" */;
+			productName = FocusDesignSystem;
+		};
+		17951A092A38CB919666F880 /* FocusDomain */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C1D2E3F405162738495A6B7C /* XCLocalSwiftPackageReference "Packages/FocusShared" */;
+			productName = FocusDomain;
+		};
+		2278A4170A0D7BE61E107EBF /* FocusData */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = C1D2E3F405162738495A6B7C /* XCLocalSwiftPackageReference "Packages/FocusShared" */;
 			productName = FocusData;
@@ -2067,6 +3107,24 @@
 			buildConfigurations = (
 				A10009001 /* Debug */,
 				A10009002 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		22DCBB6A2AA5FC7E7A74C371 /* Build configuration list for PBXNativeTarget "FocusApp-iOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				4E1D0B4BC055852559EEB4A9 /* Debug */,
+				1505EB113044724F8885D169 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		WBC2D3E4F5A6B7908901C234 /* Build configuration list for PBXNativeTarget "FocusWidgetExtension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				WCD3E4F5A6B7C8901234D345 /* Debug */,
+				WDE4F5A6B7C8D9012345E456 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

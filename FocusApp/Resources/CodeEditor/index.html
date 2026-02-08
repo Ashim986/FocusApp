@@ -175,6 +175,12 @@
                 }
             };
 
+            window.setDiagnostics = function(diagnostics) {
+                if (editor) {
+                    editor.setDiagnostics(diagnostics);
+                }
+            };
+
             // Initialize when DOM is ready
             if (document.readyState === "loading") {
                 document.addEventListener("DOMContentLoaded", initEditor);

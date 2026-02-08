@@ -1,48 +1,9 @@
+import FocusData
 import Foundation
 
-protocol AppStorage {
-    func load() -> AppData
-    func save(_ data: AppData)
-}
-
-struct FileAppStorage: AppStorage {
-    private let fileURL: URL
-
-    init(fileURL: URL = Self.defaultFileURL) {
-        self.fileURL = fileURL
-    }
-
-    func load() -> AppData {
-        guard FileManager.default.fileExists(atPath: fileURL.path) else {
-            return AppData()
-        }
-
-        do {
-            let jsonData = try Data(contentsOf: fileURL)
-            let decoder = JSONDecoder()
-            return try decoder.decode(AppData.self, from: jsonData)
-        } catch {
-            print("FileAppStorage: Failed to load data: \(error)")
-            return AppData()
-        }
-    }
-
-    func save(_ data: AppData) {
-        do {
-            let encoder = JSONEncoder()
-            encoder.outputFormatting = .prettyPrinted
-            let jsonData = try encoder.encode(data)
-            try jsonData.write(to: fileURL)
-        } catch {
-            print("FileAppStorage: Failed to save data: \(error)")
-        }
-    }
-
-    static var defaultFileURL: URL {
-        FileManager.default.homeDirectoryForCurrentUser
-            .appendingPathComponent(".dsa-focus-data.json")
-    }
-}
+typealias AppStorage = FocusData.AppStorage
+typealias FileAppStorage = FocusData.FileAppStorage
+typealias InMemoryAppStorage = FocusData.InMemoryAppStorage
 
 struct PlanCalendar {
     let calendar: Calendar

@@ -69,8 +69,21 @@ final class CodingEnvironmentInteractor {
         try await leetCodeClient.fetchProblemContent(slug: slug)
     }
 
-    func executeCode(code: String, language: ProgrammingLanguage, input: String) async -> ExecutionResult {
-        await executionService.execute(code: code, language: language, input: input)
+    func executeCode(
+        code: String,
+        language: ProgrammingLanguage,
+        input: String,
+        slug: String? = nil,
+        questionId: String? = nil
+    ) async -> ExecutionResult {
+        #if os(iOS)
+        if let leetCodeService = executionService as? LeetCodeExecutionService {
+            leetCodeService.problemSlug = slug
+            leetCodeService.questionId = questionId
+            leetCodeService.authSession = appStore.leetCodeAuth()
+        }
+        #endif
+        return await executionService.execute(code: code, language: language, input: input)
     }
 
     func cancelExecution() {

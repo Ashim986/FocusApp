@@ -10,7 +10,7 @@ struct FocusAppiOS: App {
     var body: some Scene {
         WindowGroup {
             DesignSystemRoot {
-                iOSRootView(coordinator: coordinator)
+                RootViewiOS(coordinator: coordinator)
                     .task {
                         coordinator.start()
                         _ = await coordinator.container.notificationManager.requestAuthorization()

@@ -40,6 +40,16 @@ extension Color {
         endPoint: .bottom
     )
 
+    init(hex value: Int) {
+        self.init(
+            .sRGB,
+            red: Double((value >> 16) & 0xFF) / 255,
+            green: Double((value >> 8) & 0xFF) / 255,
+            blue: Double(value & 0xFF) / 255,
+            opacity: 1
+        )
+    }
+
     init(hex: String) {
         let hex = hex.trimmingCharacters(in: CharacterSet.alphanumerics.inverted)
         var int: UInt64 = 0
@@ -68,37 +78,5 @@ extension Color {
             blue: Double(blue) / 255,
             opacity: Double(alpha) / 255
         )
-    }
-}
-
-enum DSLayout {
-    enum SpacingToken {
-        case space2
-        case space4
-        case space8
-        case space12
-        case space16
-        case space24
-        case space32
-        case space48
-        case space64
-    }
-
-    static func spacing(_ token: SpacingToken) -> CGFloat {
-        switch token {
-        case .space2: 2
-        case .space4: 4
-        case .space8: 8
-        case .space12: 12
-        case .space16: 16
-        case .space24: 24
-        case .space32: 32
-        case .space48: 48
-        case .space64: 64
-        }
-    }
-
-    static func spacing(_ value: CGFloat) -> CGFloat {
-        value
     }
 }

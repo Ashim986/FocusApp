@@ -2,7 +2,7 @@
 
 ## Project Overview
 
-FocusApp is a native macOS study companion app for Data Structures & Algorithms preparation. It helps track a 13-day core plan plus a 2-day priority sprint (25 problems), daily habits, and provides focus tools. The app automatically syncs with your LeetCode account to track solved problems.
+FocusApp is a native macOS + iOS study companion app for Data Structures & Algorithms preparation. It helps track a 13-day core plan plus a 2-day priority sprint (25 problems), daily habits, and provides focus tools. The app automatically syncs with your LeetCode account to track solved problems. On iOS, code execution uses the LeetCode `interpret_solution` API. A WidgetKit extension provides Home Screen widgets for progress tracking.
 
 Bundled solution write-ups live in `FocusApp/Resources/Solutions.json` (103 problems spanning the core plan and sprint list).
 
@@ -23,29 +23,37 @@ FocusApp/
 │   ├── Today/
 │   ├── ToolbarWidget/
 │   └── Support/
+├── FocusWidget/                     # WidgetKit extension (iOS)
+│   ├── FocusWidgetBundle.swift      # @main WidgetBundle
+│   ├── ProgressWidget.swift         # Small/Medium progress widget
+│   ├── TodayWidget.swift            # Large today's problems widget
+│   ├── WidgetData.swift             # Shared data model + reader (also in iOS target)
+│   └── FocusWidget.entitlements     # App Group entitlement
 ├── FocusApp/                        # Main app source
-│   ├── FocusApp.swift               # App entry point, MenuBarExtra, FloatingWidgetController
+│   ├── FocusApp.swift               # macOS app entry point, MenuBarExtra, FloatingWidgetController
+│   ├── FocusAppiOS.swift            # iOS app entry point
 │   ├── AppContainer.swift           # Dependency injection container
-│   ├── FocusApp.entitlements
+│   ├── FocusApp.entitlements        # macOS entitlements
+│   ├── FocusAppiOS.entitlements     # iOS entitlements (App Group for widget)
 │   ├── Assets.xcassets/
 │   ├── Models/
-│   │   ├── AppData.swift            # Data model for progress/habits
+│   │   ├── AppData.swift            # FocusData alias + app-specific helpers
 │   │   ├── DataStore.swift          # AppStateStore for state management
 │   │   ├── DSAPlan.swift            # Study plan definition (priority sprint + core plan)
 │   │   ├── NotificationManager.swift    # Notification entry point
 │   │   ├── NotificationSettings.swift
 │   │   ├── NotificationSettingsStore.swift
 │   │   ├── NotificationScheduler.swift
-│   │   ├── LeetCodeService.swift        # LeetCode sync coordinator
+│   │   ├── LeetCodeService.swift        # FocusData alias for networking service
 │   │   ├── LeetCodeRestClient+GraphQL.swift
 │   │   ├── LeetCodeRestClient+ProblemContent.swift
 │   │   ├── LeetCodeRestClient+Requests.swift
 │   │   ├── LeetCodeRestClient+SolvedSlugs.swift
 │   │   ├── LeetCodeRestClient+Validation.swift
-│   │   ├── LeetCodeNetworking.swift
-│   │   ├── LeetCodeErrors.swift
-│   │   ├── LeetCodeModels.swift
-│   │   ├── LeetCodeConstants.swift
+│   │   ├── LeetCodeNetworking.swift     # FocusData alias for request/logging types
+│   │   ├── LeetCodeErrors.swift         # FocusData error aliases
+│   │   ├── LeetCodeModels.swift         # FocusData model aliases
+│   │   ├── LeetCodeConstants.swift      # FocusData constants aliases
 │   │   ├── LeetCodeValueType.swift
 │   │   ├── LeetCodeProblemFetcher.swift     # GraphQL fetcher for problem manifest
 │   │   ├── LeetCodeSyncInteractor.swift
@@ -68,105 +76,68 @@ FocusApp/
 │   │   ├── SolutionAIService.swift  # AI solution providers (Groq, Gemini)
 │   │   ├── TopicSolutionModels.swift    # Topic-partitioned solution models
 │   │   ├── TopicSolutionStore.swift     # Lazy-loading topic solution store
-│   │   └── AITestCaseStore.swift        # Hidden test case persistence (JSON)
+│   │   ├── AITestCaseStore.swift        # Hidden test case persistence (JSON)
+│   │   ├── LeetCodeExecutionService.swift   # iOS code execution via LeetCode API
+│   │   └── WidgetDataWriter.swift       # Writes widget data to App Group container
 │   ├── Views/
+│   │   ├── Shared/                      # Cross-platform shared types
+│   │   │   ├── Tab.swift                # Tab enum (extracted from ContentView)
+│   │   │   ├── CodeEditorDiagnostic.swift
+│   │   │   ├── DifficultyBadgeHelper.swift
+│   │   │   └── DesignSystemRoot.swift
 │   │   ├── Content/
-│   │   │   ├── ContentView.swift        # Main tabbed interface
 │   │   │   ├── ContentPresenter.swift
 │   │   │   ├── ContentInteractor.swift
-│   │   │   └── ContentView+Preview.swift
+│   │   │   ├── macOS/
+│   │   │   │   ├── ContentView.swift    # Main tabbed interface
+│   │   │   │   └── ContentView+Preview.swift
+│   │   │   └── iOS/
+│   │   │       └── iOSRootView.swift    # RootViewiOS
 │   │   ├── Plan/
-│   │   │   ├── PlanView.swift           # Full study plan view
 │   │   │   ├── PlanPresenter.swift
-│   │   │   └── PlanInteractor.swift
+│   │   │   ├── PlanInteractor.swift
+│   │   │   ├── macOS/  → PlanView.swift
+│   │   │   └── iOS/    → iOSPlanView.swift (PlanViewiOS)
 │   │   ├── Today/
-│   │   │   ├── TodayView.swift          # Today's tasks view
 │   │   │   ├── TodayPresenter.swift
 │   │   │   ├── TodayInteractor.swift
-│   │   │   ├── TodayView+Sections.swift
-│   │   │   ├── TodayView+FocusCTA.swift
-│   │   │   └── TodayView+Preview.swift
+│   │   │   ├── macOS/  → TodayView.swift (+ extensions)
+│   │   │   └── iOS/    → iOSTodayView.swift (TodayViewiOS)
 │   │   ├── Stats/
-│   │   │   ├── StatsView.swift          # Progress statistics
-│   │   │   ├── StatsPresenter.swift
-│   │   │   ├── StatsInteractor.swift
-│   │   │   ├── StatsView+Sections.swift
-│   │   │   ├── StatsView+FocusReminder.swift
-│   │   │   └── StatsView+Preview.swift
+│   │   │   ├── StatsPresenter.swift, StatsInteractor.swift
+│   │   │   ├── macOS/  → StatsView.swift (+ extensions)
+│   │   │   └── iOS/    → iOSStatsView.swift (StatsViewiOS)
 │   │   ├── Focus/
-│   │   │   ├── FocusOverlay.swift       # Focus mode timer overlay
-│   │   │   ├── FocusPresenter.swift
-│   │   │   ├── FocusInteractor.swift
-│   │   │   ├── FocusOverlay+Sections.swift
-│   │   │   ├── FocusOverlay+TimerView.swift
-│   │   │   └── FocusOverlay+CompletionView.swift
+│   │   │   ├── FocusPresenter.swift, FocusInteractor.swift
+│   │   │   ├── macOS/  → FocusOverlay.swift (+ extensions)
+│   │   │   └── iOS/    → iOSFocusView.swift (FocusViewiOS), FloatingMiniTimer.swift
 │   │   ├── Settings/
-│   │   │   ├── SettingsView.swift       # Settings view
-│   │   │   ├── SettingsPresenter.swift
-│   │   │   ├── SettingsInteractor.swift
-│   │   │   ├── SettingsView+Bindings.swift
-│   │   │   ├── SettingsView+Validation.swift
-│   │   │   └── SettingsView+Preview.swift
+│   │   │   ├── SettingsPresenter.swift, SettingsInteractor.swift
+│   │   │   ├── macOS/  → SettingsView.swift (+ extensions)
+│   │   │   └── iOS/    → iOSSettingsView.swift (SettingsViewiOS)
 │   │   ├── ToolbarWidget/
-│   │   │   ├── ToolbarWidgetView.swift  # Floating widget
-│   │   │   ├── ToolbarWidgetPresenter.swift
-│   │   │   ├── ToolbarWidgetInteractor.swift
-│   │   │   ├── ToolbarWidgetView+Header.swift
-│   │   │   ├── ToolbarWidgetView+Settings.swift
-│   │   │   ├── ToolbarWidgetView+Summary.swift
-│   │   │   ├── ToolbarWidgetView+Problems.swift
-│   │   │   ├── ToolbarWidgetView+Habits.swift
-│   │   │   ├── ToolbarWidgetView+Tomorrow.swift
-│   │   │   ├── ToolbarWidgetView+Preview.swift
-│   │   │   ├── WidgetCard.swift
-│   │   │   ├── ProblemRowWidget.swift
-│   │   │   ├── HabitToggle.swift
-│   │   │   ├── CarryoverProblemRow.swift
-│   │   │   └── TomorrowProblemRow.swift
+│   │   │   ├── ToolbarWidgetPresenter.swift, ToolbarWidgetInteractor.swift
+│   │   │   └── macOS/  → ToolbarWidgetView.swift (+ 12 view files)
 │   │   ├── CodingEnvironment/
-│   │   │   ├── CodingEnvironmentPresenter.swift
-│   │   │   ├── CodingEnvironmentInteractor.swift
-│   │   │   ├── CodingEnvironmentPresenter+ProblemLoading.swift
-│   │   │   ├── CodingEnvironmentPresenter+Persistence.swift
-│   │   │   ├── CodingEnvironmentProblemModels.swift
+│   │   │   ├── CodingEnvironmentPresenter.swift (+ extensions, shared)
+│   │   │   ├── CodingEnvironmentInteractor.swift (shared)
 │   │   │   ├── Snippets/                       # LeetCode template building
-│   │   │   │   ├── LeetCodeTemplateBuilder.swift
-│   │   │   │   ├── LeetCodeTemplateBuilder+Swift.swift
-│   │   │   │   ├── LeetCodeTemplateBuilder+Python.swift
-│   │   │   │   ├── LeetCodeTemplateBuilder+Helpers.swift
-│   │   │   │   └── CodingEnvironmentPresenter+SnippetSelection.swift
 │   │   │   ├── Execution/                       # Code execution, submission & instrumentation
 │   │   │   │   ├── CodingEnvironmentPresenter+Execution.swift
-│   │   │   │   ├── CodingEnvironmentPresenter+ExecutionOutput.swift
-│   │   │   │   ├── CodingEnvironmentPresenter+ExecutionDiagnostics.swift
-│   │   │   │   ├── CodingEnvironmentPresenter+ExecutionTrace.swift
 │   │   │   │   ├── CodingEnvironmentPresenter+LeetCodeSubmit.swift
-│   │   │   │   ├── AutoInstrumenter.swift           # Trace.step() injection with scope analysis
-│   │   │   │   ├── LeetCodeExecutionWrapper.swift   # LeetCode-style code wrapping
-│   │   │   │   ├── LeetCodeExecutionWrapper+Swift.swift
-│   │   │   │   ├── LeetCodeExecutionWrapper+SwiftRunner.swift
-│   │   │   │   ├── LeetCodeExecutionWrapper+SwiftTrace.swift
-│   │   │   │   ├── LeetCodeExecutionWrapper+Python.swift
-│   │   │   │   ├── LeetCodeExecutionWrapper+PythonRunner.swift
-│   │   │   │   ├── LeetCodeExecutionWrapper+PythonTrace.swift
-│   │   │   │   ├── LeetCodeExecutionWrapper+SignatureParsing.swift
-│   │   │   │   └── LeetCodeExecutionWrapper+TypeParsing.swift
-│   │   │   ├── Views/                           # View files (uses FocusDesignSystem)
-│   │   │   │   ├── CodingEnvironmentView.swift
-│   │   │   │   ├── CodingEnvironmentView+Header.swift
-│   │   │   │   ├── CodingEnvironmentView+Panels.swift
-│   │   │   │   ├── CodingEnvironmentView+Sidebar.swift
-│   │   │   │   ├── CodingEnvironmentView+SidebarRows.swift
-│   │   │   │   ├── CodingEnvironmentView+DetailContent.swift
-│   │   │   │   ├── CodingEnvironmentView+ProblemPicker.swift
-│   │   │   │   ├── ProblemDetailTab.swift
-│   │   │   │   ├── ModernOutputView.swift
-│   │   │   │   ├── ModernOutputView+Sections.swift
-│   │   │   │   ├── ModernTestCaseView.swift
-│   │   │   │   ├── SolutionTabView.swift
-│   │   │   │   ├── SolutionApproachView.swift
-│   │   │   │   ├── SolutionApproachView+TestCases.swift
+│   │   │   │   ├── AutoInstrumenter.swift
+│   │   │   │   ├── LeetCodeExecutionWrapper.swift (+ Swift/Python extensions)
+│   │   │   │   └── ...
+│   │   │   ├── macOS/                           # macOS view files
+│   │   │   │   ├── CodingEnvironmentView.swift (+ extensions)
+│   │   │   │   ├── ModernOutputView.swift (+ sections)
+│   │   │   │   ├── SolutionTabView.swift, SolutionApproachView.swift
 │   │   │   │   └── TestCaseEditorView.swift
+│   │   │   ├── iOS/                             # iOS view files
+│   │   │   │   ├── iOSCodingView.swift          # CodingViewiOS (adaptive iPhone/iPad)
+│   │   │   │   ├── iOSOutputView.swift          # OutputViewiOS (tabbed output panel)
+│   │   │   │   ├── iOSSolutionView.swift        # SolutionViewiOS (approaches + complexity)
+│   │   │   │   └── CodeMirrorEditorView.swift   # WKWebView code editor with diagnostics
 │   │   │   └── DataJourney/                     # Data structure visualization
 │   │   │       ├── DataJourneyModels.swift
 │   │   │       ├── DataJourneyPointerModels.swift
@@ -215,8 +186,23 @@ FocusApp/
 │   │   ├── problem-manifest.json    # LeetCode problem manifest
 │   │   └── Solutions.json           # Bundled solutions content
 │   └── Shared/
-│       ├── SharedDataStore.swift    # PlanCalendar, AppConstants, legacy FileAppStorage
-│       └── SwiftDataStorage.swift   # SwiftData persistence (AppDataRecord, SwiftDataAppStorage)
+│       ├── SharedDataStore.swift    # PlanCalendar, AppConstants, storage aliases
+│       └── SwiftDataStorage.swift   # SwiftData storage aliases
+├── Packages/
+│   ├── FocusNetworking/
+│   │   ├── Package.swift
+│   │   ├── Sources/FocusNetworking/ # LeetCode API client, submission, request executor, debug logs, shared AppData model
+│   │   ├── Sources/FocusNetworking/Storage/ # AppStorage, FileAppStorage, InMemoryAppStorage, SwiftDataAppStorage
+│   │   └── Tests/FocusNetworkingTests/
+│   └── FocusShared/
+│       ├── Package.swift
+│       ├── Sources/FocusDomain/
+│       ├── Sources/FocusData/
+│       │   ├── AppData.swift                     # Compatibility aliases to FocusNetworking
+│       │   ├── Storage/AppStorage.swift          # Compatibility aliases to FocusNetworking
+│       │   ├── Storage/SwiftDataAppStorage.swift # Compatibility aliases to FocusNetworking
+│       │   └── Network/FocusNetworkingExports.swift # Public networking exports for app-facing imports
+│       └── Tests/
 ├── Design/                          # Design documentation
 │   ├── README.md
 │   ├── Design-Spec.md
@@ -245,14 +231,26 @@ FocusApp/
 # Open in Xcode
 open FocusApp.xcodeproj
 
-# Press Cmd+R to run
+# macOS: Select "FocusApp" scheme, press Cmd+R
+# iOS: Select "FocusApp-iOS" scheme, pick a simulator, press Cmd+R
 ```
+
+### Build Targets
+
+| Target | Scheme | Platform |
+|--------|--------|----------|
+| FocusApp | FocusApp | macOS 14.0+ |
+| FocusApp-iOS | FocusApp-iOS | iOS 26+ |
+| FocusWidgetExtension | (built with iOS) | iOS 26+ (WidgetKit) |
 
 ## Running Tests
 
 ```bash
-# Run all tests via xcodebuild
+# macOS tests
 xcodebuild test -project FocusApp.xcodeproj -scheme FocusApp -destination 'platform=macOS'
+
+# iOS build verification
+xcodebuild build -project FocusApp.xcodeproj -scheme FocusApp-iOS -destination 'platform=iOS Simulator,name=iPhone 16'
 
 # Or use Cmd+U in Xcode
 ```
@@ -261,7 +259,8 @@ Tests cover all Presenters, Interactors, and core business logic. See `FocusAppT
 
 ## Debug Logs
 
-- `DebugLogStore` and entry models live in `FocusApp/Models/LeetCodeNetworking.swift`.
+- `DebugLogStore` and entry models are implemented in `Packages/FocusNetworking/Sources/FocusNetworking/LeetCodeNetworking.swift`.
+- App model files under `FocusApp/Models/LeetCode*.swift` are compatibility aliases to `FocusData`.
 - Logs are emitted for network, sync, and execution (compile/run).
 - Debug log UI is embedded in the code editor and available in Settings.
 
@@ -297,7 +296,24 @@ High-risk edge cases:
 
 ## Code Execution & Sandbox
 
-The app uses `Process` to compile/run code. App Sandbox is disabled for the macOS target to allow execution of compiled binaries. If you re-enable sandboxing, you will need a helper tool or XPC service to run code safely.
+### macOS
+
+The macOS target uses `Process` to compile/run code locally. App Sandbox is disabled to allow execution of compiled binaries. If you re-enable sandboxing, you will need a helper tool or XPC service to run code safely.
+
+### iOS
+
+The iOS target cannot use `Process`. Instead, `LeetCodeExecutionService` sends code to the LeetCode `interpret_solution` API:
+
+1. `POST /problems/{slug}/interpret_solution/` — submits code with test input
+2. `GET /submissions/detail/{id}/check/` — polls for execution result
+3. Returns `ExecutionResult` with stdout, stderr, and status
+
+**Key details:**
+- 3 retries with exponential backoff (1s, 2s, 4s) for network failures
+- 20-second timeout per request
+- `wrappedCodeForExecution()` returns raw source on iOS (no local harness wrapping) since LeetCode API has its own execution harness
+- Conforms to the same `CodeExecuting` protocol as `CodeExecutionService`
+- Wired in `AppContainer.swift` via `#if os(iOS)` guard
 
 ## Code Quality & Linting
 
@@ -378,20 +394,22 @@ The app uses a **Clean Architecture / VIPER-inspired** pattern with clear separa
 |-----------|------|---------|
 | `AppContainer` | `AppContainer.swift` | Dependency injection, creates all presenters/interactors |
 | `AppStateStore` | `Models/DataStore.swift` | Central reactive data store with `@Published var data` |
-| `SwiftDataAppStorage` | `Shared/SwiftDataStorage.swift` | SwiftData-backed persistence |
-| `LeetCodeRestClient` | `Models/LeetCodeService.swift` | REST client for LeetCode data |
-| `LeetCodeSyncInteractor` | `Models/LeetCodeService.swift` | Sync logic between LeetCode and app |
+| `SwiftDataAppStorage` | `Packages/FocusNetworking/Sources/FocusNetworking/Storage/SwiftDataAppStorage.swift` | SwiftData-backed persistence |
+| `LeetCodeRestClient` | `Packages/FocusNetworking/Sources/FocusNetworking/LeetCodeService.swift` | REST client for LeetCode data |
+| `LeetCodeSyncInteractor` | `Models/LeetCodeSyncInteractor.swift` | Sync logic between LeetCode and app |
 | `LeetCodeSyncScheduler` | `Models/LeetCodeSyncScheduler.swift` | Hourly + daily LeetCode sync scheduling |
-| `LeetCodeNetworking` | `Models/LeetCodeNetworking.swift` | URLSession request + auth headers |
-| `ContentRouter` | `Views/Content/ContentView.swift` | View factory for tab navigation |
-| `FloatingWidgetController` | `FocusApp.swift` | NSPanel management for floating widget |
-| `CodeExecutionService` | `Models/CodeExecutionService.swift` | Coordinates code execution across languages |
-| `ProcessRunner` | `Models/ProcessRunner.swift` | Low-level process execution with timeout |
-| `SwiftExecutor` | `Models/SwiftExecutor.swift` | Swift compilation and execution |
-| `PythonExecutor` | `Models/PythonExecutor.swift` | Python interpreter execution |
+| `LeetCodeNetworking` | `Packages/FocusNetworking/Sources/FocusNetworking/LeetCodeNetworking.swift` | URLSession request + auth headers + logging |
+| `ContentRouter` | `Views/Content/macOS/ContentView.swift` | View factory for tab navigation (macOS) |
+| `FloatingWidgetController` | `FocusApp.swift` | NSPanel management for floating widget (macOS) |
+| `CodeExecutionService` | `Models/CodeExecutionService.swift` | Coordinates code execution across languages (macOS) |
+| `LeetCodeExecutionService` | `Models/LeetCodeExecutionService.swift` | Code execution via LeetCode `interpret_solution` API (iOS) |
+| `ProcessRunner` | `Models/ProcessRunner.swift` | Low-level process execution with timeout (macOS) |
+| `SwiftExecutor` | `Models/SwiftExecutor.swift` | Swift compilation and execution (macOS) |
+| `PythonExecutor` | `Models/PythonExecutor.swift` | Python interpreter execution (macOS) |
 | `NotificationScheduler` | `Models/NotificationScheduler.swift` | Scheduling + permissions for reminders |
 | `AppStrings` | `Helpers/AppStrings.swift` | Localized string helpers |
-| `CodeEditorLineNumberRulerView` | `Views/CodeEditorLineNumberRulerView.swift` | Line numbers with diagnostic markers |
+| `CodeEditorLineNumberRulerView` | `Views/CodeEditorLineNumberRulerView.swift` | Line numbers with diagnostic markers (macOS) |
+| `CodeMirrorEditorView` | `Views/CodingEnvironment/iOS/CodeMirrorEditorView.swift` | WKWebView code editor with diagnostics (iOS) |
 | `SolutionAIProviding` | `Models/SolutionAIService.swift` | AI provider protocol + Groq/Gemini implementations |
 | `TestCaseAIProviding` | `Models/TestCaseAIService.swift` | AI test case generation (complete input + expected output) |
 | `LeetCodeSubmissionService` | `Models/LeetCodeSubmissionService.swift` | LeetCode code submission + result polling |
@@ -399,6 +417,7 @@ The app uses a **Clean Architecture / VIPER-inspired** pattern with clear separa
 | `AutoInstrumenter` | `Execution/AutoInstrumenter.swift` | Trace.step() injection with scope-aware variable capture |
 | `LeetCodeExecutionWrapper` | `Execution/LeetCodeExecutionWrapper.swift` | LeetCode-style code wrapping for Swift/Python |
 | `TopicSolutionStore` | `Models/TopicSolutionStore.swift` | Lazy-loading topic-partitioned solution store |
+| `WidgetDataWriter` | `Models/WidgetDataWriter.swift` | Writes progress data to App Group for WidgetKit (iOS) |
 
 ### Presenter/Interactor Pattern
 
@@ -439,22 +458,35 @@ struct ToolbarWidgetView: View {
 
 ## Key Features
 
+### Shared (macOS + iOS)
 - **LeetCode-Driven Progress**: Problem completion is synced from LeetCode (no manual checkboxes)
 - **LeetCode Auto-Sync**: Automatically syncs solved problems from your LeetCode account on app launch
 - **Username Settings**: Change LeetCode username via in-app settings with validation
 - **Advance Early**: Complete all problems to unlock next day's set early
-- **Floating Widget**: Always-on-top NSPanel (350x560px) showing progress, problems, and habits
-- **Tomorrow's Preview**: Collapsible section showing upcoming problems and carryover from today
-- **Auto-Carryover**: Unsolved problems from today automatically appear in tomorrow's section
-- **Menu Bar Icon**: Brain icon for quick widget toggle
-- **Auto-launch**: Widget appears automatically on app start
 - **Focus Mode**: Full-screen timer overlay for distraction-free studying
 - **Progress Tracking**: Track completed problems and daily habits
 - **Notifications**: Periodic reminders to stay on track
 - **Code Editor**: Built-in code editor with syntax highlighting for Swift and Python
-- **Editor UX**: Auto bracket completion, indentation/outdent, and closing-bracket alignment
-- **Code Execution**: Run Swift and Python code directly in the app with console output
+- **Code Execution**: Run code and see output (macOS: local process, iOS: LeetCode API)
+- **Hidden Test Gate**: AI-generated test cases validated before LeetCode submission
+- **LeetCode Submission**: Direct code submission with result polling
 - **Localization**: Multi-language support via `Localizable.xcstrings` and `AppStrings` helper
+
+### macOS Only
+- **Floating Widget**: Always-on-top NSPanel (350x560px) showing progress, problems, and habits
+- **Menu Bar Icon**: Brain icon for quick widget toggle
+- **Auto-launch**: Widget appears automatically on app start
+- **Tomorrow's Preview**: Collapsible section showing upcoming problems and carryover from today
+- **Auto-Carryover**: Unsolved problems from today automatically appear in tomorrow's section
+- **NSTextView Editor**: Full-featured code editor with line number ruler and diagnostics
+- **Data Journey**: Step-by-step data structure visualization during code execution
+
+### iOS Only
+- **CodeMirror Editor**: WKWebView-based code editor with syntax highlighting, line numbers, and error diagnostics
+- **Tabbed Output Panel**: Result/Console/Debug tabs matching macOS output panel
+- **Solution View**: Multiple approaches with expandable sections, time/space complexity badges
+- **Home Screen Widgets**: WidgetKit extension with progress ring (small/medium) and today's problems (large)
+- **Adaptive Layout**: iPhone compact layout vs iPad split-pane layout
 
 ## Floating Widget
 
@@ -560,7 +592,7 @@ The app syncs directly with LeetCode's GraphQL API to mark problems you've solve
 5. If valid, saves and syncs automatically
 
 **Via Code (Alternative)**
-Edit default in `FocusApp/Models/AppData.swift`:
+Edit default in `Packages/FocusNetworking/Sources/FocusNetworking/AppData.swift`:
 ```swift
 self.leetCodeUsername = "your-leetcode-username"
 ```
@@ -568,6 +600,9 @@ self.leetCodeUsername = "your-leetcode-username"
 ## Data Storage
 
 Progress is stored in a SwiftData persistent store (default location under Application Support).
+- Shared model + storage implementations live in `Packages/FocusNetworking/Sources/FocusNetworking/` and `Packages/FocusNetworking/Sources/FocusNetworking/Storage/`.
+- `Packages/FocusShared/Sources/FocusData/` re-exports compatibility aliases for app-facing imports.
+- App code also consumes compatibility aliases in `FocusApp/Models/AppData.swift` and `FocusApp/Shared/*.swift`.
 
 ### Stored Fields
 | Field | Purpose |
@@ -583,42 +618,50 @@ Progress is stored in a SwiftData persistent store (default location under Appli
 | File | Purpose |
 |------|---------|
 | `Models/DSAPlan.swift` | Study plan topics, problems, URLs |
-| `Models/LeetCodeService.swift` | LeetCode GraphQL queries and sync logic |
-| `Models/AppData.swift` | Default username, data structure |
+| `Packages/FocusNetworking/Sources/FocusNetworking/LeetCodeService.swift` | LeetCode GraphQL queries and sync logic |
+| `Packages/FocusNetworking/Sources/FocusNetworking/AppData.swift` | Default username, shared app data structure |
 | `Views/ToolbarWidget/ToolbarWidgetView.swift` | Widget UI, presenters, tomorrow's preview |
 | `FocusApp.swift` | FloatingWidgetController, app entry point |
 | `AppContainer.swift` | Dependency injection configuration |
 
 ### Code Execution Architecture
 
-The code execution system uses a modular architecture for scalability:
+The code execution system uses a modular architecture with platform-specific implementations:
 
 ```
-┌─────────────────────────────────────────────────────────────┐
-│                  CodeExecutionService                        │
-│   Main coordinator - routes to appropriate executor          │
-├─────────────────────────────────────────────────────────────┤
-│              LanguageExecutor Protocol                       │
-│   Defines execute(code:input:) -> ExecutionResult           │
-├──────────────────────┬──────────────────────────────────────┤
-│    SwiftExecutor     │         PythonExecutor               │
-│  Compiles & runs     │      Runs via interpreter            │
-├──────────────────────┴──────────────────────────────────────┤
-│                     ProcessRunner                            │
-│   Low-level process execution with timeout & output handling │
-└─────────────────────────────────────────────────────────────┘
+                    ┌─────────────────────────┐
+                    │    CodeExecuting Protocol │
+                    │  execute(code:lang:input) │
+                    └────────────┬────────────┘
+                                 │
+                ┌────────────────┴─────────────────┐
+                │                                    │
+   ┌────────────▼───────────┐      ┌────────────────▼────────────────┐
+   │ macOS: CodeExecution   │      │ iOS: LeetCodeExecution          │
+   │        Service         │      │      Service                    │
+   │ Routes to executors    │      │ LeetCode interpret_solution API │
+   ├────────────────────────┤      │ 3 retries, 20s timeout          │
+   │ LanguageExecutor       │      └─────────────────────────────────┘
+   │ Protocol               │
+   ├──────────┬─────────────┤
+   │ Swift    │ Python      │
+   │ Executor │ Executor    │
+   ├──────────┴─────────────┤
+   │     ProcessRunner      │
+   └────────────────────────┘
 ```
 
-| Component | File | Purpose |
-|-----------|------|---------|
-| `CodeExecuting` | `CodeExecutionService.swift` | Protocol for code execution |
-| `CodeExecutionService` | `CodeExecutionService.swift` | Routes execution to appropriate executor |
-| `LanguageExecutor` | `LanguageExecutor.swift` | Protocol each language implements |
-| `ExecutionConfig` | `LanguageExecutor.swift` | Timeout and temp directory config |
-| `ProcessRunner` | `ProcessRunner.swift` | Runs system processes with timeout |
-| `SwiftExecutor` | `SwiftExecutor.swift` | Compiles Swift with `swiftc`, then runs |
-| `PythonExecutor` | `PythonExecutor.swift` | Runs Python via `python3` interpreter |
-| `ExecutionResult` | `TestCase.swift` | Result struct with output, error, exitCode |
+| Component | File | Platform | Purpose |
+|-----------|------|----------|---------|
+| `CodeExecuting` | `CodeExecutionService.swift` | Shared | Protocol for code execution |
+| `CodeExecutionService` | `CodeExecutionService.swift` | macOS | Routes execution to appropriate executor |
+| `LeetCodeExecutionService` | `LeetCodeExecutionService.swift` | iOS | Runs code via LeetCode API |
+| `LanguageExecutor` | `LanguageExecutor.swift` | macOS | Protocol each language implements |
+| `ExecutionConfig` | `LanguageExecutor.swift` | macOS | Timeout and temp directory config |
+| `ProcessRunner` | `ProcessRunner.swift` | macOS | Runs system processes with timeout |
+| `SwiftExecutor` | `SwiftExecutor.swift` | macOS | Compiles Swift with `swiftc`, then runs |
+| `PythonExecutor` | `PythonExecutor.swift` | macOS | Runs Python via `python3` interpreter |
+| `ExecutionResult` | `TestCase.swift` | Shared | Result struct with output, error, exitCode |
 
 ### View Components in ToolbarWidget/ToolbarWidgetView.swift
 
@@ -1000,25 +1043,79 @@ The instrumenter uses **scope-aware** variable capture to avoid compilation erro
 
 ## Known Limitations
 
-1. **macOS Only**: Native macOS app, won't run on iOS
-2. **Sandbox Disabled**: Required for home directory file access
-3. **Public Profile**: Your LeetCode profile must be public for sync to work
-4. **GraphQL Rate Limits**: LeetCode may rate limit frequent requests
-5. **Code Execution**: Requires `swiftc` and `python3` in system PATH
+1. **Sandbox Disabled (macOS)**: Required for home directory file access and local code execution
+2. **Public Profile**: Your LeetCode profile must be public for sync to work
+3. **GraphQL Rate Limits**: LeetCode may rate limit frequent requests
+4. **macOS Code Execution**: Requires `swiftc` and `python3` in system PATH
+5. **iOS Code Execution**: Requires internet — code runs via LeetCode `interpret_solution` API (not local)
+6. **iOS Data Journey**: Data structure visualization is not available on iOS (macOS only)
+7. **iOS Floating Widget**: The always-on-top NSPanel widget is macOS only; iOS uses WidgetKit Home Screen widgets
 
 ## Build & Distribution
 
 ### Development
 1. Open `FocusApp.xcodeproj` in Xcode
-2. Press `Cmd+R` to build and run
+2. Select the appropriate scheme (`FocusApp` for macOS, `FocusApp-iOS` for iOS)
+3. Press `Cmd+R` to build and run
 
-### Release Build
+### Release Build (macOS)
 1. Product > Archive
 2. Export as "Copy App"
 3. No code signing required for personal use
 
 ### Requirements
-- macOS 14.0+
-- Xcode 15.0+
-- Swift 5.0
+- macOS 14.0+ (macOS target)
+- iOS 26+ (iOS target)
+- Xcode 16.0+
+- Swift 5.0+
 - Internet connection (for LeetCode sync)
+- `swiftc` and `python3` in system PATH (macOS code execution only)
+
+## iOS Feature-Folder Convention
+
+Platform-specific views use a feature-folder structure:
+
+```
+Views/
+  FeatureName/
+    FeaturePresenter.swift      ← shared
+    FeatureInteractor.swift     ← shared
+    macOS/
+      FeatureView.swift         ← macOS view
+    iOS/
+      iOSFeatureView.swift      ← iOS view (type: FeatureViewiOS)
+```
+
+**Naming convention**: iOS types follow `ViewNameiOS` pattern (e.g., `CodingViewiOS`, `OutputViewiOS`, `TodayViewiOS`). File names use `iOSViewName.swift` prefix since they're in `iOS/` subfolders. All files are in both targets with `#if os()` guards for platform separation.
+
+## WidgetKit Extension (iOS)
+
+The `FocusWidget` target is a WidgetKit extension providing Home Screen widgets.
+
+### Widgets
+
+| Widget | Size | Content |
+|--------|------|---------|
+| Progress | Small | Progress ring + completed/total count |
+| Progress | Medium | Progress ring + problem list (up to 6) + habits dots |
+| Today | Large | Day header, progress bar, problem list (up to 10), habits |
+
+### Data Sharing
+
+The main iOS app writes progress data to a shared App Group container (`group.com.dsafocus.focusapp`) as JSON. The widget reads this data via `WidgetDataReader`.
+
+**Data flow:**
+1. `AppStateStore.save()` calls `WidgetDataWriter.write()` on iOS
+2. `WidgetDataWriter` computes widget data from `AppData` and writes `widget-data.json` to the App Group container
+3. `WidgetCenter.shared.reloadAllTimelines()` triggers widget refresh
+4. Widget's `TimelineProvider` reads data via `WidgetDataReader.load()`
+
+### Key Files
+
+| File | Target | Purpose |
+|------|--------|---------|
+| `FocusWidget/WidgetData.swift` | Widget + iOS | Shared data model, constants, reader |
+| `FocusWidget/FocusWidgetBundle.swift` | Widget | `@main` WidgetBundle entry point |
+| `FocusWidget/ProgressWidget.swift` | Widget | Small/Medium progress widgets |
+| `FocusWidget/TodayWidget.swift` | Widget | Large today's problems widget |
+| `FocusApp/Models/WidgetDataWriter.swift` | iOS | Writes data to App Group container |

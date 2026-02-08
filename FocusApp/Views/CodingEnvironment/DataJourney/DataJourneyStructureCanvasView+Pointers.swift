@@ -40,6 +40,53 @@ extension DataJourneyStructureCanvasView {
         return listPointers(in: selectedEvent, list: list)
     }
 
+    func offGraphPointerBadges(for structure: TraceStructure) -> [PointerMarker] {
+        guard let selectedEvent else { return [] }
+        let pointerNames = Set(
+            pointerCandidates(in: selectedEvent).compactMap { candidate -> String? in
+                switch candidate.value {
+                case .listPointer, .treePointer:
+                    return candidate.name
+                default:
+                    return nil
+                }
+            }
+        )
+        guard !pointerNames.isEmpty else { return [] }
+        let resolvedNames = resolvedPointerNames(in: selectedEvent, for: structure)
+        let unresolved = pointerNames.subtracting(resolvedNames).sorted {
+            $0.localizedCaseInsensitiveCompare($1) == .orderedAscending
+        }
+        return unresolved.map { PointerMarker(name: $0, palette: palette) }
+    }
+
+    func resolvedPointerNames(in event: DataJourneyEvent, for structure: TraceStructure) -> Set<String> {
+        switch structure {
+        case .list(let list):
+            return Set(listPointers(in: event, list: list).map(\.name))
+        case .listGroup(let lists):
+            return Set(combinedPointerIndices(in: event, lists: lists).keys)
+        case .listArray(let listArray):
+            let combined = Set(combinedPointerIndices(in: event, lists: listArray.lists).keys)
+            let heads = Set(arrayPointers(in: event, items: listArray.heads).map(\.name))
+            return combined.union(heads)
+        case .tree:
+            return Set(treePointers(in: event).map(\.name))
+        case .array(let items):
+            return Set(arrayPointers(in: event, items: items).map(\.name))
+        case .graph(let adjacency):
+            return Set(graphPointers(in: event, adjacency: adjacency).map(\.name))
+        case .dictionary(let entries):
+            return Set(dictionaryPointers(in: event, entries: entries).map(\.name))
+        case .heap(let items, _):
+            return Set(arrayPointers(in: event, items: items).map(\.name))
+        case .stringSequence(_, let chars):
+            return Set(arrayPointers(in: event, items: chars).map(\.name))
+        case .matrix, .set, .stack, .queue, .trie:
+            return []
+        }
+    }
+
     func arrayPointerMarkers(for items: [TraceValue]) -> [PointerMarker] {
         guard let selectedEvent else { return [] }
         return arrayPointers(in: selectedEvent, items: items)

@@ -24,7 +24,7 @@ final class AppContainer {
 
     /// Test-friendly initializer that accepts a pre-configured AppStateStore.
     /// Skips SwiftData and uses in-memory storage for fast, isolated tests.
-    init(appStore: AppStateStore) {
+    init(appStore: AppStateStore) { // swiftlint:disable:this function_body_length
         let container: ModelContainer
         do {
             container = try ModelContainer(
@@ -67,7 +67,10 @@ final class AppContainer {
         #if os(macOS)
         let codeExecutionService = CodeExecutionService(logger: debugLogStore)
         #else
-        let codeExecutionService = NoOpCodeExecutionService()
+        let codeExecutionService = LeetCodeExecutionService(
+            executor: URLSessionRequestExecutor(logger: debugLogStore),
+            logger: debugLogStore
+        )
         #endif
         self.codeExecutionService = codeExecutionService
 
@@ -117,7 +120,7 @@ final class AppContainer {
         )
     }
 
-    init() {
+    init() { // swiftlint:disable:this function_body_length
         let container: ModelContainer
         do {
             container = try ModelContainer(for: AppDataRecord.self)
@@ -161,7 +164,10 @@ final class AppContainer {
         #if os(macOS)
         let codeExecutionService = CodeExecutionService(logger: debugLogStore)
         #else
-        let codeExecutionService = NoOpCodeExecutionService()
+        let codeExecutionService = LeetCodeExecutionService(
+            executor: URLSessionRequestExecutor(logger: debugLogStore),
+            logger: debugLogStore
+        )
         #endif
         self.codeExecutionService = codeExecutionService
 

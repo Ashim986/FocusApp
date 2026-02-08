@@ -112,7 +112,7 @@ struct SequenceBubbleRow: View {
             ZStack(alignment: .topLeading) {
                 Canvas { context, _ in
                     guard renderItems.count > 1 else { return }
-                    let y = loopInset + pointerInset + motionInset + bubbleSize / 2
+                    let y = loopInset + pointerInset + motionInset + extraTop + bubbleSize / 2
                     let bubbleRadius = bubbleSize / 2
                     for index in 0..<(renderItems.count - 1) {
                         if gapIndices.contains(index) { continue }
@@ -169,7 +169,7 @@ struct SequenceBubbleRow: View {
                         )
                     }
 
-                    let motionTop = loopInset + pointerInset + extraTop
+                    let motionTop = loopInset + extraTop
                     if !sequenceLinks.isEmpty, sequenceInset > 0 {
                         for link in sequenceLinks {
                             drawSequenceLink(
@@ -182,7 +182,12 @@ struct SequenceBubbleRow: View {
                         }
                     }
                     if !pointerMotions.isEmpty, pointerMotionInset > 0 {
-                        let pointerY = motionTop + sequenceInset + pointerMotionInset * 0.6
+                        let pointerY = motionTop
+                            + sequenceInset
+                            + min(
+                                pointerMotionInset - 6,
+                                max(8, pointerMotionInset * 0.55)
+                            )
                         for motion in pointerMotions {
                             drawPointerMotion(
                                 context: &context,

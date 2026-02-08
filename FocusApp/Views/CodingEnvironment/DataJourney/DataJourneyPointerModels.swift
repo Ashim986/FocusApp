@@ -1,5 +1,5 @@
-import SwiftUI
 import FocusDesignSystem
+import SwiftUI
 
 struct PointerMarker: Identifiable, Hashable {
     let id: String

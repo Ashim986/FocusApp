@@ -998,5 +998,124 @@ final class LeetCodeExecutionWrapperEdgeCaseTests: XCTestCase {
 
         XCTAssertTrue(wrapped.contains("FocusApp LeetCode Runner"))
     }
+
+    // MARK: - Auto Instrumentation
+
+    func testPythonAutoInstrumentationUsesSafeLookupCapture() {
+        let code = """
+        class Solution:
+            def reverseList(self, head):
+                prev = None
+                curr = head
+                while curr:
+                    nxt = curr.next
+                    curr.next = prev
+                    prev = curr
+                    curr = nxt
+                return prev
+        """
+
+        let instrumented = AutoInstrumenter.instrument(
+            code: code,
+            language: .python,
+            paramNames: ["head"]
+        )
+
+        XCTAssertTrue(instrumented.contains("_Trace.step(\"loop\", {"))
+        XCTAssertTrue(instrumented.contains("\"curr\": (locals().get(\"curr\")"))
+        XCTAssertTrue(instrumented.contains("\"nxt\": (locals().get(\"nxt\")"))
+        XCTAssertFalse(instrumented.contains("\"curr\": curr"))
+    }
+
+    func testPythonAutoInstrumentationCapturesCustomLoopBindings() {
+        let code = """
+        class Solution:
+            def solve(self, nums):
+                total = 0
+                for node_value in nums:
+                    total += node_value
+                return total
+        """
+
+        let instrumented = AutoInstrumenter.instrument(
+            code: code,
+            language: .python,
+            paramNames: ["nums"]
+        )
+
+        XCTAssertTrue(instrumented.contains("\"node_value\": (locals().get(\"node_value\")"))
+    }
+
+    func testSwiftAutoInstrumentationCapturesCustomFunctionVariables() {
+        let code = """
+        class Solution {
+            func reverseList(_ head: ListNode?) -> ListNode? {
+                var current = head
+                while current != nil {
+                    current = current?.next
+                }
+                return current
+            }
+        }
+        """
+
+        let instrumented = AutoInstrumenter.instrument(
+            code: code,
+            language: .swift,
+            paramNames: ["head"]
+        )
+
+        XCTAssertTrue(instrumented.contains("Trace.step(\"loop\", ["))
+        XCTAssertTrue(instrumented.contains("\"current\": current as Any"))
+    }
+
+    func testSwiftAutoInstrumentationInstrumentsInlineReturnsInEntryPointOnly() {
+        let code = """
+        class Solution {
+            func helper(_ x: Int) -> Int { return x }
+
+            func solve(_ x: Int) -> Int {
+                if x > 0 { return helper(x) }
+                return 0
+            }
+        }
+        """
+
+        let instrumented = AutoInstrumenter.instrument(
+            code: code,
+            language: .swift,
+            paramNames: ["x"],
+            entryPointName: "solve"
+        )
+
+        XCTAssertTrue(instrumented.contains("func helper(_ x: Int) -> Int { return x }"))
+        XCTAssertTrue(instrumented.contains("if x > 0 { Trace.step(\"return\", [\"x\": x as Any]); return helper(x) }"))
+        XCTAssertTrue(instrumented.contains("Trace.step(\"return\", [\"x\": x as Any]); return 0"))
+    }
+
+    func testPythonAutoInstrumentationInstrumentsInlineReturnsInEntryPointOnly() {
+        let code = """
+        class Solution:
+            def helper(self, x):
+                return x
+
+            def solve(self, x):
+                if x > 0: return self.helper(x)
+                return 0
+        """
+
+        let instrumented = AutoInstrumenter.instrument(
+            code: code,
+            language: .python,
+            paramNames: ["x"],
+            entryPointName: "solve"
+        )
+
+        XCTAssertTrue(instrumented.contains("    def helper(self, x):\n        return x"))
+        XCTAssertTrue(instrumented.contains("if x > 0: _Trace.step(\"return\", {"))
+        XCTAssertTrue(instrumented.contains("}); return self.helper(x)"))
+        XCTAssertTrue(instrumented.contains("_Trace.step(\"return\", {"))
+        XCTAssertTrue(instrumented.contains("}); return 0"))
+    }
 }
 // swiftlint:enable type_body_length

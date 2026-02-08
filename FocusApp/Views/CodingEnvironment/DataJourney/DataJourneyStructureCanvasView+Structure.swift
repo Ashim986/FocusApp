@@ -1,10 +1,149 @@
 import SwiftUI
 
 extension DataJourneyStructureCanvasView {
+    private enum StructureSource: Int {
+        // When step events only contain pointers (no structured list snapshots),
+        // prefer rendering the input structure over output on tie, so pointer motion
+        // reads left-to-right from the original input.
+        case output = 1
+        case input = 2
+        case selected = 3
+    }
+
+    private struct StructureCandidate {
+        let source: StructureSource
+        let structure: TraceStructure
+    }
+
+    private struct PointerStructureMatch {
+        let coverage: Int
+        let source: Int
+        let structure: TraceStructure
+    }
+
     var structure: TraceStructure? {
         if let structureOverride { return structureOverride }
-        if let fromInput = Self.structure(in: inputEvent) { return fromInput }
-        return Self.structure(in: selectedEvent)
+        let candidates = structureCandidates()
+        guard !candidates.isEmpty else { return nil }
+
+        if let selectedEvent {
+            let selectedPointers = pointerCandidates(in: selectedEvent)
+            if !selectedPointers.isEmpty,
+               let resolved = bestPointerStructure(
+                   from: candidates,
+                   pointerCandidates: selectedPointers
+               ) {
+                return resolved
+            }
+        }
+
+        return fallbackStructure(from: candidates)
+    }
+
+    private func structureCandidates() -> [StructureCandidate] {
+        var candidates: [StructureCandidate] = []
+        if let structure = Self.structure(in: selectedEvent) {
+            candidates.append(StructureCandidate(source: .selected, structure: structure))
+        }
+        if let structure = Self.structure(in: outputEvent) {
+            candidates.append(StructureCandidate(source: .output, structure: structure))
+        }
+        if let structure = Self.structure(in: inputEvent) {
+            candidates.append(StructureCandidate(source: .input, structure: structure))
+        }
+        return candidates
+    }
+
+    private func bestPointerStructure(
+        from candidates: [StructureCandidate],
+        pointerCandidates: [(name: String, value: TraceValue)]
+    ) -> TraceStructure? {
+        var best: PointerStructureMatch?
+        for candidate in candidates {
+            let coverage = pointerCoverage(
+                of: candidate.structure,
+                pointerCandidates: pointerCandidates
+            )
+            guard coverage > 0 else { continue }
+            let sourcePriority = candidate.source.rawValue
+            if let currentBest = best {
+                if coverage > currentBest.coverage ||
+                    (coverage == currentBest.coverage && sourcePriority > currentBest.source) {
+                    best = PointerStructureMatch(
+                        coverage: coverage,
+                        source: sourcePriority,
+                        structure: candidate.structure
+                    )
+                }
+            } else {
+                best = PointerStructureMatch(
+                    coverage: coverage,
+                    source: sourcePriority,
+                    structure: candidate.structure
+                )
+            }
+        }
+        return best?.structure
+    }
+
+    private func fallbackStructure(from candidates: [StructureCandidate]) -> TraceStructure? {
+        if let selected = candidates.first(where: { $0.source == .selected }) {
+            return selected.structure
+        }
+        if let input = candidates.first(where: { $0.source == .input }) {
+            return input.structure
+        }
+        if let output = candidates.first(where: { $0.source == .output }) {
+            return output.structure
+        }
+        return nil
+    }
+
+    private func pointerCoverage(
+        of structure: TraceStructure,
+        pointerCandidates: [(name: String, value: TraceValue)]
+    ) -> Int {
+        let listNodeIDs = listNodeIDs(in: structure)
+        let treeNodeIDs = treeNodeIDs(in: structure)
+
+        var resolvedCount = 0
+        for candidate in pointerCandidates {
+            switch candidate.value {
+            case .listPointer(let id):
+                if listNodeIDs.contains(id) {
+                    resolvedCount += 1
+                }
+            case .treePointer(let id):
+                if treeNodeIDs.contains(id) {
+                    resolvedCount += 1
+                }
+            default:
+                break
+            }
+        }
+        return resolvedCount
+    }
+
+    private func listNodeIDs(in structure: TraceStructure) -> Set<String> {
+        switch structure {
+        case .list(let list):
+            return Set(list.nodes.map(\.id))
+        case .listGroup(let lists):
+            return Set(lists.flatMap { $0.list.nodes.map(\.id) })
+        case .listArray(let listArray):
+            return Set(listArray.lists.flatMap { $0.list.nodes.map(\.id) })
+        default:
+            return []
+        }
+    }
+
+    private func treeNodeIDs(in structure: TraceStructure) -> Set<String> {
+        switch structure {
+        case .tree(let tree):
+            return Set(tree.nodes.map(\.id))
+        default:
+            return []
+        }
     }
 
     static func structure(in event: DataJourneyEvent?) -> TraceStructure? {

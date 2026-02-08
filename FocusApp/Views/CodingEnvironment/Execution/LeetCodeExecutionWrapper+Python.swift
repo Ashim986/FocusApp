@@ -57,7 +57,8 @@ extension LeetCodeExecutionWrapper {
         let instrumentedCode = AutoInstrumenter.instrument(
             code: code,
             language: .python,
-            paramNames: params.compactMap { $0.name }
+            paramNames: params.compactMap { $0.name },
+            entryPointName: methodName
         )
 
         return "\(instrumentedCode)\n\(wrapper)"

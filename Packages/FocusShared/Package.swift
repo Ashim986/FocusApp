@@ -12,13 +12,19 @@ let package = Package(
         .library(name: "FocusDomain", targets: ["FocusDomain"]),
         .library(name: "FocusData", targets: ["FocusData"])
     ],
+    dependencies: [
+        .package(path: "../FocusNetworking")
+    ],
     targets: [
         .target(
             name: "FocusDomain"
         ),
         .target(
             name: "FocusData",
-            dependencies: ["FocusDomain"]
+            dependencies: [
+                "FocusDomain",
+                .product(name: "FocusNetworking", package: "FocusNetworking")
+            ]
         ),
         .testTarget(
             name: "FocusDomainTests",

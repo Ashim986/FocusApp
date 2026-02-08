@@ -34,8 +34,14 @@ extension CodingEnvironmentPresenter {
     }
 
     func wrappedCodeForExecution(_ source: String, language: ProgrammingLanguage) -> String {
+        #if os(iOS)
+        // On iOS, code runs via LeetCode's interpret_solution API which has its own harness.
+        // No wrapping needed — send the raw user code.
+        return source
+        #else
         guard let meta = LeetCodeMetaData.decode(from: problemContent?.metaData) else { return source }
         return LeetCodeExecutionWrapper.wrap(code: source, language: language, meta: meta)
+        #endif
     }
 
     private func runSingle() {
@@ -57,7 +63,9 @@ extension CodingEnvironmentPresenter {
             let result = await interactor.executeCode(
                 code: executionCode,
                 language: language,
-                input: runInput
+                input: runInput,
+                slug: activeProblemSlug,
+                questionId: problemContent?.questionId
             )
 
             guard !Task.isCancelled else { return }
@@ -194,7 +202,9 @@ extension CodingEnvironmentPresenter {
             let result = await interactor.executeCode(
                 code: executionCode,
                 language: language,
-                input: item.input
+                input: item.input,
+                slug: activeProblemSlug,
+                questionId: problemContent?.questionId
             )
             if Task.isCancelled { break }
 
@@ -274,7 +284,9 @@ extension CodingEnvironmentPresenter {
                 let result = await interactor.executeCode(
                     code: executionCode,
                     language: language,
-                    input: testCase.input
+                    input: testCase.input,
+                    slug: activeProblemSlug,
+                    questionId: problemContent?.questionId
                 )
 
                 if Task.isCancelled { break }

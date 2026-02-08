@@ -55,30 +55,30 @@ extension DataJourneyView {
                 }
             }
 
-            ScrollView(.horizontal, showsIndicators: false) {
-                HStack(spacing: DSLayout.spacing(6)) {
-                    ForEach(playbackEvents) { event in
-                        DSActionButton(action: {
-                            selectEvent(event)
-                        }) {
-                            HStack(spacing: DSLayout.spacing(6)) {
-                                Circle()
-                                    .fill(event.id == selectedEventID ? palette.purple : palette.gray600)
-                                    .frame(width: 6, height: 6)
-                                Text(stepLabel(for: event))
-                                    .font(.system(size: chipFontSize, weight: .semibold))
-                            }
-                            .padding(.horizontal, DSLayout.spacing(8))
-                            .padding(.vertical, chipVerticalPadding)
-                                .background(
-                                    RoundedRectangle(cornerRadius: 6)
-                                        .fill(event.id == selectedEventID ? palette.purple.opacity(0.2) : palette.gray800)
-                                )
-                        }
-                    }
-                }
-                .padding(.horizontal, DSLayout.spacing(2))
-            }
+	            ScrollView(.horizontal, showsIndicators: false) {
+	                HStack(spacing: DSLayout.spacing(6)) {
+	                    ForEach(playbackEvents) { event in
+	                        DSActionButton(action: {
+	                            selectEvent(event)
+	                        }, label: {
+	                            HStack(spacing: DSLayout.spacing(6)) {
+	                                Circle()
+	                                    .fill(event.id == selectedEventID ? palette.purple : palette.gray600)
+	                                    .frame(width: 6, height: 6)
+	                                Text(stepLabel(for: event))
+	                                    .font(.system(size: chipFontSize, weight: .semibold))
+	                            }
+	                            .padding(.horizontal, DSLayout.spacing(8))
+	                            .padding(.vertical, chipVerticalPadding)
+	                                .background(
+	                                    RoundedRectangle(cornerRadius: 6)
+	                                        .fill(event.id == selectedEventID ? palette.purple.opacity(0.2) : palette.gray800)
+	                                )
+	                        })
+	                    }
+	                }
+	                .padding(.horizontal, DSLayout.spacing(2))
+	            }
         }
         .padding(controlPadding)
         .background(
@@ -94,13 +94,13 @@ extension DataJourneyView {
         let spacing: CGFloat = isEmbedded ? 6 : 8
         let pickerWidth: CGFloat = isEmbedded ? 120 : 140
 
-        return stepControlsHeader(
-            iconSize: iconSize,
-            textSize: textSize,
-            spacing: spacing,
-            pickerWidth: pickerWidth,
-            isEmbedded: isEmbedded
-        )
+            return stepControlsHeader(
+                iconSize: iconSize,
+                textSize: textSize,
+                spacing: spacing,
+                pickerWidth: pickerWidth,
+                isEmbedded: isEmbedded
+            )
     }
 
     func stepControlsTimeline(style: StepControlsStyle = .standalone) -> some View {
@@ -140,30 +140,30 @@ extension DataJourneyView {
                 }
             }
 
-            ScrollView(.horizontal, showsIndicators: false) {
-                HStack(spacing: DSLayout.spacing(6)) {
-                    ForEach(playbackEvents) { event in
-                        DSActionButton(action: {
-                            selectEvent(event)
-                        }) {
-                            HStack(spacing: DSLayout.spacing(6)) {
-                                Circle()
-                                    .fill(event.id == selectedEventID ? palette.purple : palette.gray600)
-                                    .frame(width: 6, height: 6)
-                                Text(stepLabel(for: event))
-                                    .font(.system(size: chipFontSize, weight: .semibold))
-                            }
-                            .padding(.horizontal, DSLayout.spacing(8))
-                            .padding(.vertical, chipVerticalPadding)
-                                .background(
-                                    RoundedRectangle(cornerRadius: 6)
-                                        .fill(event.id == selectedEventID ? palette.purple.opacity(0.2) : palette.gray800)
-                                )
-                        }
-                    }
-                }
-                .padding(.horizontal, DSLayout.spacing(2))
-            }
+	            ScrollView(.horizontal, showsIndicators: false) {
+	                HStack(spacing: DSLayout.spacing(6)) {
+	                    ForEach(playbackEvents) { event in
+	                        DSActionButton(action: {
+	                            selectEvent(event)
+	                        }, label: {
+	                            HStack(spacing: DSLayout.spacing(6)) {
+	                                Circle()
+	                                    .fill(event.id == selectedEventID ? palette.purple : palette.gray600)
+	                                    .frame(width: 6, height: 6)
+	                                Text(stepLabel(for: event))
+	                                    .font(.system(size: chipFontSize, weight: .semibold))
+	                            }
+	                            .padding(.horizontal, DSLayout.spacing(8))
+	                            .padding(.vertical, chipVerticalPadding)
+	                                .background(
+	                                    RoundedRectangle(cornerRadius: 6)
+	                                        .fill(event.id == selectedEventID ? palette.purple.opacity(0.2) : palette.gray800)
+	                                )
+	                        })
+	                    }
+	                }
+	                .padding(.horizontal, DSLayout.spacing(2))
+	            }
         }
     }
 
@@ -174,28 +174,28 @@ extension DataJourneyView {
         pickerWidth: CGFloat,
         isEmbedded: Bool
     ) -> some View {
-        HStack(alignment: .center, spacing: spacing) {
+        let canGoPrevious = currentPlaybackIndex > 0
+        let canGoNext = currentPlaybackIndex < playbackEvents.count - 1
+        let canPlay = playbackEvents.count > 1
+        return HStack(alignment: .center, spacing: spacing) {
             HStack(spacing: DSLayout.spacing(12)) {
-                DSActionButton(action: selectPrevious) {
+                DSActionButton(isEnabled: canGoPrevious, action: selectPrevious) {
                     Image(systemName: "backward.fill")
                         .font(.system(size: iconSize, weight: .bold))
                 }
                 .foregroundColor(currentPlaybackIndex == 0 ? palette.gray600 : palette.gray300)
-                .disabled(currentPlaybackIndex == 0)
 
-                DSActionButton(action: togglePlayback) {
+                DSActionButton(isEnabled: canPlay, action: togglePlayback) {
                     Image(systemName: isPlaying ? "pause.fill" : "play.fill")
                         .font(.system(size: iconSize, weight: .bold))
                 }
                 .foregroundColor(playbackEvents.count > 1 ? palette.gray300 : palette.gray600)
-                .disabled(playbackEvents.count <= 1)
 
-                DSActionButton(action: selectNext) {
+                DSActionButton(isEnabled: canGoNext, action: selectNext) {
                     Image(systemName: "forward.fill")
                         .font(.system(size: iconSize, weight: .bold))
                 }
                 .foregroundColor(currentPlaybackIndex >= playbackEvents.count - 1 ? palette.gray600 : palette.gray300)
-                .disabled(currentPlaybackIndex >= playbackEvents.count - 1)
             }
 
             if playbackEvents.indices.contains(currentPlaybackIndex) {

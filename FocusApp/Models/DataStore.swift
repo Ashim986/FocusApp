@@ -44,6 +44,13 @@ final class AppStateStore: ObservableObject {
 
     func save() {
         storage.save(data)
+        #if os(iOS)
+        WidgetDataWriter.write(
+            from: data,
+            currentDay: currentDayNumber(),
+            topic: todaysTopic()
+        )
+        #endif
     }
 
     func toggleProblem(day: Int, problemIndex: Int) {

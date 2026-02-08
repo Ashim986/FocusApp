@@ -2,7 +2,7 @@
 import FocusDesignSystem
 import SwiftUI
 
-struct OutputViewiOS: View {
+struct OutputViewIOS: View {
     let output: String
     let error: String
     let testResults: [TestCase]

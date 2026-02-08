@@ -2,7 +2,7 @@
 import FocusDesignSystem
 import SwiftUI
 
-struct SolutionViewiOS: View {
+struct SolutionViewIOS: View {
     let solution: ProblemSolution?
     @State private var selectedApproachIndex: Int = 0
     @Environment(\.dsTheme) var theme

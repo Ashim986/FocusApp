@@ -1,12 +1,12 @@
 #if os(iOS)
-// CodeMirrorEditorViewiOS.swift
+// CodeMirrorEditorViewIOS.swift
 // FocusApp -- WKWebView wrapper that loads the CodeMirror 6 editor bundle
 
 import FocusDesignSystem
 import SwiftUI
 import WebKit
 
-struct CodeMirrorEditorViewiOS: UIViewRepresentable {
+struct CodeMirrorEditorViewIOS: UIViewRepresentable {
     @Binding var code: String
     let language: ProgrammingLanguage
     var isReadOnly: Bool = false
@@ -119,7 +119,7 @@ struct CodeMirrorEditorViewiOS: UIViewRepresentable {
     // MARK: - Coordinator
 
     final class Coordinator: NSObject, WKNavigationDelegate, WKScriptMessageHandler {
-        var parent: CodeMirrorEditorViewiOS
+        var parent: CodeMirrorEditorViewIOS
         var lastKnownCode: String = ""
         var lastLanguage: String = ""
         var lastTheme: String = ""
@@ -127,7 +127,7 @@ struct CodeMirrorEditorViewiOS: UIViewRepresentable {
         var lastDiagnostics: [CodeEditorDiagnostic] = []
         var isReady = false
 
-        init(_ parent: CodeMirrorEditorViewiOS) {
+        init(_ parent: CodeMirrorEditorViewIOS) {
             self.parent = parent
         }
 
@@ -158,8 +158,7 @@ struct CodeMirrorEditorViewiOS: UIViewRepresentable {
 
         // MARK: WKNavigationDelegate
 
-        // swiftlint:disable:next implicitly_unwrapped_optional
-        func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
+        func webView(_ webView: WKWebView, didFinish navigation: WKNavigation?) {
             // The editor may or may not post a "ready" message.
             // Set initial state once navigation finishes as a fallback.
             if !isReady {
@@ -200,7 +199,7 @@ struct CodeMirrorEditorViewiOS: UIViewRepresentable {
 }
 
 #Preview {
-    CodeMirrorEditorViewiOS(
+    CodeMirrorEditorViewIOS(
         code: .constant("func twoSum(_ nums: [Int], _ target: Int) -> [Int] {\n    // ...\n}"),
         language: .swift,
         diagnostics: [

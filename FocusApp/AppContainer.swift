@@ -4,6 +4,24 @@ import SwiftUI
 
 @MainActor
 final class AppContainer {
+    private struct Built {
+        let notificationManager: NotificationManager
+        let debugLogStore: DebugLogStore
+        let leetCodeClient: LeetCodeClientProtocol
+        let leetCodeSync: LeetCodeSyncInteractor
+        let leetCodeScheduler: LeetCodeSyncScheduler
+        let codeExecutionService: CodeExecuting
+        let solutionStore: SolutionProviding
+
+        let contentPresenter: ContentPresenter
+        let planPresenter: PlanPresenter
+        let todayPresenter: TodayPresenter
+        let statsPresenter: StatsPresenter
+        let settingsPresenter: SettingsPresenter
+        let toolbarWidgetPresenter: ToolbarWidgetPresenter
+        let codingEnvironmentPresenter: CodingEnvironmentPresenter
+    }
+
     let modelContainer: ModelContainer
     let appStore: AppStateStore
     let notificationManager: NotificationManager
@@ -24,188 +42,158 @@ final class AppContainer {
 
     /// Test-friendly initializer that accepts a pre-configured AppStateStore.
     /// Skips SwiftData and uses in-memory storage for fast, isolated tests.
-    init(appStore: AppStateStore) { // swiftlint:disable:this function_body_length
-        let container: ModelContainer
-        do {
-            container = try ModelContainer(
-                for: AppDataRecord.self,
-                configurations: ModelConfiguration(isStoredInMemoryOnly: true)
-            )
-        } catch {
-            fatalError("Failed to create in-memory SwiftData container: \(error)")
-        }
-        self.modelContainer = container
+    init(appStore: AppStateStore) {
+        self.modelContainer = Self.makeModelContainer(inMemory: true)
         self.appStore = appStore
 
-        let notificationManager = NotificationManager(
-            scheduler: SystemNotificationScheduler(),
-            store: UserDefaultsNotificationSettingsStore()
-        )
-        self.notificationManager = notificationManager
-
-        let debugLogStore = DebugLogStore()
-        self.debugLogStore = debugLogStore
-
-        let client = LeetCodeRestClient(
-            baseURL: LeetCodeConstants.restBaseURL,
-            requestBuilder: DefaultRequestBuilder(),
-            executor: URLSessionRequestExecutor(logger: debugLogStore)
-        )
-        self.leetCodeClient = client
-        let submissionService = LeetCodeSubmissionService(
-            executor: URLSessionRequestExecutor(logger: debugLogStore)
-        )
-
-        let leetCodeSync = LeetCodeSyncInteractor(
-            appStore: appStore,
-            client: client,
-            logger: debugLogStore
-        )
-        self.leetCodeSync = leetCodeSync
-        self.leetCodeScheduler = LeetCodeSyncScheduler(appStore: appStore, syncer: leetCodeSync)
-
-        #if os(macOS)
-        let codeExecutionService = CodeExecutionService(logger: debugLogStore)
-        #else
-        let codeExecutionService = LeetCodeExecutionService(
-            executor: URLSessionRequestExecutor(logger: debugLogStore),
-            logger: debugLogStore
-        )
-        #endif
-        self.codeExecutionService = codeExecutionService
-
-        let topicStore = TopicSolutionStore()
-        let solutionStore = OnDemandSolutionProvider(bundledStore: topicStore)
-        self.solutionStore = solutionStore
-
-        self.contentPresenter = ContentPresenter(
-            interactor: ContentInteractor(appStore: appStore)
-        )
-        self.planPresenter = PlanPresenter(
-            interactor: PlanInteractor(
-                appStore: appStore,
-                notificationManager: notificationManager,
-                leetCodeSync: leetCodeSync
-            )
-        )
-        self.todayPresenter = TodayPresenter(
-            interactor: TodayInteractor(
-                appStore: appStore,
-                notificationManager: notificationManager,
-                leetCodeSync: leetCodeSync
-            )
-        )
-        self.statsPresenter = StatsPresenter(
-            interactor: StatsInteractor(appStore: appStore)
-        )
-        self.settingsPresenter = SettingsPresenter(
-            interactor: SettingsInteractor(
-                notificationManager: notificationManager,
-                appStore: appStore,
-                leetCodeSync: leetCodeSync
-            )
-        )
-        self.toolbarWidgetPresenter = ToolbarWidgetPresenter(
-            interactor: ToolbarWidgetInteractor(appStore: appStore, leetCodeSync: leetCodeSync)
-        )
-        self.codingEnvironmentPresenter = CodingEnvironmentPresenter(
-            interactor: CodingEnvironmentInteractor(
-                appStore: appStore,
-                leetCodeClient: client,
-                executionService: codeExecutionService,
-                solutionStore: solutionStore,
-                submissionService: submissionService
-            ),
-            logger: debugLogStore
+        let built = Self.build(appStore: appStore, shouldStartScheduler: false)
+        (
+            self.notificationManager,
+            self.debugLogStore,
+            self.leetCodeClient,
+            self.leetCodeSync,
+            self.leetCodeScheduler,
+            self.codeExecutionService,
+            self.solutionStore,
+            self.contentPresenter,
+            self.planPresenter,
+            self.todayPresenter,
+            self.statsPresenter,
+            self.settingsPresenter,
+            self.toolbarWidgetPresenter,
+            self.codingEnvironmentPresenter
+        ) = (
+            built.notificationManager,
+            built.debugLogStore,
+            built.leetCodeClient,
+            built.leetCodeSync,
+            built.leetCodeScheduler,
+            built.codeExecutionService,
+            built.solutionStore,
+            built.contentPresenter,
+            built.planPresenter,
+            built.todayPresenter,
+            built.statsPresenter,
+            built.settingsPresenter,
+            built.toolbarWidgetPresenter,
+            built.codingEnvironmentPresenter
         )
     }
 
-    init() { // swiftlint:disable:this function_body_length
-        let container: ModelContainer
-        do {
-            container = try ModelContainer(for: AppDataRecord.self)
-        } catch {
-            fatalError("Failed to create SwiftData container: \(error)")
-        }
-        self.modelContainer = container
+    init() {
+        let modelContainer = Self.makeModelContainer(inMemory: false)
+        self.modelContainer = modelContainer
 
-        let storage = SwiftDataAppStorage(container: container)
+        let storage = SwiftDataAppStorage(container: modelContainer)
         let appStore = AppStateStore(storage: storage)
         self.appStore = appStore
 
+        let built = Self.build(appStore: appStore, shouldStartScheduler: true)
+        (
+            self.notificationManager,
+            self.debugLogStore,
+            self.leetCodeClient,
+            self.leetCodeSync,
+            self.leetCodeScheduler,
+            self.codeExecutionService,
+            self.solutionStore,
+            self.contentPresenter,
+            self.planPresenter,
+            self.todayPresenter,
+            self.statsPresenter,
+            self.settingsPresenter,
+            self.toolbarWidgetPresenter,
+            self.codingEnvironmentPresenter
+        ) = (
+            built.notificationManager,
+            built.debugLogStore,
+            built.leetCodeClient,
+            built.leetCodeSync,
+            built.leetCodeScheduler,
+            built.codeExecutionService,
+            built.solutionStore,
+            built.contentPresenter,
+            built.planPresenter,
+            built.todayPresenter,
+            built.statsPresenter,
+            built.settingsPresenter,
+            built.toolbarWidgetPresenter,
+            built.codingEnvironmentPresenter
+        )
+    }
+
+    private static func makeModelContainer(inMemory: Bool) -> ModelContainer {
+        do {
+            if inMemory {
+                return try ModelContainer(
+                    for: AppDataRecord.self,
+                    configurations: ModelConfiguration(isStoredInMemoryOnly: true)
+                )
+            }
+            return try ModelContainer(for: AppDataRecord.self)
+        } catch {
+            let kind = inMemory ? "in-memory SwiftData" : "SwiftData"
+            fatalError("Failed to create \(kind) container: \(error)")
+        }
+    }
+
+    private static func build(appStore: AppStateStore, shouldStartScheduler: Bool) -> Built {
         let notificationManager = NotificationManager(
             scheduler: SystemNotificationScheduler(),
             store: UserDefaultsNotificationSettingsStore()
         )
-        self.notificationManager = notificationManager
 
         let debugLogStore = DebugLogStore()
-        self.debugLogStore = debugLogStore
-
         let executor = URLSessionRequestExecutor(logger: debugLogStore)
+
         let client = LeetCodeRestClient(
             baseURL: LeetCodeConstants.restBaseURL,
             requestBuilder: DefaultRequestBuilder(),
             executor: executor
         )
-        self.leetCodeClient = client
         let submissionService = LeetCodeSubmissionService(executor: executor)
-
-        let leetCodeSync = LeetCodeSyncInteractor(
-            appStore: appStore,
-            client: client,
-            logger: debugLogStore
-        )
-        self.leetCodeSync = leetCodeSync
+        let leetCodeSync = LeetCodeSyncInteractor(appStore: appStore, client: client, logger: debugLogStore)
         let leetCodeScheduler = LeetCodeSyncScheduler(appStore: appStore, syncer: leetCodeSync)
-        leetCodeScheduler.start()
-        self.leetCodeScheduler = leetCodeScheduler
+        if shouldStartScheduler {
+            leetCodeScheduler.start()
+        }
 
         #if os(macOS)
         let codeExecutionService = CodeExecutionService(logger: debugLogStore)
         #else
-        let codeExecutionService = LeetCodeExecutionService(
-            executor: URLSessionRequestExecutor(logger: debugLogStore),
-            logger: debugLogStore
-        )
+        let codeExecutionService = LeetCodeExecutionService(executor: executor, logger: debugLogStore)
         #endif
-        self.codeExecutionService = codeExecutionService
 
         let topicStore = TopicSolutionStore()
         let solutionStore = OnDemandSolutionProvider(bundledStore: topicStore)
-        self.solutionStore = solutionStore
 
-        self.contentPresenter = ContentPresenter(
-            interactor: ContentInteractor(appStore: appStore)
-        )
-        self.planPresenter = PlanPresenter(
+        let contentPresenter = ContentPresenter(interactor: ContentInteractor(appStore: appStore))
+        let planPresenter = PlanPresenter(
             interactor: PlanInteractor(
                 appStore: appStore,
                 notificationManager: notificationManager,
                 leetCodeSync: leetCodeSync
             )
         )
-        self.todayPresenter = TodayPresenter(
+        let todayPresenter = TodayPresenter(
             interactor: TodayInteractor(
                 appStore: appStore,
                 notificationManager: notificationManager,
                 leetCodeSync: leetCodeSync
             )
         )
-        self.statsPresenter = StatsPresenter(
-            interactor: StatsInteractor(appStore: appStore)
-        )
-        self.settingsPresenter = SettingsPresenter(
+        let statsPresenter = StatsPresenter(interactor: StatsInteractor(appStore: appStore))
+        let settingsPresenter = SettingsPresenter(
             interactor: SettingsInteractor(
                 notificationManager: notificationManager,
                 appStore: appStore,
                 leetCodeSync: leetCodeSync
             )
         )
-        self.toolbarWidgetPresenter = ToolbarWidgetPresenter(
+        let toolbarWidgetPresenter = ToolbarWidgetPresenter(
             interactor: ToolbarWidgetInteractor(appStore: appStore, leetCodeSync: leetCodeSync)
         )
-        self.codingEnvironmentPresenter = CodingEnvironmentPresenter(
+        let codingEnvironmentPresenter = CodingEnvironmentPresenter(
             interactor: CodingEnvironmentInteractor(
                 appStore: appStore,
                 leetCodeClient: client,
@@ -214,6 +202,23 @@ final class AppContainer {
                 submissionService: submissionService
             ),
             logger: debugLogStore
+        )
+
+        return Built(
+            notificationManager: notificationManager,
+            debugLogStore: debugLogStore,
+            leetCodeClient: client,
+            leetCodeSync: leetCodeSync,
+            leetCodeScheduler: leetCodeScheduler,
+            codeExecutionService: codeExecutionService,
+            solutionStore: solutionStore,
+            contentPresenter: contentPresenter,
+            planPresenter: planPresenter,
+            todayPresenter: todayPresenter,
+            statsPresenter: statsPresenter,
+            settingsPresenter: settingsPresenter,
+            toolbarWidgetPresenter: toolbarWidgetPresenter,
+            codingEnvironmentPresenter: codingEnvironmentPresenter
         )
     }
 }

@@ -4,16 +4,25 @@ import SwiftUI
 
 /// Adaptive root view that handles both iPhone (bottom tab bar)
 /// and iPad (NavigationSplitView + sidebar) layouts based on horizontalSizeClass.
-struct RootViewiOS: View {
+///
+/// Navigation is driven by `TabBarCoordinator` (via `coordinator.tabBarCoordinator`),
+/// which owns per-tab flow coordinators and the settings coordinator.
+struct RootViewIOS: View {
     @ObservedObject var coordinator: AppCoordinator
+    @ObservedObject var tabBar: TabBarCoordinator
+    @ObservedObject var settingsCoordinator: SettingsCoordinator
+    @ObservedObject var codingFlow: CodingFlowCoordinator
     @Environment(\.horizontalSizeClass) var sizeClass
     @Environment(\.dsTheme) var theme
 
-    @State private var showSettings = false
-    @State private var showCodingDetail = false
-
     private var container: AppContainer { coordinator.container }
-    private var contentCoordinator: ContentCoordinator { coordinator.contentCoordinator }
+
+    init(coordinator: AppCoordinator) {
+        self.coordinator = coordinator
+        self.tabBar = coordinator.tabBarCoordinator
+        self.settingsCoordinator = coordinator.tabBarCoordinator.settingsCoordinator
+        self.codingFlow = coordinator.tabBarCoordinator.codingFlow
+    }
 
     var body: some View {
         Group {
@@ -23,11 +32,8 @@ struct RootViewiOS: View {
                 compactLayout
             }
         }
-        .sheet(isPresented: $showSettings) {
-            SettingsViewiOS(presenter: container.settingsPresenter)
-        }
-        .onChange(of: contentCoordinator.selectedTab) { _, _ in
-            showCodingDetail = false
+        .sheet(isPresented: settingsCoordinator.isPresentedBinding) {
+            SettingsViewIOS(presenter: container.settingsPresenter)
         }
     }
 
@@ -35,26 +41,25 @@ struct RootViewiOS: View {
 
     @ViewBuilder
     private func screenContent() -> some View {
-        switch contentCoordinator.selectedTab {
+        switch tabBar.selectedTab {
         case .today:
-            TodayViewiOS(
+            TodayViewIOS(
                 presenter: container.todayPresenter,
-                onSettingsTap: { showSettings = true },
-                onStartFocus: { contentCoordinator.selectedTab = .focus }
+                onSettingsTap: { tabBar.showSettings() },
+                onStartFocus: { tabBar.switchToFocus() }
             )
         case .plan:
-            PlanViewiOS(presenter: container.planPresenter)
+            PlanViewIOS(presenter: container.planPresenter)
         case .stats:
-            StatsViewiOS(presenter: container.statsPresenter)
+            StatsViewIOS(presenter: container.statsPresenter)
         case .focus:
-            FocusViewiOS(coordinator: coordinator.focusCoordinator)
+            FocusViewIOS(coordinator: coordinator.focusCoordinator)
         case .coding:
-            CodingViewiOS(
+            CodingViewIOS(
                 presenter: container.codingEnvironmentPresenter,
-                codingCoordinator: contentCoordinator.codingCoordinator,
+                codingCoordinator: tabBar.codingFlow.codingCoordinator,
                 focusCoordinator: coordinator.focusCoordinator,
-                contentCoordinator: contentCoordinator,
-                showCodingDetail: $showCodingDetail
+                codingFlowCoordinator: tabBar.codingFlow
             )
         }
     }
@@ -92,11 +97,11 @@ struct RootViewiOS: View {
             HStack(spacing: 0) {
                 ForEach(Tab.iOSTabs, id: \.self) { tab in
                     Button {
-                        contentCoordinator.selectedTab = tab
+                        tabBar.selectedTab = tab
                     } label: {
                         VStack(spacing: theme.spacing.xs) {
                             Image(
-                                systemName: contentCoordinator.selectedTab == tab
+                                systemName: tabBar.selectedTab == tab
                                     ? tab.activeIcon
                                     : tab.icon
                             )
@@ -107,7 +112,7 @@ struct RootViewiOS: View {
                                 .font(.system(size: 11))
                         }
                         .foregroundColor(
-                            contentCoordinator.selectedTab == tab
+                            tabBar.selectedTab == tab
                                 ? theme.colors.primary
                                 : theme.colors.textSecondary
                         )
@@ -137,7 +142,7 @@ struct RootViewiOS: View {
             VStack(spacing: theme.spacing.xs) {
                 ForEach(Tab.iOSTabs, id: \.self) { tab in
                     Button {
-                        contentCoordinator.selectedTab = tab
+                        tabBar.selectedTab = tab
                     } label: {
                         HStack(spacing: theme.spacing.md) {
                             Image(systemName: tab.icon)
@@ -147,7 +152,7 @@ struct RootViewiOS: View {
                                 .font(.system(size: 16, weight: .regular))
                         }
                         .foregroundColor(
-                            contentCoordinator.selectedTab == tab
+                            tabBar.selectedTab == tab
                                 ? theme.colors.primary
                                 : theme.colors.textSecondary
                         )
@@ -155,7 +160,7 @@ struct RootViewiOS: View {
                         .padding(.horizontal, theme.spacing.md)
                         .frame(height: 44)
                         .background(
-                            contentCoordinator.selectedTab == tab
+                            tabBar.selectedTab == tab
                                 ? theme.colors.primary.opacity(0.1)
                                 : Color.clear
                         )
@@ -169,7 +174,7 @@ struct RootViewiOS: View {
             Spacer()
 
             Button {
-                showSettings = true
+                tabBar.showSettings()
             } label: {
                 HStack(spacing: theme.spacing.md) {
                     Image(systemName: "gearshape")

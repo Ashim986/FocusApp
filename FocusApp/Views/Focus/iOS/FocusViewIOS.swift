@@ -1,5 +1,5 @@
 #if os(iOS)
-// FocusViewiOS.swift
+// FocusViewIOS.swift
 // FocusApp -- Unified adaptive Focus screen for iPhone & iPad
 // Uses horizontalSizeClass to switch between compact (iPhone) and regular (iPad) layouts
 
@@ -7,7 +7,7 @@ import FocusDesignSystem
 import SwiftUI
 
 // swiftlint:disable:next type_body_length
-struct FocusViewiOS: View {
+struct FocusViewIOS: View {
     @ObservedObject var coordinator: FocusCoordinator
 
     @Environment(\.horizontalSizeClass) var sizeClass

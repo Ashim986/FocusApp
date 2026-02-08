@@ -1,6 +1,5 @@
-// swiftlint:disable file_length
 #if os(iOS)
-// CodingViewiOS.swift
+// CodingViewIOS.swift
 // FocusApp -- Unified adaptive coding view for iPhone (compact) and iPad (regular)
 // Uses @Environment(\.horizontalSizeClass) to branch between layouts.
 
@@ -17,12 +16,11 @@ private enum CodingDetailTab: String, CaseIterable {
 
 // MARK: - CodingViewiOS
 
-struct CodingViewiOS: View {
+struct CodingViewIOS: View {
     @ObservedObject var presenter: CodingEnvironmentPresenter
     @ObservedObject var codingCoordinator: CodingCoordinator
     @ObservedObject var focusCoordinator: FocusCoordinator
-    @ObservedObject var contentCoordinator: ContentCoordinator
-    var showCodingDetail: Binding<Bool>
+    @ObservedObject var codingFlowCoordinator: CodingFlowCoordinator
 
     @Environment(\.horizontalSizeClass) var sizeClass
     @Environment(\.dsTheme) var theme
@@ -64,11 +62,11 @@ struct CodingViewiOS: View {
 
 // MARK: - Compact Layout (iPhone)
 
-extension CodingViewiOS {
+extension CodingViewIOS {
 
     @ViewBuilder
     private var compactListOrDetail: some View {
-        if showCodingDetail.wrappedValue {
+        if codingFlowCoordinator.isDetailShown {
             compactDetailView
         } else {
             compactListView
@@ -147,12 +145,11 @@ extension CodingViewiOS {
 
     private func compactProblemCard(item: CodingProblemItem, dayId: Int) -> some View {
         Button {
-            contentCoordinator.openCodingEnvironment(
+            codingFlowCoordinator.openProblem(
                 problem: item.problem,
-                day: item.index,
-                index: dayId
+                day: dayId,
+                index: item.index
             )
-            showCodingDetail.wrappedValue = true
         } label: {
             HStack {
                 VStack(alignment: .leading, spacing: theme.spacing.xs) {
@@ -226,7 +223,7 @@ extension CodingViewiOS {
             // Back row
             HStack(spacing: theme.spacing.sm) {
                 Button {
-                    showCodingDetail.wrappedValue = false
+                    codingFlowCoordinator.popToList()
                 } label: {
                     Image(systemName: "chevron.left")
                         .font(.system(size: 16, weight: .semibold))
@@ -313,7 +310,7 @@ extension CodingViewiOS {
 
             // Floating mini timer
             if focusCoordinator.isSessionActive {
-                FloatingMiniTimeriOS(coordinator: focusCoordinator)
+                FloatingMiniTimerIOS(coordinator: focusCoordinator)
             }
         }
         .background(theme.colors.background)
@@ -386,7 +383,7 @@ extension CodingViewiOS {
 
     private var compactSolutionContent: some View {
         ScrollView {
-            SolutionViewiOS(solution: presenter.currentSolution)
+            SolutionViewIOS(solution: presenter.currentSolution)
                 .padding(theme.spacing.lg)
         }
     }
@@ -396,7 +393,7 @@ extension CodingViewiOS {
     private var compactCodeContent: some View {
         VStack(alignment: .leading, spacing: 0) {
             // Code editor (CodeMirror for iOS)
-            CodeMirrorEditorViewiOS(
+            CodeMirrorEditorViewIOS(
                 code: $presenter.code,
                 language: presenter.language,
                 diagnostics: presenter.errorDiagnostics
@@ -408,7 +405,7 @@ extension CodingViewiOS {
             // Tabbed output panel
             if !presenter.compilationOutput.isEmpty || !presenter.errorOutput.isEmpty
                 || presenter.isRunning || presenter.testCases.contains(where: { $0.passed != nil }) {
-                OutputViewiOS(
+                OutputViewIOS(
                     output: presenter.compilationOutput,
                     error: presenter.errorOutput,
                     testResults: presenter.testCases,
@@ -489,7 +486,7 @@ extension CodingViewiOS {
 
 // MARK: - Regular Layout (iPad three-panel)
 
-extension CodingViewiOS {
+extension CodingViewIOS {
 
     private var regularThreePanelLayout: some View {
         HStack(spacing: 0) {
@@ -506,7 +503,7 @@ extension CodingViewiOS {
         }
         .overlay(alignment: .bottomTrailing) {
             if focusCoordinator.isSessionActive {
-                FloatingMiniTimeriOS(coordinator: focusCoordinator)
+                FloatingMiniTimerIOS(coordinator: focusCoordinator)
                     .padding(24)
             }
         }
@@ -585,7 +582,7 @@ extension CodingViewiOS {
 
             if let problem = presenter.selectedProblem {
                 // Code editor area (CodeMirror)
-                CodeMirrorEditorViewiOS(
+                CodeMirrorEditorViewIOS(
                     code: $presenter.code,
                     language: presenter.language,
                     diagnostics: presenter.errorDiagnostics
@@ -691,7 +688,7 @@ extension CodingViewiOS {
     // MARK: Regular - Output Panel
 
     private var regularOutputPanel: some View {
-        OutputViewiOS(
+        OutputViewIOS(
             output: presenter.compilationOutput,
             error: presenter.errorOutput,
             testResults: presenter.testCases,
@@ -711,7 +708,7 @@ extension CodingViewiOS {
 
 // MARK: - Shared Helpers
 
-extension CodingViewiOS {
+extension CodingViewIOS {
 
     private func stripHTML(_ html: String) -> String {
         guard let data = html.data(using: .utf8) else { return html }

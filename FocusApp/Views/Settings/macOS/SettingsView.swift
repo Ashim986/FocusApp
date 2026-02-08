@@ -6,7 +6,6 @@ import UniformTypeIdentifiers
 import AppKit
 #endif
 
-// swiftlint:disable:next type_body_length
 struct SettingsView: View {
     @ObservedObject var presenter: SettingsPresenter
     @ObservedObject var debugLogStore: DebugLogStore
@@ -20,238 +19,34 @@ struct SettingsView: View {
 
     var body: some View {
         Form {
-            Section {
-                if !presenter.notificationsAuthorized {
-                    VStack(alignment: .leading, spacing: DSLayout.spacing(.space8)) {
-                        Text(L10n.Settings.notificationsDisabledTitle)
-                            .font(.headline)
-                        Text(L10n.Settings.notificationsDisabledBody)
-                            .font(.caption)
-                            .foregroundColor(.secondary)
-                        DSButton(
-                            L10n.Settings.enableNotifications,
-                            config: .init(style: .primary, size: .small)
-                        ) {
-                            presenter.requestAuthorization()
-                        }
-                        .padding(.top, DSLayout.spacing(.space4))
-                    }
-                    .padding(.vertical, DSLayout.spacing(.space8))
-                }
-            } header: {
-                Text(L10n.Settings.notificationStatus)
-            }
+            SettingsNotificationStatusSection(presenter: presenter)
 
-            Section {
-                Toggle(L10n.Settings.dailyStudyReminderToggle, isOn: studyReminderEnabled)
-                    .disabled(!presenter.notificationsAuthorized)
+            SettingsStudyRemindersSection(
+                presenter: presenter,
+                studyReminderEnabled: studyReminderEnabled,
+                studyReminderTime: studyReminderTime
+            )
 
-                if presenter.settings.studyReminderEnabled {
-                    DatePicker(
-                        L10n.Settings.reminderTime,
-                        selection: studyReminderTime,
-                        displayedComponents: .hourAndMinute
-                    )
-                    .disabled(!presenter.notificationsAuthorized)
-                }
-            } header: {
-                Text(L10n.Settings.studyRemindersHeader)
-            } footer: {
-                Text(L10n.Settings.studyRemindersFooter)
-            }
+            SettingsHabitRemindersSection(
+                presenter: presenter,
+                habitReminderEnabled: habitReminderEnabled,
+                habitReminderTime: habitReminderTime
+            )
 
-            Section {
-                Toggle(L10n.Settings.dailyHabitReminderToggle, isOn: habitReminderEnabled)
-                    .disabled(!presenter.notificationsAuthorized)
+            SettingsPlanStartSection(presenter: presenter, planStartDate: planStartDate)
 
-                if presenter.settings.habitReminderEnabled {
-                    DatePicker(
-                        L10n.Settings.reminderTime,
-                        selection: habitReminderTime,
-                        displayedComponents: .hourAndMinute
-                    )
-                    .disabled(!presenter.notificationsAuthorized)
-                }
-            } header: {
-                Text(L10n.Settings.habitRemindersHeader)
-            } footer: {
-                Text(L10n.Settings.habitRemindersFooter)
-            }
+            SettingsCelebrationSection()
 
-            Section {
-                DatePicker(
-                    L10n.Settings.planStartDateTitle,
-                    selection: planStartDate,
-                    displayedComponents: .date
-                )
+            SettingsLeetCodeSection(
+                presenter: presenter,
+                isShowingLeetCodeLogin: $isShowingLeetCodeLogin
+            )
 
-                DSButton(
-                    L10n.Settings.planStartReset,
-                    config: .init(style: .secondary, size: .small)
-                ) {
-                    presenter.resetPlanStartDateToToday()
-                }
-            } header: {
-                Text(L10n.Settings.planStartHeader)
-            } footer: {
-                Text(L10n.Settings.planStartFooter)
-            }
-
-            Section {
-                VStack(alignment: .leading, spacing: DSLayout.spacing(.space8)) {
-                    HStack(spacing: DSLayout.spacing(6)) {
-                        Image(systemName: "trophy.fill")
-                        Text(L10n.Settings.topicCompletion)
-                    }
-                    .foregroundColor(.yellow)
-                    Text(L10n.Settings.topicCompletionBody)
-                        .font(.caption)
-                        .foregroundColor(.secondary)
-                }
-                .padding(.vertical, DSLayout.spacing(.space4))
-
-                VStack(alignment: .leading, spacing: DSLayout.spacing(.space8)) {
-                    HStack(spacing: DSLayout.spacing(6)) {
-                        Image(systemName: "checkmark.circle.fill")
-                        Text(L10n.Settings.allHabitsDone)
-                    }
-                    .foregroundColor(.green)
-                    Text(L10n.Settings.allHabitsDoneBody)
-                        .font(.caption)
-                        .foregroundColor(.secondary)
-                }
-                .padding(.vertical, DSLayout.spacing(.space4))
-            } header: {
-                Text(L10n.Settings.celebrationHeader)
-            } footer: {
-                Text(L10n.Settings.celebrationFooter)
-            }
-
-            Section {
-                VStack(alignment: .leading, spacing: DSLayout.spacing(.space8)) {
-                    HStack {
-                        Text(L10n.Settings.leetcodeUsername)
-                            .font(.subheadline)
-                        Spacer()
-                        validationStatusView
-                    }
-
-                    HStack(spacing: DSLayout.spacing(.space8)) {
-                        let validation: DSTextFieldValidation = {
-                            switch presenter.usernameValidationState {
-                            case .valid:
-                                return .valid
-                            case .invalid:
-                                return .invalid(nil)
-                            case .none:
-                                return .none
-                            }
-                        }()
-
-                        DSTextField(
-                            placeholder: L10n.Settings.usernamePlaceholder,
-                            text: $presenter.leetCodeUsername,
-                            config: DSTextFieldConfig(style: .outlined, size: .medium),
-                            state: DSTextFieldState(validation: validation)
-                        )
-                        .onChange(of: presenter.leetCodeUsername) { _, _ in
-                            presenter.resetValidationState()
-                        }
-
-                        DSButton(
-                            L10n.Settings.validateSync,
-                            config: .init(style: .primary, size: .small),
-                            state: .init(
-                                isEnabled: !presenter.isValidatingUsername,
-                                isLoading: presenter.isValidatingUsername
-                            )
-                        ) {
-                            presenter.validateAndSaveUsername()
-                        }
-                    }
-                }
-
-                Divider()
-
-                VStack(alignment: .leading, spacing: DSLayout.spacing(10)) {
-                    HStack {
-                        Text(L10n.Settings.leetcodeLoginTitle)
-                            .font(.subheadline)
-                        Spacer()
-                        leetCodeLoginStatusView
-                    }
-
-                    Text(L10n.Settings.leetcodeLoginBody)
-                        .font(.caption)
-                        .foregroundColor(.secondary)
-
-                    HStack(spacing: DSLayout.spacing(.space8)) {
-                        DSButton(
-                            L10n.Settings.leetcodeLoginButton,
-                            config: .init(style: .primary, size: .small)
-                        ) {
-                            isShowingLeetCodeLogin = true
-                        }
-
-                        if presenter.leetCodeAuth != nil {
-                            DSButton(
-                                L10n.Settings.leetcodeLogoutButton,
-                                config: .init(style: .secondary, size: .small)
-                            ) {
-                                presenter.clearLeetCodeAuth()
-                            }
-                        }
-                    }
-                }
-            } header: {
-                Text(L10n.Settings.leetcodeHeader)
-            } footer: {
-                Text(L10n.Settings.leetcodeFooter)
-            }
-
-            Section {
-                VStack(alignment: .leading, spacing: DSLayout.spacing(.space8)) {
-                    Text(L10n.Settings.aiProviderLabel)
-                        .font(.subheadline)
-
-                    Picker(L10n.Settings.aiProviderLabel, selection: aiProviderKind) {
-                        ForEach(AIProviderKind.allCases, id: \.self) { kind in
-                            Text(kind.displayName).tag(kind)
-                        }
-                    }
-                    .pickerStyle(.segmented)
-                }
-
-                VStack(alignment: .leading, spacing: DSLayout.spacing(.space8)) {
-                    Text(L10n.Settings.aiApiKeyLabel)
-                        .font(.subheadline)
-
-                    DSTextField(
-                        placeholder: L10n.Settings.aiApiKeyPlaceholder,
-                        text: $presenter.aiProviderApiKey,
-                        config: DSTextFieldConfig(style: .outlined, size: .medium, isSecure: true)
-                    )
-                    .onChange(of: presenter.aiProviderApiKey) { _, _ in
-                        presenter.saveAIProviderSettings()
-                    }
-                }
-
-                VStack(alignment: .leading, spacing: DSLayout.spacing(.space8)) {
-                    Text(L10n.Settings.aiModelLabel)
-                        .font(.subheadline)
-
-                    Picker(L10n.Settings.aiModelLabel, selection: aiProviderModel) {
-                        ForEach(presenter.aiProviderKind.modelOptions, id: \.self) { model in
-                            Text(model).tag(model)
-                        }
-                    }
-                    .labelsHidden()
-                }
-            } header: {
-                Text(L10n.Settings.aiHeader)
-            } footer: {
-                Text(L10n.Settings.aiFooter)
-            }
+            SettingsAISection(
+                presenter: presenter,
+                aiProviderKind: aiProviderKind,
+                aiProviderModel: aiProviderModel
+            )
 
             AITestCasesSectionView(
                 summary: presenter.aiTestCaseSummary,
@@ -338,6 +133,124 @@ struct SettingsView: View {
             defaultFilename: "focusapp-ai-testcases"
         ) { _ in }
     }
+}
+
+private struct SettingsNotificationStatusSection: View {
+    @ObservedObject var presenter: SettingsPresenter
+
+    var body: some View {
+        Section {
+            if !presenter.notificationsAuthorized {
+                VStack(alignment: .leading, spacing: DSLayout.spacing(.space8)) {
+                    Text(L10n.Settings.notificationsDisabledTitle)
+                        .font(.headline)
+                    Text(L10n.Settings.notificationsDisabledBody)
+                        .font(.caption)
+                        .foregroundColor(.secondary)
+                    DSButton(
+                        L10n.Settings.enableNotifications,
+                        config: .init(style: .primary, size: .small)
+                    ) {
+                        presenter.requestAuthorization()
+                    }
+                    .padding(.top, DSLayout.spacing(.space4))
+                }
+                .padding(.vertical, DSLayout.spacing(.space8))
+            }
+        } header: {
+            Text(L10n.Settings.notificationStatus)
+        }
+    }
+}
+
+private struct SettingsLeetCodeSection: View {
+    @ObservedObject var presenter: SettingsPresenter
+    @Binding var isShowingLeetCodeLogin: Bool
+    @Environment(\.dsTheme) var theme
+
+    var body: some View {
+        Section {
+            VStack(alignment: .leading, spacing: DSLayout.spacing(.space8)) {
+                HStack {
+                    Text(L10n.Settings.leetcodeUsername)
+                        .font(.subheadline)
+                    Spacer()
+                    validationStatusView
+                }
+
+                HStack(spacing: DSLayout.spacing(.space8)) {
+                    let validation: DSTextFieldValidation = {
+                        switch presenter.usernameValidationState {
+                        case .valid:
+                            return .valid
+                        case .invalid:
+                            return .invalid(nil)
+                        case .none:
+                            return .none
+                        }
+                    }()
+
+                    DSTextField(
+                        placeholder: L10n.Settings.usernamePlaceholder,
+                        text: $presenter.leetCodeUsername,
+                        config: DSTextFieldConfig(style: .outlined, size: .medium),
+                        state: DSTextFieldState(validation: validation)
+                    )
+                    .onChange(of: presenter.leetCodeUsername) { _, _ in
+                        presenter.resetValidationState()
+                    }
+
+                    DSButton(
+                        L10n.Settings.validateSync,
+                        config: .init(style: .primary, size: .small),
+                        state: .init(
+                            isEnabled: !presenter.isValidatingUsername,
+                            isLoading: presenter.isValidatingUsername
+                        )
+                    ) {
+                        presenter.validateAndSaveUsername()
+                    }
+                }
+            }
+
+            Divider()
+
+            VStack(alignment: .leading, spacing: DSLayout.spacing(10)) {
+                HStack {
+                    Text(L10n.Settings.leetcodeLoginTitle)
+                        .font(.subheadline)
+                    Spacer()
+                    leetCodeLoginStatusView
+                }
+
+                Text(L10n.Settings.leetcodeLoginBody)
+                    .font(.caption)
+                    .foregroundColor(.secondary)
+
+                HStack(spacing: DSLayout.spacing(.space8)) {
+                    DSButton(
+                        L10n.Settings.leetcodeLoginButton,
+                        config: .init(style: .primary, size: .small)
+                    ) {
+                        isShowingLeetCodeLogin = true
+                    }
+
+                    if presenter.leetCodeAuth != nil {
+                        DSButton(
+                            L10n.Settings.leetcodeLogoutButton,
+                            config: .init(style: .secondary, size: .small)
+                        ) {
+                            presenter.clearLeetCodeAuth()
+                        }
+                    }
+                }
+            }
+        } header: {
+            Text(L10n.Settings.leetcodeHeader)
+        } footer: {
+            Text(L10n.Settings.leetcodeFooter)
+        }
+    }
 
     private var leetCodeLoginStatusView: some View {
         let isLoggedIn = presenter.leetCodeAuth != nil
@@ -345,6 +258,192 @@ struct SettingsView: View {
                                : L10n.Settings.leetcodeLoginStatusDisconnected)
             .font(.caption)
             .foregroundColor(isLoggedIn ? theme.colors.success : theme.colors.textSecondary)
+    }
+
+    @ViewBuilder
+    private var validationStatusView: some View {
+        switch presenter.usernameValidationState {
+        case .valid:
+            HStack(spacing: DSLayout.spacing(6)) {
+                Image(systemName: "checkmark.circle.fill")
+                Text(L10n.Settings.validationValid)
+            }
+            .foregroundColor(.green)
+            .font(.caption)
+        case .invalid:
+            HStack(spacing: DSLayout.spacing(6)) {
+                Image(systemName: "xmark.circle.fill")
+                Text(L10n.Settings.validationNotFound)
+            }
+            .foregroundColor(.red)
+            .font(.caption)
+        case .none:
+            EmptyView()
+        }
+    }
+}
+
+private struct SettingsAISection: View {
+    @ObservedObject var presenter: SettingsPresenter
+    let aiProviderKind: Binding<AIProviderKind>
+    let aiProviderModel: Binding<String>
+
+    var body: some View {
+        Section {
+            VStack(alignment: .leading, spacing: DSLayout.spacing(.space8)) {
+                Text(L10n.Settings.aiProviderLabel)
+                    .font(.subheadline)
+
+                Picker(L10n.Settings.aiProviderLabel, selection: aiProviderKind) {
+                    ForEach(AIProviderKind.allCases, id: \.self) { kind in
+                        Text(kind.displayName).tag(kind)
+                    }
+                }
+                .pickerStyle(.segmented)
+            }
+
+            VStack(alignment: .leading, spacing: DSLayout.spacing(.space8)) {
+                Text(L10n.Settings.aiApiKeyLabel)
+                    .font(.subheadline)
+
+                DSTextField(
+                    placeholder: L10n.Settings.aiApiKeyPlaceholder,
+                    text: $presenter.aiProviderApiKey,
+                    config: DSTextFieldConfig(style: .outlined, size: .medium, isSecure: true)
+                )
+                .onChange(of: presenter.aiProviderApiKey) { _, _ in
+                    presenter.saveAIProviderSettings()
+                }
+            }
+
+            VStack(alignment: .leading, spacing: DSLayout.spacing(.space8)) {
+                Text(L10n.Settings.aiModelLabel)
+                    .font(.subheadline)
+
+                Picker(L10n.Settings.aiModelLabel, selection: aiProviderModel) {
+                    ForEach(presenter.aiProviderKind.modelOptions, id: \.self) { model in
+                        Text(model).tag(model)
+                    }
+                }
+                .labelsHidden()
+            }
+        } header: {
+            Text(L10n.Settings.aiHeader)
+        } footer: {
+            Text(L10n.Settings.aiFooter)
+        }
+    }
+}
+
+private struct SettingsStudyRemindersSection: View {
+    @ObservedObject var presenter: SettingsPresenter
+    let studyReminderEnabled: Binding<Bool>
+    let studyReminderTime: Binding<Date>
+
+    var body: some View {
+        Section {
+            Toggle(L10n.Settings.dailyStudyReminderToggle, isOn: studyReminderEnabled)
+                .disabled(!presenter.notificationsAuthorized)
+
+            if presenter.settings.studyReminderEnabled {
+                DatePicker(
+                    L10n.Settings.reminderTime,
+                    selection: studyReminderTime,
+                    displayedComponents: .hourAndMinute
+                )
+                .disabled(!presenter.notificationsAuthorized)
+            }
+        } header: {
+            Text(L10n.Settings.studyRemindersHeader)
+        } footer: {
+            Text(L10n.Settings.studyRemindersFooter)
+        }
+    }
+}
+
+private struct SettingsHabitRemindersSection: View {
+    @ObservedObject var presenter: SettingsPresenter
+    let habitReminderEnabled: Binding<Bool>
+    let habitReminderTime: Binding<Date>
+
+    var body: some View {
+        Section {
+            Toggle(L10n.Settings.dailyHabitReminderToggle, isOn: habitReminderEnabled)
+                .disabled(!presenter.notificationsAuthorized)
+
+            if presenter.settings.habitReminderEnabled {
+                DatePicker(
+                    L10n.Settings.reminderTime,
+                    selection: habitReminderTime,
+                    displayedComponents: .hourAndMinute
+                )
+                .disabled(!presenter.notificationsAuthorized)
+            }
+        } header: {
+            Text(L10n.Settings.habitRemindersHeader)
+        } footer: {
+            Text(L10n.Settings.habitRemindersFooter)
+        }
+    }
+}
+
+private struct SettingsPlanStartSection: View {
+    @ObservedObject var presenter: SettingsPresenter
+    let planStartDate: Binding<Date>
+
+    var body: some View {
+        Section {
+            DatePicker(
+                L10n.Settings.planStartDateTitle,
+                selection: planStartDate,
+                displayedComponents: .date
+            )
+
+            DSButton(
+                L10n.Settings.planStartReset,
+                config: .init(style: .secondary, size: .small)
+            ) {
+                presenter.resetPlanStartDateToToday()
+            }
+        } header: {
+            Text(L10n.Settings.planStartHeader)
+        } footer: {
+            Text(L10n.Settings.planStartFooter)
+        }
+    }
+}
+
+private struct SettingsCelebrationSection: View {
+    var body: some View {
+        Section {
+            VStack(alignment: .leading, spacing: DSLayout.spacing(.space8)) {
+                HStack(spacing: DSLayout.spacing(6)) {
+                    Image(systemName: "trophy.fill")
+                    Text(L10n.Settings.topicCompletion)
+                }
+                .foregroundColor(.yellow)
+                Text(L10n.Settings.topicCompletionBody)
+                    .font(.caption)
+                    .foregroundColor(.secondary)
+            }
+            .padding(.vertical, DSLayout.spacing(.space4))
+
+            VStack(alignment: .leading, spacing: DSLayout.spacing(.space8)) {
+                HStack(spacing: DSLayout.spacing(6)) {
+                    Image(systemName: "checkmark.circle.fill")
+                    Text(L10n.Settings.allHabitsDone)
+                }
+                .foregroundColor(.green)
+                Text(L10n.Settings.allHabitsDoneBody)
+                    .font(.caption)
+                    .foregroundColor(.secondary)
+            }
+            .padding(.vertical, DSLayout.spacing(.space4))
+        } header: {
+            Text(L10n.Settings.celebrationHeader)
+        } footer: {
+            Text(L10n.Settings.celebrationFooter)
+        }
     }
 }
 

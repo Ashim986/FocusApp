@@ -59,3 +59,28 @@ enum FocusRoute: Hashable {
     case paused
     case completed
 }
+
+// MARK: - iOS Tab Bar Routes
+
+/// Routes for the iOS tab bar coordinator.
+enum TabBarRoute: Hashable {
+    case tab(Tab)
+}
+
+// MARK: - iOS Tab Flow Routes
+
+/// Routes for a tab's internal navigation stack (e.g., Today → CodingDetail).
+enum TabFlowRoute: Hashable {
+    /// Root view of the tab
+    case root
+    /// Pushed coding detail for a specific problem
+    case codingDetail(problemSlug: String)
+}
+
+// MARK: - iOS Settings Routes
+
+/// Routes for the settings flow on iOS.
+enum SettingsRoute: Hashable {
+    case closed
+    case presented
+}

@@ -1,12 +1,12 @@
 #if os(iOS)
-// PlanViewiOS.swift
+// PlanViewIOS.swift
 // FocusApp -- Unified Plan screen (adaptive: iPhone compact / iPad regular)
 
 import FocusDesignSystem
 import SwiftUI
 
 // swiftlint:disable:next type_body_length
-struct PlanViewiOS: View {
+struct PlanViewIOS: View {
     @ObservedObject var presenter: PlanPresenter
 
     @Environment(\.horizontalSizeClass) var sizeClass

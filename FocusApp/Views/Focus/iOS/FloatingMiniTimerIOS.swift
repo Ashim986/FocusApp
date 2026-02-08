@@ -1,11 +1,11 @@
 #if os(iOS)
-// FloatingMiniTimeriOS.swift
+// FloatingMiniTimerIOS.swift
 // FocusApp -- Floating mini Pomodoro timer overlay for the coding environment
 
 import FocusDesignSystem
 import SwiftUI
 
-struct FloatingMiniTimeriOS: View {
+struct FloatingMiniTimerIOS: View {
     @Environment(\.dsTheme) var theme
 
     @ObservedObject var coordinator: FocusCoordinator
@@ -176,7 +176,7 @@ struct FloatingMiniTimeriOS: View {
         Color.gray.opacity(0.2)
             .ignoresSafeArea()
 
-        FloatingMiniTimeriOS(coordinator: FocusCoordinator())
+        FloatingMiniTimerIOS(coordinator: FocusCoordinator())
             .padding(24)
     }
 }

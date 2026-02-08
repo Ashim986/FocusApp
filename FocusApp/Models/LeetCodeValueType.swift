@@ -13,61 +13,72 @@ indirect enum LeetCodeValueType: Equatable {
     case treeNode
     case unknown(String)
 
-    // swiftlint:disable cyclomatic_complexity
     init(raw: String) {
         let normalized = Self.normalizeTypeString(raw)
         let trimmed = normalized.trimmingCharacters(in: .whitespacesAndNewlines)
         let lower = trimmed.lowercased()
 
+        if let container = Self.parseContainerType(trimmed: trimmed, lower: lower) {
+            self = container
+            return
+        }
+
+        self = Self.primitiveTypeMap[lower] ?? .unknown(trimmed)
+    }
+
+    private static let primitiveTypeMap: [String: LeetCodeValueType] = [
+        "int": .int,
+        "integer": .int,
+        "long": .int,
+        "short": .int,
+        "byte": .int,
+
+        "double": .double,
+        "float": .double,
+        "decimal": .double,
+
+        "bool": .bool,
+        "boolean": .bool,
+
+        "string": .string,
+        "str": .string,
+
+        "char": .character,
+        "character": .character,
+
+        "void": .void,
+
+        "listnode": .listNode,
+        "treenode": .treeNode
+    ]
+
+    private static func parseContainerType(trimmed: String, lower: String) -> LeetCodeValueType? {
         if lower.hasSuffix("[]") {
             let innerRaw = String(trimmed.dropLast(2))
-            self = .list(LeetCodeValueType(raw: innerRaw))
-            return
+            return .list(LeetCodeValueType(raw: innerRaw))
         }
 
         if lower.hasPrefix("list<"), lower.hasSuffix(">") {
-            let start = trimmed.index(trimmed.startIndex, offsetBy: 5)
-            let end = trimmed.index(before: trimmed.endIndex)
-            let innerRaw = String(trimmed[start..<end])
-            self = .list(LeetCodeValueType(raw: innerRaw))
-            return
+            let innerRaw = genericInner(trimmed: trimmed, prefixCount: 5)
+            return .list(LeetCodeValueType(raw: innerRaw))
         }
 
         if lower.hasPrefix("map<"), lower.hasSuffix(">") {
-            let start = trimmed.index(trimmed.startIndex, offsetBy: 4)
-            let end = trimmed.index(before: trimmed.endIndex)
-            let innerRaw = String(trimmed[start..<end])
-            let parts = Self.splitGenericArguments(innerRaw)
-            if parts.count == 2 {
-                let keyType = LeetCodeValueType(raw: parts[0])
-                let valueType = LeetCodeValueType(raw: parts[1])
-                self = .dictionary(keyType, valueType)
-                return
-            }
+            let innerRaw = genericInner(trimmed: trimmed, prefixCount: 4)
+            let parts = splitGenericArguments(innerRaw)
+            guard parts.count == 2 else { return nil }
+            return .dictionary(LeetCodeValueType(raw: parts[0]), LeetCodeValueType(raw: parts[1]))
         }
 
-        switch lower {
-        case "int", "integer", "long", "short", "byte":
-            self = .int
-        case "double", "float", "decimal":
-            self = .double
-        case "bool", "boolean":
-            self = .bool
-        case "string", "str":
-            self = .string
-        case "char", "character":
-            self = .character
-        case "void":
-            self = .void
-        case "listnode":
-            self = .listNode
-        case "treenode":
-            self = .treeNode
-        default:
-            self = .unknown(trimmed)
-        }
+        return nil
     }
-    // swiftlint:enable cyclomatic_complexity
+
+    private static func genericInner(trimmed: String, prefixCount: Int) -> String {
+        let start = trimmed.index(trimmed.startIndex, offsetBy: prefixCount)
+        let end = trimmed.index(before: trimmed.endIndex)
+        return String(trimmed[start..<end])
+    }
+
     private static func normalizeTypeString(_ raw: String) -> String {
         var value = raw.trimmingCharacters(in: .whitespacesAndNewlines)
         value = value.replacingOccurrences(of: " ", with: "")

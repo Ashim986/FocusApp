@@ -1,6 +1,6 @@
 // swiftlint:disable file_length
 #if os(iOS)
-// TodayViewiOS.swift
+// TodayViewIOS.swift
 // FocusApp -- Unified Today screen for iPhone and iPad
 // Uses horizontalSizeClass to branch between compact (iPhone) and regular (iPad) layouts
 
@@ -8,7 +8,7 @@ import FocusDesignSystem
 import SwiftUI
 
 // swiftlint:disable:next type_body_length
-struct TodayViewiOS: View {
+struct TodayViewIOS: View {
     @ObservedObject var presenter: TodayPresenter
     var onSettingsTap: () -> Void
     var onStartFocus: () -> Void

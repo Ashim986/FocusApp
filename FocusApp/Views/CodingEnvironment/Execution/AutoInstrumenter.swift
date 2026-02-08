@@ -89,6 +89,7 @@ enum AutoInstrumenter { // swiftlint:disable:this type_body_length
         let entryPoint = (resolvedEntryPointName?.isEmpty == false)
             ? resolvedEntryPointName
             : detectSwiftEntryPointName(stripped: stripped)
+        var entryParamNames = paramNames
 
         var braceDepth = 0
         var solutionDepth: Int?
@@ -121,6 +122,13 @@ enum AutoInstrumenter { // swiftlint:disable:this type_body_length
 
             if isInSolution, entryDepth == nil, let entryPoint {
                 if !isPendingEntryOpen, isSwiftEntryPointSignature(line: strippedTrimmed, name: entryPoint) {
+                    let parsedParams = swiftParamNamesFromSignature(
+                        strippedLines: strippedLines,
+                        signatureStartLineIndex: lineIndex
+                    )
+                    if !parsedParams.isEmpty {
+                        entryParamNames = parsedParams
+                    }
                     if openBraces > 0 {
                         entryDepth = braceDepthBefore + 1
                         isInEntryPoint = true
@@ -151,7 +159,7 @@ enum AutoInstrumenter { // swiftlint:disable:this type_body_length
             var instrumentedLine = line
             if isInEntryPoint {
                 let captureDict = swiftScopedCapture(
-                    paramNames: paramNames,
+                    paramNames: entryParamNames,
                     funcLevelVars: visibleVars,
                     loopVars: []
                 )
@@ -166,7 +174,7 @@ enum AutoInstrumenter { // swiftlint:disable:this type_body_length
                 let indent = leadingWhitespace(line) + "    "
                 let loopVars = extractSwiftLoopVars(trimmed: trimmed)
                 let captureDict = swiftScopedCapture(
-                    paramNames: paramNames,
+                    paramNames: entryParamNames,
                     funcLevelVars: visibleVars,
                     loopVars: loopVars
                 )
@@ -187,6 +195,105 @@ enum AutoInstrumenter { // swiftlint:disable:this type_body_length
         }
 
         return result.joined(separator: "\n")
+    }
+
+    private static func swiftParamNamesFromSignature(
+        strippedLines: [String],
+        signatureStartLineIndex: Int
+    ) -> [String] {
+        let signature = swiftSignatureString(
+            strippedLines: strippedLines,
+            signatureStartLineIndex: signatureStartLineIndex
+        )
+        return parseSwiftParamNames(fromSignature: signature)
+    }
+
+    private static func swiftSignatureString(
+        strippedLines: [String],
+        signatureStartLineIndex: Int
+    ) -> String {
+        var signature = ""
+        var index = signatureStartLineIndex
+        while index < strippedLines.count {
+            let line = strippedLines[index]
+            signature += (signature.isEmpty ? "" : "\n") + line
+            if line.contains("{") {
+                break
+            }
+            index += 1
+        }
+        return signature
+    }
+
+    private static func parseSwiftParamNames(fromSignature signature: String) -> [String] {
+        guard let open = signature.firstIndex(of: "(") else { return [] }
+        var depth = 0
+        var close: String.Index?
+        var index = open
+        while index < signature.endIndex {
+            let char = signature[index]
+            if char == "(" {
+                depth += 1
+            } else if char == ")" {
+                depth = max(0, depth - 1)
+                if depth == 0 {
+                    close = index
+                    break
+                }
+            }
+            index = signature.index(after: index)
+        }
+        guard let close else { return [] }
+        let paramsRaw = String(signature[signature.index(after: open)..<close])
+        let pieces = splitSwiftParamsForSignature(paramsRaw)
+
+        return pieces.compactMap { piece in
+            let trimmed = piece.trimmingCharacters(in: .whitespacesAndNewlines)
+            guard let colonIndex = firstTopLevelColon(in: trimmed) else { return nil }
+            let namePart = trimmed[..<colonIndex].trimmingCharacters(in: .whitespacesAndNewlines)
+            let tokens = namePart.split(whereSeparator: { $0.isWhitespace })
+            guard let last = tokens.last else { return nil }
+            let rawName = String(last)
+            return rawName == "_" ? nil : rawName
+        }
+    }
+
+    private static func splitSwiftParamsForSignature(_ raw: String) -> [String] {
+        var results: [String] = []
+        var current = ""
+        var depth = 0
+        for char in raw {
+            if char == "<" || char == "[" || char == "(" {
+                depth += 1
+            } else if char == ">" || char == "]" || char == ")" {
+                depth = max(0, depth - 1)
+            }
+            if char == "," && depth == 0 {
+                results.append(current)
+                current = ""
+                continue
+            }
+            current.append(char)
+        }
+        if !current.isEmpty {
+            results.append(current)
+        }
+        return results
+    }
+
+    private static func firstTopLevelColon(in raw: String) -> String.Index? {
+        var depth = 0
+        for (offset, char) in raw.enumerated() {
+            if char == "<" || char == "[" || char == "(" {
+                depth += 1
+            } else if char == ">" || char == "]" || char == ")" {
+                depth = max(0, depth - 1)
+            }
+            if char == ":" && depth == 0 {
+                return raw.index(raw.startIndex, offsetBy: offset)
+            }
+        }
+        return nil
     }
 
     private static func isSwiftSolutionClassOpening(line: String) -> Bool {
@@ -327,6 +434,7 @@ enum AutoInstrumenter { // swiftlint:disable:this type_body_length
         let entryPoint = (resolvedEntryPointName?.isEmpty == false)
             ? resolvedEntryPointName
             : detectPythonEntryPointName(stripped: stripped)
+        var entryParamNames = paramNames
 
         var solutionIndent: Int?
         var entryIndent: Int?
@@ -357,6 +465,10 @@ enum AutoInstrumenter { // swiftlint:disable:this type_body_length
                isPythonEntryPointSignature(trimmed: trimmed, name: entryPoint) {
                 entryIndent = indentCount
                 nestedDefIndents = []
+                let parsedParams = pythonParamNamesFromSignature(trimmedSignatureLine: trimmed)
+                if !parsedParams.isEmpty {
+                    entryParamNames = parsedParams
+                }
             }
 
             if let currentEntryIndent = entryIndent,
@@ -379,7 +491,7 @@ enum AutoInstrumenter { // swiftlint:disable:this type_body_length
 
             let canInstrument = isInEntryPoint && nestedDefIndents.isEmpty
             let captureDict = pythonCaptureExpression(
-                paramNames: paramNames,
+                paramNames: entryParamNames,
                 assignedVars: assignedVars,
                 loopVars: [],
                 stripped: stripped
@@ -395,7 +507,7 @@ enum AutoInstrumenter { // swiftlint:disable:this type_body_length
                 let bodyIndent = leadingWhitespace(line) + "    "
                 let loopVars = extractPythonLoopVars(trimmed: trimmed)
                 let loopCapture = pythonCaptureExpression(
-                    paramNames: paramNames,
+                    paramNames: entryParamNames,
                     assignedVars: assignedVars,
                     loopVars: loopVars,
                     stripped: stripped
@@ -409,6 +521,26 @@ enum AutoInstrumenter { // swiftlint:disable:this type_body_length
         }
 
         return result.joined(separator: "\n")
+    }
+
+    private static func pythonParamNamesFromSignature(trimmedSignatureLine: String) -> [String] {
+        let pattern = "^def\\s+\\w+\\s*\\(([^)]*)\\)"
+        guard let regex = try? NSRegularExpression(pattern: pattern) else { return [] }
+        let range = NSRange(trimmedSignatureLine.startIndex..., in: trimmedSignatureLine)
+        guard let match = regex.firstMatch(in: trimmedSignatureLine, options: [], range: range),
+              let argsRange = Range(match.range(at: 1), in: trimmedSignatureLine) else {
+            return []
+        }
+        let argsRaw = String(trimmedSignatureLine[argsRange])
+        let pieces = argsRaw.split(separator: ",").map { $0.trimmingCharacters(in: .whitespacesAndNewlines) }
+        return pieces
+            .compactMap { piece in
+                let namePart = piece.split(separator: ":", maxSplits: 1, omittingEmptySubsequences: true).first
+                let name = namePart.map(String.init)?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
+                guard !name.isEmpty else { return nil }
+                guard name != "self", name != "cls" else { return nil }
+                return name
+            }
     }
 
     private static func isPythonEntryPointSignature(trimmed: String, name: String) -> Bool {

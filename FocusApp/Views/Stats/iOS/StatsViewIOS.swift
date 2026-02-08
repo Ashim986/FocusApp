@@ -1,5 +1,5 @@
 #if os(iOS)
-// StatsViewiOS.swift
+// StatsViewIOS.swift
 // FocusApp -- Unified Stats screen for iPhone and iPad
 // Uses horizontalSizeClass to switch between compact (iPhone) and regular (iPad) layouts
 
@@ -7,7 +7,7 @@ import FocusDesignSystem
 import SwiftUI
 
 // swiftlint:disable:next type_body_length
-struct StatsViewiOS: View {
+struct StatsViewIOS: View {
     @ObservedObject var presenter: StatsPresenter
     @Environment(\.horizontalSizeClass) var sizeClass
     @Environment(\.dsTheme) var theme

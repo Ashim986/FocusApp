@@ -90,8 +90,7 @@ private struct LeetCodeLoginWebView: PlatformWebViewRepresentable {
             self.onAuthCaptured = onAuthCaptured
         }
 
-        // swiftlint:disable:next implicitly_unwrapped_optional
-        func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
+        func webView(_ webView: WKWebView, didFinish navigation: WKNavigation?) {
             captureAuthIfAvailable(webView)
         }
 

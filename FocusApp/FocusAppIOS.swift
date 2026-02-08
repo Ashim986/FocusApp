@@ -4,13 +4,13 @@ import SwiftUI
 
 @main
 @MainActor
-struct FocusAppiOS: App {
+struct FocusAppIOS: App {
     @StateObject private var coordinator = AppCoordinator()
 
     var body: some Scene {
         WindowGroup {
             DesignSystemRoot {
-                RootViewiOS(coordinator: coordinator)
+                RootViewIOS(coordinator: coordinator)
                     .task {
                         coordinator.start()
                         _ = await coordinator.container.notificationManager.requestAuthorization()

@@ -1,6 +1,6 @@
 // swiftlint:disable file_length
 #if os(iOS)
-// SettingsViewiOS.swift
+// SettingsViewIOS.swift
 // FocusApp -- Unified Settings view for iPhone and iPad
 // Uses horizontalSizeClass to adapt layout
 
@@ -8,7 +8,7 @@ import FocusDesignSystem
 import SwiftUI
 
 // swiftlint:disable:next type_body_length
-struct SettingsViewiOS: View {
+struct SettingsViewIOS: View {
     @ObservedObject var presenter: SettingsPresenter
     @Environment(\.horizontalSizeClass) var sizeClass
     @Environment(\.dsTheme) var theme

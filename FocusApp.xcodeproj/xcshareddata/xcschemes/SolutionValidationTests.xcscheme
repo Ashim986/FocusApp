@@ -1,22 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
    LastUpgradeVersion = "2600"
-   version = "2.2">
+   version = "1.7">
    <BuildAction
       parallelizeBuildables = "YES"
       buildImplicitDependencies = "YES"
       buildArchitectures = "Automatic">
-      <BuildActionEntries>
-         <BuildActionEntry
-            buildForTesting = "YES"
-            buildForRunning = "NO"
-            buildForProfiling = "NO"
-            buildForArchiving = "NO"
-            buildForAnalyzing = "YES">
-            <AutocreatedTestPlanReference>
-            </AutocreatedTestPlanReference>
-         </BuildActionEntry>
-      </BuildActionEntries>
    </BuildAction>
    <TestAction
       buildConfiguration = "Debug"
@@ -24,22 +13,15 @@
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       shouldUseLaunchSchemeArgsEnv = "YES"
       shouldAutocreateTestPlan = "YES">
-      <EnvironmentVariables>
-         <EnvironmentVariable
-            key = "IDEPreferLogStreaming"
-            value = "YES"
-            isEnabled = "YES">
-         </EnvironmentVariable>
-      </EnvironmentVariables>
       <Testables>
          <TestableReference
             skipped = "NO"
             parallelizable = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "4C67B5983E414605B8C2BADA"
-               BuildableName = "FocusAppTests.xctest"
-               BlueprintName = "FocusAppTests"
+               BlueprintIdentifier = "SVT004000000000000000001"
+               BuildableName = "SolutionValidationTests.xctest"
+               BlueprintName = "SolutionValidationTests"
                ReferencedContainer = "container:FocusApp.xcodeproj">
             </BuildableReference>
          </TestableReference>
@@ -55,6 +37,16 @@
       debugDocumentVersioning = "YES"
       debugServiceExtension = "internal"
       allowLocationSimulation = "YES">
+      <BuildableProductRunnable
+         runnableDebuggingMode = "0">
+         <BuildableReference
+            BuildableIdentifier = "primary"
+            BlueprintIdentifier = "A10006001"
+            BuildableName = "FocusApp.app"
+            BlueprintName = "FocusApp"
+            ReferencedContainer = "container:FocusApp.xcodeproj">
+         </BuildableReference>
+      </BuildableProductRunnable>
       <EnvironmentVariables>
          <EnvironmentVariable
             key = "IDEPreferLogStreaming"
@@ -69,6 +61,15 @@
       savedToolIdentifier = ""
       useCustomWorkingDirectory = "NO"
       debugDocumentVersioning = "YES">
+      <MacroExpansion>
+         <BuildableReference
+            BuildableIdentifier = "primary"
+            BlueprintIdentifier = "A10006001"
+            BuildableName = "FocusApp.app"
+            BlueprintName = "FocusApp"
+            ReferencedContainer = "container:FocusApp.xcodeproj">
+         </BuildableReference>
+      </MacroExpansion>
    </ProfileAction>
    <AnalyzeAction
       buildConfiguration = "Debug">

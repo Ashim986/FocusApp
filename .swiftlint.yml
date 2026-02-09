@@ -33,7 +33,6 @@ opt_in_rules:
   - unowned_variable_capture
   - yoda_condition
   - closure_spacing
-  - no_extension_access_modifier
   - lower_acl_than_parent
 
 # “No footguns” (make these errors in strict codebases)

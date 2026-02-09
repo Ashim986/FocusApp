@@ -179,22 +179,25 @@ extension DataJourneyView {
         let canPlay = playbackEvents.count > 1
         return HStack(alignment: .center, spacing: spacing) {
             HStack(spacing: DSLayout.spacing(12)) {
-                DSActionButton(isEnabled: canGoPrevious, action: selectPrevious) {
+                DSActionButton(action: selectPrevious) {
                     Image(systemName: "backward.fill")
                         .font(.system(size: iconSize, weight: .bold))
                 }
+                .disabled(!canGoPrevious)
                 .foregroundColor(currentPlaybackIndex == 0 ? palette.gray600 : palette.gray300)
 
-                DSActionButton(isEnabled: canPlay, action: togglePlayback) {
+                DSActionButton(action: togglePlayback) {
                     Image(systemName: isPlaying ? "pause.fill" : "play.fill")
                         .font(.system(size: iconSize, weight: .bold))
                 }
+                .disabled(!canPlay)
                 .foregroundColor(playbackEvents.count > 1 ? palette.gray300 : palette.gray600)
 
-                DSActionButton(isEnabled: canGoNext, action: selectNext) {
+                DSActionButton(action: selectNext) {
                     Image(systemName: "forward.fill")
                         .font(.system(size: iconSize, weight: .bold))
                 }
+                .disabled(!canGoNext)
                 .foregroundColor(currentPlaybackIndex >= playbackEvents.count - 1 ? palette.gray600 : palette.gray300)
             }
 

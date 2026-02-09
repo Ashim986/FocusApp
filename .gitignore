@@ -1,5 +1,7 @@
 .DS_Store
 DerivedData/
+.xcode_derived_data/
+build/
 .claude/
 *.xcuserdata/
 xcuserdata/
@@ -13,6 +15,8 @@ xcuserdata/
 *.orig
 *.rej
 .swiftlint-cache/
+.swiftlint-derived/
 .swiftlint-home/
 .swiftlint-tmp/
 .build/
+Packages/**/build/

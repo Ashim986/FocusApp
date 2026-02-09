@@ -5,6 +5,16 @@ extension LeetCodeExecutionWrapper {
         let callName: String
         let params: [LeetCodeMetaParam]
         let returnType: String?
+        /// External labels for each parameter. `nil` means `_` (no label needed at call site).
+        let externalLabels: [String?]
+        /// Whether the parameter is declared with `inout`.
+        let inoutParams: [Bool]
+    }
+
+    private struct ParsedSwiftParams {
+        let params: [LeetCodeMetaParam]
+        let labels: [String?]
+        let inoutFlags: [Bool]
     }
 
     static func swiftFunctionSignature(
@@ -60,33 +70,56 @@ extension LeetCodeExecutionWrapper {
             guard range.location != NSNotFound else { return nil }
             return nsContainer.substring(with: range)
         }()
-        let params = parseSwiftParams(paramsRaw)
+        let parsed = parseSwiftParamsWithLabels(paramsRaw)
         let signature = SwiftFunctionSignature(
             callName: rawName,
-            params: params,
-            returnType: returnRaw?.trimmedNonEmpty
+            params: parsed.params,
+            returnType: returnRaw?.trimmedNonEmpty,
+            externalLabels: parsed.labels,
+            inoutParams: parsed.inoutFlags
         )
         return (normalizedName, signature)
     }
 
-    private static func parseSwiftParams(_ raw: String) -> [LeetCodeMetaParam] {
+    private static func parseSwiftParamsWithLabels(
+        _ raw: String
+    ) -> ParsedSwiftParams {
         let pieces = splitSwiftParameters(raw)
-        return pieces.compactMap { piece in
+        var params: [LeetCodeMetaParam] = []
+        var labels: [String?] = []
+        var inoutFlags: [Bool] = []
+        for piece in pieces {
             let trimmed = piece.trimmingCharacters(in: .whitespacesAndNewlines)
-            guard !trimmed.isEmpty else { return nil }
+            guard !trimmed.isEmpty else { continue }
             let parts = splitParameterDeclaration(trimmed)
-            guard parts.count == 2 else { return nil }
+            guard parts.count == 2 else { continue }
             let namePart = parts[0].trimmingCharacters(in: .whitespacesAndNewlines)
-            let typePart = parts[1].trimmingCharacters(in: .whitespacesAndNewlines)
-            guard !typePart.isEmpty else { return nil }
+            var typePart = parts[1].trimmingCharacters(in: .whitespacesAndNewlines)
+            guard !typePart.isEmpty else { continue }
 
             let nameTokens = namePart.split(whereSeparator: { $0.isWhitespace })
             let rawName = nameTokens.last.map(String.init) ?? ""
             let name = rawName == "_" || rawName.isEmpty ? nil : rawName
 
+            // Extract external label: first token of nameTokens
+            let externalLabel: String?
+            if let first = nameTokens.first {
+                let firstStr = String(first)
+                externalLabel = firstStr == "_" ? nil : firstStr
+            } else {
+                externalLabel = nil
+            }
+            labels.append(externalLabel)
+
+            let isInout = typePart.hasPrefix("inout ")
+            if isInout {
+                typePart = String(typePart.dropFirst("inout ".count))
+            }
             let cleanedType = cleanTypeToken(typePart)
-            return LeetCodeMetaParam(name: name, type: cleanedType)
+            params.append(LeetCodeMetaParam(name: name, type: cleanedType))
+            inoutFlags.append(isInout)
         }
+        return ParsedSwiftParams(params: params, labels: labels, inoutFlags: inoutFlags)
     }
 
     private static func splitSwiftParameters(_ raw: String) -> [String] {
@@ -135,7 +168,7 @@ extension LeetCodeExecutionWrapper {
         let trimmed = value.trimmingCharacters(in: .whitespacesAndNewlines)
         let parts = trimmed.split(separator: "=", maxSplits: 1, omittingEmptySubsequences: true)
         var typePart = String(parts.first ?? "").trimmingCharacters(in: .whitespacesAndNewlines)
-        let qualifiers = ["inout", "@escaping", "@autoclosure"]
+        let qualifiers = ["@escaping", "@autoclosure"]
         for qualifier in qualifiers where typePart.hasPrefix(qualifier + " ") {
             typePart = typePart.replacingOccurrences(of: qualifier + " ", with: "")
         }

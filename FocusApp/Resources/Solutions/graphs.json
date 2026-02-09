@@ -72,7 +72,7 @@
       "approaches" : [
         {
           "approach" : "1. Build adjacency list from prerequisites\n2. DFS from each node, mark as 'visiting'\n3. If encounter 'visiting' node, cycle found\n4. Mark 'visited' when done with all neighbors",
-          "code" : "func canFinish(_ numCourses: Int, _ prerequisites: [[Int]]) -> Bool {\n    var graph = [[Int]](repeating: [], count: numCourses)\n    for pre in prerequisites {\n        graph[pre[1]].append(pre[0])\n    }\n    \n    var state = [Int](repeating: 0, count: numCourses)  \/\/ 0=unvisited, 1=visiting, 2=visited\n    \n    func hasCycle(_ node: Int) -> Bool {\n        if state[node] == 1 { return true }  \/\/ Cycle\n        if state[node] == 2 { return false }  \/\/ Already done\n        \n        state[node] = 1\n        for neighbor in graph[node] {\n            if hasCycle(neighbor) { return true }\n        }\n        state[node] = 2\n        return false\n    }\n    \n    for i in 0..<numCourses {\n        if hasCycle(i) { return false }\n    }\n    return true\n}",
+          "code" : "func canFinish(_ numCourses: Int, _ prerequisites: [[Int]]) -> Bool {\n    var graph = [[Int]](repeating: [], count: numCourses)\n    for pre in prerequisites {\n        graph[pre[1]].append(pre[0])\n    }\n    \n    var state = [Int](repeating: 0, count: numCourses)  // 0=unvisited, 1=visiting, 2=visited\n    \n    func hasCycle(_ node: Int) -> Bool {\n        if state[node] == 1 { return true }  // Cycle\n        if state[node] == 2 { return false }  // Already done\n        \n        state[node] = 1\n        for neighbor in graph[node] {\n            if hasCycle(neighbor) { return true }\n        }\n        state[node] = 2\n        return false\n    }\n    \n    for i in 0..<numCourses {\n        if hasCycle(i) { return false }\n    }\n    return true\n}",
           "complexity" : {
             "space" : "O(V + E)",
             "spaceExplanation" : "Graph storage and recursion",
@@ -140,8 +140,8 @@
     {
       "approaches" : [
         {
-          "approach" : "1. Build graph: a→b with weight values[i], b→a with 1\/values[i]\n2. For query, DFS find path and multiply",
-          "code" : "func calcEquation(_ equations: [[String]], _ values: [Double], _ queries: [[String]]) -> [Double] {\n    var graph: [String: [(String, Double)]] = [:]\n    for i in 0..<equations.count {\n        let a = equations[i][0], b = equations[i][1]\n        graph[a, default: []].append((b, values[i]))\n        graph[b, default: []].append((a, 1.0 \/ values[i]))\n    }\n    \n    func dfs(_ curr: String, _ target: String, _ visited: inout Set<String>) -> Double {\n        if graph[curr] == nil { return -1.0 }\n        if curr == target { return 1.0 }\n        visited.insert(curr)\n        for (next, val) in graph[curr]! {\n            if !visited.contains(next) {\n                let res = dfs(next, target, &visited)\n                if res != -1.0 { return val * res }\n            }\n        }\n        return -1.0\n    }\n    \n    return queries.map { q in\n        var visited = Set<String>()\n        return dfs(q[0], q[1], &visited)\n    }\n}",
+          "approach" : "1. Build graph: a→b with weight values[i], b→a with 1/values[i]\n2. For query, DFS find path and multiply",
+          "code" : "func calcEquation(_ equations: [[String]], _ values: [Double], _ queries: [[String]]) -> [Double] {\n    var graph: [String: [(String, Double)]] = [:]\n    for i in 0..<equations.count {\n        let a = equations[i][0], b = equations[i][1]\n        graph[a, default: []].append((b, values[i]))\n        graph[b, default: []].append((a, 1.0 / values[i]))\n    }\n    \n    func dfs(_ curr: String, _ target: String, _ visited: inout Set<String>) -> Double {\n        if graph[curr] == nil { return -1.0 }\n        if curr == target { return 1.0 }\n        visited.insert(curr)\n        for (next, val) in graph[curr]! {\n            if !visited.contains(next) {\n                let res = dfs(next, target, &visited)\n                if res != -1.0 { return val * res }\n            }\n        }\n        return -1.0\n    }\n    \n    return queries.map { q in\n        var visited = Set<String>()\n        return dfs(q[0], q[1], &visited)\n    }\n}",
           "complexity" : {
             "space" : "O(N)",
             "spaceExplanation" : "Graph storage",
@@ -150,13 +150,13 @@
           },
           "explanation" : "Graph enables transitive division.",
           "id" : "91a389d8-8e6f-4907-981f-94e1b5e74fdc",
-          "intuition" : "a\/b = a\/c × c\/b. Find path and multiply weights.",
+          "intuition" : "a/b = a/c × c/b. Find path and multiply weights.",
           "name" : "Graph DFS",
           "order" : 1,
           "testCases" : [
             {
               "expectedOutput" : "[6.0]",
-              "explanation" : "a\/c = a\/b × b\/c = 2×3 = 6",
+              "explanation" : "a/c = a/b × b/c = 2×3 = 6",
               "id" : "796737c4-a6db-4d96-9049-ed6a701e6669",
               "input" : "equations = [[\"a\",\"b\"],[\"b\",\"c\"]], values = [2.0,3.0], queries = [[\"a\",\"c\"]]"
             }
@@ -169,13 +169,13 @@
       "relatedProblems" : [
 
       ],
-      "summary" : "Evaluate a\/b given equations. Build graph of ratios, DFS to find path product."
+      "summary" : "Evaluate a/b given equations. Build graph of ratios, DFS to find path product."
     },
     {
       "approaches" : [
         {
           "approach" : "1. Reverse edges\n2. Start from terminal nodes (no outgoing edges in original)\n3. Propagate safety backwards",
-          "code" : "func eventualSafeNodes(_ graph: [[Int]]) -> [Int] {\n    let n = graph.count\n    var state = [Int](repeating: 0, count: n)  \/\/ 0=unvisited, 1=visiting, 2=safe\n    \n    func dfs(_ node: Int) -> Bool {\n        if state[node] != 0 { return state[node] == 2 }\n        state[node] = 1\n        for next in graph[node] {\n            if !dfs(next) { return false }\n        }\n        state[node] = 2\n        return true\n    }\n    \n    var result: [Int] = []\n    for i in 0..<n {\n        if dfs(i) { result.append(i) }\n    }\n    return result\n}",
+          "code" : "func eventualSafeNodes(_ graph: [[Int]]) -> [Int] {\n    let n = graph.count\n    var state = [Int](repeating: 0, count: n)  // 0=unvisited, 1=visiting, 2=safe\n    \n    func dfs(_ node: Int) -> Bool {\n        if state[node] != 0 { return state[node] == 2 }\n        state[node] = 1\n        for next in graph[node] {\n            if !dfs(next) { return false }\n        }\n        state[node] = 2\n        return true\n    }\n    \n    var result: [Int] = []\n    for i in 0..<n {\n        if dfs(i) { result.append(i) }\n    }\n    return result\n}",
           "complexity" : {
             "space" : "O(V)",
             "spaceExplanation" : "State array",
@@ -237,7 +237,7 @@
       "relatedProblems" : [
         "number-of-islands"
       ],
-      "summary" : "Fill connected cells of same color. DFS\/BFS from starting cell."
+      "summary" : "Fill connected cells of same color. DFS/BFS from starting cell."
     },
     {
       "approaches" : [
@@ -271,7 +271,7 @@
       "relatedProblems" : [
         "possible-bipartition"
       ],
-      "summary" : "Check if graph can be 2-colored. BFS\/DFS assigning colors, check no adjacent same colors."
+      "summary" : "Check if graph can be 2-colored. BFS/DFS assigning colors, check no adjacent same colors."
     },
     {
       "approaches" : [
@@ -410,7 +410,7 @@
         "number-of-islands",
         "island-perimeter"
       ],
-      "summary" : "Find largest island area. DFS\/BFS from each land cell, mark visited, count area."
+      "summary" : "Find largest island area. DFS/BFS from each land cell, mark visited, count area."
     },
     {
       "approaches" : [
@@ -525,7 +525,7 @@
       "approaches" : [
         {
           "approach" : "Start from each unvisited node and perform a Depth-First Search to mark all nodes in the same connected component as visited. Increment the count of connected components whenever we start a new Depth-First Search from an unvisited node.",
-          "code" : "\n           class Solution {\n               func findCircleNum(_ isConnected: [[Int]]) -> Int {\n                   var visited = Array(repeating: false, count: isConnected.count)\n                   var count = 0\n\n                   for i in 0..<isConnected.count {\n                       if !visited[i] {\n                           count += 1\n                           dfs(isConnected, &visited, i)\n                       }\n                   }\n\n                   return count\n               }\n\n               func dfs(_ graph: [[Int]], _ visited: inout [Bool], _ node: Int) {\n                   visited[node] = true\n                   for i in 0..<graph.count {\n                       if graph[node][i] == 1 && !visited[i] {\n                           dfs(graph, &visited, i)\n                       }\n                   }\n               }\n           }\n           ",
+          "code" : "\nclass Solution {\n    func findCircleNum(_ isConnected: [[Int]]) -> Int {\n        var visited = Array(repeating: false, count: isConnected.count)\n        var count = 0\n\n        for i in 0..<isConnected.count {\n            if !visited[i] {\n                count += 1\n                dfs(isConnected, &visited, i)\n            }\n        }\n\n        return count\n    }\n\n    func dfs(_ graph: [[Int]], _ visited: inout [Bool], _ node: Int) {\n        visited[node] = true\n        for i in 0..<graph.count {\n            if graph[node][i] == 1 && !visited[i] {\n                dfs(graph, &visited, i)\n            }\n        }\n    }\n}\n",
           "complexity" : {
             "space" : "O(n)",
             "spaceExplanation" : "The space complexity of this approach is O(n) because we need to store the visited array of size n.",
@@ -554,7 +554,7 @@
         },
         {
           "approach" : "Use the Union-Find algorithm to group connected nodes together and count the number of groups.",
-          "code" : "\n           class Solution {\n               func findCircleNum(_ isConnected: [[Int]]) -> Int {\n                   let n = isConnected.count\n                   var parent = Array(repeating: 0, count: n)\n                   for i in 0..<n {\n                       parent[i] = i\n                   }\n\n                   for i in 0..<n {\n                       for j in i+1..<n {\n                           if isConnected[i][j] == 1 {\n                               union(&parent, i, j)\n                           }\n                       }\n                   }\n\n                   var count = 0\n                   for i in 0..<n {\n                       if find(&parent, i) == i {\n                           count += 1\n                       }\n                   }\n\n                   return count\n               }\n\n               func find(_ parent: inout [Int], _ x: Int) -> Int {\n                   if parent[x] != x {\n                       parent[x] = find(&parent, parent[x])\n                   }\n                   return parent[x]\n               }\n\n               func union(_ parent: inout [Int], _ x: Int, _ y: Int) {\n                   let rootX = find(&parent, x)\n                   let rootY = find(&parent, y)\n                   if rootX != rootY {\n                       parent[rootY] = rootX\n                   }\n               }\n           }\n           ",
+          "code" : "\nclass Solution {\n    func findCircleNum(_ isConnected: [[Int]]) -> Int {\n        let n = isConnected.count\n        var parent = Array(repeating: 0, count: n)\n        for i in 0..<n {\n            parent[i] = i\n        }\n\n        for i in 0..<n {\n            for j in i+1..<n {\n                if isConnected[i][j] == 1 {\n                    union(&parent, i, j)\n                }\n            }\n        }\n\n        var count = 0\n        for i in 0..<n {\n            if find(&parent, i) == i {\n                count += 1\n            }\n        }\n\n        return count\n    }\n\n    func find(_ parent: inout [Int], _ x: Int) -> Int {\n        if parent[x] != x {\n            parent[x] = find(&parent, parent[x])\n        }\n        return parent[x]\n    }\n\n    func union(_ parent: inout [Int], _ x: Int, _ y: Int) {\n        let rootX = find(&parent, x)\n        let rootY = find(&parent, y)\n        if rootX != rootY {\n            parent[rootY] = rootX\n        }\n    }\n}\n",
           "complexity" : {
             "space" : "O(n)",
             "spaceExplanation" : "The space complexity of this approach is O(n) because we need to store the parent array of size n.",
@@ -624,13 +624,13 @@
         "number-of-islands",
         "surrounded-regions"
       ],
-      "summary" : "Find cells that can flow to both Pacific and Atlantic oceans. Use reverse BFS\/DFS from ocean edges."
+      "summary" : "Find cells that can flow to both Pacific and Atlantic oceans. Use reverse BFS/DFS from ocean edges."
     },
     {
       "approaches" : [
         {
           "approach" : "1. Max heap on probability\n2. Relax edges by multiplying probabilities\n3. Return prob[end]",
-          "code" : "func maxProbability(_ n: Int, _ edges: [[Int]], _ succProb: [Double], _ start: Int, _ end: Int) -> Double {\n    var graph = [Int: [(Int, Double)]]()\n    for (i, e) in edges.enumerated() {\n        graph[e[0], default: []].append((e[1], succProb[i]))\n        graph[e[1], default: []].append((e[0], succProb[i]))\n    }\n    var prob = [Double](repeating: 0, count: n)\n    prob[start] = 1\n    var heap = [(1.0, start)]  \/\/ (prob, node)\n    \n    while !heap.isEmpty {\n        heap.sort { $0.0 > $1.0 }  \/\/ Max heap\n        let (p, node) = heap.removeFirst()\n        if node == end { return p }\n        if p < prob[node] { continue }\n        for (next, edgeProb) in graph[node] ?? [] {\n            let newProb = p * edgeProb\n            if newProb > prob[next] {\n                prob[next] = newProb\n                heap.append((newProb, next))\n            }\n        }\n    }\n    return 0\n}",
+          "code" : "func maxProbability(_ n: Int, _ edges: [[Int]], _ succProb: [Double], _ start: Int, _ end: Int) -> Double {\n    var graph = [Int: [(Int, Double)]]()\n    for (i, e) in edges.enumerated() {\n        graph[e[0], default: []].append((e[1], succProb[i]))\n        graph[e[1], default: []].append((e[0], succProb[i]))\n    }\n    var prob = [Double](repeating: 0, count: n)\n    prob[start] = 1\n    var heap = [(1.0, start)]  // (prob, node)\n    \n    while !heap.isEmpty {\n        heap.sort { $0.0 > $1.0 }  // Max heap\n        let (p, node) = heap.removeFirst()\n        if node == end { return p }\n        if p < prob[node] { continue }\n        for (next, edgeProb) in graph[node] ?? [] {\n            let newProb = p * edgeProb\n            if newProb > prob[next] {\n                prob[next] = newProb\n                heap.append((newProb, next))\n            }\n        }\n    }\n    return 0\n}",
           "complexity" : {
             "space" : "O(V+E)",
             "spaceExplanation" : "Graph + heap",
@@ -815,8 +815,8 @@
     {
       "approaches" : [
         {
-          "approach" : "1. Convert board position to coordinates\n2. BFS from 1, try moves 1-6\n3. Handle snakes\/ladders",
-          "code" : "func snakesAndLadders(_ board: [[Int]]) -> Int {\n    let n = board.count\n    func getCoord(_ s: Int) -> (Int, Int) {\n        let r = (s - 1) \/ n\n        let c = (s - 1) % n\n        let row = n - 1 - r\n        let col = r % 2 == 0 ? c : n - 1 - c\n        return (row, col)\n    }\n    var visited = Set<Int>([1])\n    var queue = [(1, 0)]\n    while !queue.isEmpty {\n        let (curr, moves) = queue.removeFirst()\n        for i in 1...6 {\n            var next = curr + i\n            if next > n * n { continue }\n            let (r, c) = getCoord(next)\n            if board[r][c] != -1 { next = board[r][c] }\n            if next == n * n { return moves + 1 }\n            if !visited.contains(next) {\n                visited.insert(next)\n                queue.append((next, moves + 1))\n            }\n        }\n    }\n    return -1\n}",
+          "approach" : "1. Convert board position to coordinates\n2. BFS from 1, try moves 1-6\n3. Handle snakes/ladders",
+          "code" : "func snakesAndLadders(_ board: [[Int]]) -> Int {\n    let n = board.count\n    func getCoord(_ s: Int) -> (Int, Int) {\n        let r = (s - 1) / n\n        let c = (s - 1) % n\n        let row = n - 1 - r\n        let col = r % 2 == 0 ? c : n - 1 - c\n        return (row, col)\n    }\n    var visited = Set<Int>([1])\n    var queue = [(1, 0)]\n    while !queue.isEmpty {\n        let (curr, moves) = queue.removeFirst()\n        for i in 1...6 {\n            var next = curr + i\n            if next > n * n { continue }\n            let (r, c) = getCoord(next)\n            if board[r][c] != -1 { next = board[r][c] }\n            if next == n * n { return moves + 1 }\n            if !visited.contains(next) {\n                visited.insert(next)\n                queue.append((next, moves + 1))\n            }\n        }\n    }\n    return -1\n}",
           "complexity" : {
             "space" : "O(n²)",
             "spaceExplanation" : "Visited set",
@@ -833,7 +833,7 @@
               "expectedOutput" : "4",
               "explanation" : "Minimum dice rolls",
               "id" : "0b1fe068-6347-4b39-9e4e-2d5f60ac9ea4",
-              "input" : "board with snakes\/ladders"
+              "input" : "board with snakes/ladders"
             }
           ]
         }
@@ -850,7 +850,7 @@
       "approaches" : [
         {
           "approach" : "1. DFS from all border O's, mark as 'S' (safe)\n2. Scan grid: O -> X, S -> O",
-          "code" : "func solve(_ board: inout [[Character]]) {\n    guard !board.isEmpty else { return }\n    let m = board.count, n = board[0].count\n    \n    func dfs(_ i: Int, _ j: Int) {\n        guard i >= 0 && i < m && j >= 0 && j < n && board[i][j] == \"O\" else { return }\n        board[i][j] = \"S\"\n        dfs(i+1, j); dfs(i-1, j); dfs(i, j+1); dfs(i, j-1)\n    }\n    \n    \/\/ Mark border-connected O's\n    for i in 0..<m {\n        dfs(i, 0); dfs(i, n-1)\n    }\n    for j in 0..<n {\n        dfs(0, j); dfs(m-1, j)\n    }\n    \n    \/\/ Flip: O->X, S->O\n    for i in 0..<m {\n        for j in 0..<n {\n            if board[i][j] == \"O\" { board[i][j] = \"X\" }\n            else if board[i][j] == \"S\" { board[i][j] = \"O\" }\n        }\n    }\n}",
+          "code" : "func solve(_ board: inout [[Character]]) {\n    guard !board.isEmpty else { return }\n    let m = board.count, n = board[0].count\n    \n    func dfs(_ i: Int, _ j: Int) {\n        guard i >= 0 && i < m && j >= 0 && j < n && board[i][j] == \"O\" else { return }\n        board[i][j] = \"S\"\n        dfs(i+1, j); dfs(i-1, j); dfs(i, j+1); dfs(i, j-1)\n    }\n    \n    // Mark border-connected O's\n    for i in 0..<m {\n        dfs(i, 0); dfs(i, n-1)\n    }\n    for j in 0..<n {\n        dfs(0, j); dfs(m-1, j)\n    }\n    \n    // Flip: O->X, S->O\n    for i in 0..<m {\n        for j in 0..<n {\n            if board[i][j] == \"O\" { board[i][j] = \"X\" }\n            else if board[i][j] == \"S\" { board[i][j] = \"O\" }\n        }\n    }\n}",
           "complexity" : {
             "space" : "O(m*n)",
             "spaceExplanation" : "Recursion stack",

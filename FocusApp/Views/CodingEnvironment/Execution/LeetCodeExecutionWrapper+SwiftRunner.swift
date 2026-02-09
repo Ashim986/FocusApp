@@ -63,14 +63,18 @@ extension LeetCodeExecutionWrapper {
             values.map { normalizeStringValue($0) }
         }
 
-        func parseKeyValueInput(_ input: String, paramNames: [String]) -> [String: Any] {
-            guard !paramNames.isEmpty else { return [:] }
+        func parseKeyValueInput(_ input: String, paramNames: [String]) -> (dict: [String: Any], ordered: [Any]) {
+            guard !paramNames.isEmpty else { return ([:], []) }
             let pattern = "\\b([A-Za-z_][A-Za-z0-9_]*)\\b\\s*="
-            guard let regex = try? NSRegularExpression(pattern: pattern, options: []) else { return [:] }
+            guard let regex = try? NSRegularExpression(pattern: pattern, options: []) else { return ([:], []) }
             let nsInput = input as NSString
             let matches = regex.matches(in: input, range: NSRange(location: 0, length: nsInput.length))
-            guard !matches.isEmpty else { return [:] }
+            guard !matches.isEmpty else { return ([:], []) }
+
             var results: [String: Any] = [:]
+            var ordered: [Any] = []
+            ordered.reserveCapacity(matches.count)
+
             for (idx, match) in matches.enumerated() {
                 guard match.numberOfRanges >= 2 else { continue }
                 let name = nsInput.substring(with: match.range(at: 1))
@@ -82,31 +86,35 @@ extension LeetCodeExecutionWrapper {
                     .trimmingCharacters(in: .whitespacesAndNewlines)
                     .trimmingCharacters(in: CharacterSet(charactersIn: ","))
                 guard !cleaned.isEmpty else { continue }
+
+                let parsed: Any
                 if let data = cleaned.data(using: .utf8),
                    let json = try? JSONSerialization.jsonObject(with: data) {
-                    results[name] = normalizeStringValue(json)
+                    parsed = normalizeStringValue(json)
                 } else if let quoted = parseQuotedString(cleaned) {
-                    results[name] = quoted
+                    parsed = quoted
                 } else {
-                    results[name] = normalizeStringValue(cleaned)
+                    parsed = normalizeStringValue(cleaned)
                 }
+
+                results[name.lowercased()] = parsed
+                ordered.append(parsed)
             }
-            var filtered: [String: Any] = [:]
-            for name in paramNames {
-                if let value = results[name] {
-                    filtered[name] = value
-                }
-            }
-            return filtered
+
+            return (results, ordered)
         }
 
         func parseArgs(from input: String, expectedCount: Int) -> [Any] {
             let trimmed = input.trimmingCharacters(in: .whitespacesAndNewlines)
             guard !trimmed.isEmpty else { return [] }
             let keyValues = parseKeyValueInput(trimmed, paramNames: paramNames)
-            if !keyValues.isEmpty {
-                let ordered = paramNames.compactMap { keyValues[$0] }
-                return normalizeStringValues(ordered)
+            if !keyValues.ordered.isEmpty {
+                let byName = paramNames.compactMap { keyValues.dict[$0.lowercased()] }
+                let preferred = (expectedCount > 0 && byName.count == expectedCount) ? byName : keyValues.ordered
+                if expectedCount > 0 && preferred.count > expectedCount {
+                    return normalizeStringValues(Array(preferred.prefix(expectedCount)))
+                }
+                return normalizeStringValues(preferred)
             }
             if let data = trimmed.data(using: .utf8),
                let json = try? JSONSerialization.jsonObject(with: data) {
@@ -115,6 +123,14 @@ extension LeetCodeExecutionWrapper {
                 }
                 if let array = json as? [Any] { return normalizeStringValues(array) }
                 return [normalizeStringValue(json)]
+            }
+            if expectedCount > 1 {
+                let wrapped = "[\(trimmed)]"
+                if let data = wrapped.data(using: .utf8),
+                   let json = try? JSONSerialization.jsonObject(with: data),
+                   let array = json as? [Any] {
+                    return normalizeStringValues(array)
+                }
             }
             if let quoted = parseQuotedString(trimmed) {
                 return [quoted]

@@ -6,8 +6,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/Ashim986/DSFocusFlow.git",
       "state" : {
-        "revision" : "e88f52a5854b67e5010e23da5b23cd07f0695136",
-        "version" : "1.0.1"
+        "revision" : "6d109216fab28218b2c270b025774c45ee942951",
+        "version" : "1.0.7"
       }
     }
   ],

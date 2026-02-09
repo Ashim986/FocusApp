@@ -1,89 +1,199 @@
 import Foundation
 
 extension LeetCodeExecutionWrapper {
+    private struct SwiftWrapperSupport {
+        let supportClasses: String
+        let listNodeHelpers: String
+        let treeNodeHelpers: String
+        let needsListNode: Bool
+        let needsTreeNode: Bool
+    }
+
+    private struct SwiftInvocationPlan {
+        let callLine: String
+        let outputExpression: String
+        let traceOutputExpression: String
+    }
+
     static func wrapSwift(code: String, meta: LeetCodeMetaData) -> String {
-        let methodName = meta.name ?? "solve"
-        let signature = swiftFunctionSignature(in: code, className: "Solution", methodName: methodName)
-        let params = resolvedSwiftParams(signature: signature, meta: meta)
-        let returnType = LeetCodeValueType(raw: signature?.returnType ?? meta.returnType?.type ?? "void")
-        let typesUsed = params.map { LeetCodeValueType(raw: $0.type) } + [returnType]
-        let needsListNode = typesUsed.contains { $0.needsListNode }
-        let needsTreeNode = typesUsed.contains { $0.needsTreeNode }
-        let needsListNodeSupport = needsListNode && !containsTypeDefinition(in: code, typeName: "ListNode")
-        let needsTreeNodeSupport = needsTreeNode && !containsTypeDefinition(in: code, typeName: "TreeNode")
+	        let methodName = meta.name ?? "solve"
+	        let signature = swiftFunctionSignature(in: code, className: "Solution", methodName: methodName)
+	        let params = resolvedSwiftParams(signature: signature, meta: meta)
+	        let inoutFlags = signature?.inoutParams ?? Array(repeating: false, count: params.count)
+	        let returnType = LeetCodeValueType(raw: signature?.returnType ?? meta.returnType?.type ?? "void")
+	        let typesUsed = params.map { LeetCodeValueType(raw: $0.type) } + [returnType]
+	        let wrapperSupport = buildSwiftWrapperSupport(code: code, typesUsed: typesUsed)
 
-        let supportTypes = [needsListNodeSupport ? LeetCodeValueType.listNode : nil,
-                            needsTreeNodeSupport ? LeetCodeValueType.treeNode : nil].compactMap { $0 }
-        let support = supportTypes.isEmpty ? "" : LeetCodeTemplateBuilder.swiftSupportClasses(typesUsed: supportTypes)
+	        let isSingleListNode = params.count == 1 && LeetCodeValueType(raw: params[0].type) == .listNode
+	        let arguments = params.enumerated().map { index, param -> String in
+	            let isInout = inoutFlags.indices.contains(index) ? inoutFlags[index] : false
+	            let bindingKeyword = isInout ? "var" : "let"
+	            let type = LeetCodeValueType(raw: param.type)
+	            let valueExpr = "valueAt(args, \(index))"
+	            if isSingleListNode, type == .listNode {
+	                return "\(bindingKeyword) arg\(index) = toListNode(\(valueExpr), pos: cyclePos)"
+	            }
+	            return "\(bindingKeyword) arg\(index) = \(swiftConversionExpression(type, valueExpr: valueExpr))"
+	        }
 
-        let listNodeInit = listNodeInitExpression(in: code, valueExpr: "toInt(item)", nextExpr: "nil")
-        let listNodeZeroInit = listNodeInitExpression(in: code, valueExpr: "0", nextExpr: "nil")
-        let listNodeHelpers = needsListNode
-            ? swiftListNodeHelpers(listNodeInit: listNodeInit, listNodeZeroInit: listNodeZeroInit)
-            : ""
+	        let invocation = buildSwiftInvocationPlan(
+	            params: params,
+	            signature: signature,
+	            methodName: methodName,
+	            inoutFlags: inoutFlags,
+	            returnType: returnType
+	        )
+	        let paramNamesLiteral = swiftParamNamesLiteral(params)
 
-        let treeNodeInit = treeNodeInitExpression(in: code, valueExpr: "toInt(item)", leftExpr: "nil", rightExpr: "nil")
-        let treeNodeHelpers = needsTreeNode ? swiftTreeNodeHelpers(treeNodeInit: treeNodeInit) : ""
+	        let runner = [
+	            swiftRunnerPrelude(paramNamesLiteral: paramNamesLiteral),
+	            swiftRunnerConversions(
+	                listNodeHelpers: wrapperSupport.listNodeHelpers,
+	                treeNodeHelpers: wrapperSupport.treeNodeHelpers
+	            ),
+	            swiftRunnerTrace(
+	                needsListNode: wrapperSupport.needsListNode,
+	                needsTreeNode: wrapperSupport.needsTreeNode
+	            ),
+	            swiftRunnerMain(
+	                paramsCount: params.count,
+	                arguments: arguments,
+	                callLine: invocation.callLine,
+	                outputExpression: invocation.outputExpression,
+	                traceOutputExpression: invocation.traceOutputExpression,
+	                setupLines: isSingleListNode ? ["let cyclePos = parseCyclePos(from: input)"] : []
+	            )
+	        ].joined()
 
-        let isSingleListNode = params.count == 1 && LeetCodeValueType(raw: params[0].type) == .listNode
-        let arguments = params.enumerated().map { index, param -> String in
-            let type = LeetCodeValueType(raw: param.type)
-            let valueExpr = "valueAt(args, \(index))"
-            if isSingleListNode, type == .listNode {
-                return "let arg\(index) = toListNode(\(valueExpr), pos: cyclePos)"
+	        let wrapper = """
+	        \(wrapperSupport.supportClasses.isEmpty ? "" : "\n\(wrapperSupport.supportClasses)\n")
+	        \(runner)
+	        """
+
+	        let instrumentedCode = AutoInstrumenter.instrument(
+	            code: code,
+	            language: .swift,
+	            paramNames: params.compactMap { $0.name },
+	            entryPointName: methodName
+	        )
+
+	        return """
+	        import Foundation
+
+	        #sourceLocation(file: "Solution.swift", line: 1)
+	        \(instrumentedCode)
+	        #sourceLocation()
+
+	        \(wrapper)
+	        """
+	    }
+
+    private static func buildSwiftInvocationPlan(
+        params: [LeetCodeMetaParam],
+        signature: SwiftFunctionSignature?,
+        methodName: String,
+        inoutFlags: [Bool],
+        returnType: LeetCodeValueType
+    ) -> SwiftInvocationPlan {
+        let callArgs = params.indices.map { index -> String in
+            let isInout = inoutFlags.indices.contains(index) ? inoutFlags[index] : false
+            let argRef = isInout ? "&arg\(index)" : "arg\(index)"
+            if let labels = signature?.externalLabels,
+               index < labels.count,
+               let label = labels[index] {
+                return "\(label): \(argRef)"
             }
-            return "let arg\(index) = \(swiftConversionExpression(type, valueExpr: valueExpr))"
-        }
+            return argRef
+        }.joined(separator: ", ")
 
-        let callArgs = params.indices.map { "arg\($0)" }.joined(separator: ", ")
         let resolvedMethodName = signature?.callName
             ?? LeetCodeTemplateBuilder.swiftSafeIdentifier(methodName, index: 0)
         let callSuffix = callArgs.isEmpty ? "()" : "(\(callArgs))"
-        let callLine = "let result = solution.\(resolvedMethodName)\(callSuffix)"
-        let outputExpression = swiftOutputExpression(for: returnType)
-        let traceOutputExpression = (returnType == .listNode || returnType == .treeNode) ? "result" : "output"
-        let paramNamesLiteral = swiftParamNamesLiteral(params)
 
-        let runner = [
-            swiftRunnerPrelude(paramNamesLiteral: paramNamesLiteral),
-            swiftRunnerConversions(listNodeHelpers: listNodeHelpers, treeNodeHelpers: treeNodeHelpers),
-            swiftRunnerTrace(needsListNode: needsListNode, needsTreeNode: needsTreeNode),
-            swiftRunnerMain(
-                paramsCount: params.count,
-                arguments: arguments,
-                callLine: callLine,
-                outputExpression: outputExpression,
-                traceOutputExpression: traceOutputExpression,
-                setupLines: isSingleListNode ? ["let cyclePos = parseCyclePos(from: input)"] : []
-            )
-        ].joined()
+        // For void+inout functions, use the first inout argument as the output.
+        let firstInoutIndex = inoutFlags.firstIndex(of: true)
+        let isVoidInout = returnType == .void && firstInoutIndex != nil
 
-        let wrapper = """
-        \(support.isEmpty ? "" : "\n\(support)\n")
-        \(runner)
-        """
+        let callLine = isVoidInout
+            ? "solution.\(resolvedMethodName)\(callSuffix)"
+            : "let result = solution.\(resolvedMethodName)\(callSuffix)"
 
-        let instrumentedCode = AutoInstrumenter.instrument(
-            code: code,
-            language: .swift,
-            paramNames: params.compactMap { $0.name },
-            entryPointName: methodName
+        let outputExpression: String
+        if isVoidInout, let idx = firstInoutIndex {
+            outputExpression = "arg\(idx)"
+        } else {
+            outputExpression = swiftOutputExpression(for: returnType)
+        }
+
+        let traceOutputExpression: String
+        if isVoidInout, let idx = firstInoutIndex {
+            traceOutputExpression = "arg\(idx)"
+        } else {
+            traceOutputExpression = (returnType == .listNode || returnType == .treeNode) ? "result" : "output"
+        }
+
+        return SwiftInvocationPlan(
+            callLine: callLine,
+            outputExpression: outputExpression,
+            traceOutputExpression: traceOutputExpression
         )
-
-        return """
-        import Foundation
-
-        #sourceLocation(file: "Solution.swift", line: 1)
-        \(instrumentedCode)
-        #sourceLocation()
-
-        \(wrapper)
-        """
     }
 
-    private static func resolvedSwiftParams(
-        signature: SwiftFunctionSignature?,
-        meta: LeetCodeMetaData
+    private static func buildSwiftWrapperSupport(
+        code: String,
+        typesUsed: [LeetCodeValueType]
+    ) -> SwiftWrapperSupport {
+        let needsListNode = typesUsed.contains { $0.needsListNode }
+        let needsTreeNode = typesUsed.contains { $0.needsTreeNode }
+
+        let needsListNodeSupport = needsListNode && !containsTypeDefinition(in: code, typeName: "ListNode")
+        let needsTreeNodeSupport = needsTreeNode && !containsTypeDefinition(in: code, typeName: "TreeNode")
+
+        let supportTypes = [
+            needsListNodeSupport ? LeetCodeValueType.listNode : nil,
+            needsTreeNodeSupport ? LeetCodeValueType.treeNode : nil
+        ].compactMap { $0 }
+        let supportClasses = supportTypes.isEmpty
+            ? ""
+            : LeetCodeTemplateBuilder.swiftSupportClasses(typesUsed: supportTypes)
+
+        let listNodeHelpers: String
+        if needsListNode {
+            let listNodeInit = listNodeInitExpression(in: code, valueExpr: "toInt(item)", nextExpr: "nil")
+            let listNodeZeroInit = listNodeInitExpression(in: code, valueExpr: "0", nextExpr: "nil")
+            listNodeHelpers = swiftListNodeHelpers(
+                listNodeInit: listNodeInit,
+                listNodeZeroInit: listNodeZeroInit
+            )
+        } else {
+            listNodeHelpers = ""
+        }
+
+        let treeNodeHelpers: String
+        if needsTreeNode {
+            let treeNodeInit = treeNodeInitExpression(
+                in: code,
+                valueExpr: "toInt(item)",
+                leftExpr: "nil",
+                rightExpr: "nil"
+            )
+            treeNodeHelpers = swiftTreeNodeHelpers(treeNodeInit: treeNodeInit)
+        } else {
+            treeNodeHelpers = ""
+        }
+
+        return SwiftWrapperSupport(
+            supportClasses: supportClasses,
+            listNodeHelpers: listNodeHelpers,
+            treeNodeHelpers: treeNodeHelpers,
+            needsListNode: needsListNode,
+            needsTreeNode: needsTreeNode
+        )
+    }
+
+	    private static func resolvedSwiftParams(
+	        signature: SwiftFunctionSignature?,
+	        meta: LeetCodeMetaData
     ) -> [LeetCodeMetaParam] {
         if let signature {
             return signature.params

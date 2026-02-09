@@ -11,7 +11,7 @@ struct LeetCodeExecutionWrapper {
         }
     }
 
-    private static func shouldWrap(code: String, language: ProgrammingLanguage, meta: LeetCodeMetaData) -> Bool {
+    static func shouldWrap(code: String, language: ProgrammingLanguage, meta: LeetCodeMetaData) -> Bool {
         if meta.isClassDesign { return false }
         guard let name = meta.name, !name.isEmpty else { return false }
         let marker = language == .swift ? "// FocusApp LeetCode Runner" : "# FocusApp LeetCode Runner"

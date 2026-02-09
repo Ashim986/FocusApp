@@ -4,7 +4,7 @@
       "approaches" : [
         {
           "approach" : "Generate all possible subarrays and calculate their sums, then check if the sum equals the target.",
-          "code" : "\n       func numSubarraysWithSum(_ nums: [Int], _ goal: Int) -> Int {\n         var count = 0\n         for i in 0..<nums.count {\n           var sum = 0\n           for j in i..<nums.count {\n             sum += nums[j]\n             if sum == goal {\n               count += 1\n             }\n           }\n         }\n         return count\n       }\n       ",
+          "code" : "\nfunc numSubarraysWithSum(_ nums: [Int], _ goal: Int) -> Int {\n  var count = 0\n  for i in 0..<nums.count {\n    var sum = 0\n    for j in i..<nums.count {\n      sum += nums[j]\n      if sum == goal {\n        count += 1\n      }\n    }\n  }\n  return count\n}\n",
           "complexity" : {
             "space" : "O(1)",
             "spaceExplanation" : "The space complexity is constant because we only use a fixed amount of space to store variables.",
@@ -33,7 +33,7 @@
         },
         {
           "approach" : "Use a prefix sum array and a hash table to store the counts of prefix sums, then iterate through the array to find the target sum.",
-          "code" : "\n       func numSubarraysWithSum(_ nums: [Int], _ goal: Int) -> Int {\n         var count = 0\n         var prefixSum = 0\n         var sumCount: [Int: Int] = [0: 1]\n         \n         for num in nums {\n           prefixSum += num\n           if let val = sumCount[prefixSum - goal] {\n             count += val\n           }\n           sumCount[prefixSum, default: 0] += 1\n         }\n         return count\n       }\n       ",
+          "code" : "\nfunc numSubarraysWithSum(_ nums: [Int], _ goal: Int) -> Int {\n  var count = 0\n  var prefixSum = 0\n  var sumCount: [Int: Int] = [0: 1]\n\n  for num in nums {\n    prefixSum += num\n    if let val = sumCount[prefixSum - goal] {\n      count += val\n    }\n    sumCount[prefixSum, default: 0] += 1\n  }\n  return count\n}\n",
           "complexity" : {
             "space" : "O(n)",
             "spaceExplanation" : "The space complexity is linear because we use a hash table to store the counts of prefix sums.",
@@ -248,7 +248,7 @@
         },
         {
           "approach" : "Count the frequency of each number using a hash map, then for each number, check if its possible harmonious pair (the number plus 1) exists in the hash map and update the maximum length if necessary.",
-          "code" : "func findLHS(_ nums: [Int]) -> Int { let count = Dictionary\/grouping(by: { $0 })\nvar maxLen = 0\nfor (num, freq) in count { if let freqPlusOne = count[num + 1] { maxLen = max(maxLen, freq + freqPlusOne) } }\nreturn maxLen }",
+          "code" : "func findLHS(_ nums: [Int]) -> Int { let count = Dictionary/grouping(by: { $0 })\nvar maxLen = 0\nfor (num, freq) in count { if let freqPlusOne = count[num + 1] { maxLen = max(maxLen, freq + freqPlusOne) } }\nreturn maxLen }",
           "complexity" : {
             "space" : "O(n)",
             "spaceExplanation" : "We use a hash map to store the frequency of each number, which requires linear space complexity.",
@@ -295,7 +295,7 @@
       "approaches" : [
         {
           "approach" : "1. Use a frequency map for characters in current window\n2. Track the max frequency of any character in current window\n3. Expand window by moving right pointer\n4. If (window size - maxFreq) > k, shrink from left\n5. Update result with current window size\n6. Return maximum window size found",
-          "code" : "func characterReplacement(_ s: String, _ k: Int) -> Int {\n    let chars = Array(s)\n    var freq: [Character: Int] = [:]\n    var maxFreq = 0\n    var left = 0\n    var result = 0\n    \n    for right in 0..<chars.count {\n        \/\/ Add right character to window\n        freq[chars[right], default: 0] += 1\n        maxFreq = max(maxFreq, freq[chars[right]]!)\n        \n        \/\/ Window size - maxFreq = chars we need to replace\n        \/\/ If > k, shrink window from left\n        while (right - left + 1) - maxFreq > k {\n            freq[chars[left]]! -= 1\n            left += 1\n        }\n        \n        result = max(result, right - left + 1)\n    }\n    \n    return result\n}",
+          "code" : "func characterReplacement(_ s: String, _ k: Int) -> Int {\n    let chars = Array(s)\n    var freq: [Character: Int] = [:]\n    var maxFreq = 0\n    var left = 0\n    var result = 0\n    \n    for right in 0..<chars.count {\n        // Add right character to window\n        freq[chars[right], default: 0] += 1\n        maxFreq = max(maxFreq, freq[chars[right]]!)\n        \n        // Window size - maxFreq = chars we need to replace\n        // If > k, shrink window from left\n        while (right - left + 1) - maxFreq > k {\n            freq[chars[left]]! -= 1\n            left += 1\n        }\n        \n        result = max(result, right - left + 1)\n    }\n    \n    return result\n}",
           "complexity" : {
             "space" : "O(1)",
             "spaceExplanation" : "Frequency map has at most 26 entries (uppercase letters)",
@@ -324,7 +324,7 @@
         },
         {
           "approach" : "1. Same frequency tracking and maxFreq\n2. When window becomes invalid, shift both left and right (window size stays same)\n3. Only update result when window is valid\n4. Return final window size",
-          "code" : "func characterReplacement(_ s: String, _ k: Int) -> Int {\n    let chars = Array(s)\n    var freq: [Character: Int] = [:]\n    var maxFreq = 0\n    var left = 0\n    \n    for right in 0..<chars.count {\n        freq[chars[right], default: 0] += 1\n        maxFreq = max(maxFreq, freq[chars[right]]!)\n        \n        \/\/ If invalid, slide window (don't shrink, just shift)\n        if (right - left + 1) - maxFreq > k {\n            freq[chars[left]]! -= 1\n            left += 1\n        }\n    }\n    \n    \/\/ Final window size is our answer\n    return chars.count - left\n}",
+          "code" : "func characterReplacement(_ s: String, _ k: Int) -> Int {\n    let chars = Array(s)\n    var freq: [Character: Int] = [:]\n    var maxFreq = 0\n    var left = 0\n    \n    for right in 0..<chars.count {\n        freq[chars[right], default: 0] += 1\n        maxFreq = max(maxFreq, freq[chars[right]]!)\n        \n        // If invalid, slide window (don't shrink, just shift)\n        if (right - left + 1) - maxFreq > k {\n            freq[chars[left]]! -= 1\n            left += 1\n        }\n    }\n    \n    // Final window size is our answer\n    return chars.count - left\n}",
           "complexity" : {
             "space" : "O(1)",
             "spaceExplanation" : "Frequency map bounded by alphabet size (26)",
@@ -372,7 +372,7 @@
       "approaches" : [
         {
           "approach" : "1. Initialize an empty string to store the longest substring found so far. 2. Generate all possible substrings of the input string. 3. For each substring, utilize a hash map to store the frequency of each character. 4. Check if the substring has at least k repeating characters by iterating over the hash map. 5. If it does, update the longest substring if necessary.",
-          "code" : "class Solution { func longestSubstring(_ s: String, _ k: Int) -> String { let sArray = Array(s); var longestSubstring = \"\"; for i in 0..<sArray.count { for j in i + 1..<sArray.count + 1 { let substring = String(sArray[i..<j]); var charFrequency = [Character:Int](); for char in substring { charFrequency[char, default: 0] += 1 }; var hasKRepeating = true; for value in charFrequency.values { if value < k { hasKRepeating = false; break } }; if hasKRepeating && substring.count > longestSubstring.count { longestSubstring = substring } } }; return longestSubstring } }",
+          "code" : "class Solution {\n    func longestSubstring(_ s: String, _ k: Int) -> String {\n        let sArray = Array(s)\n        var longestSubstring = \"\"\n        for i in 0..<sArray.count {\n            for j in i + 1..<sArray.count + 1 {\n                let substring = String(sArray[i..<j])\n                var charFrequency = [Character:Int]()\n                for char in substring {\n                    charFrequency[char, default: 0] += 1\n                }\n                var hasKRepeating = true\n                for value in charFrequency.values {\n                    if value < k {\n                        hasKRepeating = false\n                        break\n                    }\n                }\n                if hasKRepeating && substring.count > longestSubstring.count {\n                    longestSubstring = substring\n                }\n            }\n        }\n        return longestSubstring\n    }\n}",
           "complexity" : {
             "space" : "O(n)",
             "spaceExplanation" : "The space complexity is O(n) for storing the hash map of character frequencies and the substring.",
@@ -401,7 +401,7 @@
         },
         {
           "approach" : "1. Count the frequency of each character in the input string. 2. Split the input string into substrings at characters that appear less than k times. 3. Recursively solve the problem for each substring.",
-          "code" : "class Solution { func longestSubstring(_ s: String, _ k: Int) -> String { let sArray = Array(s); var charFrequency = [Character:Int](); for char in sArray { charFrequency[char, default: 0] += 1 }; if sArray.count < k { return \"\" }; var splitIndex = -1; for i in 0..<sArray.count { if charFrequency[sArray[i]] < k { splitIndex = i; break } }; if splitIndex == -1 { return String(sArray) }; var longestSubstring = \"\"; for i in 0..<sArray.count { if i > splitIndex { break }; let substring = longestSubstring(String(sArray[0...i]), k); if substring.count > longestSubstring.count { longestSubstring = substring } }; return longestSubstring }; func longestSubstring(_ sArray: [Character], _ k: Int) -> String { var longestSubstring = \"\"; let s = String(sArray); var charFrequency = [Character:Int](); for char in sArray { charFrequency[char, default: 0] += 1 }; if sArray.count < k { return \"\" }; for i in 0..<sArray.count { if charFrequency[sArray[i]] >= k { continue }; let substring1 = longestSubstring(Array(s.dropFirst(i+1)), k); if substring1.count > longestSubstring.count { longestSubstring = substring1 }; let substring2 = longestSubstring(Array(s.dropLast(sArray.count - i)), k); if substring2.count > longestSubstring.count { longestSubstring = substring2 } }; return longestSubstring } }",
+          "code" : "class Solution {\n    func longestSubstring(_ s: String, _ k: Int) -> String {\n        let sArray = Array(s)\n        var charFrequency = [Character:Int]()\n        for char in sArray {\n            charFrequency[char, default: 0] += 1\n        }\n        if sArray.count < k {\n            return \"\"\n        }\n        var splitIndex = -1\n        for i in 0..<sArray.count {\n            if charFrequency[sArray[i]] < k {\n                splitIndex = i\n                break\n            }\n        }\n        if splitIndex == -1 {\n            return String(sArray)\n        }\n        var longestSubstring = \"\"\n        for i in 0..<sArray.count {\n            if i > splitIndex {\n                break\n            }\n            let substring = longestSubstring(String(sArray[0...i]), k)\n            if substring.count > longestSubstring.count {\n                longestSubstring = substring\n            }\n        }\n        return longestSubstring\n    }\n    func longestSubstring(_ sArray: [Character], _ k: Int) -> String {\n        var longestSubstring = \"\"\n        let s = String(sArray)\n        var charFrequency = [Character:Int]()\n        for char in sArray {\n            charFrequency[char, default: 0] += 1\n        }\n        if sArray.count < k {\n            return \"\"\n        }\n        for i in 0..<sArray.count {\n            if charFrequency[sArray[i]] >= k {\n                continue\n            }\n            let substring1 = longestSubstring(Array(s.dropFirst(i+1)), k)\n            if substring1.count > longestSubstring.count {\n                longestSubstring = substring1\n            }\n            let substring2 = longestSubstring(Array(s.dropLast(sArray.count - i)), k)\n            if substring2.count > longestSubstring.count {\n                longestSubstring = substring2\n            }\n        }\n        return longestSubstring\n    }\n}",
           "complexity" : {
             "space" : "O(n)",
             "spaceExplanation" : "The space complexity is O(n) for storing the hash map of character frequencies and the recursive call stack.",
@@ -489,7 +489,7 @@
       "approaches" : [
         {
           "approach" : "Step 1: Initialize the maximum average as negative infinity. Step 2: Iterate over the array with two nested loops to generate all possible subarrays of size k. Step 3: Calculate the sum of the current subarray. Step 4: Calculate the average of the current subarray by dividing the sum by k. Step 5: Update the maximum average if the current average is greater.",
-          "code" : "\nimport Foundation\n\nclass Solution {\n    func findMaxAverage(_ nums: [Int], _ k: Int) -> Double {\n        var maxAverage = Double(Int.min)\n        for i in 0...(nums.count - k) {\n            var sum = 0\n            for j in i..<i + k {\n                sum += nums[j]\n            }\n            let average = Double(sum) \/ Double(k)\n            maxAverage = max(maxAverage, average)\n        }\n        return maxAverage\n    }\n}\n",
+          "code" : "\nimport Foundation\n\nclass Solution {\n    func findMaxAverage(_ nums: [Int], _ k: Int) -> Double {\n        var maxAverage = Double(Int.min)\n        for i in 0...(nums.count - k) {\n            var sum = 0\n            for j in i..<i + k {\n                sum += nums[j]\n            }\n            let average = Double(sum) / Double(k)\n            maxAverage = max(maxAverage, average)\n        }\n        return maxAverage\n    }\n}\n",
           "complexity" : {
             "space" : "O(1)",
             "spaceExplanation" : "The space complexity is O(1) as we only use a constant amount of space to store the maximum average and the current sum.",
@@ -504,13 +504,13 @@
           "testCases" : [
             {
               "expectedOutput" : "12.75",
-              "explanation" : "The maximum average is (12 + (-5) + (-6) + 50) \/ 4 = 12.75",
+              "explanation" : "The maximum average is (12 + (-5) + (-6) + 50) / 4 = 12.75",
               "id" : "ced0de2d-950c-4dc6-9772-b0283bea688c",
               "input" : "nums = [1,12,-5,-6,50,3], k = 4"
             },
             {
               "expectedOutput" : "5",
-              "explanation" : "The maximum average is 5 \/ 1 = 5",
+              "explanation" : "The maximum average is 5 / 1 = 5",
               "id" : "c8c40cef-6115-4bed-9f83-ac20b243b35b",
               "input" : "nums = [5], k = 1"
             }
@@ -518,7 +518,7 @@
         },
         {
           "approach" : "Step 1: Initialize the window sum as the sum of the first k elements. Step 2: Calculate the initial average. Step 3: Slide the window to the right by subtracting the leftmost element and adding the new element. Step 4: Update the maximum average if the current average is greater. Step 5: Repeat steps 3-4 until the window reaches the end of the array.",
-          "code" : "\nimport Foundation\n\nclass Solution {\n    func findMaxAverage(_ nums: [Int], _ k: Int) -> Double {\n        var windowSum = 0\n        for i in 0..<k {\n            windowSum += nums[i]\n        }\n        var maxAverage = Double(windowSum) \/ Double(k)\n        for i in k..<nums.count {\n            windowSum = windowSum - nums[i - k] + nums[i]\n            maxAverage = max(maxAverage, Double(windowSum) \/ Double(k))\n        }\n        return maxAverage\n    }\n}\n",
+          "code" : "\nimport Foundation\n\nclass Solution {\n    func findMaxAverage(_ nums: [Int], _ k: Int) -> Double {\n        var windowSum = 0\n        for i in 0..<k {\n            windowSum += nums[i]\n        }\n        var maxAverage = Double(windowSum) / Double(k)\n        for i in k..<nums.count {\n            windowSum = windowSum - nums[i - k] + nums[i]\n            maxAverage = max(maxAverage, Double(windowSum) / Double(k))\n        }\n        return maxAverage\n    }\n}\n",
           "complexity" : {
             "space" : "O(1)",
             "spaceExplanation" : "The space complexity is O(1) as we only use a constant amount of space to store the window sum and the maximum average.",
@@ -533,13 +533,13 @@
           "testCases" : [
             {
               "expectedOutput" : "12.75",
-              "explanation" : "The maximum average is (12 + (-5) + (-6) + 50) \/ 4 = 12.75",
+              "explanation" : "The maximum average is (12 + (-5) + (-6) + 50) / 4 = 12.75",
               "id" : "5e21280e-0b1d-43e8-9ad8-badc71fa76b8",
               "input" : "nums = [1,12,-5,-6,50,3], k = 4"
             },
             {
               "expectedOutput" : "5",
-              "explanation" : "The maximum average is 5 \/ 1 = 5",
+              "explanation" : "The maximum average is 5 / 1 = 5",
               "id" : "774062f6-c30e-44d5-a21f-913fb267c476",
               "input" : "nums = [5], k = 1"
             }
@@ -639,7 +639,7 @@
             "space" : "O(k)",
             "spaceExplanation" : "Deque size",
             "time" : "O(n)",
-            "timeExplanation" : "Each element added\/removed once"
+            "timeExplanation" : "Each element added/removed once"
           },
           "explanation" : "Deque maintains candidates in decreasing order. Front is always the max in current window.",
           "id" : "d249a08b-6e7a-43cf-a52d-e623cd924a38",

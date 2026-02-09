@@ -19,7 +19,7 @@
           "testCases" : [
             {
               "expectedOutput" : "[null,null,null,null,false,true,true,true]",
-              "explanation" : "Wildcards match any letter (\".ad\" matches bad\/dad\/mad).",
+              "explanation" : "Wildcards match any letter (\".ad\" matches bad/dad/mad).",
               "id" : "528c7f9f-bd8d-46d8-8e95-c313e0b4b2e1",
               "input" : "[\"WordDictionary\",\"addWord\",\"addWord\",\"addWord\",\"search\",\"search\",\"search\",\"search\"]\n[[],[\"bad\"],[\"dad\"],[\"mad\"],[\"pad\"],[\"bad\"],[\".ad\"],[\"b..\"]]"
             }
@@ -39,7 +39,7 @@
       "approaches" : [
         {
           "approach" : "For each search query, iterate through all words in the dictionary and count the number of different characters.",
-          "code" : "class MagicDictionary { var dictionary: [String] = []; func buildDictionary(_ dictionary: [String]) { self.dictionary = dictionary }; func search(_ searchWord: String) -> Bool { for word in dictionary { if word.count == searchWord.count { var diff = 0; for (i, char) in searchWord.enumerated() { if word[i] != char { diff += 1 } }; if diff == 1 { return true } } }; return false }; }",
+          "code" : "class MagicDictionary {\n    var dictionary: [String] = []\n    func buildDictionary(_ dictionary: [String]) {\n        self.dictionary = dictionary\n    }\n    func search(_ searchWord: String) -> Bool {\n        for word in dictionary {\n            if word.count == searchWord.count {\n                var diff = 0\n                for (i, char) in searchWord.enumerated() {\n                    if word[i] != char {\n                        diff += 1\n                    }\n                }\n                if diff == 1 {\n                    return true\n                }\n            }\n        }\n        return false\n    }\n}",
           "complexity" : {
             "space" : "O(n)",
             "spaceExplanation" : "Where n is the number of words.",
@@ -68,7 +68,7 @@
         },
         {
           "approach" : "Build a Trie from the dictionary and then for each search query traverse the Trie and count the number of different characters.",
-          "code" : "class TrieNode { var children: [Character: TrieNode] = [:]; var isEndOfWord = false }; class MagicDictionary { var root: TrieNode = TrieNode(); func buildDictionary(_ dictionary: [String]) { for word in dictionary { var node = root; for char in word { if node.children[char] == nil { node.children[char] = TrieNode() }; node = node.children[char]! }; node.isEndOfWord = true } }; func search(_ searchWord: String) -> Bool { return searchFromNode(root, searchWord, 0, 0) }; func searchFromNode(_ node: TrieNode, _ word: String, _ index: Int, _ diff: Int) -> Bool { if index == word.count { return diff == 1 && node.isEndOfWord }; if diff > 1 { return false }; for (char, childNode) in node.children { if char == word[word.index(word.startIndex, offsetBy: index)] { if searchFromNode(childNode, word, index + 1, diff) { return true }; } else { if searchFromNode(childNode, word, index + 1, diff + 1) { return true }; } }; return false }; }",
+          "code" : "class TrieNode {\n    var children: [Character: TrieNode] = [:]\n    var isEndOfWord = false\n}\nclass MagicDictionary {\n    var root: TrieNode = TrieNode()\n    func buildDictionary(_ dictionary: [String]) {\n        for word in dictionary {\n            var node = root\n            for char in word {\n                if node.children[char] == nil {\n                    node.children[char] = TrieNode()\n                }\n                node = node.children[char]!\n            }\n            node.isEndOfWord = true\n        }\n    }\n    func search(_ searchWord: String) -> Bool {\n        return searchFromNode(root, searchWord, 0, 0)\n    }\n    func searchFromNode(_ node: TrieNode, _ word: String, _ index: Int, _ diff: Int) -> Bool {\n        if index == word.count {\n            return diff == 1 && node.isEndOfWord\n        }\n        if diff > 1 {\n            return false\n        }\n        for (char, childNode) in node.children {\n            if char == word[word.index(word.startIndex, offsetBy: index)] {\n                if searchFromNode(childNode, word, index + 1, diff) {\n                    return true\n                }\n            }\n            else {\n                if searchFromNode(childNode, word, index + 1, diff + 1) {\n                    return true\n                }\n            }\n        }\n        return false\n    }\n}",
           "complexity" : {
             "space" : "O(n*m)",
             "spaceExplanation" : "Where n is the number of words and m is the length of the words.",
@@ -138,7 +138,7 @@
         "design-add-and-search-words-data-structure",
         "word-search-ii"
       ],
-      "summary" : "Store characters in a trie so insert\/search\/startsWith all run in time proportional to the word length."
+      "summary" : "Store characters in a trie so insert/search/startsWith all run in time proportional to the word length."
     },
     {
       "approaches" : [
@@ -284,7 +284,7 @@
       "approaches" : [
         {
           "approach" : "To implement the brute-force approach, we need to maintain a map of key-value pairs. When the insert operation is called, we simply add the key-value pair to the map. When the sum operation is called, we iterate over all the keys in the map and check if the key starts with the given prefix. If it does, we add the value to the sum.",
-          "code" : "\n               class MapSum {\n                   var map: [String: Int] = [:]\n\n                   func insert(_ key: String, _ val: Int) {\n                       map[key] = val\n                   }\n\n                   func sum(_ prefix: String) -> Int {\n                       var sum = 0\n                       for key in map.keys {\n                           if key.startsWith(prefix) {\n                               sum += map[key] ?? 0\n                           }\n                       }\n                       return sum\n                   }\n               }\n           ",
+          "code" : "\nclass MapSum {\n    var map: [String: Int] = [:]\n\n    func insert(_ key: String, _ val: Int) {\n        map[key] = val\n    }\n\n    func sum(_ prefix: String) -> Int {\n        var sum = 0\n        for key in map.keys {\n            if key.startsWith(prefix) {\n                sum += map[key] ?? 0\n            }\n        }\n        return sum\n    }\n}\n",
           "complexity" : {
             "space" : "O(n)",
             "spaceExplanation" : "The space complexity is O(n) because we need to store all the key-value pairs in the map.",
@@ -313,7 +313,7 @@
         },
         {
           "approach" : "To implement the Trie approach, we need to maintain a Trie data structure. When the insert operation is called, we add the key-value pair to the Trie. When the sum operation is called, we traverse the Trie to find all the keys that start with the given prefix and add up their values.",
-          "code" : "\n               class TrieNode {\n                   var children: [Character: TrieNode] = [:]\n                   var value: Int = 0\n               }\n\n               class MapSum {\n                   var root: TrieNode = TrieNode()\n                   var map: [String: Int] = [:]\n\n                   func insert(_ key: String, _ val: Int) {\n                       let diff = val - (map[key] ?? 0)\n                       map[key] = val\n                       var node = root\n                       for char in key {\n                           if node.children[char] == nil {\n                               node.children[char] = TrieNode()\n                           }\n                           node = node.children[char]!\n                           node.value += diff\n                       }\n                   }\n\n                   func sum(_ prefix: String) -> Int {\n                       var node = root\n                       for char in prefix {\n                           if node.children[char] == nil {\n                               return 0\n                           }\n                           node = node.children[char]!\n                       }\n                       return node.value\n                   }\n               }\n           ",
+          "code" : "\nclass TrieNode {\n    var children: [Character: TrieNode] = [:]\n    var value: Int = 0\n}\n\nclass MapSum {\n    var root: TrieNode = TrieNode()\n    var map: [String: Int] = [:]\n\n    func insert(_ key: String, _ val: Int) {\n        let diff = val - (map[key] ?? 0)\n        map[key] = val\n        var node = root\n        for char in key {\n            if node.children[char] == nil {\n                node.children[char] = TrieNode()\n            }\n            node = node.children[char]!\n            node.value += diff\n        }\n    }\n\n    func sum(_ prefix: String) -> Int {\n        var node = root\n        for char in prefix {\n            if node.children[char] == nil {\n                return 0\n            }\n            node = node.children[char]!\n        }\n        return node.value\n    }\n}\n",
           "complexity" : {
             "space" : "O(n)",
             "spaceExplanation" : "The space complexity is O(n) where n is the total number of characters in all keys.",
@@ -354,7 +354,7 @@
       "approaches" : [
         {
           "approach" : "For each word in the sentence, generate all prefixes and check if any of them exist in the list of words. If a prefix is found, replace the word with the prefix.",
-          "code" : "let dictionary: [String] = [...]; let sentence: String = \"...\"; func replaceWords(_ dictionary: [String], _ sentence: String) -> String { let words = sentence.components(separatedBy: \" \"); var result: [String] = []; for word in words { for dictWord in dictionary { if word.hasPrefix(dictWord) { result.append(dictWord); break; } } if result.count == words.count { break; } else if word != dictWord { result.append(word); } } return result.joined(separator: \" \"); }",
+          "code" : "let dictionary: [String] = [...]\nlet sentence: String = \"...\"\nfunc replaceWords(_ dictionary: [String], _ sentence: String) -> String {\n    let words = sentence.components(separatedBy: \" \")\n    var result: [String] = []\n    for word in words {\n        for dictWord in dictionary {\n            if word.hasPrefix(dictWord) {\n                result.append(dictWord)\n                break\n            }\n        }\n        if result.count == words.count {\n            break\n        }\n        else if word != dictWord {\n            result.append(word)\n        }\n    }\n    return result.joined(separator: \" \")\n}",
           "complexity" : {
             "space" : "O(n)",
             "spaceExplanation" : "We need to store the result and potentially all words from the sentence and dictionary.",
@@ -383,7 +383,7 @@
         },
         {
           "approach" : "Build a Trie from the dictionary, then for each word in the sentence, traverse the Trie to find the shortest prefix that is a complete word in the Trie.",
-          "code" : "class TrieNode { var children: [Character: TrieNode] = [:]; var isWord: Bool = false; } class Solution { func replaceWords(_ dictionary: [String], _ sentence: String) -> String { let trie = TrieNode(); for word in dictionary { var node = trie; for char in word { if node.children[char] == nil { node.children[char] = TrieNode(); } node = node.children[char]!; } node.isWord = true; } let words = sentence.components(separatedBy: \" \"); var result: [String] = []; for word in words { var node = trie; var prefix = \"\"; for char in word { prefix += String(char); if node.children[char] == nil { break; } node = node.children[char]!; if node.isWord { result.append(prefix); break; } } if !node.isWord { result.append(word); } } return result.joined(separator: \" \"); } }",
+          "code" : "class TrieNode {\n    var children: [Character: TrieNode] = [:]\n    var isWord: Bool = false\n}\nclass Solution {\n    func replaceWords(_ dictionary: [String], _ sentence: String) -> String {\n        let trie = TrieNode()\n        for word in dictionary {\n            var node = trie\n            for char in word {\n                if node.children[char] == nil {\n                    node.children[char] = TrieNode()\n                }\n                node = node.children[char]!\n            }\n            node.isWord = true\n        }\n        let words = sentence.components(separatedBy: \" \")\n        var result: [String] = []\n        for word in words {\n            var node = trie\n            var prefix = \"\"\n            for char in word {\n                prefix += String(char)\n                if node.children[char] == nil {\n                    break\n                }\n                node = node.children[char]!\n                if node.isWord {\n                    result.append(prefix)\n                    break\n                }\n            }\n            if !node.isWord {\n                result.append(word)\n            }\n        }\n        return result.joined(separator: \" \")\n    }\n}",
           "complexity" : {
             "space" : "O(m*k)",
             "spaceExplanation" : "Space is needed to store the Trie and the result.",

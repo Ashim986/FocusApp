@@ -43,13 +43,38 @@ extension CodingEnvironmentPresenter {
         orderMatters: Bool = true
     ) -> Bool {
         if actual == expected { return true }
+
+        let normActual = Self.stripSurroundingQuotes(actual)
+        let normExpected = Self.stripSurroundingQuotes(expected)
+        if normActual == normExpected { return true }
+
+        let compactActual = Self.compactJSON(normActual)
+        let compactExpected = Self.compactJSON(normExpected)
+        if compactActual == compactExpected { return true }
+
         // Only try order-insensitive comparison when the problem allows any order
         guard !orderMatters else { return false }
-        if let sortedActual = sortedJSONArray(actual),
-           let sortedExpected = sortedJSONArray(expected) {
+        if let sortedActual = sortedJSONArray(compactActual),
+           let sortedExpected = sortedJSONArray(compactExpected) {
             return sortedActual == sortedExpected
         }
         return false
+    }
+
+    private static func stripSurroundingQuotes(_ value: String) -> String {
+        let trimmed = value.trimmingCharacters(in: .whitespacesAndNewlines)
+        if trimmed.count >= 2, trimmed.hasPrefix("\""), trimmed.hasSuffix("\"") {
+            let inner = String(trimmed.dropFirst().dropLast())
+            if !inner.contains("\"") { return inner }
+        }
+        return trimmed
+    }
+
+    private static func compactJSON(_ value: String) -> String {
+        var result = value
+        result = result.replacingOccurrences(of: ", ", with: ",")
+        result = result.replacingOccurrences(of: ": ", with: ":")
+        return result
     }
 
     /// Parses a JSON array string and returns a sorted string representation.

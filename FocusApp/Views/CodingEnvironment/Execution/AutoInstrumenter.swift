@@ -6,7 +6,7 @@ import Foundation
 /// This provides trace data automatically without requiring the user to manually
 /// call `Trace.step()`. It is disabled (returns code unchanged) when the user
 /// has already written any manual `Trace.step` or `_Trace.step` calls.
-enum AutoInstrumenter { // swiftlint:disable:this type_body_length
+enum AutoInstrumenter {
 
     // MARK: - Public API
 
@@ -45,52 +45,20 @@ enum AutoInstrumenter { // swiftlint:disable:this type_body_length
             return stripped.contains("_Trace.step")
         }
     }
+}
 
-    // MARK: - Common Variables
+// MARK: - Swift Instrumentation
 
-    /// Common variable names to capture in trace steps.
-    private static let commonSwiftVars = [
-        "result", "ans", "res", "output",
-        "i", "j", "k", "idx", "index",
-        "left", "right", "mid", "lo", "hi",
-        "curr", "prev", "current", "next", "node", "head", "tail", "root", "dummy",
-        "stack", "queue", "count", "sum", "total",
-        "dp", "memo", "visited", "seen",
-        "temp", "val", "key", "num",
-        "fast", "slow", "first", "second", "pointer", "ptr"
-    ]
+extension AutoInstrumenter {
+    private struct SwiftLineInfo {
+        let lineIndex: Int
+        let strippedTrimmed: String
+        let braceDepthBefore: Int
+        let openBraces: Int
+        let closeBraces: Int
+    }
 
-    private static let commonPythonVars = [
-        "result", "ans", "res", "output",
-        "i", "j", "k", "idx", "index",
-        "left", "right", "mid", "lo", "hi",
-        "curr", "prev", "current", "next", "node", "head", "tail", "root", "dummy",
-        "stack", "queue", "count", "total",
-        "dp", "memo", "visited", "seen",
-        "temp", "val", "key", "num",
-        "fast", "slow", "first", "second", "pointer", "ptr"
-    ]
-
-    // MARK: - Swift Instrumentation
-
-    // swiftlint:disable:next cyclomatic_complexity function_body_length
-    private static func instrumentSwift(
-        code: String,
-        entryPointName: String?,
-        paramNames: [String]
-    ) -> String {
-        let hasManualTraceCalls = hasManualTrace(code: code, language: .swift)
-
-        let lines = code.components(separatedBy: "\n")
-        var result: [String] = []
-        let stripped = LeetCodeExecutionWrapper.stripCommentsAndStrings(from: code)
-        let strippedLines = stripped.components(separatedBy: "\n")
-        let resolvedEntryPointName = entryPointName?.trimmingCharacters(in: .whitespacesAndNewlines)
-        let entryPoint = (resolvedEntryPointName?.isEmpty == false)
-            ? resolvedEntryPointName
-            : detectSwiftEntryPointName(stripped: stripped)
-        var entryParamNames = paramNames
-
+    private struct SwiftInstrumentationState {
         var braceDepth = 0
         var solutionDepth: Int?
         var isPendingSolutionOpen = false
@@ -98,105 +66,257 @@ enum AutoInstrumenter { // swiftlint:disable:this type_body_length
         var entryDepth: Int?
         var isPendingEntryOpen = false
         var isInEntryPoint = false
+
+        // Return/loop instrumentation should only apply to the main LeetCode entry function.
+        // We track nested closures/local functions inside the entry function and avoid
+        // instrumenting inside them to prevent exclusivity violations (e.g. `array.sort { return ... }`).
+        var closureDepths: [Int] = []
+        var localFuncDepths: [Int] = []
+
+        var entryParamNames: [String]
         var entryFuncLevelDecls: [VarDecl] = []
+
+        init(entryParamNames: [String]) {
+            self.entryParamNames = entryParamNames
+        }
+    }
+
+    private static func instrumentSwift(
+        code: String,
+        entryPointName: String?,
+        paramNames: [String]
+    ) -> String {
+        let hasManualTraceCalls = hasManualTrace(code: code, language: .swift)
+        let lines = code.components(separatedBy: "\n")
+        let stripped = LeetCodeExecutionWrapper.stripCommentsAndStrings(from: code)
+        let strippedLines = stripped.components(separatedBy: "\n")
+
+        let resolvedEntryPointName = entryPointName?.trimmingCharacters(in: .whitespacesAndNewlines)
+        let entryPoint = (resolvedEntryPointName?.isEmpty == false)
+            ? resolvedEntryPointName
+            : detectSwiftEntryPointName(stripped: stripped)
+
+        var state = SwiftInstrumentationState(entryParamNames: paramNames)
+        var result: [String] = []
+        result.reserveCapacity(lines.count)
 
         for lineIndex in 0..<lines.count {
             let line = lines[lineIndex]
             let trimmed = line.trimmingCharacters(in: .whitespaces)
             let strippedLine = strippedLines.indices.contains(lineIndex) ? strippedLines[lineIndex] : line
             let strippedTrimmed = strippedLine.trimmingCharacters(in: .whitespaces)
-            let braceDepthBefore = braceDepth
+
+            let braceDepthBefore = state.braceDepth
             let openBraces = countOccurrences(of: "{", in: strippedLine)
             let closeBraces = countOccurrences(of: "}", in: strippedLine)
 
-            if solutionDepth == nil, isSwiftSolutionClassOpening(line: strippedTrimmed) {
-                isPendingSolutionOpen = true
-            }
+            let info = SwiftLineInfo(
+                lineIndex: lineIndex,
+                strippedTrimmed: strippedTrimmed,
+                braceDepthBefore: braceDepthBefore,
+                openBraces: openBraces,
+                closeBraces: closeBraces
+            )
 
-            if isPendingSolutionOpen, solutionDepth == nil, openBraces > 0 {
-                solutionDepth = braceDepthBefore + 1
-                isPendingSolutionOpen = false
-            }
+            updateSolutionState(info: info, state: &state)
+            let isInSolution = state.solutionDepth.map { braceDepthBefore >= $0 } ?? false
 
-            let isInSolution = solutionDepth.map { braceDepthBefore >= $0 } ?? false
+            updateEntryPointState(
+                info: info,
+                strippedLines: strippedLines,
+                entryPoint: entryPoint,
+                isInSolution: isInSolution,
+                state: &state
+            )
 
-            if isInSolution, entryDepth == nil, let entryPoint {
-                if !isPendingEntryOpen, isSwiftEntryPointSignature(line: strippedTrimmed, name: entryPoint) {
-                    let parsedParams = swiftParamNamesFromSignature(
-                        strippedLines: strippedLines,
-                        signatureStartLineIndex: lineIndex
-                    )
-                    if !parsedParams.isEmpty {
-                        entryParamNames = parsedParams
-                    }
-                    if openBraces > 0 {
-                        entryDepth = braceDepthBefore + 1
-                        isInEntryPoint = true
-                        entryFuncLevelDecls = []
-                    } else {
-                        isPendingEntryOpen = true
-                    }
-                } else if isPendingEntryOpen, openBraces > 0 {
-                    entryDepth = braceDepthBefore + 1
-                    isInEntryPoint = true
-                    isPendingEntryOpen = false
-                    entryFuncLevelDecls = []
-                }
-            }
+            updateNestedScopes(info: info, entryPoint: entryPoint, state: &state)
+            let isInsideNestedScope = !state.closureDepths.isEmpty || !state.localFuncDepths.isEmpty
 
-            let visibleVars: [String]
-            if isInEntryPoint, let entryDepth {
-                if braceDepthBefore == entryDepth, let decl = parseSwiftVarDecl(from: strippedTrimmed) {
-                    entryFuncLevelDecls.append(VarDecl(name: decl, line: lineIndex))
-                }
-                visibleVars = entryFuncLevelDecls
-                    .filter { $0.line < lineIndex }
-                    .map(\.name)
-            } else {
-                visibleVars = []
-            }
+            let visibleVars = visibleSwiftVars(info: info, state: &state)
 
-            var instrumentedLine = line
-            if isInEntryPoint {
-                let captureDict = swiftScopedCapture(
-                    paramNames: entryParamNames,
+            if state.isInEntryPoint,
+               isInsideNestedScope == false,
+               hasManualTraceCalls == false,
+               isSwiftStandaloneReturnLine(strippedTrimmed: strippedTrimmed) {
+                let captureVars = swiftCaptureVars(
+                    paramNames: state.entryParamNames,
                     funcLevelVars: visibleVars,
                     loopVars: []
                 )
-                instrumentedLine = injectSwiftReturnTrace(into: line, captureDict: captureDict)
+                result.append(
+                    contentsOf: swiftTraceLines(
+                        label: "return",
+                        captureVars: captureVars,
+                        indent: leadingWhitespace(line),
+                        uniqueSuffix: lineIndex
+                    )
+                )
             }
-            result.append(instrumentedLine)
 
-            // Detect loop openings: for...{, while...{, repeat {
-            if isInEntryPoint,
+            result.append(line)
+
+            if state.isInEntryPoint,
+               isInsideNestedScope == false,
                hasManualTraceCalls == false,
-               isSwiftLoopOpening(trimmed: trimmed, stripped: stripped, line: line) {
+               isSwiftLoopOpening(trimmed: trimmed) {
                 let indent = leadingWhitespace(line) + "    "
                 let loopVars = extractSwiftLoopVars(trimmed: trimmed)
-                let captureDict = swiftScopedCapture(
-                    paramNames: entryParamNames,
+                let captureVars = swiftCaptureVars(
+                    paramNames: state.entryParamNames,
                     funcLevelVars: visibleVars,
                     loopVars: loopVars
                 )
-                result.append("\(indent)Trace.step(\"loop\", \(captureDict))")
+                result.append(
+                    contentsOf: swiftTraceLines(
+                        label: "loop",
+                        captureVars: captureVars,
+                        indent: indent,
+                        uniqueSuffix: lineIndex
+                    )
+                )
             }
 
-            braceDepth = max(0, braceDepthBefore + openBraces - closeBraces)
-
-            if let currentEntryDepth = entryDepth, isInEntryPoint, braceDepth < currentEntryDepth {
-                isInEntryPoint = false
-                entryDepth = nil
-                entryFuncLevelDecls = []
-            }
-
-            if let currentSolutionDepth = solutionDepth, braceDepth < currentSolutionDepth {
-                solutionDepth = nil
-            }
+            closeScopesAfterLine(info: info, state: &state)
         }
 
         return result.joined(separator: "\n")
     }
 
+    private static func updateNestedScopes(
+        info: SwiftLineInfo,
+        entryPoint: String?,
+        state: inout SwiftInstrumentationState
+    ) {
+        guard state.isInEntryPoint, info.openBraces > 0 else { return }
+
+        if isSwiftNestedFunctionSignature(line: info.strippedTrimmed, entryPoint: entryPoint) {
+            state.localFuncDepths.append(info.braceDepthBefore + 1)
+            return
+        }
+
+        if isSwiftClosureOpening(line: info.strippedTrimmed) {
+            state.closureDepths.append(info.braceDepthBefore + 1)
+        }
+    }
+
+    private static func isSwiftNestedFunctionSignature(line: String, entryPoint: String?) -> Bool {
+        guard line.hasPrefix("func ") else { return false }
+        if let entryPoint, isSwiftEntryPointSignature(line: line, name: entryPoint) {
+            return false
+        }
+        return true
+    }
+
+    private static func isSwiftClosureOpening(line: String) -> Bool {
+        guard line.contains("{") else { return false }
+
+        // Avoid misclassifying declarations/control-flow blocks as closures.
+        let prefixes = [
+            "}", "class ", "struct ", "enum ", "protocol ", "extension ",
+            "func ", "if ", "else", "for ", "while ", "switch ", "do ", "catch ", "defer ", "repeat "
+        ]
+        if prefixes.contains(where: { line.hasPrefix($0) }) { return false }
+        if line.hasPrefix("guard ") { return false }
+        if line.contains(" else {") { return false }
+
+        return true
+    }
+
+    private static func updateSolutionState(info: SwiftLineInfo, state: inout SwiftInstrumentationState) {
+        if state.solutionDepth == nil, isSwiftSolutionClassOpening(line: info.strippedTrimmed) {
+            state.isPendingSolutionOpen = true
+        }
+        if state.isPendingSolutionOpen, state.solutionDepth == nil, info.openBraces > 0 {
+            state.solutionDepth = info.braceDepthBefore + 1
+            state.isPendingSolutionOpen = false
+        }
+    }
+
+    private static func updateEntryPointState(
+        info: SwiftLineInfo,
+        strippedLines: [String],
+        entryPoint: String?,
+        isInSolution: Bool,
+        state: inout SwiftInstrumentationState
+    ) {
+        guard isInSolution, state.entryDepth == nil, let entryPoint else { return }
+
+        if state.isPendingEntryOpen == false,
+           isSwiftEntryPointSignature(line: info.strippedTrimmed, name: entryPoint) {
+            let parsedParams = swiftParamNamesFromSignature(
+                strippedLines: strippedLines,
+                signatureStartLineIndex: info.lineIndex
+            )
+            if !parsedParams.isEmpty {
+                state.entryParamNames = parsedParams
+            }
+            if info.openBraces > 0 {
+                state.entryDepth = info.braceDepthBefore + 1
+                state.isInEntryPoint = true
+                state.entryFuncLevelDecls = []
+            } else {
+                state.isPendingEntryOpen = true
+            }
+            return
+        }
+
+        if state.isPendingEntryOpen, info.openBraces > 0 {
+            state.entryDepth = info.braceDepthBefore + 1
+            state.isInEntryPoint = true
+            state.isPendingEntryOpen = false
+            state.entryFuncLevelDecls = []
+        }
+    }
+
+    private static func visibleSwiftVars(info: SwiftLineInfo, state: inout SwiftInstrumentationState) -> [String] {
+        guard state.isInEntryPoint, let entryDepth = state.entryDepth else { return [] }
+
+        if info.braceDepthBefore == entryDepth,
+           let decl = parseSwiftVarDecl(from: info.strippedTrimmed) {
+            state.entryFuncLevelDecls.append(VarDecl(name: decl, line: info.lineIndex))
+        }
+
+        return state.entryFuncLevelDecls
+            .filter { $0.line < info.lineIndex }
+            .map(\.name)
+    }
+
+    private static func closeScopesAfterLine(info: SwiftLineInfo, state: inout SwiftInstrumentationState) {
+        state.braceDepth = max(0, info.braceDepthBefore + info.openBraces - info.closeBraces)
+
+        while let depth = state.closureDepths.last, state.braceDepth < depth {
+            state.closureDepths.removeLast()
+        }
+        while let depth = state.localFuncDepths.last, state.braceDepth < depth {
+            state.localFuncDepths.removeLast()
+        }
+
+        if let entryDepth = state.entryDepth,
+           state.isInEntryPoint,
+           state.braceDepth < entryDepth {
+            state.isInEntryPoint = false
+            state.entryDepth = nil
+            state.entryFuncLevelDecls = []
+            state.closureDepths = []
+            state.localFuncDepths = []
+        }
+
+        if let solutionDepth = state.solutionDepth,
+           state.braceDepth < solutionDepth {
+            state.solutionDepth = nil
+            state.isPendingSolutionOpen = false
+
+            state.isInEntryPoint = false
+            state.entryDepth = nil
+            state.isPendingEntryOpen = false
+            state.entryFuncLevelDecls = []
+            state.closureDepths = []
+            state.localFuncDepths = []
+        }
+    }
+}
+
+extension AutoInstrumenter {
     private static func swiftParamNamesFromSignature(
         strippedLines: [String],
         signatureStartLineIndex: Int
@@ -295,7 +415,9 @@ enum AutoInstrumenter { // swiftlint:disable:this type_body_length
         }
         return nil
     }
+}
 
+extension AutoInstrumenter {
     private static func isSwiftSolutionClassOpening(line: String) -> Bool {
         let pattern = "\\b(class|struct)\\s+Solution\\b"
         return line.range(of: pattern, options: .regularExpression) != nil
@@ -331,20 +453,6 @@ enum AutoInstrumenter { // swiftlint:disable:this type_body_length
         return String(strippedTrimmedLine[nameRange])
     }
 
-    private static func injectSwiftReturnTrace(into line: String, captureDict: String) -> String {
-        guard let regex = try? NSRegularExpression(pattern: "\\breturn\\b") else { return line }
-        let (codePart, commentPart) = splitLineComment(line)
-        let replacement = "Trace.step(\"return\", \(captureDict)); return"
-        let range = NSRange(codePart.startIndex..., in: codePart)
-        let replaced = regex.stringByReplacingMatches(
-            in: codePart,
-            options: [],
-            range: range,
-            withTemplate: replacement
-        )
-        return replaced + commentPart
-    }
-
     private static func splitLineComment(_ line: String) -> (code: String, comment: String) {
         guard let range = line.range(of: "//") else { return (line, "") }
         return (String(line[..<range.lowerBound]), String(line[range.lowerBound...]))
@@ -354,313 +462,58 @@ enum AutoInstrumenter { // swiftlint:disable:this type_body_length
         haystack.reduce(0) { $0 + ($1 == needle ? 1 : 0) }
     }
 
-    private static func isSwiftLoopOpening(
-        trimmed: String,
-        stripped: String,
-        line: String
-    ) -> Bool {
+    private static func isSwiftLoopOpening(trimmed: String) -> Bool {
         let loopPatterns = [
             "^for\\s+.*\\{\\s*$",
             "^while\\s+.*\\{\\s*$",
             "^repeat\\s*\\{\\s*$"
         ]
-        for pattern in loopPatterns where trimmed.range(of: pattern, options: .regularExpression) != nil {
-            return true
-        }
-        return false
+        return loopPatterns.contains { trimmed.range(of: $0, options: .regularExpression) != nil }
     }
 
-    private static func isSwiftFuncOpening(trimmed: String) -> Bool {
-        let pattern = "^(func|private\\s+func|static\\s+func)\\s+\\w+.*\\{\\s*$"
-        return trimmed.range(of: pattern, options: .regularExpression) != nil
-    }
-
-    private static func detectSwiftRecursion(stripped: String) -> Bool {
-        // Extract method name from Solution class
-        let funcPattern = "func\\s+(\\w+)\\s*\\("
-        guard let regex = try? NSRegularExpression(pattern: funcPattern),
-              let match = regex.firstMatch(
-                in: stripped,
-                range: NSRange(stripped.startIndex..., in: stripped)
-              ),
-              let nameRange = Range(match.range(at: 1), in: stripped) else {
-            return false
-        }
-        let methodName = String(stripped[nameRange])
-        // Check if the method name appears more than once (call site)
-        let callPattern = "\\b\(NSRegularExpression.escapedPattern(for: methodName))\\s*\\("
-        guard let callRegex = try? NSRegularExpression(pattern: callPattern) else {
-            return false
-        }
-        let matches = callRegex.numberOfMatches(
-            in: stripped,
-            range: NSRange(stripped.startIndex..., in: stripped)
-        )
-        return matches >= 2
-    }
-
-    /// Builds a capture dictionary using only variables provably in scope:
-    /// function parameters, function-level `var`/`let` declarations, and
-    /// the current loop's binding variables.
-    private static func swiftScopedCapture(
+    private static func swiftCaptureVars(
         paramNames: [String],
         funcLevelVars: [String],
         loopVars: [String]
-    ) -> String {
+    ) -> [String] {
         let allVars = (paramNames + loopVars + funcLevelVars)
             .map { $0.trimmingCharacters(in: .whitespacesAndNewlines) }
             .filter { isValidSwiftIdentifier($0) }
             .uniqued()
-        let pairs = allVars.prefix(20).map { name in
-            "\"\(name)\": \(name) as Any"
-        }
-        return "[\(pairs.joined(separator: ", "))]"
+        // Keep this small; large capture dictionaries can cause the Swift compiler
+        // to time out type-checking when inserted repeatedly inside loops.
+        return Array(allVars.prefix(8))
     }
 
-    // MARK: - Python Instrumentation
-
-    private static func instrumentPython(
-        code: String,
-        entryPointName: String?,
-        paramNames: [String]
-    ) -> String {
-        let hasManualTraceCalls = hasManualTrace(code: code, language: .python)
-
-        let lines = code.components(separatedBy: "\n")
-        var result: [String] = []
-        let stripped = LeetCodeExecutionWrapper.stripCommentsAndStrings(from: code)
-        let assignedVars = extractPythonAssignedVars(lines: lines)
-        let resolvedEntryPointName = entryPointName?.trimmingCharacters(in: .whitespacesAndNewlines)
-        let entryPoint = (resolvedEntryPointName?.isEmpty == false)
-            ? resolvedEntryPointName
-            : detectPythonEntryPointName(stripped: stripped)
-        var entryParamNames = paramNames
-
-        var solutionIndent: Int?
-        var entryIndent: Int?
-        var nestedDefIndents: [Int] = []
-
-        for lineIndex in 0..<lines.count {
-            let line = lines[lineIndex]
-            let trimmed = line.trimmingCharacters(in: .whitespaces)
-            let indentCount = leadingWhitespace(line).count
-
-            if solutionIndent == nil, trimmed.range(of: "^class\\s+Solution\\b", options: .regularExpression) != nil {
-                solutionIndent = indentCount
-            }
-
-            if let currentSolutionIndent = solutionIndent,
-               indentCount <= currentSolutionIndent,
-               trimmed.hasPrefix("class ") == false {
-                // Left the Solution class.
-                solutionIndent = nil
-                entryIndent = nil
-                nestedDefIndents = []
-            }
-
-            let isInSolution = solutionIndent.map { indentCount > $0 } ?? false
-            if isInSolution,
-               entryIndent == nil,
-               let entryPoint,
-               isPythonEntryPointSignature(trimmed: trimmed, name: entryPoint) {
-                entryIndent = indentCount
-                nestedDefIndents = []
-                let parsedParams = pythonParamNamesFromSignature(trimmedSignatureLine: trimmed)
-                if !parsedParams.isEmpty {
-                    entryParamNames = parsedParams
-                }
-            }
-
-            if let currentEntryIndent = entryIndent,
-               indentCount <= currentEntryIndent,
-               isInSolution,
-               trimmed.hasPrefix("def ") == false {
-                // Left the entry point method.
-                entryIndent = nil
-                nestedDefIndents = []
-            }
-
-            while let last = nestedDefIndents.last, indentCount <= last {
-                nestedDefIndents.removeLast()
-            }
-
-            let isInEntryPoint = entryIndent.map { indentCount > $0 } ?? false
-            if isInEntryPoint, trimmed.hasPrefix("def ") {
-                nestedDefIndents.append(indentCount)
-            }
-
-            let canInstrument = isInEntryPoint && nestedDefIndents.isEmpty
-            let captureDict = pythonCaptureExpression(
-                paramNames: entryParamNames,
-                assignedVars: assignedVars,
-                loopVars: [],
-                stripped: stripped
-            )
-            let lineWithReturnTrace = canInstrument
-                ? injectPythonReturnTrace(into: line, captureDict: captureDict)
-                : line
-
-            result.append(lineWithReturnTrace)
-
-            // Detect loop openings: for...:, while...:
-            if canInstrument, hasManualTraceCalls == false, isPythonLoopOpening(trimmed: trimmed) {
-                let bodyIndent = leadingWhitespace(line) + "    "
-                let loopVars = extractPythonLoopVars(trimmed: trimmed)
-                let loopCapture = pythonCaptureExpression(
-                    paramNames: entryParamNames,
-                    assignedVars: assignedVars,
-                    loopVars: loopVars,
-                    stripped: stripped
-                )
-                // Insert a try/except around trace so variable
-                // not-yet-defined errors don't crash the program
-                let traceCall = "_Trace.step(\"loop\", \(loopCapture))"
-                result.append("\(bodyIndent)try: \(traceCall)")
-                result.append("\(bodyIndent)except: pass")
-            }
+    private static func swiftTraceLines(
+        label: String,
+        captureVars: [String],
+        indent: String,
+        uniqueSuffix: Int
+    ) -> [String] {
+        guard !captureVars.isEmpty else {
+            return ["\(indent)Trace.step(\"\(label)\")"]
         }
 
-        return result.joined(separator: "\n")
-    }
-
-    private static func pythonParamNamesFromSignature(trimmedSignatureLine: String) -> [String] {
-        let pattern = "^def\\s+\\w+\\s*\\(([^)]*)\\)"
-        guard let regex = try? NSRegularExpression(pattern: pattern) else { return [] }
-        let range = NSRange(trimmedSignatureLine.startIndex..., in: trimmedSignatureLine)
-        guard let match = regex.firstMatch(in: trimmedSignatureLine, options: [], range: range),
-              let argsRange = Range(match.range(at: 1), in: trimmedSignatureLine) else {
-            return []
+        let traceVar = "__focusTrace_\(uniqueSuffix)"
+        var lines: [String] = ["\(indent)var \(traceVar): [String: Any?] = [:]"]
+        for name in captureVars {
+            lines.append("\(indent)\(traceVar)[\"\(name)\"] = \(name)")
         }
-        let argsRaw = String(trimmedSignatureLine[argsRange])
-        let pieces = argsRaw.split(separator: ",").map { $0.trimmingCharacters(in: .whitespacesAndNewlines) }
-        return pieces
-            .compactMap { piece in
-                let namePart = piece.split(separator: ":", maxSplits: 1, omittingEmptySubsequences: true).first
-                let name = namePart.map(String.init)?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
-                guard !name.isEmpty else { return nil }
-                guard name != "self", name != "cls" else { return nil }
-                return name
-            }
+        lines.append("\(indent)Trace.step(\"\(label)\", \(traceVar))")
+        return lines
     }
 
-    private static func isPythonEntryPointSignature(trimmed: String, name: String) -> Bool {
-        let escaped = NSRegularExpression.escapedPattern(for: name)
-        let pattern = "^def\\s+\(escaped)\\s*\\("
-        return trimmed.range(of: pattern, options: .regularExpression) != nil
+    private static func isSwiftStandaloneReturnLine(strippedTrimmed: String) -> Bool {
+        // Only instrument `return ...` that starts the statement.
+        // Inline returns like `if x { return y }` are left untouched to avoid
+        // rewriting complex single-line constructs.
+        strippedTrimmed == "return" || strippedTrimmed.hasPrefix("return ")
     }
+}
 
-    private static func detectPythonEntryPointName(stripped: String) -> String? {
-        let pattern = "^\\s*def\\s+([a-zA-Z_][a-zA-Z0-9_]*)\\s*\\("
-        guard let regex = try? NSRegularExpression(pattern: pattern, options: [.anchorsMatchLines]) else {
-            return nil
-        }
-        let range = NSRange(stripped.startIndex..., in: stripped)
-        guard let match = regex.firstMatch(in: stripped, options: [], range: range),
-              let nameRange = Range(match.range(at: 1), in: stripped) else {
-            return nil
-        }
-        return String(stripped[nameRange])
-    }
-
-    private static func injectPythonReturnTrace(into line: String, captureDict: String) -> String {
-        guard let regex = try? NSRegularExpression(pattern: "\\breturn\\b") else { return line }
-        let (codePart, commentPart) = splitPythonLineComment(line)
-        let replacement = "_Trace.step(\"return\", \(captureDict)); return"
-        let range = NSRange(codePart.startIndex..., in: codePart)
-        let replaced = regex.stringByReplacingMatches(
-            in: codePart,
-            options: [],
-            range: range,
-            withTemplate: replacement
-        )
-        return replaced + commentPart
-    }
-
-    private static func splitPythonLineComment(_ line: String) -> (code: String, comment: String) {
-        guard let range = line.range(of: "#") else { return (line, "") }
-        return (String(line[..<range.lowerBound]), String(line[range.lowerBound...]))
-    }
-
-    private static func isPythonLoopOpening(trimmed: String) -> Bool {
-        let loopPatterns = [
-            "^for\\s+.*:\\s*$",
-            "^while\\s+.*:\\s*$"
-        ]
-        for pattern in loopPatterns where trimmed.range(of: pattern, options: .regularExpression) != nil {
-            return true
-        }
-        return false
-    }
-
-    private static func isPythonDefOpening(trimmed: String) -> Bool {
-        let pattern = "^def\\s+\\w+\\s*\\(.*\\).*:\\s*$"
-        return trimmed.range(of: pattern, options: .regularExpression) != nil
-    }
-
-    private static func detectPythonRecursion(stripped: String) -> Bool {
-        let defPattern = "def\\s+(\\w+)\\s*\\("
-        guard let regex = try? NSRegularExpression(pattern: defPattern),
-              let match = regex.firstMatch(
-                in: stripped,
-                range: NSRange(stripped.startIndex..., in: stripped)
-              ),
-              let nameRange = Range(match.range(at: 1), in: stripped) else {
-            return false
-        }
-        let methodName = String(stripped[nameRange])
-        // Exclude __init__ and common non-recursive helpers
-        let nonRecursive: Set<String> = ["__init__", "solve", "main"]
-        if nonRecursive.contains(methodName) {
-            // For "solve", still check — it's often recursive
-            if methodName != "solve" { return false }
-        }
-        let callPattern = "\\b\(NSRegularExpression.escapedPattern(for: methodName))\\s*\\("
-        guard let callRegex = try? NSRegularExpression(pattern: callPattern) else {
-            return false
-        }
-        let matches = callRegex.numberOfMatches(
-            in: stripped,
-            range: NSRange(stripped.startIndex..., in: stripped)
-        )
-        return matches >= 2
-    }
-
-    private static func pythonCaptureExpression(
-        paramNames: [String],
-        assignedVars: [String],
-        loopVars: [String],
-        stripped: String
-    ) -> String {
-        let presentCommonVars = commonPythonVars.filter { name in
-            variableExistsInCode(name: name, stripped: stripped)
-        }
-        let allVars = (paramNames + loopVars + assignedVars + presentCommonVars)
-            .map { $0.trimmingCharacters(in: .whitespacesAndNewlines) }
-            .filter { isValidPythonIdentifier($0) && !$0.hasPrefix("_") && $0 != "self" && $0 != "cls" }
-            .uniqued()
-        let pairs = allVars.prefix(24).map { name in
-            "\"\(name)\": (locals().get(\"\(name)\") if \"\(name)\" in locals() else globals().get(\"\(name)\"))"
-        }
-        return "{\(pairs.joined(separator: ", "))}"
-    }
-
-    // MARK: - Helpers
-
-    /// Checks whether a variable name appears as an identifier in the stripped
-    /// code (comments and strings already removed). Uses a word-boundary regex
-    /// so that e.g. "i" doesn't match inside "if" or "while".
-    private static func variableExistsInCode(name: String, stripped: String) -> Bool {
-        let pattern = "\\b\(NSRegularExpression.escapedPattern(for: name))\\b"
-        guard let regex = try? NSRegularExpression(pattern: pattern) else {
-            return false
-        }
-        return regex.firstMatch(
-            in: stripped,
-            range: NSRange(stripped.startIndex..., in: stripped)
-        ) != nil
-    }
-
-    private static func leadingWhitespace(_ line: String) -> String {
+extension AutoInstrumenter {
+    static func leadingWhitespace(_ line: String) -> String {
         var spaces = ""
         for char in line {
             if char == " " || char == "\t" {
@@ -671,85 +524,8 @@ enum AutoInstrumenter { // swiftlint:disable:this type_body_length
         }
         return spaces
     }
-}
 
-extension AutoInstrumenter {
-    fileprivate static func extractPythonAssignedVars(lines: [String]) -> [String] {
-        let assignmentPattern =
-            "^([a-zA-Z_][a-zA-Z0-9_]*(?:\\s*,\\s*[a-zA-Z_][a-zA-Z0-9_]*)*)\\s*" +
-            "(?:=|\\+=|-=|\\*=|/=|//=|%=|\\|=|&=|\\^=)"
-        let annotatedAssignmentPattern = "^([a-zA-Z_][a-zA-Z0-9_]*)\\s*:[^=]+="
-        guard let assignmentRegex = try? NSRegularExpression(pattern: assignmentPattern),
-              let annotatedRegex = try? NSRegularExpression(pattern: annotatedAssignmentPattern) else {
-            return []
-        }
-
-        var names: [String] = []
-        for line in lines {
-            let trimmed = line.trimmingCharacters(in: .whitespaces)
-            guard !trimmed.hasPrefix("#") else { continue }
-
-            if let match = assignmentRegex.firstMatch(
-                in: trimmed,
-                range: NSRange(trimmed.startIndex..., in: trimmed)
-            ),
-            let range = Range(match.range(at: 1), in: trimmed) {
-                let lhs = String(trimmed[range])
-                names.append(contentsOf: lhs
-                    .split(separator: ",")
-                    .map { $0.trimmingCharacters(in: .whitespacesAndNewlines) }
-                )
-            } else if let match = annotatedRegex.firstMatch(
-                in: trimmed,
-                range: NSRange(trimmed.startIndex..., in: trimmed)
-            ),
-            let range = Range(match.range(at: 1), in: trimmed) {
-                names.append(String(trimmed[range]))
-            }
-
-            names.append(contentsOf: extractPythonLoopVars(trimmed: trimmed))
-        }
-
-        return names
-            .filter { isValidPythonIdentifier($0) && !$0.hasPrefix("_") && $0 != "self" && $0 != "cls" }
-            .uniqued()
-    }
-
-    fileprivate static func extractPythonLoopVars(trimmed: String) -> [String] {
-        let pattern = "^for\\s+(.+?)\\s+in\\s+"
-        guard let regex = try? NSRegularExpression(pattern: pattern),
-              let match = regex.firstMatch(
-                in: trimmed,
-                range: NSRange(trimmed.startIndex..., in: trimmed)
-              ),
-              let bindingRange = Range(match.range(at: 1), in: trimmed) else {
-            return []
-        }
-        let binding = String(trimmed[bindingRange])
-        let identPattern = "\\b([a-zA-Z_]\\w*)\\b"
-        guard let identRegex = try? NSRegularExpression(pattern: identPattern) else {
-            return []
-        }
-        let matches = identRegex.matches(
-            in: binding,
-            range: NSRange(binding.startIndex..., in: binding)
-        )
-        let skip: Set<String> = ["_"]
-        return matches.compactMap { match in
-            guard let range = Range(match.range(at: 1), in: binding) else { return nil }
-            let name = String(binding[range])
-            if skip.contains(name) { return nil }
-            return name
-        }
-    }
-
-    fileprivate static func isValidPythonIdentifier(_ name: String) -> Bool {
-        guard !name.isEmpty else { return false }
-        let pattern = "^[a-zA-Z_][a-zA-Z0-9_]*$"
-        return name.range(of: pattern, options: .regularExpression) != nil
-    }
-
-    fileprivate static func isValidSwiftIdentifier(_ name: String) -> Bool {
+    static func isValidSwiftIdentifier(_ name: String) -> Bool {
         guard !name.isEmpty else { return false }
         let pattern = "^[a-zA-Z_][a-zA-Z0-9_]*$"
         return name.range(of: pattern, options: .regularExpression) != nil
@@ -762,45 +538,6 @@ extension AutoInstrumenter {
     struct VarDecl {
         let name: String
         let line: Int
-    }
-
-    /// Extracts variable names declared at the function body level with their
-    /// line positions. Only variables declared BEFORE a given insertion point
-    /// should be captured in Trace.step() calls.
-    static func extractFunctionLevelDecls(lines: [String]) -> [VarDecl] {
-        var funcBodyIndent: Int?
-        var decls: [VarDecl] = []
-        let declPattern = "^(var|let)\\s+(\\w+)"
-
-        for (lineIndex, line) in lines.enumerated() {
-            let trimmed = line.trimmingCharacters(in: .whitespaces)
-
-            if funcBodyIndent == nil {
-                if trimmed.hasPrefix("var ") || trimmed.hasPrefix("let ")
-                    || trimmed.hasPrefix("return ") || trimmed.hasPrefix("guard ") {
-                    let indent = line.prefix(while: { $0 == " " || $0 == "\t" }).count
-                    if indent > 0 { funcBodyIndent = indent }
-                }
-            }
-
-            guard let bodyIndent = funcBodyIndent else { continue }
-            let lineIndent = line.prefix(while: { $0 == " " || $0 == "\t" }).count
-
-            guard lineIndent == bodyIndent else { continue }
-            guard let regex = try? NSRegularExpression(pattern: declPattern),
-                  let match = regex.firstMatch(
-                    in: trimmed,
-                    range: NSRange(trimmed.startIndex..., in: trimmed)
-                  ),
-                  let nameRange = Range(match.range(at: 2), in: trimmed) else {
-                continue
-            }
-            let name = String(trimmed[nameRange])
-            if isValidSwiftIdentifier(name) {
-                decls.append(VarDecl(name: name, line: lineIndex))
-            }
-        }
-        return decls
     }
 
     /// Extracts binding variable names from a Swift `for` loop header.
@@ -837,7 +574,7 @@ extension AutoInstrumenter {
 // MARK: - Array Uniqued Extension
 
 extension Array where Element: Hashable {
-    fileprivate func uniqued() -> [Element] {
+    func uniqued() -> [Element] {
         var seen = Set<Element>()
         return filter { seen.insert($0).inserted }
     }

@@ -338,7 +338,7 @@ extension CodingViewIOS {
                     .cornerRadius(theme.radii.sm)
             }
 
-            if presenter.isLoadingProblem {
+            if presenter.isLoadingProblem && presenter.problemDescriptionText.isEmpty {
                 HStack {
                     ProgressView()
                         .controlSize(.small)
@@ -346,8 +346,8 @@ extension CodingViewIOS {
                         .font(theme.typography.body)
                         .foregroundColor(Color(hex: 0x6B7280))
                 }
-            } else if let content = presenter.problemContent {
-                Text(stripHTML(content.content))
+            } else if !presenter.problemDescriptionText.isEmpty {
+                Text(presenter.problemDescriptionText)
                     .font(theme.typography.body)
                     .foregroundColor(Color(hex: 0x374151))
                     .lineSpacing(4)
@@ -453,7 +453,7 @@ extension CodingViewIOS {
                 .cornerRadius(theme.radii.md)
             }
             .buttonStyle(.plain)
-            .disabled(presenter.isRunning)
+            .disabled(presenter.isRunning || presenter.isLoadingProblem)
 
             // Submit button
             Button {
@@ -473,7 +473,7 @@ extension CodingViewIOS {
                 .cornerRadius(theme.radii.md)
             }
             .buttonStyle(.plain)
-            .disabled(presenter.isRunning)
+            .disabled(presenter.isRunning || presenter.isLoadingProblem)
         }
         .padding(.horizontal, theme.spacing.lg)
         .padding(.vertical, theme.spacing.md)
@@ -489,26 +489,6 @@ extension CodingViewIOS {
 // MARK: - Shared Helpers
 
 extension CodingViewIOS {
-
-    private func stripHTML(_ html: String) -> String {
-        guard let data = html.data(using: .utf8) else { return html }
-        if let attributed = try? NSAttributedString(
-            data: data,
-            options: [
-                .documentType: NSAttributedString.DocumentType.html,
-                .characterEncoding: String.Encoding.utf8.rawValue
-            ],
-            documentAttributes: nil
-        ) {
-            return attributed.string
-        }
-        // Fallback: strip tags with regex
-        return html.replacingOccurrences(
-            of: "<[^>]+>",
-            with: "",
-            options: .regularExpression
-        )
-    }
 
     private func difficultyTextColor(_ difficulty: Difficulty) -> Color {
         switch difficulty {

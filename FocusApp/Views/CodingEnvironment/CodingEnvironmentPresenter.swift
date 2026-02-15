@@ -24,6 +24,7 @@ final class CodingEnvironmentPresenter: ObservableObject {
     @Published var compilationOutput: String = ""
     @Published var errorOutput: String = ""
     @Published var problemContent: QuestionContent?
+    @Published var problemDescriptionText: String = ""
     @Published var showSubmissionTagPrompt: Bool = false
     @Published var submissionTagInput: String = ""
     @Published var errorDiagnostics: [CodeEditorDiagnostic] = []
@@ -49,6 +50,7 @@ final class CodingEnvironmentPresenter: ObservableObject {
     }
     static let cacheTTL: TimeInterval = 24 * 60 * 60  // 24 hours
     var problemContentCache: [String: CachedContent] = [:]
+    var problemDescriptionCache: [String: String] = [:]
     var codeSaveTask: Task<Void, Never>?
     var isApplyingExternalCode: Bool = false
     var runTask: Task<Void, Never>?
@@ -130,6 +132,18 @@ final class CodingEnvironmentPresenter: ObservableObject {
         }
     }
 
+    func cachedContentNeedsRefresh(_ content: QuestionContent) -> Bool {
+        if content.metaData == nil || content.codeSnippets.isEmpty {
+            return true
+        }
+        #if os(iOS)
+        if content.questionId?.isEmpty ?? true {
+            return true
+        }
+        #endif
+        return false
+    }
+
     init(
         interactor: CodingEnvironmentInteractor,
         logger: DebugLogRecording? = nil
@@ -144,13 +158,24 @@ final class CodingEnvironmentPresenter: ObservableObject {
     }
 
     func selectProblem(_ problem: Problem, at index: Int, day: Int) {
+        let newSlug = LeetCodeSlugExtractor.extractSlug(from: problem.url)
+        if selectedProblem?.id == problem.id,
+           selectedProblemIndex == index,
+           selectedProblemDay == day {
+            viewState = .coding
+            if let slug = newSlug, let description = problemDescriptionCache[slug] {
+                problemDescriptionText = description
+            }
+            return
+        }
+
         persistCurrentCode()
         runTask?.cancel()
         runTask = nil
         isRunning = false
         clearJourney()
 
-        activeProblemSlug = LeetCodeSlugExtractor.extractSlug(from: problem.url)
+        activeProblemSlug = newSlug
         let requestID = UUID()
         activeContentRequestID = requestID
 
@@ -161,7 +186,21 @@ final class CodingEnvironmentPresenter: ObservableObject {
         testCases = []
         compilationOutput = ""
         errorOutput = ""
-        problemContent = nil
+        if let slug = newSlug,
+           let cached = problemContentCache[slug],
+           Date().timeIntervalSince(cached.timestamp) < Self.cacheTTL {
+            problemContent = cached.content
+            parseTestCases(from: cached.content)
+            applySnippetIfNeeded(from: cached.content)
+            if let cachedDescription = problemDescriptionCache[slug] {
+                problemDescriptionText = cachedDescription
+            } else {
+                problemDescriptionText = ""
+            }
+        } else {
+            problemContent = nil
+            problemDescriptionText = ""
+        }
         currentSolution = nil
         hiddenTestCases = []
         hiddenTestGenerationTask?.cancel()
@@ -169,11 +208,22 @@ final class CodingEnvironmentPresenter: ObservableObject {
         viewState = .coding
 
         // Fetch problem content and solution
-        Task {
-            await loadProblemContent(for: problem, requestID: requestID)
+        let shouldFetch = newSlug.flatMap { slug in
+            guard let cached = problemContentCache[slug] else { return true }
+            if Date().timeIntervalSince(cached.timestamp) >= Self.cacheTTL {
+                return true
+            }
+            return cachedContentNeedsRefresh(cached.content)
+        } ?? true
+        if shouldFetch {
+            Task {
+                await loadProblemContent(for: problem, requestID: requestID)
+            }
         }
         loadSolution(for: problem)
+        #if os(macOS)
         startHiddenTestGeneration()
+        #endif
     }
 
     func loadSolution(for problem: Problem) {

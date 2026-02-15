@@ -31,14 +31,16 @@ extension LeetCodeRestClient {
                 difficulty: response.difficulty.isEmpty ? "Unknown" : response.difficulty,
                 codeSnippets: snippets,
                 metaData: response.metaData,
-                questionId: nil
+                questionId: response.questionId
             )
         } catch {
             // Fall through to GraphQL fallback.
         }
 
         if let restContent {
-            let needsFallback = restContent.metaData == nil || restContent.codeSnippets.isEmpty
+            let needsFallback = restContent.metaData == nil
+                || restContent.codeSnippets.isEmpty
+                || restContent.questionId == nil
             if needsFallback, let fallback = try? await fetchProblemContentGraphQL(slug: slug) {
                 return mergeProblemContent(primary: restContent, fallback: fallback, slug: slug)
             }

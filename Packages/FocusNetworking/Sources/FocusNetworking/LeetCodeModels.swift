@@ -38,6 +38,7 @@ public struct LeetCodeRestProblemResponse: Decodable {
     public let difficulty: String
     public let codeSnippets: [LeetCodeRestCodeSnippet]
     public let metaData: String?
+    public let questionId: String?
 
     enum CodingKeys: String, CodingKey {
         case title
@@ -49,6 +50,8 @@ public struct LeetCodeRestProblemResponse: Decodable {
         case difficulty
         case codeSnippets
         case metaData
+        case questionId
+        case question_id
     }
 
     public init(from decoder: Decoder) throws {
@@ -64,6 +67,15 @@ public struct LeetCodeRestProblemResponse: Decodable {
         difficulty = (try? container.decode(String.self, forKey: .difficulty)) ?? ""
         codeSnippets = (try? container.decode([LeetCodeRestCodeSnippet].self, forKey: .codeSnippets)) ?? []
         metaData = try? container.decode(String.self, forKey: .metaData)
+        if let textID = (try? container.decode(String.self, forKey: .questionId))
+            ?? (try? container.decode(String.self, forKey: .question_id)) {
+            questionId = textID
+        } else if let intID = (try? container.decode(Int.self, forKey: .questionId))
+            ?? (try? container.decode(Int.self, forKey: .question_id)) {
+            questionId = String(intID)
+        } else {
+            questionId = nil
+        }
     }
 }
 

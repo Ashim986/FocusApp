@@ -30,8 +30,14 @@ extension CodingEnvironmentPresenter {
                 self.parseTestCases(from: cached.content)
                 self.applySnippetIfNeeded(from: cached.content)
                 self.isLoadingProblem = false
+                if let cachedDescription = self.problemDescriptionCache[slug] {
+                    self.problemDescriptionText = cachedDescription
+                }
             }
-            return
+            await ensureProblemDescriptionText(for: cached.content, slug: slug, requestID: requestID)
+            if !cachedContentNeedsRefresh(cached.content) {
+                return
+            }
         }
 
         await MainActor.run {
@@ -62,6 +68,9 @@ extension CodingEnvironmentPresenter {
                     self.applySnippetIfNeeded(from: content)
                 }
                 self.isLoadingProblem = false
+            }
+            if let content {
+                await ensureProblemDescriptionText(for: content, slug: slug, requestID: requestID)
             }
         } catch {
             logger?.recordAsync(
@@ -280,6 +289,55 @@ extension CodingEnvironmentPresenter {
             range: NSRange(withLineBreaks.startIndex..., in: withLineBreaks),
             withTemplate: ""
         )
+    }
+
+    func ensureProblemDescriptionText(
+        for content: QuestionContent,
+        slug: String,
+        requestID: UUID
+    ) async {
+        if let cached = problemDescriptionCache[slug] {
+            await MainActor.run {
+                guard shouldApplyContent(slug: slug, requestID: requestID) else { return }
+                self.problemDescriptionText = cached
+            }
+            return
+        }
+
+        let html = content.content
+        let parsingTask = Task.detached(priority: .utility) {
+            CodingEnvironmentPresenter.plainTextDescription(fromHTML: html)
+        }
+        let text = await parsingTask.value
+
+        await MainActor.run {
+            guard shouldApplyContent(slug: slug, requestID: requestID) else { return }
+            self.problemDescriptionCache[slug] = text
+            self.problemDescriptionText = text
+        }
+    }
+
+    nonisolated private static func plainTextDescription(fromHTML html: String) -> String {
+        guard let data = html.data(using: .utf8) else { return html }
+        if let attributed = try? NSAttributedString(
+            data: data,
+            options: [
+                .documentType: NSAttributedString.DocumentType.html,
+                .characterEncoding: String.Encoding.utf8.rawValue
+            ],
+            documentAttributes: nil
+        ) {
+            return attributed.string
+                .replacingOccurrences(of: "\\n{3,}", with: "\n\n", options: .regularExpression)
+                .trimmingCharacters(in: .whitespacesAndNewlines)
+        }
+        return html
+            .replacingOccurrences(
+                of: "<[^>]+>",
+                with: "",
+                options: .regularExpression
+            )
+            .trimmingCharacters(in: .whitespacesAndNewlines)
     }
 
     private func shouldApplyContent(slug: String, requestID: UUID) -> Bool {

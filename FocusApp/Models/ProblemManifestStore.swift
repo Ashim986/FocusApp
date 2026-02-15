@@ -308,112 +308,45 @@ final class StudyPlanGenerator {
         self.solutionProvider = solutionProvider
     }
 
-    /// Topics covered in NeetCode 150 / Blind 75
-    static let neetcodeTopics = [
-        "Arrays & Hashing",
-        "Two Pointers",
-        "Sliding Window",
-        "Stack",
-        "Binary Search",
-        "Linked List",
-        "Trees",
-        "Tries",
-        "Heap / Priority Queue",
-        "Backtracking",
-        "Graphs",
-        "Dynamic Programming",
-        "Greedy",
-        "Intervals",
-        "Math & Geometry",
-        "Bit Manipulation"
-    ]
-
-    /// Topic mapping from NeetCode to LeetCode topics
-    static let topicMapping: [String: [String]] = [
-        "Arrays & Hashing": ["Array", "Hash Table"],
-        "Two Pointers": ["Two Pointers"],
-        "Sliding Window": ["Sliding Window"],
-        "Stack": ["Stack", "Monotonic Stack"],
-        "Binary Search": ["Binary Search"],
-        "Linked List": ["Linked List"],
-        "Trees": ["Tree", "Binary Tree", "Binary Search Tree"],
-        "Tries": ["Trie"],
-        "Heap / Priority Queue": ["Heap (Priority Queue)"],
-        "Backtracking": ["Backtracking"],
-        "Graphs": ["Graph", "Depth-First Search", "Breadth-First Search"],
-        "Dynamic Programming": ["Dynamic Programming"],
-        "Greedy": ["Greedy"],
-        "Intervals": ["Array"],  // No direct mapping, use Array
-        "Math & Geometry": ["Math", "Geometry"],
-        "Bit Manipulation": ["Bit Manipulation"]
-    ]
-
-    /// Generate a 15-day NeetCode-style study plan
-    func generate15DayPlan(
+    /// Generate a 25-day NeetCode-style study plan from the active bundled plan.
+    func generate25DayPlan(
         preferSolved: Bool = true,
         excludingSlugs: Set<String> = []
     ) -> [GeneratedStudyDay] {
         var plan: [GeneratedStudyDay] = []
         var usedSlugs = excludingSlugs
 
-        // Day allocation: spread topics across 15 days
-        struct DayTopicPlan {
-            let day: Int
-            let topics: [String]
-            let problemCount: Int
-        }
-
-        let dayTopics: [DayTopicPlan] = [
-            DayTopicPlan(day: 1, topics: ["Arrays & Hashing"], problemCount: 4),
-            DayTopicPlan(day: 2, topics: ["Two Pointers", "Sliding Window"], problemCount: 4),
-            DayTopicPlan(day: 3, topics: ["Stack"], problemCount: 3),
-            DayTopicPlan(day: 4, topics: ["Binary Search"], problemCount: 3),
-            DayTopicPlan(day: 5, topics: ["Linked List"], problemCount: 4),
-            DayTopicPlan(day: 6, topics: ["Trees"], problemCount: 4),
-            DayTopicPlan(day: 7, topics: ["Trees"], problemCount: 4),
-            DayTopicPlan(day: 8, topics: ["Tries", "Heap / Priority Queue"], problemCount: 3),
-            DayTopicPlan(day: 9, topics: ["Backtracking"], problemCount: 3),
-            DayTopicPlan(day: 10, topics: ["Graphs"], problemCount: 4),
-            DayTopicPlan(day: 11, topics: ["Graphs"], problemCount: 4),
-            DayTopicPlan(day: 12, topics: ["Dynamic Programming"], problemCount: 4),
-            DayTopicPlan(day: 13, topics: ["Dynamic Programming"], problemCount: 4),
-            DayTopicPlan(day: 14, topics: ["Greedy", "Intervals"], problemCount: 3),
-            DayTopicPlan(day: 15, topics: ["Math & Geometry", "Bit Manipulation"], problemCount: 3)
-        ]
-
-        for planItem in dayTopics {
+        for day in dsaPlan {
             var dayProblems: [ManifestProblem] = []
+            dayProblems.reserveCapacity(day.problems.count)
 
-            for topic in planItem.topics {
-                let leetCodeTopics = Self.topicMapping[topic] ?? [topic]
-                for lcTopic in leetCodeTopics {
-                    let candidates = manifestStore.problems(topic: lcTopic)
-                        .filter { !usedSlugs.contains($0.slug) }
-                        .filter { preferSolved ? solutionProvider.hasFullSolution(for: $0.slug) : true }
-
-                    // Mix of easy and medium
-                    let easy = candidates.filter { $0.difficultyLevel == .easy }.shuffled().prefix(1)
-                    let medium = candidates.filter { $0.difficultyLevel == .medium }.shuffled().prefix(2)
-
-                    dayProblems.append(contentsOf: easy)
-                    dayProblems.append(contentsOf: medium)
+            for problem in day.problems {
+                guard let slug = LeetCodeSlugExtractor.extractSlug(from: problem.url) else { continue }
+                guard !usedSlugs.contains(slug) else { continue }
+                guard let manifest = manifestStore.problem(for: slug) else { continue }
+                if preferSolved && !solutionProvider.hasFullSolution(for: slug) {
+                    continue
                 }
-            }
-
-            // Limit to requested count
-            let selected = Array(dayProblems.shuffled().prefix(planItem.problemCount))
-            for problem in selected {
-                usedSlugs.insert(problem.slug)
+                dayProblems.append(manifest)
+                usedSlugs.insert(slug)
             }
 
             plan.append(GeneratedStudyDay(
-                day: planItem.day,
-                topic: planItem.topics.joined(separator: " & "),
-                problems: selected
+                day: day.id,
+                topic: day.topic,
+                problems: dayProblems
             ))
         }
 
         return plan
+    }
+
+    @available(*, deprecated, message: "Use generate25DayPlan()")
+    func generate15DayPlan(
+        preferSolved: Bool = true,
+        excludingSlugs: Set<String> = []
+    ) -> [GeneratedStudyDay] {
+        generate25DayPlan(preferSolved: preferSolved, excludingSlugs: excludingSlugs)
     }
 }
 

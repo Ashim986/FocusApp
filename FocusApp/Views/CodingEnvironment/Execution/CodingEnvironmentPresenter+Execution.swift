@@ -44,6 +44,76 @@ extension CodingEnvironmentPresenter {
         #endif
     }
 
+    private func resolveExecutionQuestionId(for slug: String?) async -> String? {
+        guard let slug, !slug.isEmpty else { return problemContent?.questionId }
+        if let questionId = problemContent?.questionId, !questionId.isEmpty {
+            return questionId
+        }
+
+        if let cached = problemContentCache[slug]?.content {
+            if activeProblemSlug == slug {
+                await MainActor.run {
+                    self.problemContent = cached
+                    self.parseTestCases(from: cached)
+                    self.applySnippetIfNeeded(from: cached)
+                }
+                if let requestID = activeContentRequestID {
+                    await ensureProblemDescriptionText(for: cached, slug: slug, requestID: requestID)
+                }
+            }
+            if let questionId = cached.questionId, !questionId.isEmpty {
+                return questionId
+            }
+        }
+
+        do {
+            if let fetched = try await interactor.fetchProblemContent(slug: slug) {
+                await MainActor.run {
+                    self.problemContentCache[slug] = CachedContent(content: fetched, timestamp: Date())
+                    if self.activeProblemSlug == slug {
+                        self.problemContent = fetched
+                        self.parseTestCases(from: fetched)
+                        self.applySnippetIfNeeded(from: fetched)
+                    }
+                }
+                if activeProblemSlug == slug, let requestID = activeContentRequestID {
+                    await ensureProblemDescriptionText(for: fetched, slug: slug, requestID: requestID)
+                }
+                if let questionId = fetched.questionId, !questionId.isEmpty {
+                    return questionId
+                }
+            }
+        } catch {
+            logger?.recordAsync(
+                DebugLogEntry(
+                    level: .warning,
+                    category: .network,
+                    title: "Execution metadata fetch failed",
+                    message: error.localizedDescription,
+                    metadata: ["slug": slug]
+                )
+            )
+        }
+
+        return problemContent?.questionId
+    }
+
+    private func executionContextError(slug: String?, questionId: String?) -> String? {
+        #if os(iOS)
+        guard let slug, !slug.isEmpty else {
+            return "No problem selected. Please choose a problem first."
+        }
+        guard let questionId, !questionId.isEmpty else {
+            return "Problem metadata is still loading. Please try Run again in a moment."
+        }
+        return nil
+        #else
+        _ = slug
+        _ = questionId
+        return nil
+        #endif
+    }
+
     private func runSingle() {
         isRunning = true
         compilationOutput = ""
@@ -60,12 +130,21 @@ extension CodingEnvironmentPresenter {
             }
             let executionCode = self.wrappedCodeForExecution()
             let runInput = testCases.first?.input ?? ""
+            let slug = self.activeProblemSlug
+            let questionId = await self.resolveExecutionQuestionId(for: slug)
+            if let contextError = self.executionContextError(slug: slug, questionId: questionId) {
+                await MainActor.run {
+                    self.errorOutput = contextError
+                    self.isRunning = false
+                }
+                return
+            }
             let result = await interactor.executeCode(
                 code: executionCode,
                 language: language,
                 input: runInput,
-                slug: activeProblemSlug,
-                questionId: problemContent?.questionId
+                slug: slug,
+                questionId: questionId
             )
 
             guard !Task.isCancelled else { return }
@@ -113,7 +192,20 @@ extension CodingEnvironmentPresenter {
             }
 
             let executionCode = self.wrappedCodeForExecution()
-            let hiddenResult = await self.runHiddenTestGate(executionCode: executionCode)
+            let slug = self.activeProblemSlug
+            let questionId = await self.resolveExecutionQuestionId(for: slug)
+            if let contextError = self.executionContextError(slug: slug, questionId: questionId) {
+                await MainActor.run {
+                    self.errorOutput = contextError
+                    self.isRunning = false
+                }
+                return
+            }
+            let hiddenResult = await self.runHiddenTestGate(
+                executionCode: executionCode,
+                slug: slug,
+                questionId: questionId
+            )
             guard !Task.isCancelled else { return }
 
             var consoleLogs: [String] = []
@@ -163,6 +255,10 @@ extension CodingEnvironmentPresenter {
         // If already available, return immediately
         if !hiddenTestCases.isEmpty { return hiddenTestCases }
 
+        if hiddenTestGenerationTask == nil {
+            startHiddenTestGeneration()
+        }
+
         // Wait for background generation task to finish
         if let task = hiddenTestGenerationTask {
             await MainActor.run {
@@ -181,7 +277,11 @@ extension CodingEnvironmentPresenter {
     }
 
     /// Runs user code against all hidden test cases. Returns pass/fail status and failed cases.
-    func runHiddenTestGate(executionCode: String) async -> HiddenTestResult {
+    func runHiddenTestGate(
+        executionCode: String,
+        slug: String?,
+        questionId: String?
+    ) async -> HiddenTestResult {
         let aiCases = await waitForHiddenTests()
         guard !aiCases.isEmpty else {
             return HiddenTestResult(allPassed: true, failedCases: [], totalCount: 0)
@@ -203,8 +303,8 @@ extension CodingEnvironmentPresenter {
                 code: executionCode,
                 language: language,
                 input: item.input,
-                slug: activeProblemSlug,
-                questionId: problemContent?.questionId
+                slug: slug,
+                questionId: questionId
             )
             if Task.isCancelled { break }
 
@@ -276,6 +376,15 @@ extension CodingEnvironmentPresenter {
             var consoleLogs: [String] = []
             var errorLogs: [String] = []
             let executionCode = self.wrappedCodeForExecution()
+            let slug = self.activeProblemSlug
+            let questionId = await self.resolveExecutionQuestionId(for: slug)
+            if let contextError = self.executionContextError(slug: slug, questionId: questionId) {
+                await MainActor.run {
+                    self.errorOutput = contextError
+                    self.isRunning = false
+                }
+                return
+            }
             var allPassed = true
 
             for index in updatedTestCases.indices {
@@ -285,8 +394,8 @@ extension CodingEnvironmentPresenter {
                     code: executionCode,
                     language: language,
                     input: testCase.input,
-                    slug: activeProblemSlug,
-                    questionId: problemContent?.questionId
+                    slug: slug,
+                    questionId: questionId
                 )
 
                 if Task.isCancelled { break }
@@ -344,7 +453,11 @@ extension CodingEnvironmentPresenter {
             guard !Task.isCancelled else { return }
             if saveSubmission, allPassed {
                 // Run hidden tests before submitting to LeetCode
-                let hiddenResult = await self.runHiddenTestGate(executionCode: executionCode)
+                let hiddenResult = await self.runHiddenTestGate(
+                    executionCode: executionCode,
+                    slug: slug,
+                    questionId: questionId
+                )
                 if hiddenResult.allPassed {
                     consoleLogs.append("All \(hiddenResult.totalCount) hidden tests passed!")
                     let submissionOutcome = await self.submitToLeetCodeDirect()

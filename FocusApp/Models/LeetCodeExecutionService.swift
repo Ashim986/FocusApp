@@ -244,6 +244,7 @@ final class LeetCodeExecutionService: CodeExecuting {
 
         var attempts = 0
         let maxAttempts = 40
+        var decodeFailures = 0
 
         while attempts < maxAttempts {
             if Task.isCancelled { throw CancellationError() }
@@ -264,11 +265,34 @@ final class LeetCodeExecutionService: CodeExecuting {
             do {
                 check = try decoder.decode(InterpretCheck.self, from: data)
             } catch {
-                // Sometimes LeetCode returns partial JSON, retry
+                // LeetCode may briefly return partial JSON while processing.
+                // Surface obviously invalid payloads quickly instead of spinning to timeout.
                 attempts += 1
+                decodeFailures += 1
+                if let immediateFailure = parseImmediateFailure(from: data),
+                   !immediateFailure.isEmpty {
+                    return ExecutionResult(
+                        output: "",
+                        error: immediateFailure,
+                        exitCode: 1,
+                        timedOut: false,
+                        wasCancelled: false
+                    )
+                }
+                if decodeFailures >= 3 {
+                    let snippet = payloadSnippet(from: data)
+                    return ExecutionResult(
+                        output: "",
+                        error: "Unable to decode LeetCode execution response. \(snippet)",
+                        exitCode: 1,
+                        timedOut: false,
+                        wasCancelled: false
+                    )
+                }
                 try await Task.sleep(nanoseconds: 1_000_000_000)
                 continue
             }
+            decodeFailures = 0
 
             if check.isComplete {
                 return mapToExecutionResult(check)
@@ -285,6 +309,35 @@ final class LeetCodeExecutionService: CodeExecuting {
             timedOut: true,
             wasCancelled: false
         )
+    }
+
+    private func parseImmediateFailure(from data: Data) -> String? {
+        guard let payload = String(data: data, encoding: .utf8)?
+            .trimmingCharacters(in: .whitespacesAndNewlines),
+            !payload.isEmpty else {
+            return nil
+        }
+        let lowered = payload.lowercased()
+        if lowered.contains("<html") || lowered.contains("<!doctype html") {
+            return "LeetCode returned HTML instead of execution JSON. Re-authenticate in Settings and try again."
+        }
+        if lowered.contains("csrf") || lowered.contains("forbidden") || lowered.contains("unauthorized") {
+            return "LeetCode authentication appears invalid. Please log in again from Settings."
+        }
+        return nil
+    }
+
+    private func payloadSnippet(from data: Data) -> String {
+        guard var payload = String(data: data, encoding: .utf8)?
+            .replacingOccurrences(of: "\n", with: " ")
+            .trimmingCharacters(in: .whitespacesAndNewlines),
+            !payload.isEmpty else {
+            return "Response payload was empty."
+        }
+        if payload.count > 180 {
+            payload = String(payload.prefix(180)) + "…"
+        }
+        return "Payload: \(payload)"
     }
 
     private func mapToExecutionResult(_ check: InterpretCheck) -> ExecutionResult {
@@ -354,6 +407,13 @@ private struct InterpretResponse: Decodable {
         case testCase = "test_case"
         case error
     }
+
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        interpretId = container.decodeString(forKey: .interpretId)
+        testCase = container.decodeString(forKey: .testCase)
+        error = container.decodeString(forKey: .error)
+    }
 }
 
 private struct InterpretCheck: Decodable {
@@ -389,10 +449,90 @@ private struct InterpretCheck: Decodable {
         case expectedCodeAnswer = "expected_code_answer"
     }
 
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        state = container.decodeString(forKey: .state)
+        finished = container.decodeBool(forKey: .finished)
+        statusCode = container.decodeInt(forKey: .statusCode)
+        statusMsg = container.decodeString(forKey: .statusMsg)
+        runSuccess = container.decodeBool(forKey: .runSuccess)
+        compileError = container.decodeString(forKey: .compileError)
+        runtimeError = container.decodeString(forKey: .runtimeError)
+        codeOutput = container.decodeString(forKey: .codeOutput)
+        stdout = container.decodeString(forKey: .stdout)
+        expectedOutput = container.decodeString(forKey: .expectedOutput)
+        totalCorrect = container.decodeInt(forKey: .totalCorrect)
+        totalTestcases = container.decodeInt(forKey: .totalTestcases)
+        codeAnswer = container.decodeStringArray(forKey: .codeAnswer)
+        expectedCodeAnswer = container.decodeStringArray(forKey: .expectedCodeAnswer)
+    }
+
     var isComplete: Bool {
         if finished == true { return true }
         if let state, state.uppercased() == "SUCCESS" { return true }
         return false
+    }
+}
+
+private extension KeyedDecodingContainer {
+    func decodeString(forKey key: K) -> String? {
+        if let value = try? decode(String.self, forKey: key) {
+            return value
+        }
+        if let value = try? decode(Int.self, forKey: key) {
+            return String(value)
+        }
+        if let value = try? decode(Double.self, forKey: key) {
+            return String(value)
+        }
+        if let values = try? decode([String].self, forKey: key) {
+            return values.joined(separator: "\n")
+        }
+        return nil
+    }
+
+    func decodeInt(forKey key: K) -> Int? {
+        if let value = try? decode(Int.self, forKey: key) {
+            return value
+        }
+        if let value = try? decode(String.self, forKey: key),
+           let parsed = Int(value.trimmingCharacters(in: .whitespacesAndNewlines)) {
+            return parsed
+        }
+        if let value = try? decode(Double.self, forKey: key) {
+            return Int(value)
+        }
+        return nil
+    }
+
+    func decodeBool(forKey key: K) -> Bool? {
+        if let value = try? decode(Bool.self, forKey: key) {
+            return value
+        }
+        if let value = try? decode(Int.self, forKey: key) {
+            return value != 0
+        }
+        if let value = try? decode(String.self, forKey: key) {
+            switch value.trimmingCharacters(in: .whitespacesAndNewlines).lowercased() {
+            case "true", "1", "yes":
+                return true
+            case "false", "0", "no":
+                return false
+            default:
+                return nil
+            }
+        }
+        return nil
+    }
+
+    func decodeStringArray(forKey key: K) -> [String]? {
+        if let values = try? decode([String].self, forKey: key) {
+            return values
+        }
+        if let value = decodeString(forKey: key) {
+            return [value]
+        }
+        return nil
     }
 }
 

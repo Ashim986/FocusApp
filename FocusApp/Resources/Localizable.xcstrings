@@ -10,6 +10,9 @@
     "\"%@\"" : {
 
     },
+    "(%@ carryover)" : {
+
+    },
     "(unavailable)" : {
 
     },
@@ -72,6 +75,9 @@
         }
       }
     },
+    "%@/3 Habits Today" : {
+
+    },
     "%@%%" : {
 
     },
@@ -118,10 +124,19 @@
     "Add `Trace.step(\"label\", [\"key\": value])` inside loops to visualize iterations." : {
 
     },
+    "AI Provider" : {
+
+    },
+    "API Key" : {
+
+    },
     "array" : {
 
     },
     "Case %@" : {
+
+    },
+    "Clear" : {
 
     },
     "Close" : {
@@ -1332,6 +1347,9 @@
     "Compare Steps" : {
 
     },
+    "Completed today" : {
+
+    },
     "Console" : {
 
     },
@@ -1397,6 +1415,12 @@
 
     },
     "CURRENT FOCUS" : {
+
+    },
+    "Daily Goal" : {
+
+    },
+    "Day %@" : {
 
     },
     "Day %@ - %@" : {
@@ -1685,6 +1709,9 @@
     "Expected:" : {
 
     },
+    "Fetch progress" : {
+
+    },
     "Flow Overview" : {
 
     },
@@ -1917,6 +1944,9 @@
         }
       }
     },
+    "Habits" : {
+
+    },
     "Hidden tests unavailable" : {
 
     },
@@ -1929,6 +1959,12 @@
     "LeetCode #%@" : {
 
     },
+    "LeetCode Session" : {
+
+    },
+    "LeetCode Username" : {
+
+    },
     "Loading problem..." : {
 
     },
@@ -1938,6 +1974,9 @@
     "min-heap" : {
 
     },
+    "Model" : {
+
+    },
     "No active session" : {
 
     },
@@ -1945,6 +1984,9 @@
 
     },
     "No plan data available" : {
+
+    },
+    "No session" : {
 
     },
     "No values captured for this step." : {
@@ -2037,6 +2079,9 @@
           }
         }
       }
+    },
+    "Notifications" : {
+
     },
     "Off-graph" : {
 
@@ -2193,6 +2238,9 @@
     "Overall Progress" : {
 
     },
+    "Plan Start Date" : {
+
+    },
     "plan.buffer_body" : {
       "extractionState" : "stale",
       "localizations" : {
@@ -2340,19 +2388,34 @@
     "Problems" : {
 
     },
+    "Problems completed" : {
+
+    },
     "Progress by Day" : {
 
     },
     "Progress by Topic" : {
 
     },
+    "Provider" : {
+
+    },
     "Quit FocusApp" : {
+
+    },
+    "Ready to get in the zone?" : {
 
     },
     "REMAINING" : {
 
     },
+    "Request Permission" : {
+
+    },
     "Reset filters" : {
+
+    },
+    "Reset to Today" : {
 
     },
     "Run with input to see the data journey." : {
@@ -2365,6 +2428,9 @@
 
     },
     "SESSION" : {
+
+    },
+    "Session active" : {
 
     },
     "Session complete!" : {
@@ -2984,6 +3050,9 @@
     "Start" : {
 
     },
+    "Start Focus Session" : {
+
+    },
     "Start Over" : {
 
     },
@@ -3101,6 +3170,9 @@
     "Swift" : {
 
     },
+    "Sync LeetCode" : {
+
+    },
     "Syncing..." : {
 
     },
@@ -3139,6 +3211,9 @@
           }
         }
       }
+    },
+    "Tasks done" : {
+
     },
     "Timeline" : {
 
@@ -3290,6 +3365,9 @@
         }
       }
     },
+    "Today's Plan" : {
+
+    },
     "Toggle Floating Widget" : {
 
     },
@@ -3300,6 +3378,9 @@
 
     },
     "Try clearing the filters to view recent entries." : {
+
+    },
+    "Used to sync your solved problems" : {
 
     },
     "widget.checking" : {
